@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Sergio Sanchez CV</title>
+<meta name="description" content="Sergio de Jesús Sánchez Robles — Senior Software Engineer / Tech Lead. 15 years across gaming, media and enterprise.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @page{size:A4;margin:0;}
+  a{text-decoration:none;color:inherit;}
+  .sheet{width:210mm;min-height:297mm;margin:0 auto;position:relative;overflow:hidden;}
+  .cline svg,.ai .h svg{width:13px;height:13px;flex:none;}
+  .p .dur{font-weight:400;opacity:.85;}
+  .sk-top{display:flex;justify-content:space-between;align-items:baseline;gap:6px;}
+  .stat.best{flex:1.35;}
+  .stat.best .n{font-size:10.5px;line-height:1.25;letter-spacing:0;}
+  .inds{display:inline-flex;flex-wrap:wrap;gap:3px;margin-left:6px;vertical-align:middle;}
+  .ind{display:inline-block;font-size:7.3px;line-height:1.35;padding:1px 6px;border-radius:3px;font-weight:600;white-space:nowrap;}
+  .sk-pct,.sk-dots{display:none;}
+  @media screen{
+    body{min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:clamp(12px,3vw,44px);}
+    .sheet{flex:none;box-shadow:0 30px 80px -22px rgba(0,0,0,.6),0 10px 26px rgba(0,0,0,.35);border-radius:14px;}
+  }
+  /* site header, embedded as the top strip of the sheet (visual only for now) */
+  .site-nav{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:7px 12mm;color:var(--nav-fg);font-family:var(--nav-font,inherit);}
+  .site-nav .tabs{display:flex;gap:2px;}
+  .site-nav .tab{padding:4px 7px;border-radius:6px;font-size:8.4px;font-weight:500;color:var(--nav-muted);cursor:default;user-select:none;letter-spacing:.2px;white-space:nowrap;}
+  .site-nav .tab.active{background:var(--nav-active-bg);color:var(--nav-active-fg);font-weight:700;}
+  .site-nav .grp{display:flex;align-items:center;gap:1px;}
+  .site-nav .grp .tab{padding:4px 6px;cursor:pointer;}
+  .site-nav .grp .slash{color:var(--nav-muted);font-size:8.6px;opacity:.6;padding:0 1px;}
+  .site-nav .grp .tab svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1.5px;margin-right:3px;}
+  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav{display:none;}}
+  :root{--nav-bg:#f2ede3;--nav-line:#dcd5c7;--nav-fg:#1c1a17;--nav-muted:#8a847a;--nav-active-bg:#b8321f;--nav-active-fg:#fff;}
+
+  :root{--paper:#faf7f1;--ink:#1c1a17;--body:#4a463f;--muted:#8a847a;--line:#dcd5c7;--accent:#b8321f;--accent-soft:#f3dcd6;}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--body);font-size:10px;line-height:1.5;background:var(--paper);}
+  .serif{font-family:'Fraunces','Iowan Old Style',Georgia,serif;}
+  .sheet{background:var(--paper);padding:12mm 13mm 8mm;display:flex;flex-direction:column;}
+  @media screen{body{background:radial-gradient(900px 500px at 50% -10%,#3b2a25 0%,#1f1613 50%,#120d0b 100%);}}
+
+  .site-nav{margin:-12mm -13mm 7mm;padding-left:13mm;padding-right:13mm;}
+  .top{display:flex;justify-content:space-between;align-items:flex-end;gap:10mm;border-bottom:1.5px solid var(--ink);padding-bottom:8px;}
+  .kicker{font-size:8px;letter-spacing:2.2px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:6px;}
+  .name{font-family:'Fraunces',Georgia,serif;font-size:31px;font-weight:600;letter-spacing:-.8px;line-height:1;color:var(--ink);}
+  .name em{font-style:italic;font-weight:400;color:var(--accent);}
+  .tag{font-size:9px;color:var(--muted);margin-top:6px;}
+  .contact{display:grid;gap:4px;flex:none;}
+  .cline{display:flex;align-items:center;gap:6px;font-size:8.6px;color:var(--body);}
+  .cline svg{stroke:var(--accent);width:11px;height:11px;}
+
+  .stats{display:flex;margin:6px 0 8px;border-bottom:1px solid var(--line);}
+  .stat{flex:1;padding:6px 10px 8px 0;border-right:1px solid var(--line);margin-right:10px;}
+  .stat:last-child{border-right:0;margin-right:0;}
+  .stat .n{font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:600;color:var(--ink);line-height:1;letter-spacing:-.5px;}
+  .stat .n .u{color:var(--accent);}
+  .stat .l{font-size:7.6px;text-transform:uppercase;letter-spacing:1.1px;color:var(--muted);margin-top:4px;font-weight:500;}
+
+  .cols{display:flex;gap:8mm;flex:1;}
+  .main{flex:1 1 auto;min-width:0;}
+  .aside{flex:0 0 52mm;}
+  h2.sh{font-size:8.6px;letter-spacing:2px;text-transform:uppercase;color:var(--ink);font-weight:600;margin-bottom:7px;display:flex;align-items:center;gap:8px;}
+  h2.sh::after{content:"";flex:1;height:1px;background:var(--line);}
+  section{margin-bottom:9px;}
+
+  .profile{font-size:9.6px;line-height:1.5;color:var(--body);}
+  .profile b{color:var(--ink);font-weight:600;}
+
+  .job{display:grid;grid-template-columns:1fr;padding:5px 0 3px;border-top:1px solid var(--line);}
+  .job:first-child{border-top:0;padding-top:0;}
+  .job-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;}
+  .job .r{font-family:'Fraunces',Georgia,serif;font-size:12px;font-weight:600;color:var(--ink);}
+  .job .c{color:var(--accent);font-style:italic;font-weight:400;}
+  .job .p{font-size:8.2px;color:var(--muted);font-weight:500;white-space:nowrap;flex:none;}
+  .job.cur .p::after{content:"· Current";color:var(--accent);margin-left:4px;font-weight:600;}
+  .job .loc{font-size:8.2px;color:var(--muted);}
+  ul.pts{list-style:none;margin-top:2px;}
+  ul.pts li{position:relative;padding-left:11px;margin-bottom:1px;line-height:1.32;font-size:9.1px;}
+  ul.pts li::before{content:"—";position:absolute;left:0;color:var(--accent);}
+  .ind{font-size:6.8px;letter-spacing:1px;text-transform:uppercase;font-weight:600;color:var(--accent);border:1px solid var(--accent-soft);background:#fff;border-radius:2px;padding:1px 5px;}
+  ul.pts li b{color:var(--ink);font-weight:600;}
+  ul.pts li a{color:var(--accent);font-weight:600;}
+  .stack{color:var(--muted);}
+
+  .cskill{padding:3px 0 5px;}
+  .sk-top{font-size:9.3px;color:var(--ink);}
+  .sk-word{font-family:'Fraunces',Georgia,serif;font-style:italic;color:var(--accent);font-size:8.6px;}
+  .sk-track{height:1px;background:var(--line);margin-top:5px;}
+  .sk-fill{height:2px;margin-top:-.5px;background:var(--ink);position:relative;}
+  .sk-fill::after{content:"";position:absolute;right:-2px;top:-2px;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  .ai{background:var(--ink);color:var(--paper);padding:10px 11px;border-radius:3px;}
+  .ai .h{font-size:8px;letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+  .ai .h svg{stroke:var(--accent);}
+  .ai p{font-size:8.8px;line-height:1.45;color:#d9d3c7;margin-bottom:6px;}
+  .dchips{display:flex;flex-wrap:wrap;gap:4px;}
+  .dchip{font-size:7.8px;font-weight:500;padding:2px 7px;border-radius:20px;border:1px solid var(--line);color:var(--ink);background:#fff;}
+  .ai .dchip{background:transparent;border-color:rgba(255,255,255,.3);color:var(--paper);}
+  .award{font-size:8.8px;color:var(--body);padding:3px 0;border-bottom:1px dotted var(--line);line-height:1.35;}
+  .award:last-child{border-bottom:0;}
+  .award b{color:var(--ink);font-weight:600;}
+  .award a{color:var(--accent);}
+  .edu{padding:3px 0;border-bottom:1px dotted var(--line);}
+  .edu:last-child{border-bottom:0;}
+  .edu .d{font-family:'Fraunces',Georgia,serif;font-size:10.5px;font-weight:600;color:var(--ink);}
+  .edu .m{font-size:8.4px;color:var(--muted);}
+  .foot{margin-top:auto;padding-top:6px;border-top:1px solid var(--line);font-size:7.6px;color:var(--muted);display:flex;justify-content:space-between;}
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="site-nav" aria-label="Site sections (visual only)">
+  <nav class="tabs">
+    <span class="tab">About me</span>
+    <span class="tab active" aria-current="page">Resume / CV</span>
+    <span class="tab">Extended History</span>
+    <span class="tab">Blog</span>
+  </nav>
+  <div class="grp lang" aria-label="Language (visual only)"><span class="tab" data-lang="es">ES</span><span class="slash">/</span><span class="tab active" data-lang="en">EN</span></div>
+  <div class="grp theme" aria-label="Theme"><span class="tab" data-set-theme="dark"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>Dark</span><span class="slash">/</span><span class="tab active" data-set-theme="light"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Light</span></div>
+</header>
+  <header class="top">
+    <div>
+      <div class="kicker">Senior Software Engineer · Tech Lead · Zapopan, México</div>
+      <div class="name">Sergio de Jesús Sánchez <em>Robles</em></div>
+      <div class="tag">Backend &amp; Full-Stack · Game Development · AI-Assisted Engineering</div>
+    </div>
+    <div class="contact"><div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Zapopan, Jalisco, México</div>
+<div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><a href="tel:+5213317991812">+52 1 33 1799 1812</a></div>
+<div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><a href="mailto:sergioj.sanchezr@gmail.com">sergioj.sanchezr@gmail.com</a></div>
+<div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4"/></svg><a href="https://www.linkedin.com/in/sergiojsanchez/" target="_blank" rel="noopener noreferrer">linkedin.com/in/sergiojsanchez</a></div>
+<div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 19c-4.5 1.5-4.5-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg><a href="https://github.com/sergiowero" target="_blank" rel="noopener noreferrer">github.com/sergiowero</a></div></div>
+  </header>
+  <div class="stats"><div class="stat"><div class="n"><span data-years>15</span><span class="u">+</span></div><div class="l">Years building software</div></div><div class="stat"><div class="n">3<span class="u"></span></div><div class="l">Industries: gaming, media &amp; enterprise</div></div><div class="stat"><div class="n">6<span class="u"></span></div><div class="l">Engineers led as Tech Lead</div></div><div class="stat best"><div class="n">.NET · Spring · Python · Node.js</div><div class="l">Best skills</div></div></div>
+  <div class="cols">
+    <main class="main">
+      <section><h2 class="sh">Profile</h2><p class="profile">Software developer with <b><span data-years>15</span> years of experience</b> across the gaming, media, and enterprise sectors, collaborating with major global companies. As an <b>AI enthusiast</b>, I actively leverage AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously <b>led teams of up to six people</b>, I consistently deliver high-quality, scalable software solutions on time and within budget.</p></section>
+      <section><h2 class="sh">Experience</h2><div class="tl">
+<div class="job cur">
+<div class="job-head"><div class="r">Senior Software Engineer / Tech Lead · <span class="c">Wizeline</span></div><div class="p" data-from="2020-02">Feb 2020 — Present</div></div>
+<div class="loc">Guadalajara, México<span class="inds"><span class="ind">News</span><span class="ind">Media &amp; Entertainment</span><span class="ind">Retail</span><span class="ind">Cybersecurity</span></span></div>
+<ul class="pts"><li><b>Global News Industry:</b> Engineered new features and resolved production issues in a high-velocity environment. Leveraged AI tooling to accelerate development cycles and enhance code quality. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span></li><li><b>Media &amp; Entertainment Industry:</b> Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders. <span class="stack">Tech: Java, Spring, Node.js, AWS, PostgreSQL.</span></li><li><b>Enterprise Retail Industry:</b> Architected backend services for a complex audit system. Designed relational databases, implemented microservices, and built migration services for long-running data imports. <span class="stack">Tech: Java, Spring, MariaDB.</span></li><li><b>Cybersecurity startup:</b> Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform. <span class="stack">Tech: Python, React.</span></li></ul>
+</div>
+<div class="job">
+<div class="job-head"><div class="r">Lead Programmer · <span class="c">1 Simple Idea</span></div><div class="p" data-from="2019-07" data-to="2020-02">Jul 2019 — Feb 2020</div></div>
+<div class="loc">Guadalajara, México<span class="inds"><span class="ind">Gaming · Mobile</span></span></div>
+<ul class="pts"><li>Led a small programming team in the development of a mobile iOS game, taking ownership of the <b>core game architecture</b>.</li><li>Architected and implemented an Inversion of Control (IoC), Dependency Injection (DI), and a robust event-driven system.</li><li>Accelerated the development cycle and reduced bug rates by establishing a modular paradigm, which significantly decreased art asset integration time for art teams.</li><li>Released on <b>Apple Arcade</b>, now on Steam: <a href="https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/" target="_blank" rel="noopener noreferrer">The Lullaby of Life</a>.</li></ul>
+</div>
+<div class="job">
+<div class="job-head"><div class="r">Senior Programmer · <span class="c">Virtually Live</span></div><div class="p" data-from="2017-02" data-to="2020-01">Feb 2017 — Jan 2020</div></div>
+<div class="loc">Málaga, Spain<span class="inds"><span class="ind">Gaming · VR</span></span></div>
+<ul class="pts"><li>Developed <b>racing games</b> for HTC Vive, Oculus, and Gear VR platforms.</li><li>Engineered a core abstraction layer for game modules, encompassing VR controllers, Social APIs, and database access, utilizing JSON for configuration management.</li><li>Ported the VR title to iOS by developing core gameplay mechanics in C# and architecting the supporting backend RESTful services with Python, Django, and Go.</li><li>Contributed to the successful release of the iOS adaptation (<a href="https://www.youtube.com/watch?v=dyOfO0sYyp8&amp;t=446s" target="_blank" rel="noopener noreferrer">gameplay</a>).</li></ul>
+</div>
+<div class="job">
+<div class="job-head"><div class="r">Software Engineer · <span class="c">Intel</span></div><div class="p" data-from="2015-02" data-to="2017-02">Feb 2015 — Feb 2017</div></div>
+<div class="loc">Guadalajara, México<span class="inds"><span class="ind">Semiconductors</span></span></div>
+<ul class="pts"><li>Engineered <b>APIs in Ruby</b> to support hardware validation teams and streamline testing workflows.</li><li>Created automation tools and scripts to synchronize API deployments with client environments across multiple global Intel sites.</li><li>Leveraged Ruby metaprogramming to parse XML-formatted design documents and dynamically generate executable files.</li></ul>
+</div>
+<div class="job">
+<div class="job-head"><div class="r">3D &amp; Online Programmer · <span class="c">Gameloft</span></div><div class="p" data-from="2011-05" data-to="2015-01">May 2011 — Jan 2015</div></div>
+<div class="loc">Guadalajara, México<span class="inds"><span class="ind">Gaming · Mobile</span></span></div>
+<ul class="pts"><li>Programmed 3D games and internal development tools using portable <b>C++, Java, and Objective-C</b> to ensure seamless cross-platform compatibility across Android and iOS.</li><li>Integrated proprietary REST-based online services into multiple Android titles.</li><li>Contributed to the development and release of major mobile titles, including <b>The Oregon Trail: American Settler</b> and <b>9mm</b>.</li></ul>
+</div>
+<div class="job">
+<div class="job-head"><div class="r">Game Developer · <span class="c">Kaxan Games</span></div><div class="p" data-from="2009-08" data-to="2011-05">Aug 2009 — May 2011</div></div>
+<div class="loc">Guadalajara, México<span class="inds"><span class="ind">Gaming · Mobile &amp; Console</span></span></div>
+<ul class="pts"><li>Developed and published <b>over five mobile games</b> for iPhone and iPad utilizing C# and Unity3D.</li><li>Contributed as an additional programmer to a released <b>Nintendo Wii</b> title.</li><li>Showcased development work in a demo reel of five released iOS games (<a href="https://www.youtube.com/watch?v=PWaarVatoEU" target="_blank" rel="noopener noreferrer">gameplay</a>).</li></ul>
+</div>
+</div></section>
+    </main>
+    <aside class="aside">
+      <section><div class="ai"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3.5"/></svg>AI-Assisted Dev</div><p>AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery.</p><div class="dchips"><span class="dchip">Claude Code</span><span class="dchip">opencode</span><span class="dchip">Codex</span></div></div></section>
+      <section><h2 class="sh">Core Skills</h2><div class="cskill" data-lvl="5"><div class="sk-top"><span class="sk-name">C# / .NET</span><span class="sk-word">Expert</span><span class="sk-pct">100%</span></div><div class="sk-track"><div class="sk-fill" style="width:100%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+<div class="cskill" data-lvl="5"><div class="sk-top"><span class="sk-name">Java / Spring</span><span class="sk-word">Expert</span><span class="sk-pct">100%</span></div><div class="sk-track"><div class="sk-fill" style="width:100%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+<div class="cskill" data-lvl="4"><div class="sk-top"><span class="sk-name">Python / FastAPI</span><span class="sk-word">Advanced</span><span class="sk-pct">80%</span></div><div class="sk-track"><div class="sk-fill" style="width:80%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+<div class="cskill" data-lvl="4"><div class="sk-top"><span class="sk-name">JavaScript / Node.js / React</span><span class="sk-word">Advanced</span><span class="sk-pct">80%</span></div><div class="sk-track"><div class="sk-fill" style="width:80%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+<div class="cskill" data-lvl="4"><div class="sk-top"><span class="sk-name">AWS</span><span class="sk-word">Advanced</span><span class="sk-pct">80%</span></div><div class="sk-track"><div class="sk-fill" style="width:80%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+<div class="cskill" data-lvl="5"><div class="sk-top"><span class="sk-name">SQL / Postgres</span><span class="sk-word">Expert</span><span class="sk-pct">100%</span></div><div class="sk-track"><div class="sk-fill" style="width:100%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+<div class="cskill" data-lvl="5"><div class="sk-top"><span class="sk-name">System Design</span><span class="sk-word">Expert</span><span class="sk-pct">100%</span></div><div class="sk-track"><div class="sk-fill" style="width:100%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div></section>
+      <section><h2 class="sh">Tech &amp; Tools</h2><div class="dchips"><span class="dchip">C#</span><span class="dchip">.NET</span><span class="dchip">Java</span><span class="dchip">Spring</span><span class="dchip">C/C++</span><span class="dchip">Python</span><span class="dchip">FastAPI</span><span class="dchip">Ruby</span><span class="dchip">JavaScript</span><span class="dchip">Node.js</span><span class="dchip">React</span><span class="dchip">AWS</span><span class="dchip">PostgreSQL</span><span class="dchip">Microservices</span><span class="dchip">RESTful APIs</span><span class="dchip">Unit Testing</span><span class="dchip">OOP</span><span class="dchip">Unity3D</span><span class="dchip">Git</span><span class="dchip">Full-Stack</span></div></section>
+      <section><h2 class="sh">Shipped Titles</h2><div class="award"><b>The Lullaby of Life</b> — Apple Arcade &amp; <a href="https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/" target="_blank" rel="noopener noreferrer">Steam</a></div>
+<div class="award"><b>VR racing games</b> — HTC Vive, Oculus, Gear VR &amp; <a href="https://www.youtube.com/watch?v=dyOfO0sYyp8&amp;t=446s" target="_blank" rel="noopener noreferrer">iOS</a></div>
+<div class="award"><b>The Oregon Trail: American Settler</b>, <b>9mm</b> — Gameloft</div>
+<div class="award"><b>5+ iOS games</b> &amp; a Nintendo Wii title — <a href="https://www.youtube.com/watch?v=PWaarVatoEU" target="_blank" rel="noopener noreferrer">demo reel</a></div></section>
+      <section><h2 class="sh">Education</h2><div class="edu"><div class="d">Master in Computer Science</div><div class="m">Universidad Autónoma de Guadalajara · Aug 2018</div></div>
+<div class="edu"><div class="d">Computer Science</div><div class="m">Universidad de Guadalajara · Dec 2010</div></div></section>
+    </aside>
+  </div>
+  <div class="foot"><span>Sergio de Jesús Sánchez Robles</span><span>sergiowero.github.io</span></div>
+</div>
+
+<script>
+/* Years of experience, computed from the year I started working */
+(function(){
+  var START_YEAR=2010;
+  var years=new Date().getFullYear()-START_YEAR;
+  document.querySelectorAll('[data-years]').forEach(function(el){el.textContent=years;});
+})();
+/* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Feb 2020 — Present · 6 yrs 8 mos" */
+(function(){
+  var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function ym(s){var p=s.split('-');return {y:+p[0],m:+p[1]};}
+  function label(d){return M[d.m-1]+' '+d.y;}
+  var now=new Date(), nowS=now.getFullYear()+'-'+(now.getMonth()+1);
+  document.querySelectorAll('[data-from]').forEach(function(el){
+    var toAttr=el.getAttribute('data-to');
+    var a=ym(el.getAttribute('data-from')), b=ym(toAttr||nowS);
+    var months=(b.y-a.y)*12+(b.m-a.m)+1; // inclusive count, like LinkedIn
+    var y=Math.floor(months/12), m=months%12, parts=[];
+    if(y) parts.push(y+(y===1?' yr':' yrs'));
+    if(m) parts.push(m+(m===1?' mo':' mos'));
+    el.textContent=label(a)+' — '+(toAttr?label(b):'Present');
+    var d=document.createElement('span'); d.className='dur'; d.textContent=' · '+parts.join(' ');
+    el.appendChild(d);
+  });
+})();
+/* Fits the A4 sheet to the available width: grows on wide screens (up to 1.5x)
+   and shrinks on narrow ones so there is never horizontal scroll. Not applied when printing. */
+(function(){
+  var sheet=document.querySelector('.sheet');
+  if(!sheet) return;
+  var MAX=1.5;
+  function fit(){
+    if(window.matchMedia&&window.matchMedia('print').matches){sheet.style.zoom='';return;}
+    sheet.style.zoom='1';
+    var natW=sheet.offsetWidth;
+    var body=sheet.parentElement, cs=getComputedStyle(body);
+    var avail=body.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+    var scale=avail/natW;
+    if(scale>MAX) scale=MAX;
+    sheet.style.zoom=scale;
+  }
+  fit();
+  window.addEventListener('resize',fit);
+  window.addEventListener('load',fit);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    if(mq.addEventListener) mq.addEventListener('change',fit);
+    else if(mq.addListener) mq.addListener(fit);
+  }
+})();
+</script>
+</body>
+</html>

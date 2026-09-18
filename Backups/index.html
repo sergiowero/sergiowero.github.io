@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Sergio Sanchez CV</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{--bg:#0f1117;--card:#171a22;--line:#262a36;--text:#e6e8ee;--muted:#8b91a3;--accent:#7c9cff;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',Inter,sans-serif;font-size:15px;line-height:1.55;padding:clamp(20px,4vw,48px);}
+  h1{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.5px;}
+  p.sub{color:var(--muted);margin-top:6px;max-width:760px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;margin-top:32px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:.15s;}
+  .card:hover{border-color:var(--accent);transform:translateY(-2px);}
+  .prev{position:relative;height:300px;overflow:hidden;background:#fff;border-bottom:1px solid var(--line);}
+  .prev iframe{width:1100px;height:1000px;border:0;transform:scale(.31);transform-origin:0 0;pointer-events:none;}
+  .prev a{position:absolute;inset:0;}
+  .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .body .n{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:1.4px;text-transform:uppercase;}
+  .body h2{font-size:17px;font-weight:600;}
+  .body p{font-size:13.5px;color:var(--muted);flex:1;}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .tag{font-size:11.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);}
+  .open{display:inline-block;margin-top:6px;padding:8px 14px;border-radius:8px;background:var(--accent);color:#0b0d14;font-weight:600;font-size:13px;text-decoration:none;width:fit-content;}
+  .open:hover{filter:brightness(1.1);}
+  .sw{display:inline-flex;gap:4px;vertical-align:middle;margin-left:8px;}
+  .sw i{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:inline-block;}
+</style>
+</head>
+<body>
+  <h1>Sergio Sánchez — CV · 9 versiones</h1>
+  <p class="sub">Todas usan el formato de hoja A4 de la v1 (se lee casi todo al abrir, imprimible a PDF en una página). Cada tarjeta abre la versión completa; cambian el layout dentro de la hoja y la paleta. · <a href="../favicons/" style="color:var(--accent)">Ver los 6 favicons →</a></p>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="prev"><iframe src="v1-classic-sidebar.html" loading="lazy" title="v1"></iframe><a href="v1-classic-sidebar.html" aria-label="Abrir v1"></a></div>
+      <div class="body">
+        <div class="n">v1 · Referencia <span class="sw"><i style="background:#15172b"></i><i style="background:#ff5d3b"></i><i style="background:#7c5cff"></i></span></div>
+        <h2>Classic Sidebar</h2>
+        <p>Idéntica al estilo de santiandrade.github.io: sidebar índigo oscuro a la izquierda, degradado coral→violeta, timeline y stats.</p>
+        <div class="tags"><span class="tag">Sidebar izq. oscuro</span><span class="tag">Inter</span></div>
+        <a class="open" href="v1-classic-sidebar.html">Abrir</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="prev"><iframe src="v2-editorial-serif.html" loading="lazy" title="v2"></iframe><a href="v2-editorial-serif.html" aria-label="Abrir v2"></a></div>
+      <div class="body">
+        <div class="n">v2 <span class="sw"><i style="background:#faf7f1"></i><i style="background:#1c1a17"></i><i style="background:#b8321f"></i></span></div>
+        <h2>Editorial Serif</h2>
+        <p>Papel crema, nombre en serif (Fraunces), acento bermellón, líneas finas. Header con contacto a la derecha y columna lateral clara.</p>
+        <div class="tags"><span class="tag">Header + aside der.</span><span class="tag">Serif</span></div>
+        <a class="open" href="v2-editorial-serif.html">Abrir</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="prev"><iframe src="v3-dark-terminal.html" loading="lazy" title="v3"></iframe><a href="v3-dark-terminal.html" aria-label="Abrir v3"></a></div>
+      <div class="body">
+        <div class="n">v3 <span class="sw"><i style="background:#0b0f14"></i><i style="background:#3ddc84"></i><i style="background:#4cc9f0"></i></span></div>
+        <h2>Dark Terminal</h2>
+        <p>Hoja completamente oscura estilo developer: prompt de terminal, títulos monospace, acentos verde/cian, tarjetas con borde.</p>
+        <div class="tags"><span class="tag">Header + aside der.</span><span class="tag">Dark</span><span class="tag">JetBrains Mono</span></div>
+        <a class="open" href="v3-dark-terminal.html">Abrir</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="prev"><iframe src="v4-bento-grid.html" loading="lazy" title="v4"></iframe><a href="v4-bento-grid.html" aria-label="Abrir v4"></a></div>
+      <div class="body">
+        <div class="n">v4 <span class="sw"><i style="background:#f3f4f8"></i><i style="background:#2f5bff"></i><i style="background:#ff7a1a"></i></span></div>
+        <h2>Bento Grid</h2>
+        <p>Tarjetas bento dentro de la hoja: hero azul marino, stats de colores, tarjeta naranja de AI, bloques redondeados.</p>
+        <div class="tags"><span class="tag">Cards</span><span class="tag">Colorido</span><span class="tag">Plus Jakarta</span></div>
+        <a class="open" href="v4-bento-grid.html">Abrir</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="prev"><iframe src="v5-header-band-a4.html" loading="lazy" title="v5"></iframe><a href="v5-header-band-a4.html" aria-label="Abrir v5"></a></div>
+      <div class="body">
+        <div class="n">v5 <span class="sw"><i style="background:#0e3b3c"></i><i style="background:#f2a900"></i><i style="background:#ffffff"></i></span></div>
+        <h2>Header Band</h2>
+        <p>Banda superior teal petróleo con stats flotantes, dos columnas y acento ámbar.</p>
+        <div class="tags"><span class="tag">Header oscuro</span><span class="tag">Manrope</span></div>
+        <a class="open" href="v5-header-band-a4.html">Abrir</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="prev"><iframe src="v6-split-panel.html" loading="lazy" title="v6"></iframe><a href="v6-split-panel.html" aria-label="Abrir v6"></a></div>
+      <div class="body">
+        <div class="n">v6 <span class="sw"><i style="background:#151515"></i><i style="background:#c8f135"></i><i style="background:#f6f5f0"></i></span></div>
+        <h2>Split Panel</h2>
+        <p>Panel carbón a la derecha con acento lima; nombre gigante y experiencia en blanco cálido a la izquierda.</p>
+        <div class="tags"><span class="tag">Sidebar der. oscuro</span><span class="tag">Space Grotesk</span></div>
+        <a class="open" href="v6-split-panel.html">Abrir</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="prev"><iframe src="v7-swiss-yellow.html" loading="lazy" title="v7"></iframe><a href="v7-swiss-yellow.html" aria-label="Abrir v7"></a></div>
+      <div class="body">
+        <div class="n">v7 · Nueva <span class="sw"><i style="background:#111"></i><i style="background:#ffd500"></i><i style="background:#f4f4f4"></i></span></div>
+        <h2>Swiss Yellow</h2>
+        <p>Tipografía suiza en negro con nombre en mayúsculas, banda negra de stats, rail gris claro y resaltes amarillos.</p>
+        <div class="tags"><span class="tag">Header + rail izq.</span><span class="tag">Archivo</span></div>
+        <a class="open" href="v7-swiss-yellow.html">Abrir</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="prev"><iframe src="v8-navy-emerald.html" loading="lazy" title="v8"></iframe><a href="v8-navy-emerald.html" aria-label="Abrir v8"></a></div>
+      <div class="body">
+        <div class="n">v8 · Nueva <span class="sw"><i style="background:#0b2545"></i><i style="background:#13a97a"></i><i style="background:#eef2f7"></i></span></div>
+        <h2>Navy &amp; Emerald</h2>
+        <p>Corporativo: sidebar gris-azul claro, títulos navy, acentos esmeralda y timeline. Sobrio y legible.</p>
+        <div class="tags"><span class="tag">Sidebar izq. claro</span><span class="tag">IBM Plex Sans</span></div>
+        <a class="open" href="v8-navy-emerald.html">Abrir</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="prev"><iframe src="v9-gradient-hero.html" loading="lazy" title="v9"></iframe><a href="v9-gradient-hero.html" aria-label="Abrir v9"></a></div>
+      <div class="body">
+        <div class="n">v9 · Nueva <span class="sw"><i style="background:#5b21b6"></i><i style="background:#ec4899"></i><i style="background:#ffffff"></i></span></div>
+        <h2>Gradient Hero</h2>
+        <p>Banda superior con degradado morado→rosa, contacto en píldoras, stats de cristal y cuerpo blanco con timeline degradado.</p>
+        <div class="tags"><span class="tag">Header degradado</span><span class="tag">Sora</span></div>
+        <a class="open" href="v9-gradient-hero.html">Abrir</a>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
