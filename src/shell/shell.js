@@ -71,11 +71,11 @@
 (function(){
   var KEY='cv-theme';
   function apply(t){
-    if(t==='light') document.documentElement.setAttribute('data-theme','light'); else document.documentElement.removeAttribute('data-theme');
-    document.querySelectorAll('[data-set-theme]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-set-theme')===(t==='light'?'light':'dark'));});
+    if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); else document.documentElement.removeAttribute('data-theme');
+    document.querySelectorAll('[data-set-theme]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-set-theme')===(t==='dark'?'dark':'light'));});
   }
   var saved=null; try{saved=localStorage.getItem(KEY);}catch(e){}
-  apply(saved||'dark');
+  apply(saved||'light');
   document.querySelectorAll('[data-set-theme]').forEach(function(el){
     el.addEventListener('click',function(){var t=el.getAttribute('data-set-theme');apply(t);try{localStorage.setItem(KEY,t);}catch(e){}});
   });

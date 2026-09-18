@@ -299,7 +299,7 @@ def page(title, fonts, css, body):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){{try{{var d=document.documentElement;if(localStorage.getItem('cv-theme')==='light')d.setAttribute('data-theme','light');if(localStorage.getItem('cv-lang')==='es')d.setAttribute('data-lang','es');}}catch(e){{}}}})();</script>
+<script>(function(){{try{{var d=document.documentElement;if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');if(localStorage.getItem('cv-lang')==='es')d.setAttribute('data-lang','es');}}catch(e){{}}}})();</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -436,19 +436,19 @@ VERSIONS["v2-editorial-serif.html"] = dict(
 
 # =================================================================== v3 DARK TERMINAL (A4)
 VERSIONS["v3-dark-terminal.html"] = dict(
-    theme="dark", flags=True,
-    nav="--nav-bg:#10161d;--nav-line:#1f2a35;--nav-fg:#d6dde6;--nav-muted:#7d8a99;--nav-active-bg:#3ddc84;--nav-active-fg:#06130c;--nav-font:'JetBrains Mono',Menlo,monospace;",
+    flags=True,
+    nav="--nav-bg:transparent;--nav-line:transparent;--nav-fg:#1f2328;--nav-muted:#6e7781;--nav-active-bg:#1a7f37;--nav-active-fg:#fff;--nav-font:'JetBrains Mono',Menlo,monospace;",
     title="Sergio Sanchez CV",
     extra_js="""<script>
 /* Dark / light toggle from the header; the choice is remembered in localStorage */
 (function(){
   var KEY='cv-theme';
   function apply(t){
-    if(t==='light') document.documentElement.setAttribute('data-theme','light'); else document.documentElement.removeAttribute('data-theme');
-    document.querySelectorAll('[data-set-theme]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-set-theme')===(t==='light'?'light':'dark'));});
+    if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); else document.documentElement.removeAttribute('data-theme');
+    document.querySelectorAll('[data-set-theme]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-set-theme')===(t==='dark'?'dark':'light'));});
   }
   var saved=null; try{saved=localStorage.getItem(KEY);}catch(e){}
-  apply(saved||'dark');
+  apply(saved||'light');
   document.querySelectorAll('[data-set-theme]').forEach(function(el){
     el.addEventListener('click',function(){var t=el.getAttribute('data-set-theme');apply(t);try{localStorage.setItem(KEY,t);}catch(e){}});
   });
@@ -489,18 +489,19 @@ VERSIONS["v3-dark-terminal.html"] = dict(
 </script>""",
     fonts="family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700",
     css="""
-  :root{--bg:#0b0f14;--panel:#141b23;--line:#1f2a35;--text:#d6dde6;--muted:#7d8a99;--green:#3ddc84;--cyan:#4cc9f0;--amber:#ffb454;--pink:#ff6b9d;--fg:#fff;--body-text:var(--body-text);--empty:var(--empty);}
-  /* light mode (toggled from the header) */
-  :root[data-theme="light"]{--bg:#f6f8fa;--panel:#fff;--line:#d0d7de;--text:#1f2328;--muted:#6e7781;--green:#1a7f37;--cyan:#0969da;--amber:#9a6700;--pink:#bf3989;--fg:#0b1220;--body-text:#3d444d;--empty:#d8dee4;
-    --nav-fg:#1f2328;--nav-muted:#6e7781;--nav-active-bg:#1a7f37;--nav-active-fg:#fff;}
-  @media screen{:root[data-theme="light"] body{background:radial-gradient(900px 500px at 50% -10%,#e6ecf2 0%,#cfd8e1 55%,#bcc7d2 100%);}}
+  /* light mode is the default */
+  :root{--bg:#f6f8fa;--panel:#fff;--line:#d0d7de;--text:#1f2328;--muted:#6e7781;--green:#1a7f37;--cyan:#0969da;--amber:#9a6700;--pink:#bf3989;--fg:#0b1220;--body-text:#3d444d;--empty:#d8dee4;}
+  /* dark mode (toggled from the header) */
+  :root[data-theme="dark"]{--bg:#0b0f14;--panel:#141b23;--line:#1f2a35;--text:#d6dde6;--muted:#7d8a99;--green:#3ddc84;--cyan:#4cc9f0;--amber:#ffb454;--pink:#ff6b9d;--fg:#fff;--body-text:#b9c3cf;--empty:#33414f;
+    --nav-fg:#d6dde6;--nav-muted:#7d8a99;--nav-active-bg:#3ddc84;--nav-active-fg:#06130c;}
+  @media screen{:root[data-theme="dark"] body{background:radial-gradient(900px 500px at 50% -10%,#0f1f1a 0%,#070a0d 55%,#000 100%);}}
   @view-transition{navigation:auto;}   /* smooth cross-fade between the site's pages (same shell everywhere) */
   .empty{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;}
   body{font-family:'Inter',system-ui,sans-serif;color:var(--text);font-size:10px;line-height:1.5;background:var(--bg);}
   .mono{font-family:'JetBrains Mono',Menlo,Consolas,monospace;}
   .sheet{background:var(--bg);padding:11mm 12mm 4mm;display:flex;flex-direction:column;
     background-image:radial-gradient(500px 260px at 90% -5%,rgba(76,201,240,.10),transparent 60%),radial-gradient(420px 220px at 0% 8%,rgba(61,220,132,.09),transparent 60%);}
-  @media screen{body{background:radial-gradient(900px 500px at 50% -10%,#0f1f1a 0%,#070a0d 55%,#000 100%);} .sheet{border:1px solid var(--line);}}
+  @media screen{body{background:radial-gradient(900px 500px at 50% -10%,#e6ecf2 0%,#cfd8e1 55%,#bcc7d2 100%);} .sheet{border:1px solid var(--line);}}
 
   .site-nav{margin:-11mm -12mm 6mm;}
   .prompt{font-size:8.6px;color:var(--muted);}
