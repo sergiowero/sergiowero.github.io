@@ -190,11 +190,18 @@
   .foot{margin-top:auto;padding-top:5px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:7.6px;color:var(--muted);display:flex;justify-content:space-between;}
   .foot .g{color:var(--green);}
 
-  .toolgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+  .toolgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;}
   .toolcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 9px;}
   .toolcard .tt{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--fg);}
   .toolcard .tt::before{content:"> ";color:var(--green);}
   .toolcard .td{font-size:8.4px;color:var(--body-text);margin-top:2px;line-height:1.4;}
+
+  /* profile photo placeholder — same 4:5 portrait ratio as the reference page, swap for a real <img> later */
+  .avatar{aspect-ratio:4/5;background:var(--panel);border:1px dashed var(--line);border-radius:10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);}
+  .avatar svg{width:32%;height:auto;stroke:var(--muted);}
+  .avatar span{font-family:'JetBrains Mono',monospace;font-size:7.6px;letter-spacing:.2px;}
+  .avatar span::before{content:"// ";}
 
 </style>
 </head>

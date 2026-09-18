@@ -48,10 +48,17 @@ SITE_PAGES = {
       <div class="sub mono">Senior Software Engineer <span class="hl">/</span> Tech Lead <span class="hl">/</span> Backend &amp; Full-Stack <span class="hl">/</span> Game Dev <span class="hl">/</span> AI-Assisted</div>
     </div>
   </header>
-  <section><h2 class="sh">cat about.md</h2><p class="profile">$ABOUT_BIO$</p></section>
-  <section>$AI$</section>
-  <section><h2 class="sh">ls toolbox/</h2>$TOOLBOX$</section>
-  <section><h2 class="sh">cat contact.md</h2><div class="contact">$CONTACT$</div></section>
+  <div class="cols">
+    <main class="main">
+      <section><h2 class="sh">cat about.md</h2><p class="profile">$ABOUT_BIO$</p></section>
+      <section>$AI$</section>
+      <section><h2 class="sh">ls toolbox/</h2>$TOOLBOX$</section>
+      <section><h2 class="sh">cat contact.md</h2><div class="contact">$CONTACT$</div></section>
+    </main>
+    <aside class="aside">
+      <div class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>photo.jpg</span></div>
+    </aside>
+  </div>
 </div>"""),
     "history/index.html": ("history", """<div class="sheet hist-page">
   $NAV$
@@ -844,11 +851,18 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .foot{margin-top:auto;padding-top:5px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:7.6px;color:var(--muted);display:flex;justify-content:space-between;}
   .foot .g{color:var(--green);}
 
-  .toolgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+  .toolgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;}
   .toolcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 9px;}
   .toolcard .tt{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--fg);}
   .toolcard .tt::before{content:"> ";color:var(--green);}
   .toolcard .td{font-size:8.4px;color:var(--body-text);margin-top:2px;line-height:1.4;}
+
+  /* profile photo placeholder — same 4:5 portrait ratio as the reference page, swap for a real <img> later */
+  .avatar{aspect-ratio:4/5;background:var(--panel);border:1px dashed var(--line);border-radius:10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);}
+  .avatar svg{width:32%;height:auto;stroke:var(--muted);}
+  .avatar span{font-family:'JetBrains Mono',monospace;font-size:7.6px;letter-spacing:.2px;}
+  .avatar span::before{content:"// ";}
 """,
     body="""<div class="sheet">
   $NAV$
