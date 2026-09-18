@@ -10,6 +10,37 @@ OUT = os.path.join(PUBLIC, "Backups")        # all variants
 LIVE = ("v3-dark-terminal.html", os.path.join(PUBLIC, "index.html"))   # the chosen design, published at the root
 SHELL_DIR = os.path.join(ROOT, "src", "shell")   # the v3 shell exported for the Astro blog pages
 
+
+def i18n(en, es):
+    """Both languages in the markup; CSS (html[data-lang]) shows one."""
+    return f'<span class="i18n-en">{en}</span><span class="i18n-es">{es}</span>'
+
+
+class T:
+    """A bilingual string. .html() renders both languages (CSS shows one); .data() feeds the export JSON."""
+    __slots__ = ("en", "es")
+
+    def __init__(self, en, es=None):
+        self.en, self.es = en, en if es is None else es
+
+    def html(self):
+        return self.en if self.en == self.es else i18n(self.en, self.es)
+
+    def data(self):
+        return {"en": self.en, "es": self.es}
+
+
+def h(v):
+    return v.html() if isinstance(v, T) else v
+
+
+def d(v):
+    if isinstance(v, T):
+        return v.data()
+    if isinstance(v, (list, tuple)):
+        return [d(x) for x in v]
+    return v
+
 # The other site sections share the v3 shell (same background, sheet, header and theme/language state).
 ABOUT_BIO_EN = ("I'm Sergio Sánchez, a software engineer with over 15 years of experience across gaming, media, and "
                 "enterprise. I move between backend architecture, game systems, and developer tooling — wherever a "
@@ -45,15 +76,15 @@ SITE_PAGES = {
     <div>
       <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ whoami</div>
       <div class="name"><span id="typed">$NAME$</span><span class="cur"></span></div>
-      <div class="sub mono">Senior Software Engineer <span class="hl">/</span> Tech Lead <span class="hl">/</span> Backend &amp; Full-Stack <span class="hl">/</span> Game Dev <span class="hl">/</span> AI-Assisted</div>
+      <div class="sub mono">$L_SUB$</div>
     </div>
   </header>
   <div class="cols">
     <main class="main">
-      <section><h2 class="sh">cat about.md</h2><p class="profile">$ABOUT_BIO$</p></section>
+      <section><h2 class="sh">$L_ABOUT$</h2><p class="profile">$ABOUT_BIO$</p></section>
       <section>$AI$</section>
-      <section><h2 class="sh">ls toolbox/</h2>$TOOLBOX$</section>
-      <section><h2 class="sh">cat contact.md</h2><div class="contact">$CONTACT$</div></section>
+      <section><h2 class="sh">$L_TOOLBOX$</h2>$TOOLBOX$</section>
+      <section><h2 class="sh">$L_CONTACT$</h2><div class="contact">$CONTACT$</div></section>
     </main>
     <aside class="aside">
       <div class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>photo.jpg</span></div>
@@ -64,7 +95,7 @@ SITE_PAGES = {
   $NAV$
   <header class="top">
     <div>
-      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">history.md</span></div>
+      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">$L_HISTFILE$</span></div>
       <div class="name"><span id="typed">$NAME$</span><span class="cur"></span></div>
       <div class="sub mono">$I18N_HISTORY_SUB$</div>
     </div>
@@ -98,11 +129,17 @@ NAME = "Sergio de Jesús Sánchez Robles"
 ROLE = "Senior Software Engineer · Tech Lead"
 TAG = "Backend &amp; Full-Stack · Game Development · AI-Assisted Engineering"
 
-PROFILE = ("Software developer with <b><span data-years>15</span> years of experience</b> across the gaming, media, and enterprise sectors, "
-           "collaborating with major global companies. As an <b>AI enthusiast</b>, I actively leverage AI-assisted tools in my "
-           "daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly "
-           "adaptable to new technology stacks. Having previously <b>led teams of up to six people</b>, I consistently deliver "
-           "high-quality, scalable software solutions on time and within budget.")
+PROFILE = T(
+    "Software developer with <b><span data-years>15</span> years of experience</b> across the gaming, media, and enterprise sectors, "
+    "collaborating with major global companies. As an <b>AI enthusiast</b>, I actively leverage AI-assisted tools in my "
+    "daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly "
+    "adaptable to new technology stacks. Having previously <b>led teams of up to six people</b>, I consistently deliver "
+    "high-quality, scalable software solutions on time and within budget.",
+    "Desarrollador de software con <b><span data-years>15</span> años de experiencia</b> en videojuegos, medios y empresa, "
+    "con compañías globales de primer nivel. Como <b>entusiasta de la IA</b>, uso herramientas asistidas por IA en mi día a "
+    "día para optimizar el backend y acelerar la entrega de proyectos. Aprendo rápido y me adapto a nuevos stacks "
+    "tecnológicos. Habiendo <b>liderado equipos de hasta seis personas</b>, entrego soluciones escalables y de alta calidad, "
+    "a tiempo y en presupuesto.")
 
 STEAM = "https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/"
 YT_VR = "https://www.youtube.com/watch?v=dyOfO0sYyp8&amp;t=446s"
@@ -111,74 +148,112 @@ YT_REEL = "https://www.youtube.com/watch?v=PWaarVatoEU"
 def ext(href, text):
     return f'<a href="{href}" target="_blank" rel="noopener noreferrer">{text}</a>'
 
+MX = T("Guadalajara, México")
+REMOTE = T("Remote", "Remoto")
+
 JOBS = [
-    dict(role="Senior Software Engineer / Tech Lead", co="Wizeline", tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code"],
+    dict(role=T("Senior Software Engineer / Tech Lead", "Ingeniero de Software Senior / Tech Lead"), co="Wizeline",
+         tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code"],
          history_children=[   # second level on the History page (dates optional; add frm/to when known)
-             dict(kind="project", slug="wizeline-global-news", role="Global News Industry", co="Dow Jones", loc="Remote", inds=["News"],
+             dict(kind="project", slug="wizeline-global-news", role=T("Global News Industry", "Industria global de noticias"), co="Dow Jones", loc=REMOTE, inds=[T("News", "Noticias")],
                   tech=[".NET", "AWS", "PostgreSQL", "Claude Code"],
-                  pts=["Engineered new features and resolved production issues in a high-velocity environment.",
-                       "Leveraged AI tooling to accelerate development cycles and enhance code quality."]),
-             dict(kind="project", slug="wizeline-media", role="Media &amp; Entertainment Industry — Tech Lead", co="Fox Corp", loc="Remote", inds=["Media &amp; Entertainment"],
+                  pts=[T("Engineered new features and resolved production issues in a high-velocity environment.",
+                         "Desarrollé nuevas funcionalidades y resolví incidentes en producción en un entorno de alta velocidad."),
+                       T("Leveraged AI tooling to accelerate development cycles and enhance code quality.",
+                         "Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código.")]),
+             dict(kind="project", slug="wizeline-media", role=T("Media &amp; Entertainment Industry — Tech Lead", "Industria de medios y entretenimiento — Tech Lead"), co="Fox Corp", loc=REMOTE, inds=[T("Media &amp; Entertainment", "Medios y Entretenimiento")],
                   tech=["Java", "Spring", "Node.js", "AWS", "PostgreSQL"],
-                  pts=["Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders."]),
-             dict(kind="project", slug="wizeline-retail", role="Enterprise Retail Industry", co="Inditex", loc="Remote", inds=["Retail"],
+                  pts=[T("Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders.",
+                         "Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos.")]),
+             dict(kind="project", slug="wizeline-retail", role=T("Enterprise Retail Industry", "Retail empresarial"), co="Inditex", loc=REMOTE, inds=[T("Retail")],
                   tech=["Java", "Spring", "MariaDB"],
-                  pts=["Architected backend services for a complex audit system.",
-                       "Designed relational databases, implemented microservices, and built migration services for long-running data imports."]),
-             dict(kind="project", slug="wizeline-cybersecurity", role="Cybersecurity startup — MVP", co="Cerby", loc="Remote", inds=["Cybersecurity"],
+                  pts=[T("Architected backend services for a complex audit system.",
+                         "Diseñé la arquitectura de los servicios backend de un sistema de auditoría complejo."),
+                       T("Designed relational databases, implemented microservices, and built migration services for long-running data imports.",
+                         "Modelé bases de datos relacionales, implementé microservicios y construí servicios de migración para importaciones de datos de larga duración.")]),
+             dict(kind="project", slug="wizeline-cybersecurity", role=T("Cybersecurity startup — MVP", "Startup de ciberseguridad — MVP"), co="Cerby", loc=REMOTE, inds=[T("Cybersecurity", "Ciberseguridad")],
                   tech=["Python", "React"],
-                  pts=["Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform."]),
-         ], period="Feb 2020 — Present", frm="2020-02", to=None, inds=["News", "Media &amp; Entertainment", "Retail", "Cybersecurity"], loc="Guadalajara, México", cur=True, pts=[
-        '<b>Global News Industry:</b> Engineered new features and resolved production issues in a high-velocity environment. Leveraged AI tooling to accelerate development cycles and enhance code quality. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>',
-        '<b>Media &amp; Entertainment Industry:</b> Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders. <span class="stack">Tech: Java, Spring, Node.js, AWS, PostgreSQL.</span>',
-        '<b>Enterprise Retail Industry:</b> Architected backend services for a complex audit system. Designed relational databases, implemented microservices, and built migration services for long-running data imports. <span class="stack">Tech: Java, Spring, MariaDB.</span>',
-        '<b>Cybersecurity startup:</b> Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform. <span class="stack">Tech: Python, React.</span>',
+                  pts=[T("Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform.",
+                         "Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial.")]),
+         ], period=T("Feb 2020 — Present", "Feb 2020 — Actualidad"), frm="2020-02", to=None,
+         inds=[T("News", "Noticias"), T("Media &amp; Entertainment", "Medios y Entretenimiento"), T("Retail"), T("Cybersecurity", "Ciberseguridad")], loc=MX, cur=True, pts=[
+        T('<b>Global News Industry:</b> Engineered new features and resolved production issues in a high-velocity environment. Leveraged AI tooling to accelerate development cycles and enhance code quality. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>',
+          '<b>Industria global de noticias:</b> Desarrollé funcionalidades y resolví incidentes en producción en un entorno de alta velocidad. Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>'),
+        T('<b>Media &amp; Entertainment Industry:</b> Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders. <span class="stack">Tech: Java, Spring, Node.js, AWS, PostgreSQL.</span>',
+          '<b>Medios y entretenimiento:</b> Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos. <span class="stack">Tech: Java, Spring, Node.js, AWS, PostgreSQL.</span>'),
+        T('<b>Enterprise Retail Industry:</b> Architected backend services for a complex audit system. Designed relational databases, implemented microservices, and built migration services for long-running data imports. <span class="stack">Tech: Java, Spring, MariaDB.</span>',
+          '<b>Retail empresarial:</b> Diseñé la arquitectura backend de un sistema de auditoría complejo. Modelé bases de datos relacionales, implementé microservicios y construí servicios de migración para importaciones de larga duración. <span class="stack">Tech: Java, Spring, MariaDB.</span>'),
+        T('<b>Cybersecurity startup:</b> Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform. <span class="stack">Tech: Python, React.</span>',
+          '<b>Startup de ciberseguridad:</b> Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial. <span class="stack">Tech: Python, React.</span>'),
     ]),
-    dict(role="Lead Programmer", co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period="Jul 2019 — Feb 2020", frm="2019-07", to="2020-02", inds=["Gaming · Mobile"], loc="Guadalajara, México", cur=False, pts=[
-        'Led a small programming team in the development of a mobile iOS game, taking ownership of the <b>core game architecture</b>.',
-        'Architected and implemented an Inversion of Control (IoC), Dependency Injection (DI), and a robust event-driven system.',
-        'Accelerated the development cycle and reduced bug rates by establishing a modular paradigm, which significantly decreased art asset integration time for art teams.',
-        f'Released on <b>Apple Arcade</b>, now on Steam: {ext(STEAM, "The Lullaby of Life")}.',
+    dict(role=T("Lead Programmer", "Programador Líder"), co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period=T("Jul 2019 — Feb 2020"), frm="2019-07", to="2020-02", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
+        T('Led a small programming team in the development of a mobile iOS game, taking ownership of the <b>core game architecture</b>.',
+          'Lideré un equipo pequeño de programación en un juego móvil para iOS, a cargo de la <b>arquitectura central del juego</b>.'),
+        T('Architected and implemented an Inversion of Control (IoC), Dependency Injection (DI), and a robust event-driven system.',
+          'Diseñé e implementé Inversión de Control (IoC), Inyección de Dependencias (DI) y un sistema robusto orientado a eventos.'),
+        T('Accelerated the development cycle and reduced bug rates by establishing a modular paradigm, which significantly decreased art asset integration time for art teams.',
+          'Aceleré el ciclo de desarrollo y reduje los bugs con un paradigma modular que recortó de forma notable el tiempo de integración de assets para los equipos de arte.'),
+        T(f'Released on <b>Apple Arcade</b>, now on Steam: {ext(STEAM, "The Lullaby of Life")}.',
+          f'Publicado en <b>Apple Arcade</b> y ahora en Steam: {ext(STEAM, "The Lullaby of Life")}.'),
     ]),
-    dict(role="Senior Programmer", co="Virtually Live", tech=["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"], period="Feb 2017 — Jan 2020", frm="2017-02", to="2020-01", inds=["Gaming · VR"], loc="Málaga, Spain", cur=False, pts=[
-        'Developed <b>racing games</b> for HTC Vive, Oculus, and Gear VR platforms.',
-        'Engineered a core abstraction layer for game modules, encompassing VR controllers, Social APIs, and database access, utilizing JSON for configuration management.',
-        'Ported the VR title to iOS by developing core gameplay mechanics in C# and architecting the supporting backend RESTful services with Python, Django, and Go.',
-        f'Contributed to the successful release of the iOS adaptation ({ext(YT_VR, "gameplay")}).',
+    dict(role=T("Senior Programmer", "Programador Senior"), co="Virtually Live", tech=["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"], period=T("Feb 2017 — Jan 2020", "Feb 2017 — Ene 2020"), frm="2017-02", to="2020-01", inds=[T("Gaming · VR", "Videojuegos · VR")], loc=T("Málaga, Spain", "Málaga, España"), cur=False, pts=[
+        T('Developed <b>racing games</b> for HTC Vive, Oculus, and Gear VR platforms.',
+          'Desarrollé <b>juegos de carreras</b> para HTC Vive, Oculus y Gear VR.'),
+        T('Engineered a core abstraction layer for game modules, encompassing VR controllers, Social APIs, and database access, utilizing JSON for configuration management.',
+          'Construí una capa de abstracción para los módulos del juego —controles VR, APIs sociales y acceso a datos— con JSON para la gestión de configuración.'),
+        T('Ported the VR title to iOS by developing core gameplay mechanics in C# and architecting the supporting backend RESTful services with Python, Django, and Go.',
+          'Porté el título de VR a iOS desarrollando las mecánicas principales en C# y diseñando los servicios backend RESTful con Python, Django y Go.'),
+        T(f'Contributed to the successful release of the iOS adaptation ({ext(YT_VR, "gameplay")}).',
+          f'Contribuí al lanzamiento de la adaptación para iOS ({ext(YT_VR, "gameplay")}).'),
     ]),
-    dict(role="Software Engineer", co="Intel", tech=["Ruby", "XML", "Automation"], period="Feb 2015 — Feb 2017", frm="2015-02", to="2017-02", inds=["Semiconductors"], loc="Guadalajara, México", cur=False, pts=[
-        'Engineered <b>APIs in Ruby</b> to support hardware validation teams and streamline testing workflows.',
-        'Created automation tools and scripts to synchronize API deployments with client environments across multiple global Intel sites.',
-        'Leveraged Ruby metaprogramming to parse XML-formatted design documents and dynamically generate executable files.',
+    dict(role=T("Software Engineer", "Ingeniero de Software"), co="Intel", tech=["Ruby", "XML", "Automation"], period=T("Feb 2015 — Feb 2017"), frm="2015-02", to="2017-02", inds=[T("Semiconductors", "Semiconductores")], loc=MX, cur=False, pts=[
+        T('Engineered <b>APIs in Ruby</b> to support hardware validation teams and streamline testing workflows.',
+          'Desarrollé <b>APIs en Ruby</b> para los equipos de validación de hardware y para agilizar los flujos de pruebas.'),
+        T('Created automation tools and scripts to synchronize API deployments with client environments across multiple global Intel sites.',
+          'Creé herramientas y scripts de automatización para sincronizar despliegues de APIs con los entornos cliente en varias sedes globales de Intel.'),
+        T('Leveraged Ruby metaprogramming to parse XML-formatted design documents and dynamically generate executable files.',
+          'Usé metaprogramación en Ruby para interpretar documentos de diseño en XML y generar ejecutables de forma dinámica.'),
     ]),
-    dict(role="3D &amp; Online Programmer", co="Gameloft", tech=["C++", "Java", "Objective-C", "Android", "iOS"], period="May 2011 — Jan 2015", frm="2011-05", to="2015-01", inds=["Gaming · Mobile"], loc="Guadalajara, México", cur=False, pts=[
-        'Programmed 3D games and internal development tools using portable <b>C++, Java, and Objective-C</b> to ensure seamless cross-platform compatibility across Android and iOS.',
-        'Integrated proprietary REST-based online services into multiple Android titles.',
-        'Contributed to the development and release of major mobile titles, including <b>The Oregon Trail: American Settler</b> and <b>9mm</b>.',
+    dict(role=T("3D &amp; Online Programmer", "Programador 3D y Online"), co="Gameloft", tech=["C++", "Java", "Objective-C", "Android", "iOS"], period=T("May 2011 — Jan 2015", "May 2011 — Ene 2015"), frm="2011-05", to="2015-01", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
+        T('Programmed 3D games and internal development tools using portable <b>C++, Java, and Objective-C</b> to ensure seamless cross-platform compatibility across Android and iOS.',
+          'Programé juegos 3D y herramientas internas con <b>C++, Java y Objective-C</b> portables, garantizando compatibilidad entre Android e iOS.'),
+        T('Integrated proprietary REST-based online services into multiple Android titles.',
+          'Integré servicios online propietarios basados en REST en varios títulos de Android.'),
+        T('Contributed to the development and release of major mobile titles, including <b>The Oregon Trail: American Settler</b> and <b>9mm</b>.',
+          'Participé en el desarrollo y lanzamiento de títulos móviles importantes, entre ellos <b>The Oregon Trail: American Settler</b> y <b>9mm</b>.'),
     ]),
-    dict(role="Game Developer", co="Kaxan Games", tech=["C#", "Unity3D", "iOS", "Nintendo Wii"], period="Aug 2009 — May 2011", frm="2009-08", to="2011-05", inds=["Gaming · Mobile &amp; Console"], loc="Guadalajara, México", cur=False, pts=[
-        'Developed and published <b>over five mobile games</b> for iPhone and iPad utilizing C# and Unity3D.',
-        'Contributed as an additional programmer to a released <b>Nintendo Wii</b> title.',
-        f'Showcased development work in a demo reel of five released iOS games ({ext(YT_REEL, "gameplay")}).',
+    dict(role=T("Game Developer", "Desarrollador de Videojuegos"), co="Kaxan Games", tech=["C#", "Unity3D", "iOS", "Nintendo Wii"], period=T("Aug 2009 — May 2011", "Ago 2009 — May 2011"), frm="2009-08", to="2011-05", inds=[T("Gaming · Mobile &amp; Console", "Videojuegos · Móvil y Consola")], loc=MX, cur=False, pts=[
+        T('Developed and published <b>over five mobile games</b> for iPhone and iPad utilizing C# and Unity3D.',
+          'Desarrollé y publiqué <b>más de cinco juegos móviles</b> para iPhone y iPad con C# y Unity3D.'),
+        T('Contributed as an additional programmer to a released <b>Nintendo Wii</b> title.',
+          'Participé como programador adicional en un título lanzado para <b>Nintendo Wii</b>.'),
+        T(f'Showcased development work in a demo reel of five released iOS games ({ext(YT_REEL, "gameplay")}).',
+          f'Mostré mi trabajo en un demo reel con cinco juegos de iOS publicados ({ext(YT_REEL, "gameplay")}).'),
     ]),
 ]
 
 CORE = [("C# / .NET", 5), ("Java / Spring", 5), ("Python / FastAPI", 4), ("JavaScript / Node.js / React", 4),
         ("AWS", 4), ("SQL / Postgres", 5), ("System Design", 5)]
-LEVEL = {5: ("Expert", "100%"), 4: ("Advanced", "80%"), 3: ("Proficient", "60%")}
+LEVEL = {5: (T("Expert", "Experto"), "100%"), 4: (T("Advanced", "Avanzado"), "80%"), 3: (T("Proficient", "Competente"), "60%")}
 TECH = ["C#", ".NET", "Java", "Spring", "C/C++", "Python", "FastAPI", "Ruby", "JavaScript", "Node.js", "React", "AWS",
-        "PostgreSQL", "Microservices", "RESTful APIs", "Unit Testing", "OOP", "Unity3D", "Git", "Full-Stack"]
-AI_TEXT = "AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery."
+        "PostgreSQL", T("Microservices", "Microservicios"), T("RESTful APIs", "APIs RESTful"), T("Unit Testing", "Pruebas unitarias"),
+        T("OOP", "POO"), "Unity3D", "Git", "Full-Stack"]
+AI_HEAD = T("AI-Assisted Dev", "Desarrollo asistido por IA")
+AI_TEXT = T("AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery.",
+            "Herramientas asistidas por IA en mi trabajo diario para optimizar el desarrollo backend y acelerar la entrega de proyectos.")
 AI_CHIPS = ["Claude Code", "opencode", "Codex"]
 TITLES = [
-    f'<b>The Lullaby of Life</b> — Apple Arcade &amp; {ext(STEAM, "Steam")}',
-    f'<b>VR racing games</b> — HTC Vive, Oculus, Gear VR &amp; {ext(YT_VR, "iOS")}',
-    '<b>The Oregon Trail: American Settler</b>, <b>9mm</b> — Gameloft',
-    f'<b>5+ iOS games</b> &amp; a Nintendo Wii title — {ext(YT_REEL, "demo reel")}',
+    T(f'<b>The Lullaby of Life</b> — Apple Arcade &amp; {ext(STEAM, "Steam")}'),
+    T(f'<b>VR racing games</b> — HTC Vive, Oculus, Gear VR &amp; {ext(YT_VR, "iOS")}',
+      f'<b>Juegos de carreras VR</b> — HTC Vive, Oculus, Gear VR e {ext(YT_VR, "iOS")}'),
+    T('<b>The Oregon Trail: American Settler</b>, <b>9mm</b> — Gameloft'),
+    T(f'<b>5+ iOS games</b> &amp; a Nintendo Wii title — {ext(YT_REEL, "demo reel")}',
+      f'<b>5+ juegos de iOS</b> y un título de Nintendo Wii — {ext(YT_REEL, "demo reel")}'),
 ]
-EDU = [("Master in Computer Science", "Universidad Autónoma de Guadalajara · Aug 2018"),
-       ("Computer Science", "Universidad de Guadalajara · Dec 2010")]
-STATS = [('<span data-years>15</span>', "+", "Years building software"), ("6", "", "Max engineers led")]
+EDU = [(T("Master in Computer Science", "Maestría en Ciencias Computacionales"), T("Universidad Autónoma de Guadalajara · Aug 2018", "Universidad Autónoma de Guadalajara · Ago 2018")),
+       (T("Computer Science", "Ciencias Computacionales"), T("Universidad de Guadalajara · Dec 2010", "Universidad de Guadalajara · Dic 2010"))]
+STATS = [('<span data-years>15</span>', "+", T("Years building software", "Años de experiencia")),
+         ("6", "", T("Max engineers led", "Ingenieros a cargo"))]
 
 # ---- Extended History: newest first, up to TWO levels (an entry may carry `children`: jobs, projects, milestones inside it).
 #   kind: "job" | "project" | "education" | "milestone"   (changes the marker on the timeline)
@@ -197,10 +272,10 @@ def history_entries():
     """Top-level entries (each may have `children`), newest first."""
     entries = [_job_entry(j) for j in JOBS]
     entries += [
-        dict(kind="education", slug="uag-msc", role="Master in Computer Science", co="Universidad Autónoma de Guadalajara",
-             frm="2018-08", loc="Guadalajara, México", inds=["Education"], tech=[], pts=[]),
-        dict(kind="education", slug="udg-cs", role="Computer Science", co="Universidad de Guadalajara",
-             frm="2010-12", loc="Guadalajara, México", inds=["Education"], tech=[], pts=[]),
+        dict(kind="education", slug="uag-msc", role=EDU[0][0], co="Universidad Autónoma de Guadalajara",
+             frm="2018-08", loc=MX, inds=[T("Education", "Educación")], tech=[], pts=[]),
+        dict(kind="education", slug="udg-cs", role=EDU[1][0], co="Universidad de Guadalajara",
+             frm="2010-12", loc=MX, inds=[T("Education", "Educación")], tech=[], pts=[]),
     ]
     entries += EXTRA_HISTORY
     for e in entries:
@@ -252,46 +327,48 @@ def core_html():
         word, pct = LEVEL[lvl]
         dots = "".join('<i class="on"></i>' if i < lvl else '<i></i>' for i in range(5))
         out.append(f'<div class="cskill" data-lvl="{lvl}"><div class="sk-top"><span class="sk-name">{name}</span>'
-                   f'<span class="sk-word">{word}</span><span class="sk-pct">{pct}</span></div>'
+                   f'<span class="sk-word">{h(word)}</span><span class="sk-pct">{pct}</span></div>'
                    f'<div class="sk-track"><div class="sk-fill" style="width:{pct}"></div></div><div class="sk-dots">{dots}</div></div>')
     return "\n".join(out)
 
 def chips_html(items, cls="dchip"):
-    return '<div class="dchips">' + "".join(f'<span class="{cls}">{s}</span>' for s in items) + '</div>'
+    return '<div class="dchips">' + "".join(f'<span class="{cls}">{h(s)}</span>' for s in items) + '</div>'
 
 def ai_html(with_icon=True):
     ic = ICON["ai"] if with_icon else ""
-    return (f'<div class="ai"><div class="h">{ic}AI-Assisted Dev</div><p>{AI_TEXT}</p>{chips_html(AI_CHIPS)}</div>')
+    return (f'<div class="ai"><div class="h">{ic}{h(AI_HEAD)}</div><p>{h(AI_TEXT)}</p>{chips_html(AI_CHIPS)}</div>')
 
 def titles_html():
-    return "\n".join(f'<div class="award">{t}</div>' for t in TITLES)
+    return "\n".join(f'<div class="award">{h(t)}</div>' for t in TITLES)
 
 def edu_html():
-    return "\n".join(f'<div class="edu"><div class="d">{d}</div><div class="m">{m}</div></div>' for d, m in EDU)
+    return "\n".join(f'<div class="edu"><div class="d">{h(deg)}</div><div class="m">{h(meta)}</div></div>' for deg, meta in EDU)
 
 BEST_SKILLS = [".NET", "Spring", "Python", "Node.js"]
+BEST_LABEL = T("Best skills", "Fortalezas")
 BEST_STAT = ('<div class="stat best"><div class="n">' + "".join(f'<span class="bs">{b}</span>' for b in BEST_SKILLS)
-             + '</div><div class="l">Best skills</div></div>')
+             + f'</div><div class="l">{h(BEST_LABEL)}</div></div>')
 
-INDUSTRIES = ["Gaming", "Media", "Enterprise"]
-INDUSTRIES_STAT = ('<div class="stat best"><div class="n">' + "".join(f'<span class="bs">{b}</span>' for b in INDUSTRIES)
-             + '</div><div class="l">Industries</div></div>')
+INDUSTRIES = [T("Gaming", "Videojuegos"), T("Media", "Medios"), T("Enterprise", "Empresa")]
+INDUSTRIES_LABEL = T("Industries", "Industrias")
+INDUSTRIES_STAT = ('<div class="stat best"><div class="n">' + "".join(f'<span class="bs">{h(b)}</span>' for b in INDUSTRIES)
+             + f'</div><div class="l">{h(INDUSTRIES_LABEL)}</div></div>')
 
 def stats_html():
-    stat = lambda n, u, l: f'<div class="stat"><div class="n">{n}<span class="u">{u}</span></div><div class="l">{l}</div></div>'
+    stat = lambda n, u, l: f'<div class="stat"><div class="n">{n}<span class="u">{u}</span></div><div class="l">{h(l)}</div></div>'
     return '<div class="stats">' + stat(*STATS[0]) + INDUSTRIES_STAT + stat(*STATS[1]) + BEST_STAT + '</div>'
 
 def profile_html():
-    return f'<p class="profile">{PROFILE}</p>'
+    return f'<p class="profile">{h(PROFILE)}</p>'
 
 def experience_html():
     out = ['<div class="tl">']
     for j in JOBS:
         out.append(f'<div class="job{" cur" if j["cur"] else ""}">')
-        out.append(f'<div class="job-head"><div class="r">{j["role"]} · <span class="c">{j["co"]}</span></div><div class="p" data-from="{j["frm"]}"{f' data-to="{j["to"]}"' if j["to"] else ""}>{j["period"]}</div></div>')
-        inds = "".join(f'<span class="ind">{i}</span>' for i in j["inds"])
-        out.append(f'<div class="loc">{j["loc"]}<span class="inds">{inds}</span></div>')
-        out.append('<ul class="pts">' + "".join(f'<li>{p}</li>' for p in j["pts"]) + '</ul>')
+        out.append(f'<div class="job-head"><div class="r">{h(j["role"])} · <span class="c">{j["co"]}</span></div><div class="p" data-from="{j["frm"]}"{f' data-to="{j["to"]}"' if j["to"] else ""}>{h(j["period"])}</div></div>')
+        inds = "".join(f'<span class="ind">{h(i)}</span>' for i in j["inds"])
+        out.append(f'<div class="loc">{h(j["loc"])}<span class="inds">{inds}</span></div>')
+        out.append('<ul class="pts">' + "".join(f'<li>{h(p)}</li>' for p in j["pts"]) + '</ul>')
         out.append('</div>')
     out.append('</div>')
     return "\n".join(out)
@@ -308,27 +385,69 @@ def _hentry_html(i, level, e):
         y, m = frm.split("-"); when = f'<div class="hdate mono">{_MONTHS[int(m)-1]} {y}</div>'
     else:
         when = f'<div class="hdate mono" data-from="{frm}"{f" data-to=\"{e["to"]}\"" if e["to"] else ""}>{frm}</div>'
-    inds = "".join(f'<span class="ind">{x}</span>' for x in e.get("inds", []))
-    pts = ('<ul class="pts">' + "".join(f"<li>{p}</li>" for p in e["pts"]) + "</ul>") if e.get("pts") else ""
+    inds = "".join(f'<span class="ind">{h(x)}</span>' for x in e.get("inds", []))
+    pts = ('<ul class="pts">' + "".join(f"<li>{h(p)}</li>" for p in e["pts"]) + "</ul>") if e.get("pts") else ""
     children = ""
     if level == 0 and e.get("children"):
         # indices of children follow the parent in history_flat()
         kids = "".join(_hentry_html(i + 1 + k, 1, c) for k, c in enumerate(e["children"]))
         children = f'<div class="hchildren">{kids}</div>'
     return (f'<section class="hentry {e["kind"]}{" child" if level else ""}" id="h-{e["slug"]}" data-i="{i}">{when}'
-            f'<h3>{e["role"]} · <span class="c">{e["co"]}</span></h3>'
-            f'<div class="loc">{e.get("loc", "")}<span class="inds">{inds}</span></div>{pts}{children}</section>')
+            f'<h3>{h(e["role"])} · <span class="c">{e["co"]}</span></h3>'
+            f'<div class="loc">{h(e.get("loc", ""))}<span class="inds">{inds}</span></div>{pts}{children}</section>')
 
 def history_html():
     return "\n".join(_hentry_html(i, 0, e) for i, lvl, parent, e in history_flat() if lvl == 0)
 
+ROLE_PLAIN = T("Senior Software Engineer / Tech Lead / Backend &amp; Full-Stack / Game Dev / AI-Assisted",
+               "Ingeniero de Software Senior / Tech Lead / Backend y Full-Stack / Videojuegos / Asistido por IA")
+DOC_LABELS = {
+    "profile": T("Profile", "Perfil"),
+    "experience": T("Experience", "Experiencia"),
+    "core": T("Core Skills", "Habilidades principales"),
+    "tech": T("Tech &amp; Tools", "Tecnologías y herramientas"),
+    "titles": T("Shipped Titles", "Títulos publicados"),
+    "education": T("Education", "Educación"),
+    "present": T("Present", "Actualidad"),
+    "yr": T(" yr", " año"), "yrs": T(" yrs", " años"), "mo": T(" mo", " mes"), "mos": T(" mos", " meses"),
+    "pdfHint": T("You are on the dark theme. Browsers print without backgrounds unless you tick "
+                 "<b>Background graphics</b> in the print dialog — the dark CV would come out unreadable.",
+                 "Estás en tema oscuro. El navegador imprime sin fondos a menos que actives "
+                 "<b>Gráficos de fondo</b> en el diálogo — el CV oscuro saldría ilegible."),
+    "pdfLight": T("Print in light", "Imprimir en claro"),
+    "pdfDark": T("Keep dark", "Continuar en oscuro"),
+    "cancel": T("Cancel", "Cancelar"),
+}
+
+def cv_data_json():
+    """Everything the in-browser DOCX writer needs, in both languages. Same source as the page itself."""
+    data = dict(
+        name=NAME, role=d(ROLE_PLAIN), site="sergiowero.github.io",
+        contact=[dict(text=text, href=href) for _, text, href in CONTACT],
+        profile=d(PROFILE),
+        jobs=[dict(role=d(j["role"]), co=j["co"], frm=j["frm"], to=j["to"],
+                   loc=d(j["loc"]), inds=d(j["inds"]), pts=d(j["pts"])) for j in JOBS],
+        core=[dict(name=name, word=d(LEVEL[lvl][0]), pct=LEVEL[lvl][1]) for name, lvl in CORE],
+        tech=d(TECH), titles=d(TITLES),
+        ai=dict(head=d(AI_HEAD), text=d(AI_TEXT), chips=AI_CHIPS),
+        edu=[dict(deg=d(deg), meta=d(meta)) for deg, meta in EDU],
+        labels={k: d(v) for k, v in DOC_LABELS.items()},
+        months=dict(en=_MONTHS, es=["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]),
+    )
+    return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+
+def cv_data_html():
+    return (f'<script type="application/json" id="cv-data">{cv_data_json()}</script>\n'
+            '<script src="/cv-export.js" defer></script>')
+
 def history_json():
-    data = [dict(kind=e["kind"], slug=e["slug"], role=e["role"], co=e["co"], frm=e.get("frm"),
-                 to=("single" if "to" not in e else e["to"]), loc=e.get("loc", ""), inds=e.get("inds", []), tech=e.get("tech", []),
+    data = [dict(kind=e["kind"], slug=e["slug"], role=d(e["role"]), co=e["co"], frm=e.get("frm"),
+                 to=("single" if "to" not in e else e["to"]), loc=d(e.get("loc", "")), inds=d(e.get("inds", [])), tech=d(e.get("tech", [])),
                  level=lvl, parent=parent) for i, lvl, parent, e in history_flat()]
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
 FIT_JS = """<script>
+/* window.cvLang() is defined in <head>; anything rendered from JS redraws on the 'langchange' event below */
 /* Years of experience, computed from the year I started working */
 (function(){
   var START_YEAR=2010;
@@ -337,21 +456,29 @@ FIT_JS = """<script>
 })();
 /* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Feb 2020 — Present · 6 yrs 8 mos" */
 (function(){
-  var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var M={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+         es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']};
+  var W={en:{present:'Present',yr:' yr',yrs:' yrs',mo:' mo',mos:' mos'},
+         es:{present:'Actualidad',yr:' año',yrs:' años',mo:' mes',mos:' meses'}};
   function ym(s){var p=s.split('-');return {y:+p[0],m:+p[1]};}
-  function label(d){return M[d.m-1]+' '+d.y;}
+  function draw(){
+  var L=window.cvLang(), w=W[L];
+  function label(d){return M[L][d.m-1]+' '+d.y;}
   var now=new Date(), nowS=now.getFullYear()+'-'+(now.getMonth()+1);
   document.querySelectorAll('[data-from]').forEach(function(el){
     var toAttr=el.getAttribute('data-to');
     var a=ym(el.getAttribute('data-from')), b=ym(toAttr||nowS);
     var months=(b.y-a.y)*12+(b.m-a.m)+1; // inclusive count, like LinkedIn
     var y=Math.floor(months/12), m=months%12, parts=[];
-    if(y) parts.push(y+(y===1?' yr':' yrs'));
-    if(m) parts.push(m+(m===1?' mo':' mos'));
-    el.textContent=label(a)+' \u2014 '+(toAttr?label(b):'Present');
+    if(y) parts.push(y+(y===1?w.yr:w.yrs));
+    if(m) parts.push(m+(m===1?w.mo:w.mos));
+    el.textContent=label(a)+' \u2014 '+(toAttr?label(b):w.present);
     var d=document.createElement('span'); d.className='dur'; d.textContent=' \u00b7 '+parts.join(' ');
     el.appendChild(d);
   });
+  }
+  draw();
+  document.addEventListener('langchange',draw);
 })();
 /* Language switch (ES/EN): remembered across pages; header labels swap via html[data-lang];
    on a page that has a translation (body[data-alt-es|en]) it navigates to it */
@@ -360,6 +487,7 @@ FIT_JS = """<script>
   function apply(l){
     if(l==='es') document.documentElement.setAttribute('data-lang','es'); else document.documentElement.removeAttribute('data-lang');
     document.querySelectorAll('.tab[data-lang]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-lang')===l);});
+    document.dispatchEvent(new CustomEvent('langchange',{detail:l}));
   }
   var saved='en'; try{saved=localStorage.getItem(KEY)||'en';}catch(e){}
   apply(saved);
@@ -427,27 +555,60 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
   .site-nav .grp .slash{color:var(--nav-muted);font-size:8.6px;opacity:.6;padding:0 1px;}
   .site-nav .grp .tab svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1.5px;margin-right:3px;}
   .site-nav .theme .tab{padding:4px 5px;} .site-nav .theme .tab svg{width:11px;height:11px;margin-right:0;vertical-align:-2px;}
-  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav{display:none;}}"""
+  .site-nav .grp button.tab{background:none;border:0;font:inherit;line-height:inherit;color:var(--nav-muted);}
+  .site-nav .grp button.tab:hover{color:var(--nav-fg);}
+  /* asked before printing the dark CV (see public/cv-export.js) */
+  .dlg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;}
+  .dlg-box{background:var(--panel,#fff);border:1px solid var(--line,#d0d7de);border-radius:10px;padding:16px 18px;max-width:390px;
+    color:var(--text,#1f2328);font-size:12px;line-height:1.5;box-shadow:0 20px 50px rgba(0,0,0,.4);}
+  .dlg-box b{color:var(--fg,#0b1220);font-weight:700;}
+  .dlg-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;justify-content:flex-end;}
+  .dlg-btns button{font:inherit;font-size:11px;padding:6px 10px;border-radius:6px;border:1px solid var(--line,#d0d7de);
+    background:transparent;color:var(--text,#1f2328);cursor:pointer;}
+  .dlg-btns button.primary{background:var(--green,#1a7f37);border-color:var(--green,#1a7f37);color:#fff;font-weight:600;}
+  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dlg{display:none !important;}}"""
 
 FLAG_MX = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8.7 5v14M15.3 5v14"/><circle cx="12" cy="12" r="1.6"/></svg>'
 FLAG_US = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 12h20M11 8.5h11M11 15.5H2M2 12v7"/><path d="M2 12h9V5"/></svg>'
 SECTIONS = [("cv", "/", "Resume", "Currículum"), ("history", "/history/", "History", "Historial"),
             ("blog", "/blog/", "Blog", "Blog"), ("about", "/about/", "About me", "Sobre mí")]
 
-def i18n(en, es):
-    return f'<span class="i18n-en">{en}</span><span class="i18n-es">{es}</span>'
+HL = '<span class="hl">/</span>'
+LABELS = {
+    "$L_SUB$": T(f"Senior Software Engineer {HL} Tech Lead {HL} Backend &amp; Full-Stack {HL} Game Dev {HL} AI-Assisted",
+                 f"Ingeniero de Software Senior {HL} Tech Lead {HL} Backend y Full-Stack {HL} Videojuegos {HL} Asistido por IA"),
+    "$L_PROFILE$": T("cat profile.md", "cat perfil.md"),
+    "$L_EXP$": T("cat experience.log", "cat experiencia.log"),
+    "$L_CORE$": T("ls core-skills/", "ls habilidades/"),
+    "$L_TECH$": T("ls tech/"),
+    "$L_SHIPPED$": T("cat shipped.txt", "cat lanzamientos.txt"),
+    "$L_EDU$": T("cat education.txt", "cat educacion.txt"),
+    "$L_ABOUT$": T("cat about.md", "cat sobre-mi.md"),
+    "$L_TOOLBOX$": T("ls toolbox/", "ls herramientas/"),
+    "$L_CONTACT$": T("cat contact.md", "cat contacto.md"),
+    "$L_CVFILE$": T("cv.md"),
+    "$L_HISTFILE$": T("history.md", "historial.md"),
+}
+
+DL_ICON = '<svg viewBox="0 0 24 24"><path d="M12 3v11M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>'
+DL_TPL = ('<div class="grp dl" aria-label="$DL_LABEL$"><button class="tab" type="button" data-export="pdf">'
+          f'{DL_ICON}PDF</button><span class="slash">/</span>'
+          '<button class="tab" type="button" data-export="docx">DOCX</button></div>')
 
 def nav_html(active="cv"):
     tabs = "".join(
         f'\n    <a class="tab{" active" if key == active else ""}" href="{href}"{" aria-current=\"page\"" if key == active else ""}>{i18n(en, es)}</a>'
         for key, href, en, es in SECTIONS)
-    return NAV_TPL.replace("$TABS$", tabs)
+    # the CV is the only page you download; .site-nav is display:none when printing, so it never reaches the PDF
+    dl = DL_TPL.replace("$DL_LABEL$", "Download CV / Descargar CV") if active == "cv" else ""
+    return NAV_TPL.replace("$TABS$", tabs).replace("$DL$", dl)
 
 NAV_TPL = """<header class="site-nav" aria-label="Site sections">
   <nav class="tabs">$TABS$
   </nav>
   <div class="grp lang" aria-label="Language (visual only)"><span class="tab" data-lang="es">$FLAG_ES$ES</span><span class="slash">/</span><span class="tab active" data-lang="en">$FLAG_EN$EN</span></div>
   <div class="grp theme" aria-label="Theme"><span class="tab$DARK$" data-set-theme="dark" title="Dark" aria-label="Dark"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span><span class="slash">/</span><span class="tab$LIGHT$" data-set-theme="light" title="Light" aria-label="Light"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></div>
+  $DL$
 </header>"""
 
 def page(title, fonts, css, body):
@@ -456,7 +617,8 @@ def page(title, fonts, css, body):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){{try{{var d=document.documentElement;if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');if(localStorage.getItem('cv-lang')==='es')d.setAttribute('data-lang','es');}}catch(e){{}}}})();</script>
+<script>(function(){{try{{var d=document.documentElement;if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');if(localStorage.getItem('cv-lang')==='es')d.setAttribute('data-lang','es');}}catch(e){{}}}})();
+window.cvLang=function(){{return document.documentElement.getAttribute('data-lang')==='es'?'es':'en';}};</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -478,7 +640,9 @@ def page(title, fonts, css, body):
 """
 
 def fill(tpl, active="cv"):
-    return (tpl.replace("$NAV$", nav_html(active)).replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html())
+    for key, label in LABELS.items():
+        tpl = tpl.replace(key, h(label))
+    return (tpl.replace("$NAV$", nav_html(active)).replace("$CVDATA$", cv_data_html()).replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html())
             .replace("$I18N_HISTORY_SUB$", i18n("Everything so far, newest first — scroll and the panel on the right follows.", "Todo hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html())
             .replace("$TECH$", chips_html(TECH)).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
             .replace("$TITLES$", titles_html()).replace("$EDU$", edu_html()).replace("$STATS$", stats_html())
@@ -603,23 +767,32 @@ VERSIONS["v3-dark-terminal.html"] = dict(
 (function(){
   var dataEl=document.getElementById('history-data'), panel=document.querySelector('.subject'); if(!dataEl||!panel) return;
   var data=JSON.parse(dataEl.textContent), entries=[].slice.call(document.querySelectorAll('.hentry'));
-  var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var M={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+         es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']};
+  var W={en:{present:'Present',inside:'inside',yr:' yr',yrs:' yrs',mo:' mo',mos:' mos'},
+         es:{present:'Actualidad',inside:'dentro de',yr:' año',yrs:' años',mo:' mes',mos:' meses'}};
+  /* bilingual values from the JSON arrive as {en, es} */
+  function L(v){return (v&&typeof v==='object'&&!Array.isArray(v))?(v[window.cvLang()]||v.en):v;}
+  function w(){return W[window.cvLang()];}
   function ym(s){var p=s.split('-');return {y:+p[0],m:+p[1]};}
-  function label(s){var d=ym(s);return M[d.m-1]+' '+d.y;}
+  function label(s){var d=ym(s);return M[window.cvLang()][d.m-1]+' '+d.y;}
   function when(e){
     if(!e.frm) return '';
     if(e.to==='single') return label(e.frm);
     var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
     var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
-    if(y) parts.push(y+(y===1?' yr':' yrs')); if(m) parts.push(m+(m===1?' mo':' mos'));
-    return label(e.frm)+' \u2014 '+(e.to?label(e.to):'Present')+' \u00b7 '+parts.join(' ');
+    if(y) parts.push(y+(y===1?w().yr:w().yrs)); if(m) parts.push(m+(m===1?w().mo:w().mos));
+    return label(e.frm)+' \u2014 '+(e.to?label(e.to):w().present)+' \u00b7 '+parts.join(' ');
   }
   var nav=panel.querySelector('[data-sub=nav]');
-  nav.innerHTML=data.map(function(e,i){
-    if(e.level===1) return '';
-    var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+c.role+'</li>':'';}).join('');
-    return '<li data-i="'+i+'">'+e.co+(kids?'<ol>'+kids+'</ol>':'')+'</li>';
-  }).join('');
+  function drawNav(){
+    nav.innerHTML=data.map(function(e,i){
+      if(e.level===1) return '';
+      var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+L(c.role)+'</li>':'';}).join('');
+      return '<li data-i="'+i+'">'+e.co+(kids?'<ol>'+kids+'</ol>':'')+'</li>';
+    }).join('');
+  }
+  drawNav();
   nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) entries[+li.getAttribute('data-i')].scrollIntoView({behavior:'smooth',block:'start'});});
   var current=-1, timer=null;
   function show(i){
@@ -628,13 +801,13 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     timer=setTimeout(function(){
       panel.querySelector('[data-sub=slug]').textContent=e.slug;
       panel.querySelector('[data-sub=kind]').textContent=e.kind;
-      panel.querySelector('[data-sub=parent]').innerHTML=(e.parent!==null&&e.parent!==undefined)?'\u21b3 inside <b>'+data[e.parent].co+'</b>':'';
+      panel.querySelector('[data-sub=parent]').innerHTML=(e.parent!==null&&e.parent!==undefined)?'\u21b3 '+w().inside+' <b>'+data[e.parent].co+'</b>':'';
       panel.querySelector('[data-sub=co]').textContent=e.co;
-      panel.querySelector('[data-sub=role]').innerHTML=e.role;
+      panel.querySelector('[data-sub=role]').innerHTML=L(e.role);
       panel.querySelector('[data-sub=when]').textContent=when(e);
-      panel.querySelector('[data-sub=loc]').textContent=e.loc;
-      panel.querySelector('[data-sub=inds]').innerHTML=e.inds.map(function(x){return '<span class="ind">'+x+'</span>';}).join('');
-      panel.querySelector('[data-sub=tech]').innerHTML=e.tech.map(function(x){return '<span class="dchip">'+x+'</span>';}).join('');
+      panel.querySelector('[data-sub=loc]').textContent=L(e.loc);
+      panel.querySelector('[data-sub=inds]').innerHTML=e.inds.map(function(x){return '<span class="ind">'+L(x)+'</span>';}).join('');
+      panel.querySelector('[data-sub=tech]').innerHTML=e.tech.map(function(x){return '<span class="dchip">'+L(x)+'</span>';}).join('');
       [].forEach.call(nav.querySelectorAll('li'),function(li){li.classList.toggle('active',+li.getAttribute('data-i')===i);});
       entries.forEach(function(el,k){el.classList.toggle('active',k===i);el.classList.toggle('parent-active',k===e.parent);});
       panel.querySelector('.sub-progress i').style.width=((i+1)/data.length*100)+'%';
@@ -642,6 +815,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     },120);
   }
   show(0);
+  document.addEventListener('langchange',function(){var i=current;current=-1;drawNav();show(i<0?0:i);});
   // scroll spy: the entry crossing the 40% line of the viewport is the current one
   // (getBoundingClientRect is used instead of IntersectionObserver because the sheet is CSS-zoomed)
   var ticking=false;
@@ -869,27 +1043,28 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   $NAV$
   <header class="top">
     <div>
-      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">cv.md</span></div>
+      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">$L_CVFILE$</span></div>
       <div class="name"><span id="typed">$NAME$</span><span class="cur"></span></div>
-      <div class="sub mono">Senior Software Engineer <span class="hl">/</span> Tech Lead <span class="hl">/</span> Backend &amp; Full-Stack <span class="hl">/</span> Game Dev <span class="hl">/</span> AI-Assisted</div>
+      <div class="sub mono">$L_SUB$</div>
     </div>
     <div class="contact">$CONTACT$</div>
   </header>
   $STATS$
   <div class="cols">
     <main class="main">
-      <section><h2 class="sh">cat profile.md</h2>$PROFILE$</section>
-      <section><h2 class="sh">cat experience.log</h2>$EXP$</section>
+      <section><h2 class="sh">$L_PROFILE$</h2>$PROFILE$</section>
+      <section><h2 class="sh">$L_EXP$</h2>$EXP$</section>
     </main>
     <aside class="aside">
       <section>$AI$</section>
-      <section><h2 class="sh">ls core-skills/</h2>$CORE$</section>
-      <section><h2 class="sh">ls tech/</h2>$TECH$</section>
-      <section><h2 class="sh">cat shipped.txt</h2>$TITLES$</section>
-      <section><h2 class="sh">cat education.txt</h2>$EDU$</section>
+      <section><h2 class="sh">$L_CORE$</h2>$CORE$</section>
+      <section><h2 class="sh">$L_TECH$</h2>$TECH$</section>
+      <section><h2 class="sh">$L_SHIPPED$</h2>$TITLES$</section>
+      <section><h2 class="sh">$L_EDU$</h2>$EDU$</section>
     </aside>
   </div>
   <div class="foot"><span><span class="g">➜</span> exit 0 · $NAME$</span><span>sergiowero.github.io</span></div>
+  $CVDATA$
 </div>""")
 
 # =================================================================== v4 BENTO GRID (A4)
@@ -1424,7 +1599,7 @@ def finish_body(body, v):
 # ------------------------------------------------------------------ BUILD
 if __name__ == "__main__":
     for fname, v in VERSIONS.items():
-        body = fill(v["body"]).replace("$AI_TEXT$", AI_TEXT).replace("$AI_CHIPS$", chips_html(AI_CHIPS))
+        body = fill(v["body"]).replace("$AI_TEXT$", h(AI_TEXT)).replace("$AI_CHIPS$", chips_html(AI_CHIPS))
         body = finish_body(body, v)
         css = "  :root{" + v["nav"] + "}\n" + v["css"]
         html = page(v["title"], v["fonts"], css, body + "\n" + v.get("extra_js", ""))

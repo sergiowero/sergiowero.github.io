@@ -11,6 +11,20 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 
 Todas las páginas comparten el mismo cascarón (diseño "Dark Terminal"): fondo, hoja A4, encabezado con pestañas, ES/EN y claro/oscuro. El idioma y el tema se guardan en `localStorage` y se conservan entre páginas.
 
+## Descargar el CV
+
+Los botones **PDF** y **DOCX** del encabezado (solo en `/`) bajan el CV en el idioma que estés viendo. Todo ocurre en el navegador — GitHub Pages solo sirve archivos estáticos. El encabezado del sitio nunca sale en la descarga: `@media print` lo oculta y el DOCX se arma desde los datos, no desde la página.
+
+- **PDF** — abre el diálogo de impresión del navegador (Guardar como PDF). Sale una hoja A4 exacta, con el texto seleccionable y legible por los filtros ATS de los reclutadores. El nombre propuesto es `Sergio-Sanchez-CV-EN.pdf` / `-ES.pdf`.
+  En tema oscuro pregunta antes: el navegador imprime sin fondos salvo que actives *Gráficos de fondo*, así que ofrece imprimir en claro (recomendado) o seguir en oscuro.
+- **DOCX** — genera el `.docx` en el navegador ([`public/cv-export.js`](public/cv-export.js) escribe el OOXML y el zip a mano, sin dependencias). Siempre en claro, porque es un documento para editar e imprimir.
+
+El CV cabe en **una sola hoja A4 en los dos idiomas** (1123 px). Si agregas texto, verifica que siga cupiendo: el español suele ocupar ~15 % más.
+
+## Textos en dos idiomas
+
+Los datos del CV en `tools/gen.py` son `T(en, es)`; `T("solo esto")` sirve cuando el texto es igual en ambos. De ahí salen las dos versiones del HTML (CSS muestra una según `html[data-lang]`) y el JSON que usa el DOCX, así que **se traduce en un solo lugar**. Lo que se dibuja desde JS (fechas, panel de `/history/`) se redibuja con el evento `langchange`.
+
 ## Publicar una entrada del blog
 
 1. Crea `src/content/blog/en/<slug>.md` y/o `src/content/blog/es/<slug>.md` (mismo `<slug>` = misma entrada en los dos idiomas; el botón ES/EN salta entre ellas).
@@ -52,3 +66,4 @@ python3 tools/gen.py   # regenera las páginas estáticas (CV, About, History, B
 - `public/Backups/` — las 9 variantes de diseño evaluadas (`public/Backups/index.html` es el selector).
 - `public/favicons/` — las 6 opciones de favicon; la elegida está en `public/` como `favicon.svg`, `favicon.ico` y `apple-touch-icon.png`.
 - `src/shell/` — CSS, head, header y scripts del cascarón, exportados por `tools/gen.py` y usados por `src/layouts/Shell.astro`. No editar a mano.
+- `public/cv-export.js` — la descarga en PDF/DOCX. Este sí se edita a mano; `tools/gen.py` solo lo enlaza desde el CV junto con el JSON de datos.

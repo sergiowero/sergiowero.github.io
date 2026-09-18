@@ -28,7 +28,18 @@
   .site-nav .grp .slash{color:var(--nav-muted);font-size:8.6px;opacity:.6;padding:0 1px;}
   .site-nav .grp .tab svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1.5px;margin-right:3px;}
   .site-nav .theme .tab{padding:4px 5px;} .site-nav .theme .tab svg{width:11px;height:11px;margin-right:0;vertical-align:-2px;}
-  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav{display:none;}}
+  .site-nav .grp button.tab{background:none;border:0;font:inherit;line-height:inherit;color:var(--nav-muted);}
+  .site-nav .grp button.tab:hover{color:var(--nav-fg);}
+  /* asked before printing the dark CV (see public/cv-export.js) */
+  .dlg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;}
+  .dlg-box{background:var(--panel,#fff);border:1px solid var(--line,#d0d7de);border-radius:10px;padding:16px 18px;max-width:390px;
+    color:var(--text,#1f2328);font-size:12px;line-height:1.5;box-shadow:0 20px 50px rgba(0,0,0,.4);}
+  .dlg-box b{color:var(--fg,#0b1220);font-weight:700;}
+  .dlg-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;justify-content:flex-end;}
+  .dlg-btns button{font:inherit;font-size:11px;padding:6px 10px;border-radius:6px;border:1px solid var(--line,#d0d7de);
+    background:transparent;color:var(--text,#1f2328);cursor:pointer;}
+  .dlg-btns button.primary{background:var(--green,#1a7f37);border-color:var(--green,#1a7f37);color:#fff;font-weight:600;}
+  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dlg{display:none !important;}}
   :root{--nav-bg:transparent;--nav-line:transparent;--nav-fg:#1f2328;--nav-muted:#6e7781;--nav-active-bg:#1a7f37;--nav-active-fg:#fff;--nav-font:'JetBrains Mono',Menlo,monospace;}
 
   /* light mode is the default */

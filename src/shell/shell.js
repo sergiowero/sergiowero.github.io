@@ -1,4 +1,5 @@
 
+/* window.cvLang() is defined in <head>; anything rendered from JS redraws on the 'langchange' event below */
 /* Years of experience, computed from the year I started working */
 (function(){
   var START_YEAR=2010;
@@ -7,21 +8,29 @@
 })();
 /* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Feb 2020 — Present · 6 yrs 8 mos" */
 (function(){
-  var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var M={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+         es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']};
+  var W={en:{present:'Present',yr:' yr',yrs:' yrs',mo:' mo',mos:' mos'},
+         es:{present:'Actualidad',yr:' año',yrs:' años',mo:' mes',mos:' meses'}};
   function ym(s){var p=s.split('-');return {y:+p[0],m:+p[1]};}
-  function label(d){return M[d.m-1]+' '+d.y;}
+  function draw(){
+  var L=window.cvLang(), w=W[L];
+  function label(d){return M[L][d.m-1]+' '+d.y;}
   var now=new Date(), nowS=now.getFullYear()+'-'+(now.getMonth()+1);
   document.querySelectorAll('[data-from]').forEach(function(el){
     var toAttr=el.getAttribute('data-to');
     var a=ym(el.getAttribute('data-from')), b=ym(toAttr||nowS);
     var months=(b.y-a.y)*12+(b.m-a.m)+1; // inclusive count, like LinkedIn
     var y=Math.floor(months/12), m=months%12, parts=[];
-    if(y) parts.push(y+(y===1?' yr':' yrs'));
-    if(m) parts.push(m+(m===1?' mo':' mos'));
-    el.textContent=label(a)+' — '+(toAttr?label(b):'Present');
+    if(y) parts.push(y+(y===1?w.yr:w.yrs));
+    if(m) parts.push(m+(m===1?w.mo:w.mos));
+    el.textContent=label(a)+' — '+(toAttr?label(b):w.present);
     var d=document.createElement('span'); d.className='dur'; d.textContent=' · '+parts.join(' ');
     el.appendChild(d);
   });
+  }
+  draw();
+  document.addEventListener('langchange',draw);
 })();
 /* Language switch (ES/EN): remembered across pages; header labels swap via html[data-lang];
    on a page that has a translation (body[data-alt-es|en]) it navigates to it */
@@ -30,6 +39,7 @@
   function apply(l){
     if(l==='es') document.documentElement.setAttribute('data-lang','es'); else document.documentElement.removeAttribute('data-lang');
     document.querySelectorAll('.tab[data-lang]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-lang')===l);});
+    document.dispatchEvent(new CustomEvent('langchange',{detail:l}));
   }
   var saved='en'; try{saved=localStorage.getItem(KEY)||'en';}catch(e){}
   apply(saved);
@@ -71,23 +81,32 @@
 (function(){
   var dataEl=document.getElementById('history-data'), panel=document.querySelector('.subject'); if(!dataEl||!panel) return;
   var data=JSON.parse(dataEl.textContent), entries=[].slice.call(document.querySelectorAll('.hentry'));
-  var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var M={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+         es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']};
+  var W={en:{present:'Present',inside:'inside',yr:' yr',yrs:' yrs',mo:' mo',mos:' mos'},
+         es:{present:'Actualidad',inside:'dentro de',yr:' año',yrs:' años',mo:' mes',mos:' meses'}};
+  /* bilingual values from the JSON arrive as {en, es} */
+  function L(v){return (v&&typeof v==='object'&&!Array.isArray(v))?(v[window.cvLang()]||v.en):v;}
+  function w(){return W[window.cvLang()];}
   function ym(s){var p=s.split('-');return {y:+p[0],m:+p[1]};}
-  function label(s){var d=ym(s);return M[d.m-1]+' '+d.y;}
+  function label(s){var d=ym(s);return M[window.cvLang()][d.m-1]+' '+d.y;}
   function when(e){
     if(!e.frm) return '';
     if(e.to==='single') return label(e.frm);
     var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
     var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
-    if(y) parts.push(y+(y===1?' yr':' yrs')); if(m) parts.push(m+(m===1?' mo':' mos'));
-    return label(e.frm)+' — '+(e.to?label(e.to):'Present')+' · '+parts.join(' ');
+    if(y) parts.push(y+(y===1?w().yr:w().yrs)); if(m) parts.push(m+(m===1?w().mo:w().mos));
+    return label(e.frm)+' — '+(e.to?label(e.to):w().present)+' · '+parts.join(' ');
   }
   var nav=panel.querySelector('[data-sub=nav]');
-  nav.innerHTML=data.map(function(e,i){
-    if(e.level===1) return '';
-    var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+c.role+'</li>':'';}).join('');
-    return '<li data-i="'+i+'">'+e.co+(kids?'<ol>'+kids+'</ol>':'')+'</li>';
-  }).join('');
+  function drawNav(){
+    nav.innerHTML=data.map(function(e,i){
+      if(e.level===1) return '';
+      var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+L(c.role)+'</li>':'';}).join('');
+      return '<li data-i="'+i+'">'+e.co+(kids?'<ol>'+kids+'</ol>':'')+'</li>';
+    }).join('');
+  }
+  drawNav();
   nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) entries[+li.getAttribute('data-i')].scrollIntoView({behavior:'smooth',block:'start'});});
   var current=-1, timer=null;
   function show(i){
@@ -96,13 +115,13 @@
     timer=setTimeout(function(){
       panel.querySelector('[data-sub=slug]').textContent=e.slug;
       panel.querySelector('[data-sub=kind]').textContent=e.kind;
-      panel.querySelector('[data-sub=parent]').innerHTML=(e.parent!==null&&e.parent!==undefined)?'↳ inside <b>'+data[e.parent].co+'</b>':'';
+      panel.querySelector('[data-sub=parent]').innerHTML=(e.parent!==null&&e.parent!==undefined)?'↳ '+w().inside+' <b>'+data[e.parent].co+'</b>':'';
       panel.querySelector('[data-sub=co]').textContent=e.co;
-      panel.querySelector('[data-sub=role]').innerHTML=e.role;
+      panel.querySelector('[data-sub=role]').innerHTML=L(e.role);
       panel.querySelector('[data-sub=when]').textContent=when(e);
-      panel.querySelector('[data-sub=loc]').textContent=e.loc;
-      panel.querySelector('[data-sub=inds]').innerHTML=e.inds.map(function(x){return '<span class="ind">'+x+'</span>';}).join('');
-      panel.querySelector('[data-sub=tech]').innerHTML=e.tech.map(function(x){return '<span class="dchip">'+x+'</span>';}).join('');
+      panel.querySelector('[data-sub=loc]').textContent=L(e.loc);
+      panel.querySelector('[data-sub=inds]').innerHTML=e.inds.map(function(x){return '<span class="ind">'+L(x)+'</span>';}).join('');
+      panel.querySelector('[data-sub=tech]').innerHTML=e.tech.map(function(x){return '<span class="dchip">'+L(x)+'</span>';}).join('');
       [].forEach.call(nav.querySelectorAll('li'),function(li){li.classList.toggle('active',+li.getAttribute('data-i')===i);});
       entries.forEach(function(el,k){el.classList.toggle('active',k===i);el.classList.toggle('parent-active',k===e.parent);});
       panel.querySelector('.sub-progress i').style.width=((i+1)/data.length*100)+'%';
@@ -110,6 +129,7 @@
     },120);
   }
   show(0);
+  document.addEventListener('langchange',function(){var i=current;current=-1;drawNav();show(i<0?0:i);});
   // scroll spy: the entry crossing the 40% line of the viewport is the current one
   // (getBoundingClientRect is used instead of IntersectionObserver because the sheet is CSS-zoomed)
   var ticking=false;
