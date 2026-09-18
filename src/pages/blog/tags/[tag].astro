@@ -15,7 +15,7 @@ const es = posts.filter((p) => langOf(p) === 'es');
 <Shell title={`#${tag} — Blog`} description={`Posts tagged ${tag}`}>
   <section class="blog">
     <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ grep -rl <span class="f">"#{tag}"</span> blog/</div>
-    <h1 class="name">#{tag}<span class="cur"></span></h1>
+    <h1 class="name"><span id="typed">#{tag}</span><span class="cur"></span></h1>
     <div class="sub">
       <span class="i18n-en">{en.length} post{en.length === 1 ? '' : 's'} · <a href="/blog/">all posts</a></span>
       <span class="i18n-es">{es.length} entrada{es.length === 1 ? '' : 's'} · <a href="/blog/">todas las entradas</a></span>

@@ -19,7 +19,7 @@ const minutes = readingTime(post.body);
 <Shell title={`${post.data.title} — Blog`} description={post.data.description} alt={altUrls} lang={lang}>
   <article class="blog">
     <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">blog/{lang}/{slugOf(post)}.md</span></div>
-    <h1 class="name">{post.data.title}</h1>
+    <h1 class="name"><span id="typed">{post.data.title}</span><span class="cur"></span></h1>
     <div class="meta">
       <span>{formatDate(post.data.pubDate, lang)}</span>
       <span>·</span>

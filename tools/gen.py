@@ -26,7 +26,7 @@ SITE_PAGES = {
   <header class="top">
     <div>
       <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">history.md</span></div>
-      <div class="name">$NAME$</div>
+      <div class="name"><span id="typed">$NAME$</span><span class="cur"></span></div>
       <div class="sub mono">$I18N_HISTORY_SUB$</div>
     </div>
   </header>
@@ -194,7 +194,9 @@ def titles_html():
 def edu_html():
     return "\n".join(f'<div class="edu"><div class="d">{d}</div><div class="m">{m}</div></div>' for d, m in EDU)
 
-BEST_STAT = '<div class="stat best"><div class="n">.NET · Spring · Python · Node.js</div><div class="l">Best skills</div></div>'
+BEST_SKILLS = [".NET", "Spring", "Python", "Node.js"]
+BEST_STAT = ('<div class="stat best"><div class="n">' + "".join(f'<span class="bs">{b}</span>' for b in BEST_SKILLS)
+             + '</div><div class="l">Best skills</div></div>')
 
 def stats_html():
     return '<div class="stats">' + "".join(
@@ -316,6 +318,7 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
   .sk-top{display:flex;justify-content:space-between;align-items:baseline;gap:6px;}
   .stat.best{flex:1.35;}
   .stat.best .n{font-size:10.5px;line-height:1.25;letter-spacing:0;}
+  .stat.best .bs+.bs::before{content:" · ";}
   .inds{display:inline-flex;flex-wrap:wrap;gap:3px;margin-left:6px;vertical-align:middle;}
   .ind{display:inline-block;font-size:7.3px;line-height:1.35;padding:1px 6px;border-radius:3px;font-weight:600;white-space:nowrap;}
   .sk-pct,.sk-dots{display:none;}
@@ -673,6 +676,11 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .stat .n{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--fg);line-height:1;}
   .stat .n .u{color:var(--green);}
   .stat .l{font-size:7.8px;color:var(--muted);margin-top:3px;}
+  .stat.best{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:4px;padding:6px 8px;}
+  .stat.best .l{font-family:'JetBrains Mono',monospace;font-size:7.6px;margin:0;} .stat.best .l::before{content:"// ";}
+  .stat.best .n{display:flex;flex-wrap:wrap;gap:3px;}
+  .stat.best .bs{font-family:'JetBrains Mono',monospace;font-size:7.6px;font-weight:700;color:var(--green);background:rgba(61,220,132,.10);border:1px solid rgba(61,220,132,.45);border-radius:4px;padding:1px 6px;line-height:1.5;}
+  .stat.best .bs+.bs::before{content:none;}
 
   .cols{display:flex;gap:7mm;flex:1;}
   .main{flex:1 1 auto;min-width:0;}
