@@ -1,6 +1,6 @@
 ---
 title: "How to add entries to the History page"
-description: "A step-by-step guide to the timeline data in tools/gen.py — and a showcase of every Markdown format this blog renders."
+description: "A step-by-step guide to the timeline data in tools/gen.py (including two-level entries) — and a showcase of every Markdown format this blog renders."
 pubDate: 2026-09-19
 tags: ["meta", "history", "markdown", "how-to"]
 ---
@@ -57,16 +57,53 @@ EXTRA_HISTORY = [
 ]
 ```
 
+### Two levels: entries inside an entry
+
+Any entry can carry `children` — a list of the same kind of dicts — and they are drawn as a nested timeline under it. That is how the four Wizeline engagements are modelled: the job is the parent, each client project is a child.
+
+For a job in `JOBS`, put the children in `history_children` (the Resume keeps its normal bullets; only the History page nests them):
+
+```python
+dict(role="Senior Software Engineer / Tech Lead", co="Wizeline", frm="2020-02", to=None, …,
+     history_children=[
+         dict(kind="project", slug="wizeline-global-news", role="Global News Industry", co="Wizeline client",
+              loc="Remote", inds=["News"], tech=[".NET", "AWS", "PostgreSQL", "Claude Code"],
+              pts=["Engineered new features and resolved production issues…"]),
+         dict(kind="milestone", slug="wizeline-tech-lead", role="Promoted to Tech Lead", co="Wizeline",
+              frm="2022-03", loc="Remote", inds=[], tech=[], pts=[]),
+     ]),
+```
+
+For anything in `EXTRA_HISTORY`, use `children` directly:
+
+```python
+dict(kind="milestone", slug="gamejam-2024", role="Game jam — 1st place", co="GDL Jam", frm="2024-10",
+     loc="Guadalajara, México", inds=["Gaming"], tech=["Unity"], pts=[],
+     children=[
+         dict(kind="project", slug="gamejam-2024-game", role="The game", co="Team of 3", inds=[], tech=["C#"],
+              pts=["48-hour prototype, later polished for itch.io."]),
+     ]),
+```
+
+Rules of thumb:
+
+- **Two levels only** — children cannot have children.
+- Children may omit `frm`/`to`; undated children keep the order you wrote them, after the dated ones.
+- When a job has `history_children`, its own bullets are hidden on the History page (the children tell the story); the Resume is untouched.
+- The side panel shows `↳ inside <parent>` and the mini-timeline nests the children, so the reader always knows where they are.
+
 ### Field reference
 
-- `kind` — `job`, `education` or `milestone`. Changes the marker on the timeline:
+- `kind` — `job`, `project`, `education` or `milestone`. Changes the marker on the timeline:
   - `job` → circle
+  - `project` → square
   - `education` → diamond
-  - `milestone` → circle (for now)
+  - `milestone` → pin
 - `slug` — used in the panel header: `cat history/<slug>.md`
 - `frm` / `to` — `"YYYY-MM"`. Omit `to` for a one-day event; `to=None` means *present*.
 - `inds`, `tech` — chips; either can be `[]`.
 - `pts` — bullets (HTML allowed); `[]` hides the list.
+- `children` (or `history_children` on a job) — nested entries, one level deep.
 
 #### Checklist before you regenerate
 

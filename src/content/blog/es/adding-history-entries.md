@@ -1,6 +1,6 @@
 ---
 title: "Cómo agregar entradas a la página de Historial"
-description: "Guía paso a paso de los datos de la línea de tiempo en tools/gen.py — y una muestra de todos los formatos Markdown que renderiza este blog."
+description: "Guía paso a paso de los datos de la línea de tiempo en tools/gen.py (incluidas entradas de dos niveles) — y una muestra de todos los formatos Markdown que renderiza este blog."
 pubDate: 2026-09-19
 tags: ["meta", "history", "markdown", "how-to"]
 ---
@@ -57,16 +57,53 @@ EXTRA_HISTORY = [
 ]
 ```
 
+### Dos niveles: entradas dentro de una entrada
+
+Cualquier entrada puede llevar `children` —una lista de dicts iguales— y se dibujan como una línea de tiempo anidada debajo de ella. Así están modelados los cuatro proyectos de Wizeline: el empleo es el padre y cada proyecto de cliente es un hijo.
+
+Para un empleo de `JOBS`, pon los hijos en `history_children` (el Resume conserva sus bullets normales; solo el Historial los anida):
+
+```python
+dict(role="Senior Software Engineer / Tech Lead", co="Wizeline", frm="2020-02", to=None, …,
+     history_children=[
+         dict(kind="project", slug="wizeline-global-news", role="Global News Industry", co="Wizeline client",
+              loc="Remote", inds=["News"], tech=[".NET", "AWS", "PostgreSQL", "Claude Code"],
+              pts=["Engineered new features and resolved production issues…"]),
+         dict(kind="milestone", slug="wizeline-tech-lead", role="Promoted to Tech Lead", co="Wizeline",
+              frm="2022-03", loc="Remote", inds=[], tech=[], pts=[]),
+     ]),
+```
+
+Para cualquier cosa en `EXTRA_HISTORY`, usa `children` directamente:
+
+```python
+dict(kind="milestone", slug="gamejam-2024", role="Game jam — 1er lugar", co="GDL Jam", frm="2024-10",
+     loc="Guadalajara, México", inds=["Gaming"], tech=["Unity"], pts=[],
+     children=[
+         dict(kind="project", slug="gamejam-2024-game", role="El juego", co="Equipo de 3", inds=[], tech=["C#"],
+              pts=["Prototipo de 48 horas, después pulido para itch.io."]),
+     ]),
+```
+
+Reglas prácticas:
+
+- **Solo dos niveles** — los hijos no pueden tener hijos.
+- Los hijos pueden omitir `frm`/`to`; los que no tienen fecha conservan el orden en que los escribiste, después de los que sí la tienen.
+- Cuando un empleo tiene `history_children`, sus propios bullets se ocultan en el Historial (los hijos cuentan la historia); el Resume no cambia.
+- El panel lateral muestra `↳ inside <padre>` y la mini-línea de tiempo anida a los hijos, así que siempre se sabe dónde estás.
+
 ### Referencia de campos
 
-- `kind` — `job`, `education` o `milestone`. Cambia el marcador en la línea de tiempo:
+- `kind` — `job`, `project`, `education` o `milestone`. Cambia el marcador en la línea de tiempo:
   - `job` → círculo
+  - `project` → cuadrado
   - `education` → rombo
-  - `milestone` → círculo (por ahora)
+  - `milestone` → pin
 - `slug` — se usa en el encabezado del panel: `cat history/<slug>.md`
 - `frm` / `to` — `"YYYY-MM"`. Omite `to` para un evento de un solo día; `to=None` significa *presente*.
 - `inds`, `tech` — chips; cualquiera puede ser `[]`.
 - `pts` — bullets (se permite HTML); `[]` oculta la lista.
+- `children` (o `history_children` en un empleo) — entradas anidadas, un solo nivel.
 
 #### Checklist antes de regenerar
 

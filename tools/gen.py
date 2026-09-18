@@ -35,6 +35,7 @@ SITE_PAGES = {
     <aside class="subject" aria-live="polite">
       <div class="sub-k mono"><span class="g">➜</span> <span class="c">~</span> cat history/<span class="f" data-sub="slug"></span>.md</div>
       <div class="sub-kind mono" data-sub="kind"></div>
+      <div class="sub-parent" data-sub="parent"></div>
       <div class="sub-co" data-sub="co"></div>
       <div class="sub-role" data-sub="role"></div>
       <div class="sub-when mono" data-sub="when"></div>
@@ -72,7 +73,23 @@ def ext(href, text):
     return f'<a href="{href}" target="_blank" rel="noopener noreferrer">{text}</a>'
 
 JOBS = [
-    dict(role="Senior Software Engineer / Tech Lead", co="Wizeline", tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code"], period="Feb 2020 — Present", frm="2020-02", to=None, inds=["News", "Media &amp; Entertainment", "Retail", "Cybersecurity"], loc="Guadalajara, México", cur=True, pts=[
+    dict(role="Senior Software Engineer / Tech Lead", co="Wizeline", tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code"],
+         history_children=[   # second level on the History page (dates optional; add frm/to when known)
+             dict(kind="project", slug="wizeline-global-news", role="Global News Industry", co="Wizeline client", loc="Remote", inds=["News"],
+                  tech=[".NET", "AWS", "PostgreSQL", "Claude Code"],
+                  pts=["Engineered new features and resolved production issues in a high-velocity environment.",
+                       "Leveraged AI tooling to accelerate development cycles and enhance code quality."]),
+             dict(kind="project", slug="wizeline-media", role="Media &amp; Entertainment Industry — Tech Lead", co="Wizeline client", loc="Remote", inds=["Media &amp; Entertainment"],
+                  tech=["Java", "Spring", "Node.js", "AWS", "PostgreSQL"],
+                  pts=["Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders."]),
+             dict(kind="project", slug="wizeline-retail", role="Enterprise Retail Industry", co="Wizeline client", loc="Remote", inds=["Retail"],
+                  tech=["Java", "Spring", "MariaDB"],
+                  pts=["Architected backend services for a complex audit system.",
+                       "Designed relational databases, implemented microservices, and built migration services for long-running data imports."]),
+             dict(kind="project", slug="wizeline-cybersecurity", role="Cybersecurity startup — MVP", co="Wizeline client", loc="Remote", inds=["Cybersecurity"],
+                  tech=["Python", "React"],
+                  pts=["Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform."]),
+         ], period="Feb 2020 — Present", frm="2020-02", to=None, inds=["News", "Media &amp; Entertainment", "Retail", "Cybersecurity"], loc="Guadalajara, México", cur=True, pts=[
         '<b>Global News Industry:</b> Engineered new features and resolved production issues in a high-velocity environment. Leveraged AI tooling to accelerate development cycles and enhance code quality. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>',
         '<b>Media &amp; Entertainment Industry:</b> Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders. <span class="stack">Tech: Java, Spring, Node.js, AWS, PostgreSQL.</span>',
         '<b>Enterprise Retail Industry:</b> Architected backend services for a complex audit system. Designed relational databases, implemented microservices, and built migration services for long-running data imports. <span class="stack">Tech: Java, Spring, MariaDB.</span>',
@@ -122,16 +139,23 @@ TITLES = [
 ]
 EDU = [("Master in Computer Science", "Universidad Autónoma de Guadalajara · Aug 2018"),
        ("Computer Science", "Universidad de Guadalajara · Dec 2010")]
-STATS = [('<span data-years>15</span>', "+", "Years building software"), ("3", "", "Industries: gaming, media &amp; enterprise"), ("6", "", "Engineers led as Tech Lead")]
+STATS = [('<span data-years>15</span>', "+", "Years building software"), ("6", "", "Engineers led as Tech Lead")]
 
-# ---- Extended History: one entry per item, newest first. To add one, append a dict here (or a job to JOBS).
-#   kind: "job" | "education" | "milestone"   frm/to: "YYYY-MM" (to=None → present; omit `to` for a single-date event)
-#   pts: bullet points (HTML allowed)   tech / inds: chips for the subject panel
+# ---- Extended History: newest first, up to TWO levels (an entry may carry `children`: jobs, projects, milestones inside it).
+#   kind: "job" | "project" | "education" | "milestone"   (changes the marker on the timeline)
+#   frm/to: "YYYY-MM"  (to=None → present; omit `to` for a single-date event; children may omit `frm` entirely)
+#   pts: bullet points (HTML allowed)   tech / inds: chips for the subject panel   children: list of the same dicts (one level only)
 def _job_entry(j):
     return dict(kind="job", slug=j["co"].lower().replace(" ", "-").replace("&amp;", "and"), role=j["role"], co=j["co"],
-                frm=j["frm"], to=j["to"], loc=j["loc"], inds=j["inds"], tech=j.get("tech", []), pts=j["pts"])
+                frm=j["frm"], to=j["to"], loc=j["loc"], inds=j["inds"], tech=j.get("tech", []),
+                pts=[] if j.get("history_children") else j["pts"], children=j.get("history_children", []))
+
+def _sorted(entries):
+    # newest first; entries without a date keep their written order, after the dated ones
+    return sorted(entries, key=lambda e: e.get("frm") or "", reverse=True)
 
 def history_entries():
+    """Top-level entries (each may have `children`), newest first."""
     entries = [_job_entry(j) for j in JOBS]
     entries += [
         dict(kind="education", slug="uag-msc", role="Master in Computer Science", co="Universidad Autónoma de Guadalajara",
@@ -140,10 +164,22 @@ def history_entries():
              frm="2010-12", loc="Guadalajara, México", inds=["Education"], tech=[], pts=[]),
     ]
     entries += EXTRA_HISTORY
-    return sorted(entries, key=lambda e: e["frm"], reverse=True)
+    for e in entries:
+        e["children"] = _sorted(e.get("children", []))
+    return _sorted(entries)
+
+def history_flat():
+    """Depth-first list used by the page: (index, level, parent_index, entry)."""
+    flat = []
+    for e in history_entries():
+        pi = len(flat); flat.append((pi, 0, None, e))
+        for c in e["children"]:
+            flat.append((len(flat), 1, pi, c))
+    return flat
 
 EXTRA_HISTORY = [
-    # dict(kind="milestone", slug="my-talk", role="Speaker at …", co="Conference", frm="2023-05", loc="…", inds=["Community"], tech=[], pts=["…"]),
+    # dict(kind="milestone", slug="my-talk", role="Speaker at …", co="Conference", frm="2023-05", loc="…", inds=["Community"], tech=[], pts=["…"],
+    #      children=[dict(kind="project", slug="my-talk-demo", role="Live demo", co="…", loc="…", inds=[], tech=["Unity"], pts=["…"])]),
 ]
 
 ICON = {
@@ -198,9 +234,13 @@ BEST_SKILLS = [".NET", "Spring", "Python", "Node.js"]
 BEST_STAT = ('<div class="stat best"><div class="n">' + "".join(f'<span class="bs">{b}</span>' for b in BEST_SKILLS)
              + '</div><div class="l">Best skills</div></div>')
 
+INDUSTRIES = ["Gaming", "Media", "Enterprise"]
+INDUSTRIES_STAT = ('<div class="stat best"><div class="n">' + "".join(f'<span class="bs">{b}</span>' for b in INDUSTRIES)
+             + '</div><div class="l">Industries</div></div>')
+
 def stats_html():
-    return '<div class="stats">' + "".join(
-        f'<div class="stat"><div class="n">{n}<span class="u">{u}</span></div><div class="l">{l}</div></div>' for n, u, l in STATS) + BEST_STAT + '</div>'
+    stat = lambda n, u, l: f'<div class="stat"><div class="n">{n}<span class="u">{u}</span></div><div class="l">{l}</div></div>'
+    return '<div class="stats">' + stat(*STATS[0]) + INDUSTRIES_STAT + stat(*STATS[1]) + BEST_STAT + '</div>'
 
 def profile_html():
     return f'<p class="profile">{PROFILE}</p>'
@@ -219,24 +259,34 @@ def experience_html():
 
 import json
 
+_MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+
+def _hentry_html(i, level, e):
+    frm = e.get("frm")
+    if not frm:
+        when = ""
+    elif "to" not in e:
+        y, m = frm.split("-"); when = f'<div class="hdate mono">{_MONTHS[int(m)-1]} {y}</div>'
+    else:
+        when = f'<div class="hdate mono" data-from="{frm}"{f" data-to=\"{e["to"]}\"" if e["to"] else ""}>{frm}</div>'
+    inds = "".join(f'<span class="ind">{x}</span>' for x in e.get("inds", []))
+    pts = ('<ul class="pts">' + "".join(f"<li>{p}</li>" for p in e["pts"]) + "</ul>") if e.get("pts") else ""
+    children = ""
+    if level == 0 and e.get("children"):
+        # indices of children follow the parent in history_flat()
+        kids = "".join(_hentry_html(i + 1 + k, 1, c) for k, c in enumerate(e["children"]))
+        children = f'<div class="hchildren">{kids}</div>'
+    return (f'<section class="hentry {e["kind"]}{" child" if level else ""}" id="h-{e["slug"]}" data-i="{i}">{when}'
+            f'<h3>{e["role"]} · <span class="c">{e["co"]}</span></h3>'
+            f'<div class="loc">{e.get("loc", "")}<span class="inds">{inds}</span></div>{pts}{children}</section>')
+
 def history_html():
-    out = []
-    for i, e in enumerate(history_entries()):
-        single = "to" not in e
-        if single:
-            y, m = e["frm"].split("-"); when = f'<div class="hdate mono">{["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][int(m)-1]} {y}</div>'
-        else:
-            when = f'<div class="hdate mono" data-from="{e["frm"]}"{f" data-to=\"{e["to"]}\"" if e["to"] else ""}>{e["frm"]}</div>'
-        inds = "".join(f'<span class="ind">{x}</span>' for x in e["inds"])
-        pts = ('<ul class="pts">' + "".join(f"<li>{p}</li>" for p in e["pts"]) + "</ul>") if e["pts"] else ""
-        out.append(f'<section class="hentry {e["kind"]}" id="h-{e["slug"]}" data-i="{i}">{when}'
-                   f'<h3>{e["role"]} · <span class="c">{e["co"]}</span></h3>'
-                   f'<div class="loc">{e["loc"]}<span class="inds">{inds}</span></div>{pts}</section>')
-    return "\n".join(out)
+    return "\n".join(_hentry_html(i, 0, e) for i, lvl, parent, e in history_flat() if lvl == 0)
 
 def history_json():
-    data = [dict(kind=e["kind"], slug=e["slug"], role=e["role"], co=e["co"], frm=e["frm"], to=e.get("to", "single"),
-                 loc=e["loc"], inds=e["inds"], tech=e["tech"]) for e in history_entries()]
+    data = [dict(kind=e["kind"], slug=e["slug"], role=e["role"], co=e["co"], frm=e.get("frm"),
+                 to=("single" if "to" not in e else e["to"]), loc=e.get("loc", ""), inds=e.get("inds", []), tech=e.get("tech", []),
+                 level=lvl, parent=parent) for i, lvl, parent, e in history_flat()]
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
 FIT_JS = """<script>
@@ -517,6 +567,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   function ym(s){var p=s.split('-');return {y:+p[0],m:+p[1]};}
   function label(s){var d=ym(s);return M[d.m-1]+' '+d.y;}
   function when(e){
+    if(!e.frm) return '';
     if(e.to==='single') return label(e.frm);
     var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
     var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
@@ -524,7 +575,11 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     return label(e.frm)+' \u2014 '+(e.to?label(e.to):'Present')+' \u00b7 '+parts.join(' ');
   }
   var nav=panel.querySelector('[data-sub=nav]');
-  nav.innerHTML=data.map(function(e,i){return '<li data-i="'+i+'">'+e.co+'</li>';}).join('');
+  nav.innerHTML=data.map(function(e,i){
+    if(e.level===1) return '';
+    var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+c.role+'</li>':'';}).join('');
+    return '<li data-i="'+i+'">'+e.co+(kids?'<ol>'+kids+'</ol>':'')+'</li>';
+  }).join('');
   nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) entries[+li.getAttribute('data-i')].scrollIntoView({behavior:'smooth',block:'start'});});
   var current=-1, timer=null;
   function show(i){
@@ -533,14 +588,15 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     timer=setTimeout(function(){
       panel.querySelector('[data-sub=slug]').textContent=e.slug;
       panel.querySelector('[data-sub=kind]').textContent=e.kind;
+      panel.querySelector('[data-sub=parent]').innerHTML=(e.parent!==null&&e.parent!==undefined)?'\u21b3 inside <b>'+data[e.parent].co+'</b>':'';
       panel.querySelector('[data-sub=co]').textContent=e.co;
       panel.querySelector('[data-sub=role]').innerHTML=e.role;
       panel.querySelector('[data-sub=when]').textContent=when(e);
       panel.querySelector('[data-sub=loc]').textContent=e.loc;
       panel.querySelector('[data-sub=inds]').innerHTML=e.inds.map(function(x){return '<span class="ind">'+x+'</span>';}).join('');
       panel.querySelector('[data-sub=tech]').innerHTML=e.tech.map(function(x){return '<span class="dchip">'+x+'</span>';}).join('');
-      [].forEach.call(nav.children,function(li,k){li.classList.toggle('active',k===i);});
-      entries.forEach(function(el,k){el.classList.toggle('active',k===i);});
+      [].forEach.call(nav.querySelectorAll('li'),function(li){li.classList.toggle('active',+li.getAttribute('data-i')===i);});
+      entries.forEach(function(el,k){el.classList.toggle('active',k===i);el.classList.toggle('parent-active',k===e.parent);});
       panel.querySelector('.sub-progress i').style.width=((i+1)/data.length*100)+'%';
       panel.classList.remove('swap');
     },120);
@@ -554,6 +610,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     var line=window.innerHeight*0.4, i=0;
     for(var k=0;k<entries.length;k++){ if(entries[k].getBoundingClientRect().top<=line) i=k; }
     if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) i=entries.length-1;  // bottom of page → last entry
+    if(window.scrollY<8) i=0;   // top of page → first (top-level) entry
     show(i);
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } }
@@ -625,6 +682,21 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .hentry::before{content:"";position:absolute;left:-16px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--muted);transition:.25s;}
   .hentry.active::before{border-color:var(--green);background:var(--green);box-shadow:0 0 0 4px rgba(61,220,132,.18);}
   .hentry.education::before{border-radius:2px;transform:rotate(45deg);}
+  .hentry.project::before{border-radius:2px;width:8px;height:8px;left:-15px;top:10px;}
+  .hentry.milestone::before{border-radius:50% 50% 50% 0;transform:rotate(-45deg);}
+  .hchildren{margin:4px 0 0;padding-left:14px;border-left:1px dashed var(--line);}
+  .hentry.child{padding:5px 0 6px;}
+  .hentry.child::before{left:-13px;top:9px;width:7px;height:7px;}
+  .hentry.child.project::before{width:6px;height:6px;left:-12.5px;top:10px;}
+  .hentry.child h3{font-size:10.5px;}
+  .hentry.child .hdate{font-size:7.6px;}
+  .hentry.parent-active{}
+  .hentry.parent-active > h3 .c{color:var(--green);}
+  .sub-parent{font-size:8px;color:var(--muted);margin-top:6px;} .sub-parent:empty{display:none;}
+  .sub-parent b{color:var(--cyan);font-weight:600;}
+  .sub-nav ol{list-style:none;margin:0;padding-left:10px;border-left:1px dashed var(--line);}
+  .sub-nav ol li{font-size:7.9px;padding:1px 0 1px 10px;}
+  .sub-nav ol li::before{width:4px;height:4px;top:6px;}
   .hdate{font-size:8px;color:var(--muted);}
   .hentry.active .hdate{color:var(--green);}
   .hentry h3{font-size:11.5px;font-weight:600;color:var(--fg);margin-top:2px;}
