@@ -269,6 +269,7 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
   .site-nav .grp .tab{padding:4px 6px;cursor:pointer;}
   .site-nav .grp .slash{color:var(--nav-muted);font-size:8.6px;opacity:.6;padding:0 1px;}
   .site-nav .grp .tab svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1.5px;margin-right:3px;}
+  .site-nav .theme .tab{padding:4px 5px;} .site-nav .theme .tab svg{width:11px;height:11px;margin-right:0;vertical-align:-2px;}
   @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav{display:none;}}"""
 
 FLAG_MX = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8.7 5v14M15.3 5v14"/><circle cx="12" cy="12" r="1.6"/></svg>'
@@ -283,13 +284,13 @@ def nav_html(active="cv"):
     tabs = "".join(
         f'\n    <a class="tab{" active" if key == active else ""}" href="{href}"{" aria-current=\"page\"" if key == active else ""}>{i18n(en, es)}</a>'
         for key, href, en, es in SECTIONS)
-    return NAV_TPL.replace("$TABS$", tabs).replace("$T_DARK$", i18n("Dark", "Oscuro")).replace("$T_LIGHT$", i18n("Light", "Claro"))
+    return NAV_TPL.replace("$TABS$", tabs)
 
 NAV_TPL = """<header class="site-nav" aria-label="Site sections">
   <nav class="tabs">$TABS$
   </nav>
   <div class="grp lang" aria-label="Language (visual only)"><span class="tab" data-lang="es">$FLAG_ES$ES</span><span class="slash">/</span><span class="tab active" data-lang="en">$FLAG_EN$EN</span></div>
-  <div class="grp theme" aria-label="Theme"><span class="tab$DARK$" data-set-theme="dark"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>$T_DARK$</span><span class="slash">/</span><span class="tab$LIGHT$" data-set-theme="light"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>$T_LIGHT$</span></div>
+  <div class="grp theme" aria-label="Theme"><span class="tab$DARK$" data-set-theme="dark" title="Dark" aria-label="Dark"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span><span class="slash">/</span><span class="tab$LIGHT$" data-set-theme="light" title="Light" aria-label="Light"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></div>
 </header>"""
 
 def page(title, fonts, css, body):
