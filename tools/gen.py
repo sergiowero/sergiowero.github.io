@@ -114,18 +114,18 @@ def ext(href, text):
 JOBS = [
     dict(role="Senior Software Engineer / Tech Lead", co="Wizeline", tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code"],
          history_children=[   # second level on the History page (dates optional; add frm/to when known)
-             dict(kind="project", slug="wizeline-global-news", role="Global News Industry", co="Wizeline client", loc="Remote", inds=["News"],
+             dict(kind="project", slug="wizeline-global-news", role="Global News Industry", co="Dow Jones", loc="Remote", inds=["News"],
                   tech=[".NET", "AWS", "PostgreSQL", "Claude Code"],
                   pts=["Engineered new features and resolved production issues in a high-velocity environment.",
                        "Leveraged AI tooling to accelerate development cycles and enhance code quality."]),
-             dict(kind="project", slug="wizeline-media", role="Media &amp; Entertainment Industry — Tech Lead", co="Wizeline client", loc="Remote", inds=["Media &amp; Entertainment"],
+             dict(kind="project", slug="wizeline-media", role="Media &amp; Entertainment Industry — Tech Lead", co="Fox Corp", loc="Remote", inds=["Media &amp; Entertainment"],
                   tech=["Java", "Spring", "Node.js", "AWS", "PostgreSQL"],
                   pts=["Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders."]),
-             dict(kind="project", slug="wizeline-retail", role="Enterprise Retail Industry", co="Wizeline client", loc="Remote", inds=["Retail"],
+             dict(kind="project", slug="wizeline-retail", role="Enterprise Retail Industry", co="Inditex", loc="Remote", inds=["Retail"],
                   tech=["Java", "Spring", "MariaDB"],
                   pts=["Architected backend services for a complex audit system.",
                        "Designed relational databases, implemented microservices, and built migration services for long-running data imports."]),
-             dict(kind="project", slug="wizeline-cybersecurity", role="Cybersecurity startup — MVP", co="Wizeline client", loc="Remote", inds=["Cybersecurity"],
+             dict(kind="project", slug="wizeline-cybersecurity", role="Cybersecurity startup — MVP", co="Cerby", loc="Remote", inds=["Cybersecurity"],
                   tech=["Python", "React"],
                   pts=["Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform."]),
          ], period="Feb 2020 — Present", frm="2020-02", to=None, inds=["News", "Media &amp; Entertainment", "Retail", "Cybersecurity"], loc="Guadalajara, México", cur=True, pts=[
@@ -719,6 +719,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .htl{flex:1 1 auto;min-width:0;position:relative;padding-left:16px;}
   .htl::before{content:"";position:absolute;left:4px;top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px;}
   .hentry{position:relative;padding:6px 0 10px;scroll-margin-top:60px;}
+  .htl .hentry.job{border-top:0;}
   .hentry::before{content:"";position:absolute;left:-16px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--muted);transition:.25s;}
   .hentry.active::before{border-color:var(--green);background:var(--green);box-shadow:0 0 0 4px rgba(61,220,132,.18);}
   .hentry.education::before{border-radius:2px;transform:rotate(45deg);}
