@@ -38,7 +38,7 @@ dict(kind="milestone", slug="mi-charla", role="Speaker", co="Nombre del evento",
 
 y corre `python3 tools/gen.py`. Las entradas se ordenan solas de la más reciente a la más antigua.
 
-Hasta **dos niveles**: cualquier entrada acepta `children=[…]` (en un empleo de `JOBS`, `history_children=[…]`) con dicts del mismo formato; se dibujan anidados y el panel lateral indica `↳ inside <padre>`. Guía completa en `/blog/en/adding-history-entries/`.
+Hasta **dos niveles**: cualquier entrada acepta `children=[…]` (en un empleo de `JOBS`, `history_children=[…]`) con dicts del mismo formato; se dibujan anidados y el panel lateral indica `↳ inside <padre>`. Guía completa en [`docs/adding-history-entries.md`](docs/adding-history-entries.md).
 
 ## Desarrollo local
 

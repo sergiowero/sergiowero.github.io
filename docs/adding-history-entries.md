@@ -1,11 +1,8 @@
----
-title: "How to add entries to the History page"
-description: "A step-by-step guide to the timeline data in tools/gen.py (including two-level entries) — and a showcase of every Markdown format this blog renders."
-pubDate: 2026-09-19
-tags: ["meta", "history", "markdown", "how-to"]
----
+# How to add entries to the History page
 
-The **History** tab is generated from a small Python list in `tools/gen.py`. This post walks through adding an entry, and doubles as a *format test*: headings, lists, tables, code, quotes, footnotes… everything the blog can render.
+A step-by-step guide to the timeline data in `tools/gen.py`, including two-level entries.
+
+The **History** tab is generated from a small Python list in `tools/gen.py`. This doc walks through adding an entry.
 
 ## 1. Where the data lives
 
@@ -123,51 +120,3 @@ git add -A && git commit -m "History: add Acme Corp" && git push
 ```
 
 GitHub Actions rebuilds the site in about a minute. Duration labels such as `6 yrs 8 mos` are computed **in the browser**, so they stay current without touching anything.
-
----
-
-## Appendix: format showcase
-
-Text styles: **bold**, *italic*, ***both***, ~~strikethrough~~, `inline code`, and a [link to the History page](/history/). Footnotes work too[^1].
-
-1. Ordered lists
-2. With several items
-   1. and nested numbers
-   2. like this
-3. Back to the top level
-
-- Unordered lists
-  - with nested bullets
-    - three levels deep
-
-> A blockquote.
->
-> — with more than one paragraph, and **bold** inside.
-
-Code with a different language:
-
-```yaml
-title: "Hello, world"
-pubDate: 2026-09-18
-tags: ["meta", "astro"]
-```
-
-```js
-const years = new Date().getFullYear() - 2010;
-console.log(`${years}+ years building software`);
-```
-
-An image (the site favicon), sized with an HTML `<img>` tag:
-
-<img src="/favicon.svg" alt="Braces favicon" width="64" height="64">
-
-<details>
-<summary>Raw HTML also works — click to expand</summary>
-
-This block is a `<details>` element written directly in the Markdown file.
-
-</details>
-
-Emoji: 🚀 🎮 🤖
-
-[^1]: This is the footnote. It is rendered at the bottom of the post.
