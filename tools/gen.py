@@ -139,7 +139,7 @@ TITLES = [
 ]
 EDU = [("Master in Computer Science", "Universidad Autónoma de Guadalajara · Aug 2018"),
        ("Computer Science", "Universidad de Guadalajara · Dec 2010")]
-STATS = [('<span data-years>15</span>', "+", "Years building software"), ("6", "", "Engineers led as Tech Lead")]
+STATS = [('<span data-years>15</span>', "+", "Years building software"), ("6", "", "Max engineers led")]
 
 # ---- Extended History: newest first, up to TWO levels (an entry may carry `children`: jobs, projects, milestones inside it).
 #   kind: "job" | "project" | "education" | "milestone"   (changes the marker on the timeline)
@@ -745,14 +745,12 @@ VERSIONS["v3-dark-terminal.html"] = dict(
 
   .stats{display:flex;gap:6px;margin:5px 0 5px;}
   .stat{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 8px;}
-  /* stat cards read like a terminal: a "// comment" label on top, then "$ value" */
+  /* stat cards read like a terminal: a "// comment" label on top, then the value */
   .stat{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:4px;padding:6px 8px;}
   .stat .l{font-family:'JetBrains Mono',monospace;font-size:7.6px;color:var(--muted);margin:0;text-transform:lowercase;letter-spacing:0;}
   .stat .l::before{content:"// ";}
   .stat .n{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--fg);line-height:1;letter-spacing:-.5px;}
-  .stat .n::before{content:"~$ ";color:var(--green);font-size:11px;font-weight:700;vertical-align:2px;}
   .stat .n .u{color:var(--green);}
-  .stat.best .n::before{content:none;}
   .stat.best .n{display:flex;flex-wrap:wrap;gap:3px;}
   .stat.best .bs{font-family:'JetBrains Mono',monospace;font-size:7.6px;font-weight:700;color:var(--green);background:rgba(61,220,132,.10);border:1px solid rgba(61,220,132,.45);border-radius:4px;padding:1px 6px;line-height:1.5;}
   .stat.best .bs+.bs::before{content:none;}
