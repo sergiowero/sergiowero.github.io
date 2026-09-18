@@ -67,6 +67,58 @@
 })();
 
 
+/* Extended History: the subject panel follows the entry currently in view */
+(function(){
+  var dataEl=document.getElementById('history-data'), panel=document.querySelector('.subject'); if(!dataEl||!panel) return;
+  var data=JSON.parse(dataEl.textContent), entries=[].slice.call(document.querySelectorAll('.hentry'));
+  var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function ym(s){var p=s.split('-');return {y:+p[0],m:+p[1]};}
+  function label(s){var d=ym(s);return M[d.m-1]+' '+d.y;}
+  function when(e){
+    if(e.to==='single') return label(e.frm);
+    var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
+    var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
+    if(y) parts.push(y+(y===1?' yr':' yrs')); if(m) parts.push(m+(m===1?' mo':' mos'));
+    return label(e.frm)+' — '+(e.to?label(e.to):'Present')+' · '+parts.join(' ');
+  }
+  var nav=panel.querySelector('[data-sub=nav]');
+  nav.innerHTML=data.map(function(e,i){return '<li data-i="'+i+'">'+e.co+'</li>';}).join('');
+  nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) entries[+li.getAttribute('data-i')].scrollIntoView({behavior:'smooth',block:'start'});});
+  var current=-1, timer=null;
+  function show(i){
+    if(i===current) return; current=i; var e=data[i];
+    panel.classList.add('swap'); clearTimeout(timer);
+    timer=setTimeout(function(){
+      panel.querySelector('[data-sub=slug]').textContent=e.slug;
+      panel.querySelector('[data-sub=kind]').textContent=e.kind;
+      panel.querySelector('[data-sub=co]').textContent=e.co;
+      panel.querySelector('[data-sub=role]').innerHTML=e.role;
+      panel.querySelector('[data-sub=when]').textContent=when(e);
+      panel.querySelector('[data-sub=loc]').textContent=e.loc;
+      panel.querySelector('[data-sub=inds]').innerHTML=e.inds.map(function(x){return '<span class="ind">'+x+'</span>';}).join('');
+      panel.querySelector('[data-sub=tech]').innerHTML=e.tech.map(function(x){return '<span class="dchip">'+x+'</span>';}).join('');
+      [].forEach.call(nav.children,function(li,k){li.classList.toggle('active',k===i);});
+      entries.forEach(function(el,k){el.classList.toggle('active',k===i);});
+      panel.querySelector('.sub-progress i').style.width=((i+1)/data.length*100)+'%';
+      panel.classList.remove('swap');
+    },120);
+  }
+  show(0);
+  // scroll spy: the entry crossing the 40% line of the viewport is the current one
+  // (getBoundingClientRect is used instead of IntersectionObserver because the sheet is CSS-zoomed)
+  var ticking=false;
+  function spy(){
+    ticking=false;
+    var line=window.innerHeight*0.4, i=0;
+    for(var k=0;k<entries.length;k++){ if(entries[k].getBoundingClientRect().top<=line) i=k; }
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) i=entries.length-1;  // bottom of page → last entry
+    show(i);
+  }
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } }
+  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); spy();
+})();
+
+
 /* Dark / light toggle from the header; the choice is remembered in localStorage */
 (function(){
   var KEY='cv-theme';

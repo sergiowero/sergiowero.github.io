@@ -7,12 +7,12 @@ import os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUBLIC = os.path.join(ROOT, "public")        # static files, copied as-is by Astro
 OUT = os.path.join(PUBLIC, "Backups")        # all variants
-LIVE = ("v3-dark-terminal.html", os.path.join(PUBLIC, "cv", "index.html"))   # the chosen design, published at /cv/
+LIVE = ("v3-dark-terminal.html", os.path.join(PUBLIC, "index.html"))   # the chosen design, published at the root
 SHELL_DIR = os.path.join(ROOT, "src", "shell")   # the v3 shell exported for the Astro blog pages
 
 # The other site sections share the v3 shell (same background, sheet, header and theme/language state).
 SITE_PAGES = {
-    "index.html": ("about", """<div class="sheet">
+    "about/index.html": ("about", """<div class="sheet">
   $NAV$
   <header class="top">
     <div>
@@ -21,16 +21,37 @@ SITE_PAGES = {
     </div>
   </header>
 </div>"""),
-    "history/index.html": ("history", """<div class="sheet">
+    "history/index.html": ("history", """<div class="sheet hist-page">
   $NAV$
   <header class="top">
     <div>
       <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">history.md</span></div>
-      <div class="name"><span id="typed">$NAME$</span><span class="cur"></span></div>
+      <div class="name">$NAME$</div>
+      <div class="sub mono">$I18N_HISTORY_SUB$</div>
     </div>
   </header>
+  <div class="hist">
+    <main class="htl">$HISTORY$</main>
+    <aside class="subject" aria-live="polite">
+      <div class="sub-k mono"><span class="g">➜</span> <span class="c">~</span> cat history/<span class="f" data-sub="slug"></span>.md</div>
+      <div class="sub-kind mono" data-sub="kind"></div>
+      <div class="sub-co" data-sub="co"></div>
+      <div class="sub-role" data-sub="role"></div>
+      <div class="sub-when mono" data-sub="when"></div>
+      <div class="sub-loc" data-sub="loc"></div>
+      <div class="dchips" data-sub="inds"></div>
+      <div class="sub-h mono">// tech</div>
+      <div class="dchips" data-sub="tech"></div>
+      <div class="sub-h mono">// timeline</div>
+      <ol class="sub-nav" data-sub="nav"></ol>
+      <div class="sub-progress"><i></i></div>
+    </aside>
+  </div>
+  <script type="application/json" id="history-data">$HISTORY_JSON$</script>
 </div>"""),
 }
+# old /cv/ links keep working
+REDIRECTS = {"cv/index.html": "/"}
 
 # ------------------------------------------------------------------ DATA
 NAME = "Sergio de Jesús Sánchez Robles"
@@ -51,35 +72,35 @@ def ext(href, text):
     return f'<a href="{href}" target="_blank" rel="noopener noreferrer">{text}</a>'
 
 JOBS = [
-    dict(role="Senior Software Engineer / Tech Lead", co="Wizeline", period="Feb 2020 — Present", frm="2020-02", to=None, inds=["News", "Media &amp; Entertainment", "Retail", "Cybersecurity"], loc="Guadalajara, México", cur=True, pts=[
+    dict(role="Senior Software Engineer / Tech Lead", co="Wizeline", tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code"], period="Feb 2020 — Present", frm="2020-02", to=None, inds=["News", "Media &amp; Entertainment", "Retail", "Cybersecurity"], loc="Guadalajara, México", cur=True, pts=[
         '<b>Global News Industry:</b> Engineered new features and resolved production issues in a high-velocity environment. Leveraged AI tooling to accelerate development cycles and enhance code quality. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>',
         '<b>Media &amp; Entertainment Industry:</b> Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders. <span class="stack">Tech: Java, Spring, Node.js, AWS, PostgreSQL.</span>',
         '<b>Enterprise Retail Industry:</b> Architected backend services for a complex audit system. Designed relational databases, implemented microservices, and built migration services for long-running data imports. <span class="stack">Tech: Java, Spring, MariaDB.</span>',
         '<b>Cybersecurity startup:</b> Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform. <span class="stack">Tech: Python, React.</span>',
     ]),
-    dict(role="Lead Programmer", co="1 Simple Idea", period="Jul 2019 — Feb 2020", frm="2019-07", to="2020-02", inds=["Gaming · Mobile"], loc="Guadalajara, México", cur=False, pts=[
+    dict(role="Lead Programmer", co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period="Jul 2019 — Feb 2020", frm="2019-07", to="2020-02", inds=["Gaming · Mobile"], loc="Guadalajara, México", cur=False, pts=[
         'Led a small programming team in the development of a mobile iOS game, taking ownership of the <b>core game architecture</b>.',
         'Architected and implemented an Inversion of Control (IoC), Dependency Injection (DI), and a robust event-driven system.',
         'Accelerated the development cycle and reduced bug rates by establishing a modular paradigm, which significantly decreased art asset integration time for art teams.',
         f'Released on <b>Apple Arcade</b>, now on Steam: {ext(STEAM, "The Lullaby of Life")}.',
     ]),
-    dict(role="Senior Programmer", co="Virtually Live", period="Feb 2017 — Jan 2020", frm="2017-02", to="2020-01", inds=["Gaming · VR"], loc="Málaga, Spain", cur=False, pts=[
+    dict(role="Senior Programmer", co="Virtually Live", tech=["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"], period="Feb 2017 — Jan 2020", frm="2017-02", to="2020-01", inds=["Gaming · VR"], loc="Málaga, Spain", cur=False, pts=[
         'Developed <b>racing games</b> for HTC Vive, Oculus, and Gear VR platforms.',
         'Engineered a core abstraction layer for game modules, encompassing VR controllers, Social APIs, and database access, utilizing JSON for configuration management.',
         'Ported the VR title to iOS by developing core gameplay mechanics in C# and architecting the supporting backend RESTful services with Python, Django, and Go.',
         f'Contributed to the successful release of the iOS adaptation ({ext(YT_VR, "gameplay")}).',
     ]),
-    dict(role="Software Engineer", co="Intel", period="Feb 2015 — Feb 2017", frm="2015-02", to="2017-02", inds=["Semiconductors"], loc="Guadalajara, México", cur=False, pts=[
+    dict(role="Software Engineer", co="Intel", tech=["Ruby", "XML", "Automation"], period="Feb 2015 — Feb 2017", frm="2015-02", to="2017-02", inds=["Semiconductors"], loc="Guadalajara, México", cur=False, pts=[
         'Engineered <b>APIs in Ruby</b> to support hardware validation teams and streamline testing workflows.',
         'Created automation tools and scripts to synchronize API deployments with client environments across multiple global Intel sites.',
         'Leveraged Ruby metaprogramming to parse XML-formatted design documents and dynamically generate executable files.',
     ]),
-    dict(role="3D &amp; Online Programmer", co="Gameloft", period="May 2011 — Jan 2015", frm="2011-05", to="2015-01", inds=["Gaming · Mobile"], loc="Guadalajara, México", cur=False, pts=[
+    dict(role="3D &amp; Online Programmer", co="Gameloft", tech=["C++", "Java", "Objective-C", "Android", "iOS"], period="May 2011 — Jan 2015", frm="2011-05", to="2015-01", inds=["Gaming · Mobile"], loc="Guadalajara, México", cur=False, pts=[
         'Programmed 3D games and internal development tools using portable <b>C++, Java, and Objective-C</b> to ensure seamless cross-platform compatibility across Android and iOS.',
         'Integrated proprietary REST-based online services into multiple Android titles.',
         'Contributed to the development and release of major mobile titles, including <b>The Oregon Trail: American Settler</b> and <b>9mm</b>.',
     ]),
-    dict(role="Game Developer", co="Kaxan Games", period="Aug 2009 — May 2011", frm="2009-08", to="2011-05", inds=["Gaming · Mobile &amp; Console"], loc="Guadalajara, México", cur=False, pts=[
+    dict(role="Game Developer", co="Kaxan Games", tech=["C#", "Unity3D", "iOS", "Nintendo Wii"], period="Aug 2009 — May 2011", frm="2009-08", to="2011-05", inds=["Gaming · Mobile &amp; Console"], loc="Guadalajara, México", cur=False, pts=[
         'Developed and published <b>over five mobile games</b> for iPhone and iPad utilizing C# and Unity3D.',
         'Contributed as an additional programmer to a released <b>Nintendo Wii</b> title.',
         f'Showcased development work in a demo reel of five released iOS games ({ext(YT_REEL, "gameplay")}).',
@@ -102,6 +123,28 @@ TITLES = [
 EDU = [("Master in Computer Science", "Universidad Autónoma de Guadalajara · Aug 2018"),
        ("Computer Science", "Universidad de Guadalajara · Dec 2010")]
 STATS = [('<span data-years>15</span>', "+", "Years building software"), ("3", "", "Industries: gaming, media &amp; enterprise"), ("6", "", "Engineers led as Tech Lead")]
+
+# ---- Extended History: one entry per item, newest first. To add one, append a dict here (or a job to JOBS).
+#   kind: "job" | "education" | "milestone"   frm/to: "YYYY-MM" (to=None → present; omit `to` for a single-date event)
+#   pts: bullet points (HTML allowed)   tech / inds: chips for the subject panel
+def _job_entry(j):
+    return dict(kind="job", slug=j["co"].lower().replace(" ", "-").replace("&amp;", "and"), role=j["role"], co=j["co"],
+                frm=j["frm"], to=j["to"], loc=j["loc"], inds=j["inds"], tech=j.get("tech", []), pts=j["pts"])
+
+def history_entries():
+    entries = [_job_entry(j) for j in JOBS]
+    entries += [
+        dict(kind="education", slug="uag-msc", role="Master in Computer Science", co="Universidad Autónoma de Guadalajara",
+             frm="2018-08", loc="Guadalajara, México", inds=["Education"], tech=[], pts=[]),
+        dict(kind="education", slug="udg-cs", role="Computer Science", co="Universidad de Guadalajara",
+             frm="2010-12", loc="Guadalajara, México", inds=["Education"], tech=[], pts=[]),
+    ]
+    entries += EXTRA_HISTORY
+    return sorted(entries, key=lambda e: e["frm"], reverse=True)
+
+EXTRA_HISTORY = [
+    # dict(kind="milestone", slug="my-talk", role="Speaker at …", co="Conference", frm="2023-05", loc="…", inds=["Community"], tech=[], pts=["…"]),
+]
 
 ICON = {
     "pin": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
@@ -171,6 +214,28 @@ def experience_html():
         out.append('</div>')
     out.append('</div>')
     return "\n".join(out)
+
+import json
+
+def history_html():
+    out = []
+    for i, e in enumerate(history_entries()):
+        single = "to" not in e
+        if single:
+            y, m = e["frm"].split("-"); when = f'<div class="hdate mono">{["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][int(m)-1]} {y}</div>'
+        else:
+            when = f'<div class="hdate mono" data-from="{e["frm"]}"{f" data-to=\"{e["to"]}\"" if e["to"] else ""}>{e["frm"]}</div>'
+        inds = "".join(f'<span class="ind">{x}</span>' for x in e["inds"])
+        pts = ('<ul class="pts">' + "".join(f"<li>{p}</li>" for p in e["pts"]) + "</ul>") if e["pts"] else ""
+        out.append(f'<section class="hentry {e["kind"]}" id="h-{e["slug"]}" data-i="{i}">{when}'
+                   f'<h3>{e["role"]} · <span class="c">{e["co"]}</span></h3>'
+                   f'<div class="loc">{e["loc"]}<span class="inds">{inds}</span></div>{pts}</section>')
+    return "\n".join(out)
+
+def history_json():
+    data = [dict(kind=e["kind"], slug=e["slug"], role=e["role"], co=e["co"], frm=e["frm"], to=e.get("to", "single"),
+                 loc=e["loc"], inds=e["inds"], tech=e["tech"]) for e in history_entries()]
+    return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
 FIT_JS = """<script>
 /* Years of experience, computed from the year I started working */
@@ -274,8 +339,8 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
 
 FLAG_MX = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8.7 5v14M15.3 5v14"/><circle cx="12" cy="12" r="1.6"/></svg>'
 FLAG_US = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 12h20M11 8.5h11M11 15.5H2M2 12v7"/><path d="M2 12h9V5"/></svg>'
-SECTIONS = [("cv", "/cv/", "Resume / CV", "Currículum"), ("about", "/", "About me", "Sobre mí"),
-            ("history", "/history/", "Extended History", "Historial extendido"), ("blog", "/blog/", "Blog", "Blog")]
+SECTIONS = [("cv", "/", "Resume / CV", "Currículum"), ("history", "/history/", "Extended History", "Historial extendido"),
+            ("blog", "/blog/", "Blog", "Blog"), ("about", "/about/", "About me", "Sobre mí")]
 
 def i18n(en, es):
     return f'<span class="i18n-en">{en}</span><span class="i18n-es">{es}</span>'
@@ -321,7 +386,8 @@ def page(title, fonts, css, body):
 """
 
 def fill(tpl, active="cv"):
-    return (tpl.replace("$NAV$", nav_html(active)).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html())
+    return (tpl.replace("$NAV$", nav_html(active)).replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html())
+            .replace("$I18N_HISTORY_SUB$", i18n("Everything so far, newest first — scroll and the panel on the right follows.", "Todo hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html())
             .replace("$TECH$", chips_html(TECH)).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
             .replace("$TITLES$", titles_html()).replace("$EDU$", edu_html()).replace("$STATS$", stats_html())
             .replace("$PROFILE$", profile_html()).replace("$EXP$", experience_html())
@@ -440,6 +506,58 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     nav="--nav-bg:transparent;--nav-line:transparent;--nav-fg:#1f2328;--nav-muted:#6e7781;--nav-active-bg:#1a7f37;--nav-active-fg:#fff;--nav-font:'JetBrains Mono',Menlo,monospace;",
     title="Sergio Sanchez CV",
     extra_js="""<script>
+/* Extended History: the subject panel follows the entry currently in view */
+(function(){
+  var dataEl=document.getElementById('history-data'), panel=document.querySelector('.subject'); if(!dataEl||!panel) return;
+  var data=JSON.parse(dataEl.textContent), entries=[].slice.call(document.querySelectorAll('.hentry'));
+  var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function ym(s){var p=s.split('-');return {y:+p[0],m:+p[1]};}
+  function label(s){var d=ym(s);return M[d.m-1]+' '+d.y;}
+  function when(e){
+    if(e.to==='single') return label(e.frm);
+    var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
+    var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
+    if(y) parts.push(y+(y===1?' yr':' yrs')); if(m) parts.push(m+(m===1?' mo':' mos'));
+    return label(e.frm)+' \u2014 '+(e.to?label(e.to):'Present')+' \u00b7 '+parts.join(' ');
+  }
+  var nav=panel.querySelector('[data-sub=nav]');
+  nav.innerHTML=data.map(function(e,i){return '<li data-i="'+i+'">'+e.co+'</li>';}).join('');
+  nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) entries[+li.getAttribute('data-i')].scrollIntoView({behavior:'smooth',block:'start'});});
+  var current=-1, timer=null;
+  function show(i){
+    if(i===current) return; current=i; var e=data[i];
+    panel.classList.add('swap'); clearTimeout(timer);
+    timer=setTimeout(function(){
+      panel.querySelector('[data-sub=slug]').textContent=e.slug;
+      panel.querySelector('[data-sub=kind]').textContent=e.kind;
+      panel.querySelector('[data-sub=co]').textContent=e.co;
+      panel.querySelector('[data-sub=role]').innerHTML=e.role;
+      panel.querySelector('[data-sub=when]').textContent=when(e);
+      panel.querySelector('[data-sub=loc]').textContent=e.loc;
+      panel.querySelector('[data-sub=inds]').innerHTML=e.inds.map(function(x){return '<span class="ind">'+x+'</span>';}).join('');
+      panel.querySelector('[data-sub=tech]').innerHTML=e.tech.map(function(x){return '<span class="dchip">'+x+'</span>';}).join('');
+      [].forEach.call(nav.children,function(li,k){li.classList.toggle('active',k===i);});
+      entries.forEach(function(el,k){el.classList.toggle('active',k===i);});
+      panel.querySelector('.sub-progress i').style.width=((i+1)/data.length*100)+'%';
+      panel.classList.remove('swap');
+    },120);
+  }
+  show(0);
+  // scroll spy: the entry crossing the 40% line of the viewport is the current one
+  // (getBoundingClientRect is used instead of IntersectionObserver because the sheet is CSS-zoomed)
+  var ticking=false;
+  function spy(){
+    ticking=false;
+    var line=window.innerHeight*0.4, i=0;
+    for(var k=0;k<entries.length;k++){ if(entries[k].getBoundingClientRect().top<=line) i=k; }
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) i=entries.length-1;  // bottom of page → last entry
+    show(i);
+  }
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } }
+  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); spy();
+})();
+</script>
+<script>
 /* Dark / light toggle from the header; the choice is remembered in localStorage */
 (function(){
   var KEY='cv-theme';
@@ -495,6 +613,38 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   :root[data-theme="dark"]{--bg:#0b0f14;--panel:#141b23;--line:#1f2a35;--text:#d6dde6;--muted:#7d8a99;--green:#3ddc84;--cyan:#4cc9f0;--amber:#ffb454;--pink:#ff6b9d;--fg:#fff;--body-text:#b9c3cf;--empty:#33414f;
     --nav-fg:#d6dde6;--nav-muted:#7d8a99;--nav-active-bg:#3ddc84;--nav-active-fg:#06130c;}
   @media screen{:root[data-theme="dark"] body{background:radial-gradient(900px 500px at 50% -10%,#0f1f1a 0%,#070a0d 55%,#000 100%);}}
+  /* ---- Extended History: timeline + sticky "subject" panel ---- */
+  .sheet.hist-page{overflow:visible;}   /* overflow:hidden on the sheet would defeat position:sticky */
+  .hist{display:flex;gap:7mm;margin-top:8px;align-items:flex-start;}
+  .htl{flex:1 1 auto;min-width:0;position:relative;padding-left:16px;}
+  .htl::before{content:"";position:absolute;left:4px;top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px;}
+  .hentry{position:relative;padding:6px 0 10px;scroll-margin-top:60px;}
+  .hentry::before{content:"";position:absolute;left:-16px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--muted);transition:.25s;}
+  .hentry.active::before{border-color:var(--green);background:var(--green);box-shadow:0 0 0 4px rgba(61,220,132,.18);}
+  .hentry.education::before{border-radius:2px;transform:rotate(45deg);}
+  .hdate{font-size:8px;color:var(--muted);}
+  .hentry.active .hdate{color:var(--green);}
+  .hentry h3{font-size:11.5px;font-weight:600;color:var(--fg);margin-top:2px;}
+  .hentry h3 .c{color:var(--cyan);}
+  .hentry .loc{font-size:8.2px;color:var(--muted);}
+  .hentry ul.pts{margin-top:3px;}
+  .subject{flex:0 0 56mm;position:sticky;top:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 11px;transition:opacity .18s;}
+  .subject.swap{opacity:.35;}
+  .sub-k{font-size:8px;color:var(--muted);} .sub-k .g{color:var(--green);} .sub-k .c{color:var(--cyan);} .sub-k .f{color:var(--amber);}
+  .sub-kind{font-size:7.4px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:8px;}
+  .sub-co{font-size:15px;font-weight:700;color:var(--fg);letter-spacing:-.3px;line-height:1.15;margin-top:2px;}
+  .sub-role{font-size:9.6px;font-weight:500;color:var(--cyan);margin-top:2px;}
+  .sub-when{font-size:8px;color:var(--green);margin-top:5px;}
+  .sub-loc{font-size:8.2px;color:var(--muted);margin-bottom:6px;}
+  .sub-h{font-size:8px;color:var(--muted);margin:9px 0 4px;}
+  .subject .dchips:empty::after{content:"—";color:var(--muted);font-size:8px;}
+  .sub-nav{list-style:none;margin:0;}
+  .sub-nav li{font-size:8.4px;color:var(--muted);padding:2px 0 2px 12px;position:relative;cursor:pointer;line-height:1.35;}
+  .sub-nav li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--line);}
+  .sub-nav li.active{color:var(--fg);font-weight:600;} .sub-nav li.active::before{background:var(--green);}
+  .sub-nav li:hover{color:var(--cyan);}
+  .sub-progress{height:3px;border-radius:2px;background:var(--line);margin-top:9px;overflow:hidden;}
+  .sub-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));transition:width .3s;}
   @view-transition{navigation:auto;}   /* smooth cross-fade between the site's pages (same shell everywhere) */
   .empty{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;}
   body{font-family:'Inter',system-ui,sans-serif;color:var(--text);font-size:10px;line-height:1.5;background:var(--bg);}
@@ -1151,7 +1301,7 @@ if __name__ == "__main__":
             os.makedirs(os.path.dirname(LIVE[1]), exist_ok=True)
             with open(LIVE[1], "w", encoding="utf-8") as f:
                 f.write(html)
-            print(f"wrote cv/index.html (from {fname})")
+            print(f"wrote index.html (from {fname})")
             # shell pieces for the Astro blog pages (same look, same header, same scripts)
             os.makedirs(SHELL_DIR, exist_ok=True)
             head = page("", v["fonts"], "", "")
@@ -1171,3 +1321,8 @@ if __name__ == "__main__":
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(page_html)
                 print(f"wrote {rel} ({active})")
+            for rel, target in REDIRECTS.items():
+                path = os.path.join(PUBLIC, rel); os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write(f'<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url={target}"><link rel="canonical" href="https://sergiowero.github.io{target}"><title>Redirecting…</title><a href="{target}">{target}</a>')
+                print(f"wrote {rel} → {target}")

@@ -4,10 +4,10 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 
 | Ruta | Sección | Origen |
 |---|---|---|
-| `/cv/` | Resume / CV | estático (`public/cv/index.html`, generado por `tools/gen.py`) |
-| `/` | About me | estático (placeholder con el nombre) |
-| `/history/` | Extended History | estático (placeholder con el nombre) |
+| `/` | Resume / CV | estático (`public/index.html`, generado por `tools/gen.py`; `/cv/` redirige aquí) |
+| `/history/` | Extended History | estático: línea de tiempo con panel lateral que sigue el scroll (`tools/gen.py` → `history_entries()`) |
 | `/blog/` | Blog | Astro: índice, páginas por tag (`/blog/tags/<tag>/`) y entradas (`/blog/<en|es>/<slug>/`) |
+| `/about/` | About me | estático (placeholder con el nombre) |
 
 Todas las páginas comparten el mismo cascarón (diseño "Dark Terminal"): fondo, hoja A4, encabezado con pestañas, ES/EN y claro/oscuro. El idioma y el tema se guardan en `localStorage` y se conservan entre páginas.
 
@@ -25,6 +25,18 @@ Todas las páginas comparten el mismo cascarón (diseño "Dark Terminal"): fondo
    ---
    ```
 3. `git push` → GitHub Actions construye y despliega (≈1 min).
+
+## Agregar entradas al historial (`/history/`)
+
+Los empleos de `JOBS` y la educación ya aparecen. Para añadir otra cosa (charla, proyecto, certificación…), agrega un dict a `EXTRA_HISTORY` en `tools/gen.py`:
+
+```python
+dict(kind="milestone", slug="mi-charla", role="Speaker", co="Nombre del evento",
+     frm="2023-05",            # "YYYY-MM"; agrega to="YYYY-MM" (o to=None = presente) si es un periodo
+     loc="Guadalajara, México", inds=["Community"], tech=["Unity"], pts=["Qué hice…"])
+```
+
+y corre `python3 tools/gen.py`. Las entradas se ordenan solas de la más reciente a la más antigua.
 
 ## Desarrollo local
 
