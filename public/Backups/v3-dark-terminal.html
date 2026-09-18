@@ -190,6 +190,12 @@
   .foot{margin-top:auto;padding-top:5px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:7.6px;color:var(--muted);display:flex;justify-content:space-between;}
   .foot .g{color:var(--green);}
 
+  .toolgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+  .toolcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 9px;}
+  .toolcard .tt{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--fg);}
+  .toolcard .tt::before{content:"> ";color:var(--green);}
+  .toolcard .td{font-size:8.4px;color:var(--body-text);margin-top:2px;line-height:1.4;}
+
 </style>
 </head>
 <body>

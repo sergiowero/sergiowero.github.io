@@ -11,6 +11,33 @@ LIVE = ("v3-dark-terminal.html", os.path.join(PUBLIC, "index.html"))   # the cho
 SHELL_DIR = os.path.join(ROOT, "src", "shell")   # the v3 shell exported for the Astro blog pages
 
 # The other site sections share the v3 shell (same background, sheet, header and theme/language state).
+ABOUT_BIO_EN = ("I'm Sergio Sánchez, a software engineer with over 15 years of experience across gaming, media, and "
+                "enterprise. I move between backend architecture, game systems, and developer tooling — wherever a "
+                "good idea needs to become something that actually ships. I've led teams of up to six engineers, "
+                "and lately spend a good part of my time figuring out how AI agents fit into that process without "
+                "losing rigor.")
+ABOUT_BIO_ES = ("Soy Sergio Sánchez, ingeniero de software con más de 15 años de experiencia en gaming, medios y "
+                "empresa. Me muevo entre arquitectura backend, sistemas de videojuegos y herramientas de "
+                "desarrollo — donde una buena idea necesita convertirse en algo que realmente funcione. He "
+                "liderado equipos de hasta seis ingenieros y, últimamente, dedico buena parte de mi tiempo a "
+                "integrar agentes de IA en ese proceso sin perder rigor.")
+
+TOOLBOX = [
+    ("VS Code", "General-purpose editor for scripts and web work.", "Editor de uso general para scripts y web."),
+    ("IntelliJ IDEA", "IDE for Java / Spring backends.", "IDE para backends en Java / Spring."),
+    ("Rider", ".NET and Unity3D IDE.", "IDE para .NET y Unity3D."),
+    ("Unity3D", "Game engine for the titles I've shipped.", "Motor de juego de los títulos que he lanzado."),
+    ("PostgreSQL", "Go-to relational database.", "Base de datos relacional de cabecera."),
+    ("AWS", "Cloud infrastructure for backend services.", "Infraestructura cloud para servicios backend."),
+    ("Git", "Version control, every day.", "Control de versiones, todos los días."),
+]
+
+def toolbox_html():
+    cards = "".join(
+        f'<div class="toolcard"><div class="tt">{name}</div><div class="td">{i18n(en, es)}</div></div>'
+        for name, en, es in TOOLBOX)
+    return f'<div class="toolgrid">{cards}</div>'
+
 SITE_PAGES = {
     "about/index.html": ("about", """<div class="sheet">
   $NAV$
@@ -18,8 +45,13 @@ SITE_PAGES = {
     <div>
       <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ whoami</div>
       <div class="name"><span id="typed">$NAME$</span><span class="cur"></span></div>
+      <div class="sub mono">Senior Software Engineer <span class="hl">/</span> Tech Lead <span class="hl">/</span> Backend &amp; Full-Stack <span class="hl">/</span> Game Dev <span class="hl">/</span> AI-Assisted</div>
     </div>
   </header>
+  <section><h2 class="sh">cat about.md</h2><p class="profile">$ABOUT_BIO$</p></section>
+  <section>$AI$</section>
+  <section><h2 class="sh">ls toolbox/</h2>$TOOLBOX$</section>
+  <section><h2 class="sh">cat contact.md</h2><div class="contact">$CONTACT$</div></section>
 </div>"""),
     "history/index.html": ("history", """<div class="sheet hist-page">
   $NAV$
@@ -444,6 +476,7 @@ def fill(tpl, active="cv"):
             .replace("$TECH$", chips_html(TECH)).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
             .replace("$TITLES$", titles_html()).replace("$EDU$", edu_html()).replace("$STATS$", stats_html())
             .replace("$PROFILE$", profile_html()).replace("$EXP$", experience_html())
+            .replace("$ABOUT_BIO$", i18n(ABOUT_BIO_EN, ABOUT_BIO_ES)).replace("$TOOLBOX$", toolbox_html())
             .replace("$NAME$", NAME).replace("$ROLE$", ROLE).replace("$TAG$", TAG))
 
 VERSIONS = {}
@@ -810,6 +843,12 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .edu .m{font-size:8.2px;color:var(--muted);}
   .foot{margin-top:auto;padding-top:5px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:7.6px;color:var(--muted);display:flex;justify-content:space-between;}
   .foot .g{color:var(--green);}
+
+  .toolgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+  .toolcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 9px;}
+  .toolcard .tt{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--fg);}
+  .toolcard .tt::before{content:"> ";color:var(--green);}
+  .toolcard .td{font-size:8.4px;color:var(--body-text);margin-top:2px;line-height:1.4;}
 """,
     body="""<div class="sheet">
   $NAV$
