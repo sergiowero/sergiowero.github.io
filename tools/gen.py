@@ -339,7 +339,7 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
 
 FLAG_MX = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8.7 5v14M15.3 5v14"/><circle cx="12" cy="12" r="1.6"/></svg>'
 FLAG_US = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 12h20M11 8.5h11M11 15.5H2M2 12v7"/><path d="M2 12h9V5"/></svg>'
-SECTIONS = [("cv", "/", "Resume", "Currículum"), ("history", "/history/", "Historial", "Historial"),
+SECTIONS = [("cv", "/", "Resume", "Currículum"), ("history", "/history/", "History", "Historial"),
             ("blog", "/blog/", "Blog", "Blog"), ("about", "/about/", "About me", "Sobre mí")]
 
 def i18n(en, es):
