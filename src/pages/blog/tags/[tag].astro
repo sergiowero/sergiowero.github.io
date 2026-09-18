@@ -1,0 +1,26 @@
+---
+import Shell from '../../../layouts/Shell.astro';
+import PostList from '../../../components/PostList.astro';
+import { getPosts, langOf, tagIndex, tagSlug } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return tagIndex(posts).map((t) => ({ params: { tag: t.slug }, props: { tag: t.tag } }));
+}
+const { tag } = Astro.props;
+const posts = (await getPosts()).filter((p) => p.data.tags.some((t) => tagSlug(t) === tagSlug(tag)));
+const en = posts.filter((p) => langOf(p) === 'en');
+const es = posts.filter((p) => langOf(p) === 'es');
+---
+<Shell title={`#${tag} — Blog`} description={`Posts tagged ${tag}`}>
+  <section class="blog">
+    <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ grep -rl <span class="f">"#{tag}"</span> blog/</div>
+    <h1 class="name">#{tag}<span class="cur"></span></h1>
+    <div class="sub">
+      <span class="i18n-en">{en.length} post{en.length === 1 ? '' : 's'} · <a href="/blog/">all posts</a></span>
+      <span class="i18n-es">{es.length} entrada{es.length === 1 ? '' : 's'} · <a href="/blog/">todas las entradas</a></span>
+    </div>
+    <div class="i18n-en"><PostList posts={en} lang="en" /></div>
+    <div class="i18n-es"><PostList posts={es} lang="es" /></div>
+  </section>
+</Shell>

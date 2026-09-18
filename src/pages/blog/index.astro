@@ -1,0 +1,30 @@
+---
+import Shell from '../../layouts/Shell.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts, langOf, tagIndex } from '../../lib/blog';
+
+const posts = await getPosts();
+const en = posts.filter((p) => langOf(p) === 'en');
+const es = posts.filter((p) => langOf(p) === 'es');
+const tags = tagIndex(posts);
+---
+<Shell title="Sergio Sanchez — Blog" description="Notes on software, games and AI-assisted engineering.">
+  <section class="blog">
+    <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ ls -l <span class="f">blog/</span></div>
+    <h1 class="name">Blog<span class="cur"></span></h1>
+    <div class="sub">
+      <span class="i18n-en">Notes on software, games and AI-assisted engineering.</span>
+      <span class="i18n-es">Notas sobre software, videojuegos e ingeniería asistida por IA.</span>
+    </div>
+
+    {tags.length > 0 && (
+      <div class="tags-row">
+        <span class="i18n-en">{tags.filter((t) => t.count.en).map((t) => <a class="tag" href={`/blog/tags/${t.slug}/`}>{t.tag}<span class="n">{t.count.en}</span></a>)}</span>
+        <span class="i18n-es">{tags.filter((t) => t.count.es).map((t) => <a class="tag" href={`/blog/tags/${t.slug}/`}>{t.tag}<span class="n">{t.count.es}</span></a>)}</span>
+      </div>
+    )}
+
+    <div class="i18n-en"><PostList posts={en} lang="en" /></div>
+    <div class="i18n-es"><PostList posts={es} lang="es" /></div>
+  </section>
+</Shell>

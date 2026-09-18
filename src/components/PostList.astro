@@ -1,0 +1,23 @@
+---
+import { formatDate, langOf, tagSlug, urlOf, type Post } from '../lib/blog';
+interface Props { posts: Post[]; lang: 'en' | 'es'; }
+const { posts, lang } = Astro.props;
+---
+{posts.length === 0 ? (
+  <p class="empty">total 0</p>
+) : (
+  <div class="posts">
+    {posts.map((p) => (
+      <article class="post">
+        <div class="when">{formatDate(p.data.pubDate, langOf(p))}</div>
+        <div>
+          <h2><a href={urlOf(p)}>{p.data.title}</a></h2>
+          {p.data.description && <p>{p.data.description}</p>}
+          {p.data.tags.length > 0 && (
+            <div class="tags-row">{p.data.tags.map((t) => <a class="tag" href={`/blog/tags/${tagSlug(t)}/`}>{t}</a>)}</div>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+)}

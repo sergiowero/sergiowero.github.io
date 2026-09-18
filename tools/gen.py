@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
+import re
 """Generates the A4-sheet CV variants (v2-v4, v6-v9) from shared data.
 v1 and v5 are hand-written and left untouched."""
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, "Backups")          # all variants
-LIVE = ("v3-dark-terminal.html", os.path.join(ROOT, "cv", "index.html"))   # the chosen design, published at /cv/
+PUBLIC = os.path.join(ROOT, "public")        # static files, copied as-is by Astro
+OUT = os.path.join(PUBLIC, "Backups")        # all variants
+LIVE = ("v3-dark-terminal.html", os.path.join(PUBLIC, "cv", "index.html"))   # the chosen design, published at /cv/
+SHELL_DIR = os.path.join(ROOT, "src", "shell")   # the v3 shell exported for the Astro blog pages
 
 # The other site sections share the v3 shell (same background, sheet, header and theme/language state).
 SITE_PAGES = {
@@ -26,16 +29,6 @@ SITE_PAGES = {
       <div class="name"><span id="typed">$NAME$</span><span class="cur"></span></div>
     </div>
   </header>
-</div>"""),
-    "blog/index.html": ("blog", """<div class="sheet">
-  $NAV$
-  <header class="top">
-    <div>
-      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ ls -l <span class="f">blog/</span></div>
-      <div class="name"><span id="typed">Blog</span><span class="cur"></span></div>
-    </div>
-  </header>
-  <p class="empty">total 0</p>
 </div>"""),
 }
 
@@ -204,14 +197,21 @@ FIT_JS = """<script>
     el.appendChild(d);
   });
 })();
-/* Language switch: remembered across pages (content is English-only for now) */
+/* Language switch (ES/EN): remembered across pages; header labels swap via html[data-lang];
+   on a page that has a translation (body[data-alt-es|en]) it navigates to it */
 (function(){
   var KEY='cv-lang';
-  function apply(l){document.querySelectorAll('[data-lang]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-lang')===l);});}
+  function apply(l){
+    if(l==='es') document.documentElement.setAttribute('data-lang','es'); else document.documentElement.removeAttribute('data-lang');
+    document.querySelectorAll('[data-lang]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-lang')===l);});
+  }
   var saved='en'; try{saved=localStorage.getItem(KEY)||'en';}catch(e){}
   apply(saved);
   document.querySelectorAll('[data-lang]').forEach(function(el){
-    el.addEventListener('click',function(){var l=el.getAttribute('data-lang');apply(l);try{localStorage.setItem(KEY,l);}catch(e){}});
+    el.addEventListener('click',function(){
+      var l=el.getAttribute('data-lang'); apply(l); try{localStorage.setItem(KEY,l);}catch(e){}
+      var alt=document.body.getAttribute('data-alt-'+l); if(alt) location.href=alt;
+    });
   });
 })();
 /* Fits the A4 sheet to the available width: grows on wide screens (up to 1.5x)
@@ -264,6 +264,7 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
   .site-nav .tab{padding:4px 7px;border-radius:6px;font-size:8.4px;font-weight:500;color:var(--nav-muted);cursor:default;user-select:none;letter-spacing:.2px;white-space:nowrap;}
   .site-nav .tab.active{background:var(--nav-active-bg);color:var(--nav-active-fg);font-weight:700;}
   .site-nav a.tab{cursor:pointer;} .site-nav .tab:hover:not(.active){color:var(--nav-fg);}
+  html[data-lang="es"] .i18n-en{display:none !important;} html:not([data-lang="es"]) .i18n-es{display:none !important;}
   .site-nav .grp{display:flex;align-items:center;gap:1px;}
   .site-nav .grp .tab{padding:4px 6px;cursor:pointer;}
   .site-nav .grp .slash{color:var(--nav-muted);font-size:8.6px;opacity:.6;padding:0 1px;}
@@ -272,19 +273,23 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
 
 FLAG_MX = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8.7 5v14M15.3 5v14"/><circle cx="12" cy="12" r="1.6"/></svg>'
 FLAG_US = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 12h20M11 8.5h11M11 15.5H2M2 12v7"/><path d="M2 12h9V5"/></svg>'
-SECTIONS = [("about", "About me", "/"), ("cv", "Resume / CV", "/cv/"), ("history", "Extended History", "/history/"), ("blog", "Blog", "/blog/")]
+SECTIONS = [("cv", "/cv/", "Resume / CV", "Currículum"), ("about", "/", "About me", "Sobre mí"),
+            ("history", "/history/", "Extended History", "Historial extendido"), ("blog", "/blog/", "Blog", "Blog")]
+
+def i18n(en, es):
+    return f'<span class="i18n-en">{en}</span><span class="i18n-es">{es}</span>'
 
 def nav_html(active="cv"):
     tabs = "".join(
-        f'\n    <a class="tab{" active" if key == active else ""}" href="{href}"{" aria-current=\"page\"" if key == active else ""}>{label}</a>'
-        for key, label, href in SECTIONS)
-    return NAV_TPL.replace("$TABS$", tabs)
+        f'\n    <a class="tab{" active" if key == active else ""}" href="{href}"{" aria-current=\"page\"" if key == active else ""}>{i18n(en, es)}</a>'
+        for key, href, en, es in SECTIONS)
+    return NAV_TPL.replace("$TABS$", tabs).replace("$T_DARK$", i18n("Dark", "Oscuro")).replace("$T_LIGHT$", i18n("Light", "Claro"))
 
 NAV_TPL = """<header class="site-nav" aria-label="Site sections">
   <nav class="tabs">$TABS$
   </nav>
   <div class="grp lang" aria-label="Language (visual only)"><span class="tab" data-lang="es">$FLAG_ES$ES</span><span class="slash">/</span><span class="tab active" data-lang="en">$FLAG_EN$EN</span></div>
-  <div class="grp theme" aria-label="Theme"><span class="tab$DARK$" data-set-theme="dark"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>Dark</span><span class="slash">/</span><span class="tab$LIGHT$" data-set-theme="light"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Light</span></div>
+  <div class="grp theme" aria-label="Theme"><span class="tab$DARK$" data-set-theme="dark"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>$T_DARK$</span><span class="slash">/</span><span class="tab$LIGHT$" data-set-theme="light"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>$T_LIGHT$</span></div>
 </header>"""
 
 def page(title, fonts, css, body):
@@ -293,7 +298,7 @@ def page(title, fonts, css, body):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){{try{{if(localStorage.getItem('cv-theme')==='light')document.documentElement.setAttribute('data-theme','light');}}catch(e){{}}}})();</script>
+<script>(function(){{try{{var d=document.documentElement;if(localStorage.getItem('cv-theme')==='light')d.setAttribute('data-theme','light');if(localStorage.getItem('cv-lang')==='es')d.setAttribute('data-lang','es');}}catch(e){{}}}})();</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -1145,11 +1150,21 @@ if __name__ == "__main__":
             with open(LIVE[1], "w", encoding="utf-8") as f:
                 f.write(html)
             print(f"wrote cv/index.html (from {fname})")
+            # shell pieces for the Astro blog pages (same look, same header, same scripts)
+            os.makedirs(SHELL_DIR, exist_ok=True)
+            head = page("", v["fonts"], "", "")
+            head = head[head.index('<script>'):head.index('<style>')]   # pre-paint theme/lang script, favicons, fonts
+            head = re.sub(r"<title></title>\n|<meta name=\"description\"[^>]*>\n", "", head)   # the layout sets those per page
+            scripts = re.sub(r"</?script>", "", FIT_JS + "\n" + v.get("extra_js", ""))
+            for name, content in {"shell.css": BASE_CSS + "\n" + css, "head.html": head, "header.html": finish_body(nav_html("blog"), v), "shell.js": scripts}.items():
+                with open(os.path.join(SHELL_DIR, name), "w", encoding="utf-8") as f:
+                    f.write(content)
+            print("wrote src/shell/{shell.css,head.html,header.html,shell.js}")
             # the other sections, same shell
             for rel, (active, tpl) in SITE_PAGES.items():
                 body = finish_body(fill(tpl, active=active), v) + "\n" + v.get("extra_js", "")
                 page_html = page(v["title"], v["fonts"], css, body)
-                path = os.path.join(ROOT, rel)
+                path = os.path.join(PUBLIC, rel)
                 os.makedirs(os.path.dirname(path), exist_ok=True)
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(page_html)
