@@ -229,11 +229,11 @@
   var KEY='cv-lang';
   function apply(l){
     if(l==='es') document.documentElement.setAttribute('data-lang','es'); else document.documentElement.removeAttribute('data-lang');
-    document.querySelectorAll('[data-lang]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-lang')===l);});
+    document.querySelectorAll('.tab[data-lang]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-lang')===l);});
   }
   var saved='en'; try{saved=localStorage.getItem(KEY)||'en';}catch(e){}
   apply(saved);
-  document.querySelectorAll('[data-lang]').forEach(function(el){
+  document.querySelectorAll('.tab[data-lang]').forEach(function(el){
     el.addEventListener('click',function(){
       var l=el.getAttribute('data-lang'); apply(l); try{localStorage.setItem(KEY,l);}catch(e){}
       var alt=document.body.getAttribute('data-alt-'+l); if(alt) location.href=alt;
