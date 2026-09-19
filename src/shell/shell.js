@@ -146,17 +146,18 @@
 })();
 
 
-/* Dark / light toggle from the header; the choice is remembered in localStorage */
+/* Dark / light toggle from the header (one button, sun or moon via CSS); the choice is remembered in localStorage */
 (function(){
   var KEY='cv-theme';
   function apply(t){
     if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); else document.documentElement.removeAttribute('data-theme');
-    document.querySelectorAll('[data-set-theme]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-set-theme')===(t==='dark'?'dark':'light'));});
+    var hint=t==='dark'?'Switch to light':'Switch to dark';
+    document.querySelectorAll('[data-toggle-theme]').forEach(function(el){el.title=hint;el.setAttribute('aria-label',hint);});
   }
   var saved=null; try{saved=localStorage.getItem(KEY);}catch(e){}
   apply(saved||'light');
-  document.querySelectorAll('[data-set-theme]').forEach(function(el){
-    el.addEventListener('click',function(){var t=el.getAttribute('data-set-theme');apply(t);try{localStorage.setItem(KEY,t);}catch(e){}});
+  document.querySelectorAll('[data-toggle-theme]').forEach(function(el){
+    el.addEventListener('click',function(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';apply(t);try{localStorage.setItem(KEY,t);}catch(e){}});
   });
 })();
 

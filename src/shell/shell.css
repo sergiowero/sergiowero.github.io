@@ -28,6 +28,9 @@
   .site-nav .grp .slash{color:var(--nav-muted);font-size:8.6px;opacity:.6;padding:0 1px;}
   .site-nav .grp .tab svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1.5px;margin-right:3px;}
   .site-nav .theme .tab{padding:4px 5px;} .site-nav .theme .tab svg{width:11px;height:11px;margin-right:0;vertical-align:-2px;}
+  /* one button: the sun in light mode, the moon in dark mode (html[data-theme] is set before paint, see <head>) */
+  .site-nav .theme button.tab{background:none;border:0;font:inherit;line-height:inherit;color:var(--nav-muted);}
+  .site-nav .theme .moon{display:none;} :root[data-theme="dark"] .site-nav .theme .sun{display:none;} :root[data-theme="dark"] .site-nav .theme .moon{display:inline;}
   /* download the CV: fixed to the viewport so it never shrinks with the sheet (see public/cv-export.js) */
   .dl-fab{position:fixed;right:18px;bottom:18px;z-index:40;display:flex;align-items:center;gap:8px;font-family:var(--nav-font,inherit);}
   .dl-fab .dl-k{font-size:11px;color:var(--nav-muted);margin-right:2px;}
