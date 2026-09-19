@@ -555,8 +555,16 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
   .site-nav .grp .slash{color:var(--nav-muted);font-size:8.6px;opacity:.6;padding:0 1px;}
   .site-nav .grp .tab svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1.5px;margin-right:3px;}
   .site-nav .theme .tab{padding:4px 5px;} .site-nav .theme .tab svg{width:11px;height:11px;margin-right:0;vertical-align:-2px;}
-  .site-nav .grp button.tab{background:none;border:0;font:inherit;line-height:inherit;color:var(--nav-muted);}
-  .site-nav .grp button.tab:hover{color:var(--nav-fg);}
+  /* download the CV: fixed to the viewport so it never shrinks with the sheet (see public/cv-export.js) */
+  .dl-fab{position:fixed;right:18px;bottom:18px;z-index:40;display:flex;align-items:center;gap:8px;font-family:var(--nav-font,inherit);}
+  .dl-fab .dl-k{font-size:11px;color:var(--nav-muted);margin-right:2px;}
+  .dl-fab .dl-k::before{content:"// ";opacity:.7;}
+  .dl-fab button{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:12.5px;font-weight:700;letter-spacing:.3px;
+    padding:11px 15px;border-radius:999px;border:0;cursor:pointer;background:var(--nav-active-bg);color:var(--nav-active-fg);
+    box-shadow:0 12px 28px -8px rgba(0,0,0,.6),0 2px 6px rgba(0,0,0,.25);transition:transform .12s,filter .12s;}
+  .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
+  .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+  @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
   /* asked before printing the dark CV (see public/cv-export.js) */
   .dlg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;}
   .dlg-box{background:var(--panel,#fff);border:1px solid var(--line,#d0d7de);border-radius:10px;padding:16px 18px;max-width:390px;
@@ -566,7 +574,7 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
   .dlg-btns button{font:inherit;font-size:11px;padding:6px 10px;border-radius:6px;border:1px solid var(--line,#d0d7de);
     background:transparent;color:var(--text,#1f2328);cursor:pointer;}
   .dlg-btns button.primary{background:var(--green,#1a7f37);border-color:var(--green,#1a7f37);color:#fff;font-weight:600;}
-  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dlg{display:none !important;}}"""
+  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dlg,.dl-fab{display:none !important;}}"""
 
 FLAG_MX = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8.7 5v14M15.3 5v14"/><circle cx="12" cy="12" r="1.6"/></svg>'
 FLAG_US = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 12h20M11 8.5h11M11 15.5H2M2 12v7"/><path d="M2 12h9V5"/></svg>'
@@ -591,24 +599,24 @@ LABELS = {
 }
 
 DL_ICON = '<svg viewBox="0 0 24 24"><path d="M12 3v11M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>'
-DL_TPL = ('<div class="grp dl" aria-label="$DL_LABEL$"><button class="tab" type="button" data-export="pdf">'
-          f'{DL_ICON}PDF</button><span class="slash">/</span>'
-          '<button class="tab" type="button" data-export="docx">DOCX</button></div>')
+# Fixed to the viewport, outside the sheet, so it keeps its size on every screen (the sheet is CSS-zoomed);
+# display:none when printing, so it never reaches the PDF.
+DOWNLOAD_TPL = ('<div class="dl-fab" role="group" aria-label="Download CV / Descargar CV">'
+                f'<span class="dl-k">{i18n("download", "descargar")}</span>'
+                f'<button type="button" data-export="pdf">{DL_ICON}PDF</button>'
+                f'<button type="button" data-export="docx">{DL_ICON}DOCX</button></div>')
 
 def nav_html(active="cv"):
     tabs = "".join(
         f'\n    <a class="tab{" active" if key == active else ""}" href="{href}"{" aria-current=\"page\"" if key == active else ""}>{i18n(en, es)}</a>'
         for key, href, en, es in SECTIONS)
-    # the CV is the only page you download; .site-nav is display:none when printing, so it never reaches the PDF
-    dl = DL_TPL.replace("$DL_LABEL$", "Download CV / Descargar CV") if active == "cv" else ""
-    return NAV_TPL.replace("$TABS$", tabs).replace("$DL$", dl)
+    return NAV_TPL.replace("$TABS$", tabs)
 
 NAV_TPL = """<header class="site-nav" aria-label="Site sections">
   <nav class="tabs">$TABS$
   </nav>
   <div class="grp lang" aria-label="Language (visual only)"><span class="tab" data-lang="es">$FLAG_ES$ES</span><span class="slash">/</span><span class="tab active" data-lang="en">$FLAG_EN$EN</span></div>
   <div class="grp theme" aria-label="Theme"><span class="tab$DARK$" data-set-theme="dark" title="Dark" aria-label="Dark"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span><span class="slash">/</span><span class="tab$LIGHT$" data-set-theme="light" title="Light" aria-label="Light"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></div>
-  $DL$
 </header>"""
 
 def page(title, fonts, css, body):
@@ -642,7 +650,8 @@ window.cvLang=function(){{return document.documentElement.getAttribute('data-lan
 def fill(tpl, active="cv"):
     for key, label in LABELS.items():
         tpl = tpl.replace(key, h(label))
-    return (tpl.replace("$NAV$", nav_html(active)).replace("$CVDATA$", cv_data_html()).replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html())
+    return (tpl.replace("$NAV$", nav_html(active)).replace("$CVDATA$", cv_data_html())
+            .replace("$DOWNLOAD$", DOWNLOAD_TPL if active == "cv" else "").replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html())
             .replace("$I18N_HISTORY_SUB$", i18n("Everything so far, newest first — scroll and the panel on the right follows.", "Todo hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html())
             .replace("$TECH$", chips_html(TECH)).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
             .replace("$TITLES$", titles_html()).replace("$EDU$", edu_html()).replace("$STATS$", stats_html())
@@ -1065,7 +1074,8 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   </div>
   <div class="foot"><span><span class="g">➜</span> exit 0 · $NAME$</span><span>sergiowero.github.io</span></div>
   $CVDATA$
-</div>""")
+</div>
+$DOWNLOAD$""")
 
 # =================================================================== v4 BENTO GRID (A4)
 VERSIONS["v4-bento-grid.html"] = dict(
