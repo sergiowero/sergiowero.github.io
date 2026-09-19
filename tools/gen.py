@@ -410,13 +410,6 @@ DOC_LABELS = {
     "education": T("Education", "Educación"),
     "present": T("Present", "Actualidad"),
     "yr": T(" yr", " año"), "yrs": T(" yrs", " años"), "mo": T(" mo", " mes"), "mos": T(" mos", " meses"),
-    "pdfHint": T("You are on the dark theme. Browsers print without backgrounds unless you tick "
-                 "<b>Background graphics</b> in the print dialog — the dark CV would come out unreadable.",
-                 "Estás en tema oscuro. El navegador imprime sin fondos a menos que actives "
-                 "<b>Gráficos de fondo</b> en el diálogo — el CV oscuro saldría ilegible."),
-    "pdfLight": T("Print in light", "Imprimir en claro"),
-    "pdfDark": T("Keep dark", "Continuar en oscuro"),
-    "cancel": T("Cancel", "Cancelar"),
 }
 
 def cv_data_json():
@@ -568,16 +561,7 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
   @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
-  /* asked before printing the dark CV (see public/cv-export.js) */
-  .dlg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;}
-  .dlg-box{background:var(--panel,#fff);border:1px solid var(--line,#d0d7de);border-radius:10px;padding:16px 18px;max-width:390px;
-    color:var(--text,#1f2328);font-size:12px;line-height:1.5;box-shadow:0 20px 50px rgba(0,0,0,.4);}
-  .dlg-box b{color:var(--fg,#0b1220);font-weight:700;}
-  .dlg-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;justify-content:flex-end;}
-  .dlg-btns button{font:inherit;font-size:11px;padding:6px 10px;border-radius:6px;border:1px solid var(--line,#d0d7de);
-    background:transparent;color:var(--text,#1f2328);cursor:pointer;}
-  .dlg-btns button.primary{background:var(--green,#1a7f37);border-color:var(--green,#1a7f37);color:#fff;font-weight:600;}
-  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dlg,.dl-fab{display:none !important;}}"""
+  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dl-fab{display:none !important;}}"""
 
 FLAG_MX = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8.7 5v14M15.3 5v14"/><circle cx="12" cy="12" r="1.6"/></svg>'
 FLAG_US = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 12h20M11 8.5h11M11 15.5H2M2 12v7"/><path d="M2 12h9V5"/></svg>'

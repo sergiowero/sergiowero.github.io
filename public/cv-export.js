@@ -19,7 +19,9 @@
   function fileBase() { return 'Sergio-Sanchez-CV-' + lang().toUpperCase(); }
 
   // ---------------------------------------------------------------- PDF (print dialog)
-  function printNow() {
+  /* Prints exactly what is on screen — current theme and language. The page sets
+     print-color-adjust:exact on <html>, so the dark background survives the print dialog too. */
+  function exportPDF() {
     var prev = document.title;
     document.title = fileBase();   // browsers propose the document title as the PDF file name
     window.addEventListener('afterprint', function restore() {
@@ -27,49 +29,6 @@
       window.removeEventListener('afterprint', restore);
     });
     window.print();
-  }
-
-  function printAsLight() {
-    var root = document.documentElement;
-    if (root.getAttribute('data-theme') !== 'dark') return printNow();
-    root.removeAttribute('data-theme');
-    window.addEventListener('afterprint', function restore() {
-      root.setAttribute('data-theme', 'dark');
-      window.removeEventListener('afterprint', restore);
-    });
-    printNow();
-  }
-
-  /* Printing the dark CV only works if the reader ticks "Background graphics", which is off by
-     default — without it the light text lands on white paper. So the dark theme asks first. */
-  function askAboutDark() {
-    var box = document.createElement('div');
-    box.className = 'dlg';
-    box.innerHTML =
-      '<div class="dlg-box" role="dialog" aria-modal="true">' +
-      '<p>' + L(CV.labels.pdfHint) + '</p>' +   // carries <b>, so it goes in as markup
-      '<div class="dlg-btns">' +
-      '<button type="button" data-pd="light" class="primary">' + label('pdfLight') + '</button>' +
-      '<button type="button" data-pd="dark">' + label('pdfDark') + '</button>' +
-      '<button type="button" data-pd="cancel">' + label('cancel') + '</button>' +
-      '</div></div>';
-    box.addEventListener('click', function (ev) {
-      var act = ev.target.getAttribute && ev.target.getAttribute('data-pd');
-      if (!act && ev.target !== box) return;
-      box.remove();
-      if (act === 'light') printAsLight();
-      else if (act === 'dark') printNow();
-    });
-    document.addEventListener('keydown', function esc(ev) {
-      if (ev.key === 'Escape') { box.remove(); document.removeEventListener('keydown', esc); }
-    });
-    document.body.appendChild(box);
-    box.querySelector('[data-pd="light"]').focus();
-  }
-
-  function exportPDF() {
-    if (document.documentElement.getAttribute('data-theme') === 'dark') askAboutDark();
-    else printNow();
   }
 
   // ---------------------------------------------------------------- zip (stored, no compression)

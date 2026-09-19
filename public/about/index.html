@@ -57,16 +57,7 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
   @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
-  /* asked before printing the dark CV (see public/cv-export.js) */
-  .dlg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;}
-  .dlg-box{background:var(--panel,#fff);border:1px solid var(--line,#d0d7de);border-radius:10px;padding:16px 18px;max-width:390px;
-    color:var(--text,#1f2328);font-size:12px;line-height:1.5;box-shadow:0 20px 50px rgba(0,0,0,.4);}
-  .dlg-box b{color:var(--fg,#0b1220);font-weight:700;}
-  .dlg-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;justify-content:flex-end;}
-  .dlg-btns button{font:inherit;font-size:11px;padding:6px 10px;border-radius:6px;border:1px solid var(--line,#d0d7de);
-    background:transparent;color:var(--text,#1f2328);cursor:pointer;}
-  .dlg-btns button.primary{background:var(--green,#1a7f37);border-color:var(--green,#1a7f37);color:#fff;font-weight:600;}
-  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dlg,.dl-fab{display:none !important;}}
+  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dl-fab{display:none !important;}}
   :root{--nav-bg:transparent;--nav-line:transparent;--nav-fg:#1f2328;--nav-muted:#6e7781;--nav-active-bg:#1a7f37;--nav-active-fg:#fff;--nav-font:'JetBrains Mono',Menlo,monospace;}
 
   /* light mode is the default */

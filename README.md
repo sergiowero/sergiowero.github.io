@@ -15,8 +15,7 @@ Todas las páginas comparten el mismo cascarón (diseño "Dark Terminal"): fondo
 
 Los botones **PDF** y **DOCX** fijos abajo a la derecha (solo en `/`; viven fuera de la hoja para no escalarse con ella) bajan el CV en el idioma que estés viendo. Todo ocurre en el navegador — GitHub Pages solo sirve archivos estáticos. El encabezado del sitio nunca sale en la descarga: `@media print` lo oculta y el DOCX se arma desde los datos, no desde la página.
 
-- **PDF** — abre el diálogo de impresión del navegador (Guardar como PDF). Sale una hoja A4 exacta, con el texto seleccionable y legible por los filtros ATS de los reclutadores. El nombre propuesto es `Sergio-Sanchez-CV-EN.pdf` / `-ES.pdf`.
-  En tema oscuro pregunta antes: el navegador imprime sin fondos salvo que actives *Gráficos de fondo*, así que ofrece imprimir en claro (recomendado) o seguir en oscuro.
+- **PDF** — abre el diálogo de impresión del navegador (Guardar como PDF) con el tema y el idioma que estén en pantalla, sin preguntar nada. Sale una hoja A4 exacta, con el texto seleccionable y legible por los filtros ATS de los reclutadores. El nombre propuesto es `Sergio-Sanchez-CV-EN.pdf` / `-ES.pdf`. El fondo oscuro se conserva gracias a `print-color-adjust: exact` en `html`.
 - **DOCX** — genera el `.docx` en el navegador ([`public/cv-export.js`](public/cv-export.js) escribe el OOXML y el zip a mano, sin dependencias). Siempre en claro, porque es un documento para editar e imprimir.
 
 El CV cabe en **una sola hoja A4 en los dos idiomas** (1123 px). Si agregas texto, verifica que siga cupiendo: el español suele ocupar ~15 % más.
