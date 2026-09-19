@@ -87,7 +87,7 @@ SITE_PAGES = {
       <section><h2 class="sh">$L_CONTACT$</h2><div class="contact">$CONTACT$</div></section>
     </main>
     <aside class="aside">
-      <div class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>photo.jpg</span></div>
+      <img class="avatar" src="/about/photo.jpg" alt="Sergio Sánchez at the Golden Gate Bridge" width="800" height="800">
     </aside>
   </div>
 </div>"""),
@@ -1029,12 +1029,9 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .toolcard .tt::before{content:"> ";color:var(--green);}
   .toolcard .td{font-size:8.4px;color:var(--body-text);margin-top:2px;line-height:1.4;}
 
-  /* profile photo placeholder — same 4:5 portrait ratio as the reference page, swap for a real <img> later */
-  .avatar{aspect-ratio:4/5;background:var(--panel);border:1px dashed var(--line);border-radius:10px;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);}
-  .avatar svg{width:32%;height:auto;stroke:var(--muted);}
-  .avatar span{font-family:'JetBrains Mono',monospace;font-size:7.6px;letter-spacing:.2px;}
-  .avatar span::before{content:"// ";}
+  /* profile photo — 4:5 portrait like the reference page; the square source is cropped, keeping the face on the left */
+  .avatar{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:35% 50%;
+    border:1px solid var(--line);border-radius:10px;background:var(--panel);}
 """,
     body="""<div class="sheet">
   $NAV$

@@ -211,12 +211,9 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .toolcard .tt::before{content:"> ";color:var(--green);}
   .toolcard .td{font-size:8.4px;color:var(--body-text);margin-top:2px;line-height:1.4;}
 
-  /* profile photo placeholder — same 4:5 portrait ratio as the reference page, swap for a real <img> later */
-  .avatar{aspect-ratio:4/5;background:var(--panel);border:1px dashed var(--line);border-radius:10px;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);}
-  .avatar svg{width:32%;height:auto;stroke:var(--muted);}
-  .avatar span{font-family:'JetBrains Mono',monospace;font-size:7.6px;letter-spacing:.2px;}
-  .avatar span::before{content:"// ";}
+  /* profile photo — 4:5 portrait like the reference page; the square source is cropped, keeping the face on the left */
+  .avatar{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:35% 50%;
+    border:1px solid var(--line);border-radius:10px;background:var(--panel);}
 
 </style>
 </head>
@@ -251,7 +248,7 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
 <div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 19c-4.5 1.5-4.5-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg><a href="https://github.com/sergiowero" target="_blank" rel="noopener noreferrer">github.com/sergiowero</a></div></div></section>
     </main>
     <aside class="aside">
-      <div class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>photo.jpg</span></div>
+      <img class="avatar" src="/about/photo.jpg" alt="Sergio Sánchez at the Golden Gate Bridge" width="800" height="800">
     </aside>
   </div>
 </div>
