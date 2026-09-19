@@ -91,7 +91,7 @@
   function ym(s){var p=s.split('-');return {y:+p[0],m:+p[1]};}
   function label(s){var d=ym(s);return M[window.cvLang()][d.m-1]+' '+d.y;}
   function when(e){
-    if(!e.frm) return '';
+    if(!e.frm) return e.dur?L(e.dur):'';
     if(e.to==='single') return label(e.frm);
     var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
     var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
@@ -166,12 +166,12 @@
 (function(){
   function draw(){
     document.querySelectorAll('.sk-dots').forEach(function(el){
-      var lvl=+el.parentElement.getAttribute('data-lvl')||0;
+      var lvl=+el.parentElement.getAttribute('data-lvl')||0, max=+el.parentElement.getAttribute('data-max')||10;
       var probe=document.createElement('span'); probe.textContent='██████████'; probe.style.cssText='position:absolute;visibility:hidden;white-space:pre;font:inherit;';
       el.appendChild(probe); var cw=probe.getBoundingClientRect().width/10; probe.remove();
       var w=el.getBoundingClientRect().width;   // same (zoomed) units as the probe
       if(!cw||!w) return;
-      var n=Math.min(80,Math.floor(w/cw)-2), f=Math.round(n*lvl/5);
+      var n=Math.min(80,Math.floor(w/cw)-2), f=Math.round(n*lvl/max);
       if(n<3) return;
       el.className='sk-dots ascii';
       el.innerHTML='<span class="b">[</span><span class="f">'+'█'.repeat(f)+'</span><span class="e">'+'░'.repeat(n-f)+'</span><span class="b">]</span>';

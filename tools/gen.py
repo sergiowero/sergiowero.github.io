@@ -162,9 +162,68 @@ JOBS = [
                        T("Leveraged AI tooling to accelerate development cycles and enhance code quality.",
                          "Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código.")]),
              dict(kind="project", slug="wizeline-media", role=T("Media &amp; Entertainment Industry — Tech Lead", "Industria de medios y entretenimiento — Tech Lead"), co="Fox Corp", loc=REMOTE, inds=[T("Media &amp; Entertainment", "Medios y Entretenimiento")],
-                  tech=["Java", "Spring", "Node.js", "AWS", "PostgreSQL"],
+                  dur=T("3 yrs", "3 años"),
+                  facts=[(T("Team", "Equipo"), T("5 engineers", "5 ingenieros")),
+                         (T("Cloud"), "AWS"),
+                         (T("Data", "Datos"), "PostgreSQL")],
+                  tech=["Java 8", "Java 11", "Spring Boot", "JavaScript", "Node.js", "AWS Lambda", "Amazon SNS",
+                        "Amazon SQS", "Amazon ECS", "CloudWatch", "PostgreSQL"],
+                  lede=T("Three years on Wizeline's engagement with Fox Corp, as Tech Lead of a squad of five engineers. "
+                         "Two kinds of services shared one AWS messaging layer: serverless workers written in JavaScript, "
+                         "and Java applications running on containers.",
+                         "Tres años en el proyecto de Wizeline con Fox Corp, como Tech Lead de un equipo de cinco ingenieros. "
+                         "Dos tipos de servicios compartían una misma capa de mensajería en AWS: workers serverless escritos en "
+                         "JavaScript y aplicaciones Java corriendo en contenedores."),
                   pts=[T("Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders.",
-                         "Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos.")]),
+                         "Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos.")],
+                  groups=[
+                      dict(h=T("AWS &amp; service-to-service messaging", "AWS y mensajería entre servicios"), pts=[
+                          T("<b>SNS</b> and <b>SQS</b> were the connective tissue of the platform: services published and consumed messages instead of calling each other directly.",
+                            "<b>SNS</b> y <b>SQS</b> eran el tejido conectivo de la plataforma: los servicios publicaban y consumían mensajes en vez de llamarse directamente entre sí."),
+                          T("The same messaging layer carried the integrations with <b>external systems</b> — services owned by clients and by other companies we worked with.",
+                            "Esa misma capa de mensajería llevaba las integraciones con <b>sistemas externos</b>: servicios de clientes y de otras empresas con las que trabajábamos."),
+                          T("Anything that could be processed asynchronously was modelled as a queue, so producers and consumers could move at their own pace.",
+                            "Todo lo que podía procesarse de forma asíncrona se modelaba como una cola, de modo que productores y consumidores avanzaran a su propio ritmo."),
+                      ]),
+                      dict(h=T("Serverless services in JavaScript", "Servicios serverless en JavaScript"), pts=[
+                          T("<b>AWS Lambda</b> ran a good part of the platform — some services, not all of them.",
+                            "<b>AWS Lambda</b> corría buena parte de la plataforma: algunos servicios, no todos."),
+                          T("<b>JavaScript</b> was the language of every Lambda, and the one I used most heavily across these three years.",
+                            "<b>JavaScript</b> era el lenguaje de todas las lambdas, y el que más usé durante estos tres años."),
+                          T("Those functions handled <b>queue-based tasks</b>; the main one was dispatching the calls that transcoded video.",
+                            "Esas funciones resolvían <b>tareas basadas en colas</b>; la principal era lanzar las llamadas que transcodificaban video."),
+                      ]),
+                      dict(h=T("Java services on containers", "Servicios Java en contenedores"), pts=[
+                          T("Every Java-based service was a <b>Spring Boot</b> application.",
+                            "Todos los servicios basados en Java eran aplicaciones <b>Spring Boot</b>."),
+                          T("They were deployed on <b>Amazon ECS</b>, AWS's own container orchestrator — its in-house counterpart to Kubernetes.",
+                            "Se desplegaban en <b>Amazon ECS</b>, el orquestador de contenedores propio de AWS: su contraparte interna de Kubernetes."),
+                          T("Those services talked to a <b>PostgreSQL</b> database, where the platform's data lived.",
+                            "Esos servicios se conectaban a una base de datos <b>PostgreSQL</b>, donde vivían los datos de la plataforma."),
+                          T("Two runtimes coexisted: <b>Java 8</b> on some services and <b>Java 11</b> on others.",
+                            "Convivían dos runtimes: <b>Java 8</b> en algunos servicios y <b>Java 11</b> en otros."),
+                      ]),
+                      dict(h=T("Observability &amp; debugging", "Observabilidad y depuración"), pts=[
+                          T("<b>CloudWatch</b> was where we read the logs — following what a message actually did across services and debugging the problems that turned up.",
+                            "<b>CloudWatch</b> era donde leíamos los logs: seguir qué hizo realmente un mensaje entre servicios y depurar los problemas que aparecían."),
+                      ]),
+                  ],
+                  deliverables=[dict(kind="milestone",
+                      title=T("Legacy → Media Cloud video migration service",
+                              "Servicio de migración de video de legacy a Media Cloud"),
+                      role=T("Mine end to end — designed, built and shipped to production on my own",
+                             "Mío de principio a fin: lo diseñé, lo construí y lo llevé a producción yo solo"),
+                      tech=["Java 11", "Spring Boot", "Amazon SQS", "PostgreSQL", T("Inbox pattern", "Patrón Inbox")],
+                      pts=[
+                          T("A service that moved video out of Fox's legacy system and into <b>Media Cloud</b>, the new platform the team was building on.",
+                            "Un servicio que sacaba el video del sistema legacy de Fox y lo llevaba a <b>Media Cloud</b>, la nueva plataforma sobre la que trabajaba el equipo."),
+                          T("Built in <b>Java 11</b> with <b>Spring Boot</b>, taking its work from an <b>SQS</b> queue and keeping its state in <b>PostgreSQL</b>.",
+                            "Hecho en <b>Java 11</b> con <b>Spring Boot</b>, tomando el trabajo de una cola de <b>SQS</b> y guardando su estado en <b>PostgreSQL</b>."),
+                          T("Processing followed the <b>Inbox pattern</b>: every incoming message was written to the database before being acted on, so a redelivered message never migrated the same video twice.",
+                            "El procesamiento seguía el <b>patrón Inbox</b>: cada mensaje entrante se escribía en la base de datos antes de actuar sobre él, de modo que un mensaje reentregado nunca migraba dos veces el mismo video."),
+                      ],
+                      result=T("Shipped to production and migrated <b>over 100,000 legacy videos</b>, metadata included, into Fox's new system.",
+                               "Entregado en producción y migró <b>más de 100,000 videos legacy</b>, metadatos incluidos, al nuevo sistema de Fox."))]),
              dict(kind="project", slug="wizeline-retail", role=T("Enterprise Retail Industry", "Retail empresarial"), co="Inditex", loc=REMOTE, inds=[T("Retail")],
                   tech=["Java", "Spring", "MariaDB"],
                   pts=[T("Architected backend services for a complex audit system.",
@@ -177,14 +236,14 @@ JOBS = [
                          "Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial.")]),
          ], period=T("Feb 2020 — Present", "Feb 2020 — Actualidad"), frm="2020-02", to=None,
          inds=[T("News", "Noticias"), T("Media &amp; Entertainment", "Medios y Entretenimiento"), T("Retail"), T("Cybersecurity", "Ciberseguridad")], loc=MX, cur=True, pts=[
-        T('<b>Global News Industry:</b> Engineered new features and resolved production issues in a high-velocity environment. Leveraged AI tooling to accelerate development cycles and enhance code quality. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>',
-          '<b>Industria global de noticias:</b> Desarrollé funcionalidades y resolví incidentes en producción en un entorno de alta velocidad. Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>'),
-        T('<b>Media &amp; Entertainment Industry:</b> Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders. <span class="stack">Tech: Java, Spring, Node.js, AWS, PostgreSQL.</span>',
-          '<b>Medios y entretenimiento:</b> Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos. <span class="stack">Tech: Java, Spring, Node.js, AWS, PostgreSQL.</span>'),
-        T('<b>Enterprise Retail Industry:</b> Architected backend services for a complex audit system. Designed relational databases, implemented microservices, and built migration services for long-running data imports. <span class="stack">Tech: Java, Spring, MariaDB.</span>',
-          '<b>Retail empresarial:</b> Diseñé la arquitectura backend de un sistema de auditoría complejo. Modelé bases de datos relacionales, implementé microservicios y construí servicios de migración para importaciones de larga duración. <span class="stack">Tech: Java, Spring, MariaDB.</span>'),
-        T('<b>Cybersecurity startup:</b> Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform. <span class="stack">Tech: Python, React.</span>',
-          '<b>Startup de ciberseguridad:</b> Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial. <span class="stack">Tech: Python, React.</span>'),
+        T('<b>Dow Jones:</b> Engineered new features and resolved production issues in a high-velocity environment. Leveraged AI tooling to accelerate development cycles and enhance code quality. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>',
+          '<b>Dow Jones:</b> Desarrollé funcionalidades y resolví incidentes en producción en un entorno de alta velocidad. Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>'),
+        T('<b>Fox Corp:</b> Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders. <span class="stack">Tech: Java, Spring, Node.js, AWS, PostgreSQL.</span>',
+          '<b>Fox Corp:</b> Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos. <span class="stack">Tech: Java, Spring, Node.js, AWS, PostgreSQL.</span>'),
+        T('<b>Inditex:</b> Architected backend services for a complex audit system. Designed relational databases, implemented microservices, and built migration services for long-running data imports. <span class="stack">Tech: Java, Spring, MariaDB.</span>',
+          '<b>Inditex:</b> Diseñé la arquitectura backend de un sistema de auditoría complejo. Modelé bases de datos relacionales, implementé microservicios y construí servicios de migración para importaciones de larga duración. <span class="stack">Tech: Java, Spring, MariaDB.</span>'),
+        T('<b>Cerby:</b> Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform. <span class="stack">Tech: Python, React.</span>',
+          '<b>Cerby:</b> Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial. <span class="stack">Tech: Python, React.</span>'),
     ]),
     dict(role=T("Lead Programmer", "Programador Líder"), co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period=T("Jul 2019 — Feb 2020"), frm="2019-07", to="2020-02", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
         T('Led a small programming team in the development of a mobile iOS game, taking ownership of the <b>core game architecture</b>.',
@@ -232,12 +291,18 @@ JOBS = [
     ]),
 ]
 
-CORE = [("C# / .NET", 5), ("Java / Spring", 5), ("Python / FastAPI", 4), ("JavaScript / Node.js / React", 4),
-        ("AWS", 4), ("SQL / Postgres", 5), ("System Design", 5)]
-LEVEL = {5: (T("Expert", "Experto"), "100%"), 4: (T("Advanced", "Avanzado"), "80%"), 3: (T("Proficient", "Competente"), "60%")}
-TECH = ["C#", ".NET", "Java", "Spring", "C/C++", "Python", "FastAPI", "Ruby", "JavaScript", "Node.js", "React", "AWS",
+# Core skills on a 1–10 scale: the number drives the bar/percent, the word comes from the band it falls in.
+CORE = [("C# / .NET", 10), ("Java / Spring", 9), ("Python / FastAPI", 8), ("JavaScript / Node.js", 6),
+        ("AWS", 7), ("SQL / Postgres", 8)]
+CORE_MAX = 10
+LEVEL_WORDS = [(9, T("Expert", "Experto")), (7, T("Advanced", "Avanzado")), (0, T("Proficient", "Competente"))]
+def level(lvl):
+    """(word, pct) for a 1–10 level."""
+    word = next(w for lo, w in LEVEL_WORDS if lvl >= lo)
+    return word, f"{round(100 * lvl / CORE_MAX)}%"
+TECH = ["C#", ".NET", "Java", "Spring", "Python", "FastAPI", "JavaScript", "Node.js", "React", "AWS",
         "PostgreSQL", T("Microservices", "Microservicios"), T("RESTful APIs", "APIs RESTful"), T("Unit Testing", "Pruebas unitarias"),
-        T("OOP", "POO"), "Unity3D", "Git", "Full-Stack"]
+        T("OOP", "POO"), "Unity3D", "Git", "Full-Stack", "Typescript", "Docker"]
 AI_HEAD = T("AI-Assisted Dev", "Desarrollo asistido por IA")
 AI_TEXT = T("AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery.",
             "Herramientas asistidas por IA en mi trabajo diario para optimizar el desarrollo backend y acelerar la entrega de proyectos.")
@@ -256,9 +321,19 @@ STATS = [('<span data-years>15</span>', "+", T("Years building software", "Años
          ("6", "", T("Max engineers led", "Ingenieros a cargo"))]
 
 # ---- Extended History: newest first, up to TWO levels (an entry may carry `children`: jobs, projects, milestones inside it).
-#   kind: "job" | "project" | "education" | "milestone"   (changes the marker on the timeline)
+#   This page is meant to be long: unlike the CV sheet, nothing here is trimmed to fit. Give an entry as much
+#   structure as the work deserves — a lede, a spec row, and as many titled groups of bullets as it takes.
+#   kind:  "job" | "project" | "education" | "milestone" | "release" | "award" | "talk"   (changes the marker on the timeline)
 #   frm/to: "YYYY-MM"  (to=None → present; omit `to` for a single-date event; children may omit `frm` entirely)
-#   pts: bullet points (HTML allowed)   tech / inds: chips for the subject panel   children: list of the same dicts (one level only)
+#   dur:   how long it lasted when there are no exact dates, e.g. T("3 yrs", "3 años") — shown where the date would go
+#   facts: [(label, value)] spec row under the title, e.g. [(T("Team", "Equipo"), T("5 engineers", "5 ingenieros"))]
+#   lede:  one intro paragraph, the context a reader needs before the bullets
+#   pts:   headline bullets (HTML allowed)
+#   groups: [dict(h=<section title>, pts=[...])] — the long-form body, one titled group per area of work
+#   tech:  chips, shown inline on the timeline and in the subject panel     inds: industry chips
+#   deliverables: [dict(kind="milestone"|"release"|"award", title=…, role=…, pts=[…], result=…, tech=[…])]
+#          — a highlighted card for something that stands on its own and can feed the CV later
+#   links: [(label, href)] external links     children: list of the same dicts (one level only)
 def _job_entry(j):
     return dict(kind="job", slug=j["co"].lower().replace(" ", "-").replace("&amp;", "and"), role=j["role"], co=j["co"],
                 frm=j["frm"], to=j["to"], loc=j["loc"], inds=j["inds"], tech=j.get("tech", []),
@@ -324,9 +399,9 @@ def core_html():
     # one markup, many looks: each version shows the bar (.sk-track), the dots (.sk-dots), the word or the percent
     out = []
     for name, lvl in CORE:
-        word, pct = LEVEL[lvl]
-        dots = "".join('<i class="on"></i>' if i < lvl else '<i></i>' for i in range(5))
-        out.append(f'<div class="cskill" data-lvl="{lvl}"><div class="sk-top"><span class="sk-name">{name}</span>'
+        word, pct = level(lvl)
+        dots = "".join('<i class="on"></i>' if i < lvl else '<i></i>' for i in range(CORE_MAX))
+        out.append(f'<div class="cskill" data-lvl="{lvl}" data-max="{CORE_MAX}"><div class="sk-top"><span class="sk-name">{name}</span>'
                    f'<span class="sk-word">{h(word)}</span><span class="sk-pct">{pct}</span></div>'
                    f'<div class="sk-track"><div class="sk-fill" style="width:{pct}"></div></div><div class="sk-dots">{dots}</div></div>')
     return "\n".join(out)
@@ -377,16 +452,62 @@ import json
 
 _MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 
+def _bullets(pts):
+    return '<ul class="pts">' + "".join(f"<li>{h(p)}</li>" for p in pts) + "</ul>"
+
+def _hfacts(e):
+    """Spec row under the title: key/value pairs, e.g. Team 5 engineers · Cloud AWS."""
+    facts = e.get("facts") or []
+    return ('<div class="hfacts mono">'
+            + "".join(f'<span class="hfact"><b>{h(k)}</b>{h(v)}</span>' for k, v in facts)
+            + "</div>") if facts else ""
+
+def _hgroups(e):
+    """Bullets split into titled sections, so a long entry stays readable."""
+    out = [f'<section class="hgroup"><h4 class="hg-h mono">{h(g["h"])}</h4>{_bullets(g["pts"])}</section>'
+           for g in (e.get("groups") or [])]
+    return f'<div class="hgroups">{"".join(out)}</div>' if out else ""
+
+DELIV_BADGE = {"milestone": T("Milestone", "Hito"), "release": T("Release", "Lanzamiento"),
+               "award": T("Award", "Reconocimiento")}
+DELIV_RESULT = T("Result", "Resultado")
+
+def _hdelivs(e):
+    """Highlighted cards for the things worth pulling out of an entry: a shipped deliverable, a release, an award."""
+    out = []
+    for dv in e.get("deliverables") or []:
+        kind = dv.get("kind", "milestone")
+        role = f'<div class="hd-role">{h(dv["role"])}</div>' if dv.get("role") else ""
+        result = (f'<div class="hd-result"><b class="mono">{h(DELIV_RESULT)}</b> {h(dv["result"])}</div>'
+                  if dv.get("result") else "")
+        chips = ("".join(f'<span class="dchip">{h(t)}</span>' for t in dv.get("tech", [])))
+        chips = f'<div class="dchips">{chips}</div>' if chips else ""
+        out.append(f'<section class="hdeliv {kind}"><div class="hd-badge mono">{h(DELIV_BADGE[kind])}</div>'
+                   f'<h4 class="hd-t">{h(dv["title"])}</h4>{role}{_bullets(dv["pts"])}{result}{chips}</section>')
+    return "".join(out)
+
+def _hstack(e):
+    """The entry's own tech chips, inline on the timeline (the sticky panel shows them too)."""
+    tech = e.get("tech") or []
+    return ('<div class="hstack"><span class="hs-h mono">stack</span><div class="dchips">'
+            + "".join(f'<span class="dchip">{h(t)}</span>' for t in tech) + "</div></div>") if tech else ""
+
+def _hlinks(e):
+    links = e.get("links") or []
+    return ('<div class="hlinks mono">' + "".join(ext(href, h(label)) for label, href in links) + "</div>") if links else ""
+
 def _hentry_html(i, level, e):
     frm = e.get("frm")
     if not frm:
-        when = ""
+        when = f'<div class="hdate mono">{h(e["dur"])}</div>' if e.get("dur") else ""
     elif "to" not in e:
         y, m = frm.split("-"); when = f'<div class="hdate mono">{_MONTHS[int(m)-1]} {y}</div>'
     else:
-        when = f'<div class="hdate mono" data-from="{frm}"{f" data-to=\"{e["to"]}\"" if e["to"] else ""}>{frm}</div>'
+        dur = f'<span class="hdur">{h(e["dur"])}</span>' if e.get("dur") else ""
+        when = f'<div class="hdate mono" data-from="{frm}"{f" data-to=\"{e["to"]}\"" if e["to"] else ""}>{frm}</div>{dur}'
     inds = "".join(f'<span class="ind">{h(x)}</span>' for x in e.get("inds", []))
-    pts = ('<ul class="pts">' + "".join(f"<li>{h(p)}</li>" for p in e["pts"]) + "</ul>") if e.get("pts") else ""
+    lede = f'<p class="hlede">{h(e["lede"])}</p>' if e.get("lede") else ""
+    pts = _bullets(e["pts"]) if e.get("pts") else ""
     children = ""
     if level == 0 and e.get("children"):
         # indices of children follow the parent in history_flat()
@@ -394,7 +515,8 @@ def _hentry_html(i, level, e):
         children = f'<div class="hchildren">{kids}</div>'
     return (f'<section class="hentry {e["kind"]}{" child" if level else ""}" id="h-{e["slug"]}" data-i="{i}">{when}'
             f'<h3>{h(e["role"])} · <span class="c">{e["co"]}</span></h3>'
-            f'<div class="loc">{h(e.get("loc", ""))}<span class="inds">{inds}</span></div>{pts}{children}</section>')
+            f'<div class="loc">{h(e.get("loc", ""))}<span class="inds">{inds}</span></div>'
+            f'{_hfacts(e)}{lede}{pts}{_hgroups(e)}{_hdelivs(e)}{_hstack(e)}{_hlinks(e)}{children}</section>')
 
 def history_html():
     return "\n".join(_hentry_html(i, 0, e) for i, lvl, parent, e in history_flat() if lvl == 0)
@@ -420,7 +542,7 @@ def cv_data_json():
         profile=d(PROFILE),
         jobs=[dict(role=d(j["role"]), co=j["co"], frm=j["frm"], to=j["to"],
                    loc=d(j["loc"]), inds=d(j["inds"]), pts=d(j["pts"])) for j in JOBS],
-        core=[dict(name=name, word=d(LEVEL[lvl][0]), pct=LEVEL[lvl][1]) for name, lvl in CORE],
+        core=[dict(name=name, word=d(level(lvl)[0]), pct=level(lvl)[1]) for name, lvl in CORE],
         tech=d(TECH), titles=d(TITLES),
         ai=dict(head=d(AI_HEAD), text=d(AI_TEXT), chips=AI_CHIPS),
         edu=[dict(deg=d(deg), meta=d(meta)) for deg, meta in EDU],
@@ -434,7 +556,7 @@ def cv_data_html():
             '<script src="/cv-export.js" defer></script>')
 
 def history_json():
-    data = [dict(kind=e["kind"], slug=e["slug"], role=d(e["role"]), co=e["co"], frm=e.get("frm"),
+    data = [dict(kind=e["kind"], slug=e["slug"], role=d(e["role"]), co=e["co"], frm=e.get("frm"), dur=d(e.get("dur")),
                  to=("single" if "to" not in e else e["to"]), loc=d(e.get("loc", "")), inds=d(e.get("inds", [])), tech=d(e.get("tech", [])),
                  level=lvl, parent=parent) for i, lvl, parent, e in history_flat()]
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
@@ -773,7 +895,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   function ym(s){var p=s.split('-');return {y:+p[0],m:+p[1]};}
   function label(s){var d=ym(s);return M[window.cvLang()][d.m-1]+' '+d.y;}
   function when(e){
-    if(!e.frm) return '';
+    if(!e.frm) return e.dur?L(e.dur):'';
     if(e.to==='single') return label(e.frm);
     var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
     var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
@@ -848,12 +970,12 @@ VERSIONS["v3-dark-terminal.html"] = dict(
 (function(){
   function draw(){
     document.querySelectorAll('.sk-dots').forEach(function(el){
-      var lvl=+el.parentElement.getAttribute('data-lvl')||0;
+      var lvl=+el.parentElement.getAttribute('data-lvl')||0, max=+el.parentElement.getAttribute('data-max')||10;
       var probe=document.createElement('span'); probe.textContent='██████████'; probe.style.cssText='position:absolute;visibility:hidden;white-space:pre;font:inherit;';
       el.appendChild(probe); var cw=probe.getBoundingClientRect().width/10; probe.remove();
       var w=el.getBoundingClientRect().width;   // same (zoomed) units as the probe
       if(!cw||!w) return;
-      var n=Math.min(80,Math.floor(w/cw)-2), f=Math.round(n*lvl/5);
+      var n=Math.min(80,Math.floor(w/cw)-2), f=Math.round(n*lvl/max);
       if(n<3) return;
       el.className='sk-dots ascii';
       el.innerHTML='<span class="b">[</span><span class="f">'+'█'.repeat(f)+'</span><span class="e">'+'░'.repeat(n-f)+'</span><span class="b">]</span>';
@@ -896,6 +1018,10 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .hentry.education::before{border-radius:2px;transform:rotate(45deg);}
   .hentry.project::before{border-radius:2px;width:8px;height:8px;left:-15px;top:10px;}
   .hentry.milestone::before{border-radius:50% 50% 50% 0;transform:rotate(-45deg);}
+  .hentry.release::before{border-radius:2px;width:12px;height:7px;top:11px;left:-17px;}
+  .hentry.award::before{border:0;background:var(--muted);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+  .hentry.award.active::before{background:var(--green);box-shadow:none;}
+  .hentry.talk::before{border-radius:4px 4px 4px 0;}
   .hchildren{margin:4px 0 0;padding-left:14px;border-left:1px dashed var(--line);}
   .hentry.child{padding:5px 0 6px;}
   .hentry.child::before{left:-13px;top:9px;width:7px;height:7px;}
@@ -911,6 +1037,41 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .sub-nav ol li::before{width:4px;height:4px;top:6px;}
   .hdate{font-size:8px;color:var(--muted);}
   .hentry.active .hdate{color:var(--green);}
+  .hdur{font-family:'JetBrains Mono',monospace;font-size:7.6px;color:var(--muted);}
+  /* the long-form blocks of an entry: spec row, lede, titled groups, stack chips, links */
+  .hfacts{display:flex;flex-wrap:wrap;gap:3px 10px;margin-top:4px;font-size:7.6px;color:var(--text);}
+  .hfact b{color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:1px;margin-right:5px;}
+  .hfact+.hfact{padding-left:10px;border-left:1px solid var(--line);}
+  .hlede{font-size:9.1px;line-height:1.45;color:var(--body-text);margin-top:5px;}
+  .hgroups{margin-top:6px;display:grid;gap:6px;}
+  .hgroup{position:relative;padding-left:9px;}
+  .hgroup::before{content:"";position:absolute;left:0;top:3px;bottom:2px;width:2px;border-radius:2px;background:var(--line);}
+  .hentry.active .hgroup::before{background:rgba(61,220,132,.35);}
+  .hg-h{font-size:7.6px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--cyan);}
+  .hg-h::before{content:"// ";color:var(--muted);font-weight:400;}
+  .hgroup ul.pts{margin-top:2px;}
+  /* deliverable card: the achievement pulled out of an entry */
+  .hdeliv{position:relative;margin-top:8px;padding:8px 10px 9px;border-radius:9px;
+    border:1px solid rgba(61,220,132,.38);background:linear-gradient(160deg,rgba(61,220,132,.10),rgba(76,201,240,.06));}
+  .hdeliv.release{border-color:rgba(76,201,240,.4);background:linear-gradient(160deg,rgba(76,201,240,.10),rgba(61,220,132,.05));}
+  .hdeliv.award{border-color:rgba(255,180,84,.45);background:linear-gradient(160deg,rgba(255,180,84,.12),rgba(255,107,157,.05));}
+  .hd-badge{display:inline-block;font-size:6.8px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
+    color:var(--green);border:1px solid rgba(61,220,132,.45);border-radius:3px;padding:1px 5px;}
+  .hdeliv.release .hd-badge{color:var(--cyan);border-color:rgba(76,201,240,.5);}
+  .hdeliv.award .hd-badge{color:var(--amber);border-color:rgba(255,180,84,.55);}
+  .hd-t{font-size:10px;font-weight:700;color:var(--fg);margin-top:4px;line-height:1.25;}
+  .hd-role{font-size:8.2px;color:var(--muted);margin-top:1px;}
+  .hdeliv ul.pts{margin-top:4px;}
+  .hd-result{font-size:8.8px;line-height:1.4;color:var(--fg);margin-top:5px;padding-top:5px;border-top:1px dashed rgba(61,220,132,.35);}
+  .hd-result b{color:var(--fg);font-weight:600;}
+  .hd-result b.mono{font-size:6.8px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--green);margin-right:6px;}
+  .hdeliv .dchips{margin-top:6px;}
+  .hstack{display:flex;align-items:baseline;gap:6px;margin-top:6px;}
+  .hs-h{font-size:7.2px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);flex:0 0 auto;padding-top:2px;}
+  .hstack .dchips{font-size:7.4px;}
+  .hlinks{display:flex;flex-wrap:wrap;gap:10px;margin-top:5px;font-size:8px;}
+  .hlinks a{color:var(--cyan);}
+  .hlinks a::before{content:"↗ ";color:var(--muted);}
   .hentry h3{font-size:11.5px;font-weight:600;color:var(--fg);margin-top:2px;}
   .hentry h3 .c{color:var(--cyan);}
   .hentry .loc{font-size:8.2px;color:var(--muted);}
@@ -1001,7 +1162,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .sk-pct{display:inline;font-family:'JetBrains Mono',monospace;font-size:8.4px;color:var(--green);}
   .sk-dots{display:block;font-family:'JetBrains Mono',monospace;font-size:8.6px;line-height:1.25;margin-top:1px;white-space:nowrap;overflow:hidden;}
   .sk-dots::before{content:"[";color:var(--muted);} .sk-dots::after{content:"]";color:var(--muted);}
-  .sk-dots i::before{content:"░░";color:var(--empty);} .sk-dots i.on::before{content:"██";color:var(--green);}
+  .sk-dots i::before{content:"░";color:var(--empty);} .sk-dots i.on::before{content:"█";color:var(--green);}
   .sk-dots.ascii::before,.sk-dots.ascii::after{content:none;}
   .sk-dots .b{color:var(--muted);} .sk-dots .f{color:var(--green);} .sk-dots .e{color:var(--empty);}
   .ai{background:linear-gradient(160deg,rgba(61,220,132,.10),rgba(76,201,240,.07));border:1px solid rgba(61,220,132,.35);border-radius:9px;padding:9px 10px;}
@@ -1228,8 +1389,8 @@ VERSIONS["v6-split-panel.html"] = dict(
   .cskill{padding:3px 0;display:flex;align-items:center;justify-content:space-between;gap:8px;}
   .sk-top{font-size:9.4px;color:#fff;font-weight:500;}
   .sk-word,.sk-track{display:none;}
-  .sk-dots{display:flex;gap:3px;flex:none;}
-  .sk-dots i{width:8px;height:8px;border:1px solid rgba(200,241,53,.45);border-radius:1px;}
+  .sk-dots{display:flex;gap:2px;flex:none;}
+  .sk-dots i{width:6px;height:6px;border:1px solid rgba(200,241,53,.45);border-radius:1px;}
   .sk-dots i.on{background:var(--lime);border-color:var(--lime);}
   .ai{border:1px solid rgba(200,241,53,.4);border-radius:9px;padding:9px 10px;background:rgba(200,241,53,.06);}
   .ai .h{font-size:8px;letter-spacing:1.6px;text-transform:uppercase;color:var(--lime);font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
@@ -1399,8 +1560,8 @@ VERSIONS["v8-navy-emerald.html"] = dict(
   .sk-top{font-size:9.3px;color:var(--ink);font-weight:500;}
   .sk-word,.sk-track{display:none;}
   .sk-dots{display:flex;gap:2px;align-items:flex-end;height:11px;flex:none;}
-  .sk-dots i{width:5px;background:var(--line);border-radius:1px;}
-  .sk-dots i:nth-child(1){height:3px;} .sk-dots i:nth-child(2){height:5px;} .sk-dots i:nth-child(3){height:7px;} .sk-dots i:nth-child(4){height:9px;} .sk-dots i:nth-child(5){height:11px;}
+  .sk-dots i{width:3px;background:var(--line);border-radius:1px;}
+  .sk-dots i:nth-child(1){height:2px;} .sk-dots i:nth-child(2){height:3px;} .sk-dots i:nth-child(3){height:4px;} .sk-dots i:nth-child(4){height:5px;} .sk-dots i:nth-child(5){height:6px;} .sk-dots i:nth-child(6){height:7px;} .sk-dots i:nth-child(7){height:8px;} .sk-dots i:nth-child(8){height:9px;} .sk-dots i:nth-child(9){height:10px;} .sk-dots i:nth-child(10){height:11px;}
   .sk-dots i.on{background:var(--em);}
   .ai{background:var(--navy);color:#fff;border-radius:9px;padding:10px 11px;}
   .ai .h{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#8fe3c5;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
