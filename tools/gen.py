@@ -96,7 +96,8 @@ SITE_PAGES = {
   <header class="top">
     <div>
       <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">$L_HISTFILE$</span></div>
-      <div class="name"><span id="typed">$NAME$</span><span class="cur"></span></div>
+      <div class="name"><span id="typed">$I18N_HISTORY_TITLE$</span><span class="cur"></span></div>
+      <div class="hname">$NAME$</div>
       <div class="sub mono">$I18N_HISTORY_SUB$</div>
     </div>
   </header>
@@ -1218,7 +1219,8 @@ def fill(tpl, active="cv"):
         tpl = tpl.replace(key, h(label))
     return (tpl.replace("$NAV$", nav_html(active)).replace("$CVDATA$", cv_data_html())
             .replace("$DOWNLOAD$", DOWNLOAD_TPL if active == "cv" else "").replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html())
-            .replace("$I18N_HISTORY_SUB$", i18n("Everything so far, newest first — scroll and the panel on the right follows.", "Todo hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html())
+            .replace("$I18N_HISTORY_TITLE$", i18n("Timeline", "Mi historia"))
+            .replace("$I18N_HISTORY_SUB$", i18n("All the projects I have worked on so far, newest first — scroll and the panel on the right follows.", "Todos los proyectos en los que he trabajado hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html())
             .replace("$TECH$", chips_html(TECH)).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
             .replace("$TITLES$", titles_html()).replace("$EDU$", edu_html()).replace("$STATS$", stats_html())
             .replace("$PROFILE$", profile_html()).replace("$EXP$", experience_html())
@@ -1491,10 +1493,13 @@ VERSIONS["v3-dark-terminal.html"] = dict(
 /* Typewriter effect on the name (skipped when the user prefers reduced motion or when printing) */
 (function(){
   var el=document.getElementById('typed'); if(!el) return;
-  var full=el.textContent;
   if(window.matchMedia&&(window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.matchMedia('print').matches)) return;
-  el.textContent=''; var i=0;
-  (function tick(){ if(i<=full.length){ el.textContent=full.slice(0,i++); setTimeout(tick,i<8?90:45);} })();
+  /* a bilingual title holds one span per language (CSS shows one): type each on its own */
+  var els=el.querySelectorAll('.i18n-en,.i18n-es'); if(!els.length) els=[el];
+  Array.prototype.forEach.call(els,function(t){
+    var full=t.textContent; t.textContent=''; var i=0;
+    (function tick(){ if(i<=full.length){ t.textContent=full.slice(0,i++); setTimeout(tick,i<8?90:45);} })();
+  });
 })();
 </script>""",
     fonts="family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700",
@@ -1616,6 +1621,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .name .cur{display:inline-block;width:.45em;height:.9em;background:var(--green);vertical-align:-.08em;margin-left:3px;animation:blink 1s steps(1) infinite;}
   @keyframes blink{50%{opacity:0;}}
   @media print{.name .cur{animation:none;}}
+  .hname{font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:-.1px;margin-top:6px;}   /* /history/: the name, secondary to the title */
   .sub{font-size:9px;color:var(--muted);margin-top:5px;}
   .sub .hl{color:var(--amber);}
   .top{display:flex;justify-content:space-between;align-items:flex-end;gap:8mm;}

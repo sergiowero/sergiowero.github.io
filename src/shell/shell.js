@@ -230,8 +230,11 @@
 /* Typewriter effect on the name (skipped when the user prefers reduced motion or when printing) */
 (function(){
   var el=document.getElementById('typed'); if(!el) return;
-  var full=el.textContent;
   if(window.matchMedia&&(window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.matchMedia('print').matches)) return;
-  el.textContent=''; var i=0;
-  (function tick(){ if(i<=full.length){ el.textContent=full.slice(0,i++); setTimeout(tick,i<8?90:45);} })();
+  /* a bilingual title holds one span per language (CSS shows one): type each on its own */
+  var els=el.querySelectorAll('.i18n-en,.i18n-es'); if(!els.length) els=[el];
+  Array.prototype.forEach.call(els,function(t){
+    var full=t.textContent; t.textContent=''; var i=0;
+    (function tick(){ if(i<=full.length){ t.textContent=full.slice(0,i++); setTimeout(tick,i<8?90:45);} })();
+  });
 })();
