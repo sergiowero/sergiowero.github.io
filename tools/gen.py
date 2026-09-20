@@ -404,7 +404,62 @@ JOBS = [
           'Creé herramientas y scripts de automatización para sincronizar despliegues de APIs con los entornos cliente en varias sedes globales de Intel.'),
         T('Leveraged Ruby metaprogramming to parse XML-formatted design documents and dynamically generate executable files.',
           'Usé metaprogramación en Ruby para interpretar documentos de diseño en XML y generar ejecutables de forma dinámica.'),
-    ]),
+    ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
+        tech=["Ruby", T("Ruby metaprogramming", "Metaprogramación en Ruby"), "XML", T("Custom libraries", "Librerías personalizadas"),
+              T("Hardware validation", "Validación de hardware"), T("Automation", "Automatización"), "Git", "CI/CD"],
+        facts=[(T("Area", "Área"), T("Hardware validation", "Validación de hardware")),
+               (T("Language", "Lenguaje"), "Ruby"),
+               (T("Input", "Entrada"), T("XML design documents", "Documentos de diseño en XML")),
+               (T("Reach", "Alcance"), T("Intel sites worldwide", "Sedes de Intel en el mundo"))],
+        lede=T("Two years at Intel writing <b>custom Ruby libraries</b> for the hardware validation teams. The libraries are what "
+               "the teams use to <b>validate all of their chip designs before sending them to real simulation</b>: a design "
+               "document in XML goes in, and the executable that checks it comes out, generated on the fly with Ruby "
+               "metaprogramming. Around the libraries, the automation that kept them deployed and in sync across Intel's sites "
+               "around the world.",
+               "Dos años en Intel escribiendo <b>librerías personalizadas en Ruby</b> para los equipos de validación de hardware. "
+               "Las librerías son lo que los equipos usan para <b>validar todos sus diseños de chip antes de mandarlos a simulación "
+               "real</b>: entra un documento de diseño en XML y sale el ejecutable que lo revisa, generado al vuelo con "
+               "metaprogramación en Ruby. Alrededor de las librerías, la automatización que las mantenía desplegadas y sincronizadas "
+               "en las sedes de Intel en el mundo."),
+        pts=[],
+        groups=[
+            dict(h=T("Custom Ruby libraries for validation", "Librerías personalizadas en Ruby para validación"), pts=[
+                T("The core of the job: <b>libraries written specifically for validation</b>, in Ruby, made for the hardware validation teams rather than taken off the shelf.",
+                  "El centro del trabajo: <b>librerías escritas específicamente para validación</b>, en Ruby, hechas para los equipos de validación de hardware y no tomadas de fuera."),
+                T("The teams use the library to <b>validate every chip design</b> they produce <b>before it goes to real simulation</b> — a design does not reach the simulator until the library has checked it.",
+                  "Los equipos usan la librería para <b>validar todos los diseños de chip</b> que producen <b>antes de mandarlos a simulación real</b>: un diseño no llega al simulador hasta que la librería lo ha revisado."),
+                T("Catching a problem at this stage is what makes the library worth it: real simulation is the expensive step, and a design that fails there costs far more than one that fails a check in Ruby.",
+                  "Detectar un problema en esta etapa es lo que hace que la librería valga la pena: la simulación real es el paso caro, y un diseño que falla ahí cuesta mucho más que uno que falla una revisión en Ruby."),
+                T("Exposed as <b>APIs in Ruby</b> so each team could plug the validation into its own testing workflow.",
+                  "Expuestas como <b>APIs en Ruby</b> para que cada equipo pudiera integrar la validación en su propio flujo de pruebas."),
+            ]),
+            dict(h=T("From XML design documents to executables, with metaprogramming", "De documentos de diseño en XML a ejecutables, con metaprogramación"), pts=[
+                T("The chip designs arrived as <b>design documents in XML</b>.",
+                  "Los diseños de chip llegaban como <b>documentos de diseño en XML</b>."),
+                T("The library parsed those documents and, using <b>Ruby metaprogramming</b>, <b>generated the executable files dynamically</b> from what the document described — the code that validated a design was built from the design itself, not written by hand for each one.",
+                  "La librería interpretaba esos documentos y, con <b>metaprogramación en Ruby</b>, <b>generaba los ejecutables de forma dinámica</b> a partir de lo que describía el documento: el código que validaba un diseño se construía desde el diseño mismo, no se escribía a mano para cada uno."),
+            ]),
+            dict(h=T("Deployment automation across Intel sites", "Automatización de despliegues entre sedes de Intel"), pts=[
+                T("The validation teams were spread over <b>several Intel sites around the world</b>, each with its own client environment.",
+                  "Los equipos de validación estaban repartidos en <b>varias sedes de Intel en el mundo</b>, cada una con su propio entorno cliente."),
+                T("Wrote the <b>automation tools and scripts</b> that synchronized the API deployments with those environments, so every site was running the same version of the libraries.",
+                  "Escribí las <b>herramientas y scripts de automatización</b> que sincronizaban los despliegues de las APIs con esos entornos, para que todas las sedes corrieran la misma versión de las librerías."),
+            ]),
+        ],
+        deliverables=[
+            dict(kind="milestone", title=T("Moved the project from SVN to Git", "Migración del proyecto de SVN a Git"),
+                 role=T("My own initiative — proposed it and carried it through", "Iniciativa mía: la propuse y la llevé a cabo"),
+                 tech=["SVN", "Git", "CI/CD"],
+                 pts=[T("The project lived in <b>SVN</b>. I put forward the initiative to move it to <b>Git</b> and led the change.",
+                        "El proyecto vivía en <b>SVN</b>. Propuse la iniciativa de pasarlo a <b>Git</b> y llevé el cambio."),
+                      T("With Git branches, each person could <b>work on several features at the same time</b>, and working together on the same codebase got easier.",
+                        "Con las ramas de Git, cada persona podía <b>trabajar en varias funcionalidades al mismo tiempo</b>, y trabajar en conjunto sobre el mismo código se volvió más fácil."),
+                      T("The <b>CI/CD</b> built on top of it was <b>simpler and more modern</b> than what SVN allowed.",
+                        "El <b>CI/CD</b> construido encima quedó <b>más simple y más moderno</b> que lo que SVN permitía.")],
+                 result=T("Easier collaboration on parallel features, and a simplified, modernized CI/CD.",
+                          "Colaboración más fácil en funcionalidades en paralelo, y un CI/CD simplificado y modernizado.")),
+        ],
+    )),
     dict(role=T("3D &amp; Online Programmer", "Programador 3D y Online"), co="Gameloft", tech=["C++", "Java", "Objective-C", "Android", "iOS"], period=T("May 2011 — Jan 2015", "May 2011 — Ene 2015"), frm="2011-05", to="2015-01", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
         T('Programmed 3D games and internal development tools using portable <b>C++, Java, and Objective-C</b> to ensure seamless cross-platform compatibility across Android and iOS.',
           'Programé juegos 3D y herramientas internas con <b>C++, Java y Objective-C</b> portables, garantizando compatibilidad entre Android e iOS.'),
