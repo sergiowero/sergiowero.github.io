@@ -314,7 +314,54 @@ JOBS = [
           '<b>Inditex:</b> Diseñé la arquitectura backend de un sistema de auditoría complejo. Modelé bases de datos relacionales, implementé microservicios y construí servicios de migración para importaciones de larga duración. <span class="stack">Tech: Java, Spring, MariaDB.</span>'),
         T('<b>Cerby:</b> Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform. <span class="stack">Tech: Python, React.</span>',
           '<b>Cerby:</b> Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial. <span class="stack">Tech: Python, React.</span>'),
-    ]),
+    ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
+        tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code",
+              "LangChain", "Claude SDK"],
+        facts=[(T("Company", "Empresa"), T("Software consultancy", "Consultora de software")),
+               (T("Role", "Rol"), T("Senior Software Engineer / Tech Lead", "Ingeniero de Software Senior / Tech Lead")),
+               (T("Clients", "Clientes"), "Dow Jones · Fox Corp · Inditex · Cerby"),
+               (T("Now", "Ahora"), T("Training as an AI engineer", "Formándome como AI engineer"))],
+        lede=T("Wizeline is a <b>software consultancy</b> with many clients: its engineers are placed on client engagements, "
+               "and every entry below is a client I have worked for since joining in February 2020 — Dow Jones, Fox Corp, "
+               "Inditex and Cerby. My role is <b>Senior Software Engineer / Tech Lead</b>: I join the client's team, build and "
+               "run their backend services, and lead when the engagement calls for it. Alongside the client work there is "
+               "<b>constant training</b>; right now it is aimed at becoming an <b>AI engineer</b> — building agents, mainly in "
+               "<b>Python</b> with <b>LangChain</b> and the <b>Claude SDK</b>.",
+               "Wizeline es una <b>consultora de software</b> con muchos clientes: sus ingenieros se asignan a proyectos de "
+               "cliente, y cada entrada de abajo es un cliente para el que he trabajado desde que entré en febrero de 2020: "
+               "Dow Jones, Fox Corp, Inditex y Cerby. Mi rol es <b>Ingeniero de Software Senior / Tech Lead</b>: me integro al "
+               "equipo del cliente, construyo y opero sus servicios backend, y lidero cuando el proyecto lo requiere. Junto al "
+               "trabajo con clientes hay <b>capacitación constante</b>; ahora mismo está enfocada en convertirme en "
+               "<b>AI engineer</b>: crear agentes, principalmente en <b>Python</b> con <b>LangChain</b> y el <b>Claude SDK</b>."),
+        groups=[
+            dict(h=T("The role", "El rol"), pts=[
+                T("Wizeline is a consultancy: it has many clients, and its engineers work embedded in those clients' teams. "
+                  "Since February 2020 I have gone through four of them — each has its own entry below.",
+                  "Wizeline es una consultora: tiene muchos clientes, y sus ingenieros trabajan integrados en los equipos de esos "
+                  "clientes. Desde febrero de 2020 he pasado por cuatro; cada uno tiene su propia entrada abajo."),
+                T("Mostly backend: designing services, data models and integrations, and taking features from design to "
+                  "production in whatever stack the client runs — <b>.NET</b>, <b>Java / Spring</b>, <b>Node.js</b> or "
+                  "<b>Python</b>, on <b>AWS</b>, <b>PostgreSQL</b> and <b>MariaDB</b>.",
+                  "Sobre todo backend: diseñar servicios, modelos de datos e integraciones, y llevar funcionalidades de diseño a "
+                  "producción en el stack que use el cliente: <b>.NET</b>, <b>Java / Spring</b>, <b>Node.js</b> o "
+                  "<b>Python</b>, sobre <b>AWS</b>, <b>PostgreSQL</b> y <b>MariaDB</b>."),
+                T("<b>Tech Lead</b> when the engagement calls for it: at Fox Corp I led a squad of five engineers for the three "
+                  "years of the engagement.",
+                  "<b>Tech Lead</b> cuando el proyecto lo requiere: en Fox Corp lideré un equipo de cinco ingenieros durante los "
+                  "tres años del proyecto."),
+            ]),
+            dict(h=T("Constant training", "Capacitación constante"), pts=[
+                T("Training is a constant part of the job at Wizeline, running alongside the client work rather than between projects.",
+                  "La capacitación es parte constante del trabajo en Wizeline; va en paralelo al trabajo con clientes, no entre proyectos."),
+                T("The current track is <b>AI engineering</b>: I am being trained to build agents, mostly in <b>Python</b>.",
+                  "La ruta actual es <b>AI engineering</b>: me están formando para crear agentes, principalmente en <b>Python</b>."),
+                T("The tooling on that track is <b>LangChain</b> and the <b>Claude SDK</b>, on top of the day-to-day use of "
+                  "<b>Claude Code</b> on client work.",
+                  "Las herramientas de esa ruta son <b>LangChain</b> y el <b>Claude SDK</b>, además del uso diario de "
+                  "<b>Claude Code</b> en el trabajo con clientes."),
+            ]),
+        ],
+    )),
     dict(role=T("Senior Software Engineer", "Ingeniero de Software Senior"), co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period=T("Jul 2019 — Mar 2020"), frm="2019-07", to="2020-03", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
         T('Led a small programming team in the development of a mobile iOS game, taking ownership of the <b>core game architecture</b>.',
           'Lideré un equipo pequeño de programación en un juego móvil para iOS, a cargo de la <b>arquitectura central del juego</b>.'),
