@@ -102,12 +102,49 @@
   function drawNav(){
     nav.innerHTML=data.map(function(e,i){
       if(e.level===1) return '';
-      var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+L(c.role)+'</li>':'';}).join('');
+      var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+(c.co||L(c.role))+'</li>':'';}).join('');
       return '<li data-i="'+i+'">'+e.co+(kids?'<ol>'+kids+'</ol>':'')+'</li>';
     }).join('');
   }
   drawNav();
-  nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) entries[+li.getAttribute('data-i')].scrollIntoView({behavior:'smooth',block:'start'});});
+  /* The reading line: 20% down the viewport at the top of the page, sweeping down as the page is scrolled so that
+     at the very end it sits on the last entry's bottom edge — otherwise the last entries could never reach it.
+     (.htl has bottom padding so that sweep stays short and each entry keeps a fair stretch of scrolling.) */
+  function maxScroll(){return Math.max(1,document.documentElement.scrollHeight-window.innerHeight);}
+  function lineTop(){return window.innerHeight*0.2;}
+  function lineEnd(){ var last=entries[entries.length-1].getBoundingClientRect().bottom+window.scrollY-maxScroll(); return Math.max(lineTop(),Math.min(window.innerHeight,last)); }
+  function sweep(){return 1+(lineEnd()-lineTop())/maxScroll();}   // how much faster the line moves than the page
+  function lineAt(scrollY){ return lineTop()+(lineEnd()-lineTop())*Math.min(1,scrollY/maxScroll()); }
+  /* Zone k = the stretch of the reading line over which entry k is current: [starts[k], starts[k+1]), viewport px.
+     Naturally each entry owns its own height, but a short one (a two-line client, a degree) would own less than a
+     wheel notch and get skipped. So short entries first borrow from neighbours with room to spare, and a run of
+     entries still short then splits its total stretch evenly. MIN is ~120px of actual scrolling. */
+  function zones(){
+    var n=entries.length, r=entries.map(function(el){return el.getBoundingClientRect();}), tops=r.map(function(b){return b.top;});
+    var MIN=120*Math.min(2,sweep());
+    var len=tops.map(function(t,k){return (k+1<n?tops[k+1]:r[n-1].bottom)-t;});
+    var spare=len.map(function(l){return Math.max(0,l-MIN);}), up=[], down=[];
+    for(var k=0;k<n;k++){
+      var need=Math.max(0,MIN-len[k]);
+      up[k]=k>0?Math.min(need,spare[k-1]):0; if(k>0) spare[k-1]-=up[k]; need-=up[k];
+      down[k]=k+1<n?Math.min(need,spare[k+1]):0; if(k+1<n) spare[k+1]-=down[k];
+    }
+    var starts=tops.map(function(t,k){return t-up[k]+(k>0?down[k-1]:0);}), ends=starts.slice(1).concat([r[n-1].bottom]);
+    for(k=0;k<n;){
+      var j=k; while(j<n&&ends[j]-starts[j]<MIN) j++;
+      if(j-k>1){ var span=(ends[j-1]-starts[k])/(j-k); for(var m=k+1;m<j;m++) starts[m]=starts[k]+span*(m-k); }
+      k=j>k?j:k+1;
+    }
+    return starts;
+  }
+  /* scroll so the reading line lands just inside the entry's zone — where the spy picks it, whatever its height */
+  function goTo(i,smooth){
+    var s=zones(), zoneEnd=i+1<s.length?s[i+1]:entries[i].getBoundingClientRect().bottom, t=lineTop();
+    var target=s[i]+Math.min(24,(zoneEnd-s[i])/2)+window.scrollY;   // page px the line must reach
+    var y=(target-t)/sweep();
+    window.scrollTo({top:Math.min(maxScroll(),Math.max(0,y)),behavior:smooth?'smooth':'auto'});
+  }
+  nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) goTo(+li.getAttribute('data-i'),true);});
   var current=-1, timer=null;
   function show(i){
     if(i===current) return; current=i; var e=data[i];
@@ -130,19 +167,24 @@
   }
   show(0);
   document.addEventListener('langchange',function(){var i=current;current=-1;drawNav();show(i<0?0:i);});
-  // scroll spy: the entry crossing the 40% line of the viewport is the current one
+  // scroll spy: the entry whose zone holds the reading line is the current one
   // (getBoundingClientRect is used instead of IntersectionObserver because the sheet is CSS-zoomed)
   var ticking=false;
   function spy(){
     ticking=false;
-    var line=window.innerHeight*0.4, i=0;
-    for(var k=0;k<entries.length;k++){ if(entries[k].getBoundingClientRect().top<=line) i=k; }
-    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) i=entries.length-1;  // bottom of page → last entry
+    var s=zones(), y=lineAt(window.scrollY), i=0;
+    for(var k=0;k<s.length;k++){ if(s[k]<=y) i=k; }
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) i=s.length-1;  // bottom of page → last entry
     if(window.scrollY<8) i=0;   // top of page → first (top-level) entry
     show(i);
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } }
-  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); spy();
+  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll);
+  spy();
+  // #h-<slug> in the URL: place that entry at the reading line (the browser alone puts it at the very top, which
+  // the spy reads as the entry after it). The browser does its own fragment jump around load, so this runs after.
+  var target=location.hash&&document.getElementById(location.hash.slice(1)), ti=target?entries.indexOf(target):-1;
+  if(ti>=0){ var place=function(){setTimeout(function(){goTo(ti,false); spy();},0);}; if(document.readyState==='complete') place(); else window.addEventListener('load',place); }
 })();
 
 

@@ -155,13 +155,76 @@ JOBS = [
     dict(role=T("Senior Software Engineer / Tech Lead", "Ingeniero de Software Senior / Tech Lead"), co="Wizeline",
          tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code"],
          history_children=[   # second level on the History page (dates optional; add frm/to when known)
-             dict(kind="project", slug="wizeline-global-news", role=T("Global News Industry", "Industria global de noticias"), co="Dow Jones", loc=REMOTE, inds=[T("News", "Noticias")],
-                  tech=[".NET", "AWS", "PostgreSQL", "Claude Code"],
-                  pts=[T("Engineered new features and resolved production issues in a high-velocity environment.",
-                         "Desarrollé nuevas funcionalidades y resolví incidentes en producción en un entorno de alta velocidad."),
-                       T("Leveraged AI tooling to accelerate development cycles and enhance code quality.",
-                         "Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código.")]),
-             dict(kind="project", slug="wizeline-media", role=T("Media &amp; Entertainment Industry — Tech Lead", "Industria de medios y entretenimiento — Tech Lead"), co="Fox Corp", loc=REMOTE, inds=[T("Media &amp; Entertainment", "Medios y Entretenimiento")],
+             dict(kind="project", slug="wizeline-global-news", role="", co="Dow Jones", loc=REMOTE, inds=[T("News", "Noticias")],
+                  facts=[(T("Product", "Producto"), T("Gas-price SaaS", "SaaS de precios de gasolina")),
+                         (T("Architecture", "Arquitectura"), "DDD"),
+                         (T("Cloud"), "AWS"),
+                         (T("Data", "Datos"), "PostgreSQL")],
+                  tech=[".NET", "C#", "PostgreSQL", "AWS", "DDD", T("Domain events", "Eventos de dominio"),
+                        T("Message queues", "Colas de mensajes"), T("Outbox pattern", "Patrón Outbox"),
+                        T("Unit tests", "Pruebas unitarias"), "Claude Code"],
+                  lede=T("Wizeline's engagement with Dow Jones, on a <b>gas-price SaaS</b>: a platform that helps gas station owners "
+                         "keep a history of their prices, see what competitors are charging and set their own prices automatically "
+                         "with strategies they define. Built in <b>.NET</b> on <b>PostgreSQL</b>, designed with <b>Domain-Driven Design</b>, "
+                         "and split into many services that talk to each other through message queues.",
+                         "El proyecto de Wizeline con Dow Jones, sobre un <b>SaaS de precios de gasolina</b>: una plataforma que ayuda a los "
+                         "dueños de gasolineras a llevar un histórico de sus precios, ver los de la competencia y fijar los suyos de forma "
+                         "automática con estrategias que ellos mismos definen. Hecha en <b>.NET</b> sobre <b>PostgreSQL</b>, diseñada con "
+                         "<b>Domain-Driven Design</b> y dividida en muchos servicios que se comunican entre sí por colas de mensajes."),
+                  pts=[],
+                  groups=[
+                      dict(h=T("The product", "El producto"), pts=[
+                          T("<b>Price history:</b> every price a station has had is kept, so owners can look back at how their prices and the market moved.",
+                            "<b>Histórico de precios:</b> se guarda cada precio que ha tenido una gasolinera, para que los dueños puedan ver cómo se movieron sus precios y el mercado."),
+                          T("<b>Competitor prices:</b> the platform shows what the competition around each station is charging.",
+                            "<b>Precios de la competencia:</b> la plataforma muestra lo que cobra la competencia alrededor de cada gasolinera."),
+                          T("<b>Automatic pricing:</b> owners define their own strategies and the system sets the station's prices by following them.",
+                            "<b>Precios automáticos:</b> los dueños definen sus propias estrategias y el sistema fija los precios de la gasolinera siguiéndolas."),
+                          T("Clients use the tool to keep their stations up to date with the market and to protect the business' revenue.",
+                            "Los clientes usan la herramienta para mantener sus gasolineras al día con el mercado y cuidar los ingresos del negocio."),
+                      ]),
+                      dict(h=T(".NET, PostgreSQL and Domain-Driven Design", ".NET, PostgreSQL y Domain-Driven Design"), pts=[
+                          T("Services written in <b>.NET</b>, with the platform's data in <b>PostgreSQL</b>.",
+                            "Servicios escritos en <b>.NET</b>, con los datos de la plataforma en <b>PostgreSQL</b>."),
+                          T("The system was designed with <b>DDD</b>: the business rules lived in a domain model, and what happened in it was expressed as domain events.",
+                            "El sistema estaba diseñado con <b>DDD</b>: las reglas de negocio vivían en un modelo de dominio, y lo que pasaba en él se expresaba como eventos de dominio."),
+                      ]),
+                      dict(h=T("Many services, domain events and the Outbox pattern", "Muchos servicios, eventos de dominio y el patrón Outbox"), pts=[
+                          T("There were many services, and they communicated with each other through <b>message queues</b> carrying <b>domain events</b> instead of calling each other directly.",
+                            "Había muchos servicios, y se comunicaban entre sí por <b>colas de mensajes</b> que llevaban <b>eventos de dominio</b>, en vez de llamarse directamente."),
+                          T("Publishing followed the <b>Outbox pattern</b>: an event was saved to the database in the same transaction as the change that produced it, and sent to the queue from there — so no change went out without its event, and no event went out for a change that was rolled back.",
+                            "La publicación seguía el <b>patrón Outbox</b>: el evento se guardaba en la base de datos en la misma transacción que el cambio que lo produjo, y desde ahí se enviaba a la cola; así ningún cambio salía sin su evento, ni salía un evento de un cambio que se revirtió."),
+                      ]),
+                      dict(h=T("Unit tests as part of \"done\"", "Pruebas unitarias como parte de \"terminado\""), pts=[
+                          T("The project with the <b>most unit tests</b> I have seen in my career.",
+                            "El proyecto con <b>más pruebas unitarias</b> que he visto en mi carrera."),
+                          T("A feature was not complete until it shipped with extensive unit tests covering all of it — the tests were part of the deliverable, not an afterthought.",
+                            "Un feature no estaba completo hasta que se entregaba con pruebas unitarias extensas que lo cubrieran todo: las pruebas eran parte de la entrega, no algo posterior."),
+                      ]),
+                      dict(h=T("Day to day", "Día a día"), pts=[
+                          T("Engineered new features and resolved production issues in a high-velocity environment.",
+                            "Desarrollé nuevas funcionalidades y resolví incidentes en producción en un entorno de alta velocidad."),
+                          T("Leveraged AI tooling to accelerate development cycles and enhance code quality.",
+                            "Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código."),
+                      ]),
+                  ],
+                  deliverables=[
+                      dict(kind="milestone",
+                           title=T("Feature set delivered for Costco", "Set de funcionalidades entregado para Costco"),
+                           role=T("A set of features built for one client of the platform: Costco",
+                                  "Un conjunto de funcionalidades hecho para un cliente de la plataforma: Costco"),
+                           tech=[".NET", "PostgreSQL", "DDD", T("Unit tests", "Pruebas unitarias")],
+                           pts=[T("Completed the full set of features Costco needed, each one delivered with the extensive unit tests the project required.",
+                                  "Completé el set completo de funcionalidades que Costco necesitaba, cada una entregada con las pruebas unitarias extensas que el proyecto exigía.")],
+                           result=T("Delivered in full, earning the <b>client's satisfaction</b>.",
+                                    "Entregado por completo, logrando la <b>satisfacción del cliente</b>.")),
+                      dict(kind="milestone",
+                           title=T("Requests that failed at random, optimized", "Optimización de requests que fallaban al azar"),
+                           tech=[".NET", "PostgreSQL"],
+                           pts=[T("Tracked down requests that were failing in a seemingly random way and optimized them until the failures went away.",
+                                  "Rastreé requests que fallaban de manera aparentemente aleatoria y las optimicé hasta que los fallos desaparecieron.")]),
+                  ]),
+             dict(kind="project", slug="wizeline-media", role=T("Tech Lead"), co="Fox Corp", loc=REMOTE, inds=[T("Media &amp; Entertainment", "Medios y Entretenimiento")],
                   dur=T("3 yrs", "3 años"),
                   facts=[(T("Team", "Equipo"), T("5 engineers", "5 ingenieros")),
                          (T("Cloud"), "AWS"),
@@ -174,8 +237,7 @@ JOBS = [
                          "Tres años en el proyecto de Wizeline con Fox Corp, como Tech Lead de un equipo de cinco ingenieros. "
                          "Dos tipos de servicios compartían una misma capa de mensajería en AWS: workers serverless escritos en "
                          "JavaScript y aplicaciones Java corriendo en contenedores."),
-                  pts=[T("Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders.",
-                         "Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos.")],
+                  pts=[],
                   groups=[
                       dict(h=T("AWS &amp; service-to-service messaging", "AWS y mensajería entre servicios"), pts=[
                           T("<b>SNS</b> and <b>SQS</b> were the connective tissue of the platform: services published and consumed messages instead of calling each other directly.",
@@ -209,6 +271,20 @@ JOBS = [
                       ]),
                   ],
                   deliverables=[dict(kind="milestone",
+                      title=T("Tech Lead"),
+                      role=T("A squad of five engineers, for the three years of the engagement",
+                             "Un equipo de cinco ingenieros, durante los tres años del proyecto"),
+                      pts=[T("Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders.",
+                             "Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos."),
+                           T("<b>Pull request reviews</b> for everything the squad shipped.",
+                             "<b>Revisión de pull requests</b> de todo lo que entregaba el equipo."),
+                           T("<b>Solution design</b> done together with the team members, not handed down to them.",
+                             "<b>Diseño de las soluciones</b> en conjunto con los integrantes del equipo, no impuesto desde arriba."),
+                           T("<b>Requirements refinement</b> directly with the business side, before the work reached the team.",
+                             "<b>Refinamiento de requerimientos</b> directamente con negocio, antes de que el trabajo llegara al equipo.")],
+                      result=T("Within <b>3 months</b> every member of the team could work independently, and our results earned us the <b>trust of the stakeholders</b>.",
+                               "En <b>3 meses</b> cada integrante del equipo podía trabajar de forma independiente, y nuestros resultados nos ganaron la <b>confianza de los stakeholders</b>.")),
+                  dict(kind="milestone",
                       title=T("Legacy → Media Cloud video migration service",
                               "Servicio de migración de video de legacy a Media Cloud"),
                       role=T("Mine end to end — designed, built and shipped to production on my own",
@@ -224,13 +300,13 @@ JOBS = [
                       ],
                       result=T("Shipped to production and migrated <b>over 100,000 legacy videos</b>, metadata included, into Fox's new system.",
                                "Entregado en producción y migró <b>más de 100,000 videos legacy</b>, metadatos incluidos, al nuevo sistema de Fox."))]),
-             dict(kind="project", slug="wizeline-retail", role=T("Enterprise Retail Industry", "Retail empresarial"), co="Inditex", loc=REMOTE, inds=[T("Retail")],
+             dict(kind="project", slug="wizeline-retail", role="", co="Inditex", loc=REMOTE, inds=[T("Retail")],
                   tech=["Java", "Spring", "MariaDB"],
                   pts=[T("Architected backend services for a complex audit system.",
                          "Diseñé la arquitectura de los servicios backend de un sistema de auditoría complejo."),
                        T("Designed relational databases, implemented microservices, and built migration services for long-running data imports.",
                          "Modelé bases de datos relacionales, implementé microservicios y construí servicios de migración para importaciones de datos de larga duración.")]),
-             dict(kind="project", slug="wizeline-cybersecurity", role=T("Cybersecurity startup — MVP", "Startup de ciberseguridad — MVP"), co="Cerby", loc=REMOTE, inds=[T("Cybersecurity", "Ciberseguridad")],
+             dict(kind="project", slug="wizeline-cybersecurity", role="", co="Cerby", loc=REMOTE, inds=[T("Cybersecurity", "Ciberseguridad")],
                   tech=["Python", "React"],
                   pts=[T("Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform.",
                          "Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial.")]),
@@ -245,7 +321,7 @@ JOBS = [
         T('<b>Cerby:</b> Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform. <span class="stack">Tech: Python, React.</span>',
           '<b>Cerby:</b> Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial. <span class="stack">Tech: Python, React.</span>'),
     ]),
-    dict(role=T("Lead Programmer", "Programador Líder"), co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period=T("Jul 2019 — Feb 2020"), frm="2019-07", to="2020-02", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
+    dict(role=T("Senior Software Engineer", "Ingeniero de Software Senior"), co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period=T("Jul 2019 — Mar 2020"), frm="2019-07", to="2020-03", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
         T('Led a small programming team in the development of a mobile iOS game, taking ownership of the <b>core game architecture</b>.',
           'Lideré un equipo pequeño de programación en un juego móvil para iOS, a cargo de la <b>arquitectura central del juego</b>.'),
         T('Architected and implemented an Inversion of Control (IoC), Dependency Injection (DI), and a robust event-driven system.',
@@ -254,8 +330,64 @@ JOBS = [
           'Aceleré el ciclo de desarrollo y reduje los bugs con un paradigma modular que recortó de forma notable el tiempo de integración de assets para los equipos de arte.'),
         T(f'Released on <b>Apple Arcade</b>, now on Steam: {ext(STEAM, "The Lullaby of Life")}.',
           f'Publicado en <b>Apple Arcade</b> y ahora en Steam: {ext(STEAM, "The Lullaby of Life")}.'),
-    ]),
-    dict(role=T("Senior Programmer", "Programador Senior"), co="Virtually Live", tech=["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"], period=T("Feb 2017 — Jan 2020", "Feb 2017 — Ene 2020"), frm="2017-02", to="2020-01", inds=[T("Gaming · VR", "Videojuegos · VR")], loc=T("Málaga, Spain", "Málaga, España"), cur=False, pts=[
+    ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
+        tech=["C#", "Unity3D", "iOS", "Apple Arcade", "IoC / DI", T("Unit tests", "Pruebas unitarias"), "Flow"],
+        facts=[(T("Game", "Juego"), "The Lullaby of Life"),
+               (T("Engine", "Motor"), "Unity3D"),
+               (T("Platform", "Plataforma"), "iOS · Apple Arcade"),
+               (T("Built in", "Hecho en"), T("9 months", "9 meses"))],
+        lede=T("Nine months at 1 Simple Idea on <b>The Lullaby of Life</b>, a mobile game for iOS built in <b>Unity3D</b>. "
+               "The game was split in two — the visual and gameplay side, and a logic layer covered by unit tests — and held "
+               "together by two systems written specifically for it: a hand-made IoC / DI container and <b>Flow</b>, a "
+               "data-connection system.",
+               "Nueve meses en 1 Simple Idea trabajando en <b>The Lullaby of Life</b>, un juego móvil para iOS hecho en <b>Unity3D</b>. "
+               "El juego se dividió en dos —la parte visual y de gameplay, y una capa de lógica cubierta por pruebas unitarias— y "
+               "se sostenía sobre dos sistemas escritos específicamente para él: un contenedor de IoC / DI hecho a mano y <b>Flow</b>, "
+               "un sistema de conexión de datos."),
+        pts=[],
+        groups=[
+            dict(h=T("Inversion of Control &amp; Dependency Injection", "Inversión de Control e Inyección de Dependencias"), pts=[
+                T("A hand-made <b>IoC / DI</b> system, written specifically for this game instead of taken from a library.",
+                  "Un sistema de <b>IoC / DI</b> hecho a mano, escrito específicamente para este juego en lugar de tomarlo de una librería."),
+                T("Game components declared what they needed and the container supplied it, so no component depended directly on another.",
+                  "Los componentes del juego declaraban lo que necesitaban y el contenedor lo proveía, de modo que ningún componente dependía directamente de otro."),
+            ]),
+            dict(h=T("Two layers: visual + gameplay, and logic", "Dos capas: visual + gameplay, y lógica"), pts=[
+                T("The game was divided in two parts: the <b>visual and gameplay</b> layer, and the <b>logic</b> layer.",
+                  "El juego se dividió en dos partes: la capa <b>visual y de gameplay</b>, y la capa de <b>lógica</b>."),
+                T("Keeping the logic apart from the visuals is what made it testable: the whole logic layer had <b>unit tests</b>.",
+                  "Separar la lógica de lo visual es lo que la hizo testeable: toda la capa de lógica tenía <b>pruebas unitarias</b>."),
+            ]),
+            dict(h=T("Flow — connecting data between components", "Flow: conexión de datos entre componentes"), pts=[
+                T("<b>Flow</b>, a data-connection system built specially for the game: a variable in one component could be connected to a variable in another transparently, without the two components knowing about each other.",
+                  "<b>Flow</b>, un sistema de conexión de datos hecho especialmente para el juego: una variable de un componente se podía conectar a la de otro de forma transparente, sin que los dos componentes se conocieran entre sí."),
+                T("Together with the DI container it gave the project a modular paradigm that cut bug rates and the time art teams spent integrating assets.",
+                  "Junto con el contenedor de DI, dio al proyecto un paradigma modular que redujo los bugs y el tiempo que los equipos de arte pasaban integrando assets."),
+            ]),
+        ],
+        deliverables=[
+            dict(kind="milestone", title=T("Lead Programmer", "Programador Líder"),
+                 role=T("Led the small programming team that built the game", "Lideré el equipo pequeño de programación que construyó el juego"),
+                 pts=[T('Led a small programming team in the development of a mobile iOS game, taking ownership of the <b>core game architecture</b>.',
+                        'Lideré un equipo pequeño de programación en un juego móvil para iOS, a cargo de la <b>arquitectura central del juego</b>.')]),
+            dict(kind="pace", title=T("Finished in nine months", "Terminado en nueve meses"),
+                 role=T("Fast and well organized — with some overtime along the way", "Rápido y bien organizado, con algo de tiempo extra en el camino"),
+                 pts=[T("The game went from start to finish in <b>nine months</b>. The whole team worked fast and in a very organized way, and that is what made the timeline possible.",
+                        "El juego pasó de inicio a fin en <b>nueve meses</b>. Todo el equipo trabajó rápido y de forma muy organizada, y eso es lo que hizo posible el plazo."),
+                      T("It did not come for free, though: there was some extra time in the day-to-day, and a few Saturdays went into getting the project finished.",
+                        "Eso sí, no salió gratis: hubo algo de tiempo extra en el día a día, y algunos sábados se fueron en terminar el proyecto.")],
+                 result=T("Shipped fast — but the overtime was the price of the schedule, not something anyone wanted to repeat.",
+                          "Salió rápido, pero las horas extra fueron el precio del calendario, no algo que nadie quisiera repetir.")),
+            dict(kind="release", title=T("Published on Apple Arcade", "Publicado en Apple Arcade"), tech=["iOS", "Apple Arcade"],
+                 pts=[T("<b>The Lullaby of Life</b> shipped on <b>Apple Arcade</b>, Apple's subscription game service, for iOS.",
+                        "<b>The Lullaby of Life</b> salió en <b>Apple Arcade</b>, el servicio de juegos por suscripción de Apple, para iOS.")]),
+            dict(kind="release", title=T("Published on Steam", "Publicado en Steam"), tech=["Steam"],
+                 pts=[T(f"The game later reached Steam: {ext(STEAM, 'The Lullaby of Life on Steam')}.",
+                        f"El juego llegó después a Steam: {ext(STEAM, 'The Lullaby of Life en Steam')}.")]),
+        ],
+        links=[(T("The Lullaby of Life on Steam", "The Lullaby of Life en Steam"), STEAM)],
+    )),
+    dict(role=T("Lead Software Engineer", "Ingeniero de Software Líder"), co="Virtually Live", tech=["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"], period=T("Feb 2017 — Jan 2020", "Feb 2017 — Ene 2020"), frm="2017-02", to="2020-01", inds=[T("Gaming · VR", "Videojuegos · VR")], loc=T("Málaga, Spain", "Málaga, España"), cur=False, pts=[
         T('Developed <b>racing games</b> for HTC Vive, Oculus, and Gear VR platforms.',
           'Desarrollé <b>juegos de carreras</b> para HTC Vive, Oculus y Gear VR.'),
         T('Engineered a core abstraction layer for game modules, encompassing VR controllers, Social APIs, and database access, utilizing JSON for configuration management.',
@@ -330,14 +462,19 @@ STATS = [('<span data-years>15</span>', "+", T("Years building software", "Años
 #   lede:  one intro paragraph, the context a reader needs before the bullets
 #   pts:   headline bullets (HTML allowed)
 #   groups: [dict(h=<section title>, pts=[...])] — the long-form body, one titled group per area of work
+#   role:  the position; "" on a child that keeps the parent's (headline is then just the company)
 #   tech:  chips, shown inline on the timeline and in the subject panel     inds: industry chips
-#   deliverables: [dict(kind="milestone"|"release"|"award", title=…, role=…, pts=[…], result=…, tech=[…])]
-#          — a highlighted card for something that stands on its own and can feed the CV later
+#   deliverables: [dict(kind="milestone"|"release"|"award"|"pace", title=…, role=…, pts=[…], result=…, tech=[…])]
+#          — a highlighted card for something that stands on its own and can feed the CV later;
+#            "pace" is the yellow one: how long it took and the overtime it cost (fast, but not a pace to repeat)
 #   links: [(label, href)] external links     children: list of the same dicts (one level only)
+#   On a JOBS dict, put all of the above under `history=dict(...)` — the Resume keeps its own pts/tech untouched.
 def _job_entry(j):
-    return dict(kind="job", slug=j["co"].lower().replace(" ", "-").replace("&amp;", "and"), role=j["role"], co=j["co"],
-                frm=j["frm"], to=j["to"], loc=j["loc"], inds=j["inds"], tech=j.get("tech", []),
-                pts=[] if j.get("history_children") else j["pts"], children=j.get("history_children", []))
+    e = dict(kind="job", slug=j["co"].lower().replace(" ", "-").replace("&amp;", "and"), role=j["role"], co=j["co"],
+             frm=j["frm"], to=j["to"], loc=j["loc"], inds=j["inds"], tech=j.get("tech", []),
+             pts=[] if j.get("history_children") else j["pts"], children=j.get("history_children", []))
+    e.update(j.get("history", {}))   # long-form fields for /history/ only; may also override pts/tech
+    return e
 
 def _sorted(entries):
     # newest first; entries without a date keep their written order, after the dated ones
@@ -348,7 +485,37 @@ def history_entries():
     entries = [_job_entry(j) for j in JOBS]
     entries += [
         dict(kind="education", slug="uag-msc", role=EDU[0][0], co="Universidad Autónoma de Guadalajara",
-             frm="2018-08", loc=MX, inds=[T("Education", "Educación")], tech=[], pts=[]),
+             frm="2018-08", loc=MX, inds=[T("Education", "Educación")],
+             tech=["Java", "C++", "JavaScript", "SQL", "C#"],   # what the course projects were written in
+             lede=T("Master's degree in Computer Science at the Universidad Autónoma de Guadalajara, completed in August 2018. "
+                    "The programme ran from the low level — embedded systems and operating systems — through data, "
+                    "mathematics and artificial intelligence, up to mobile programming, systems design and project management; "
+                    "the projects delivered along the way were written in <b>Java</b>, <b>C++</b>, <b>JavaScript</b>, <b>SQL</b> and <b>C#</b>.",
+                    "Maestría en Ciencias Computacionales en la Universidad Autónoma de Guadalajara, concluida en agosto de 2018. "
+                    "El programa fue desde el bajo nivel —sistemas embebidos y sistemas operativos— pasando por datos, "
+                    "matemáticas e inteligencia artificial, hasta programación para móviles, diseño de sistemas y gestión de proyectos; "
+                    "los proyectos entregados en el camino se escribieron en <b>Java</b>, <b>C++</b>, <b>JavaScript</b>, <b>SQL</b> y <b>C#</b>."),
+             pts=[],
+             groups=[
+                 dict(h=T("Coursework", "Materias"), pts=[
+                     T("<b>Embedded systems</b>, <b>operating systems</b> and <b>low-level</b> systems programming.",
+                       "<b>Sistemas embebidos</b>, <b>sistemas operativos</b> y programación de sistemas a <b>bajo nivel</b>."),
+                     T("<b>Advanced databases</b> and <b>data mining</b>.",
+                       "<b>Bases de datos avanzadas</b> y <b>minería de datos</b>."),
+                     T("<b>Mathematics and statistics</b>.",
+                       "<b>Matemáticas y estadística</b>."),
+                     T("<b>Artificial intelligence</b>.",
+                       "<b>Inteligencia artificial</b>."),
+                     T("<b>Mobile programming</b> and <b>systems design</b>.",
+                       "<b>Programación para móviles</b> y <b>diseño de sistemas</b>."),
+                     T("<b>Project management</b>.",
+                       "<b>Gestión de proyectos</b>."),
+                 ]),
+                 dict(h=T("Course projects", "Proyectos de los cursos"), pts=[
+                     T("The projects delivered during the courses were built in <b>Java</b>, <b>C++</b>, <b>JavaScript</b>, <b>SQL</b> and <b>C#</b> — the stack below is theirs.",
+                       "Los proyectos entregados durante los cursos se hicieron en <b>Java</b>, <b>C++</b>, <b>JavaScript</b>, <b>SQL</b> y <b>C#</b>; el stack de abajo es el de esos proyectos."),
+                 ]),
+             ]),
         dict(kind="education", slug="udg-cs", role=EDU[1][0], co="Universidad de Guadalajara",
              frm="2010-12", loc=MX, inds=[T("Education", "Educación")], tech=[], pts=[]),
     ]
@@ -469,11 +636,12 @@ def _hgroups(e):
     return f'<div class="hgroups">{"".join(out)}</div>' if out else ""
 
 DELIV_BADGE = {"milestone": T("Milestone", "Hito"), "release": T("Release", "Lanzamiento"),
-               "award": T("Award", "Reconocimiento")}
+               "award": T("Award", "Reconocimiento"), "pace": T("Pace", "Ritmo")}
 DELIV_RESULT = T("Result", "Resultado")
 
 def _hdelivs(e):
-    """Highlighted cards for the things worth pulling out of an entry: a shipped deliverable, a release, an award."""
+    """Highlighted cards for the things worth pulling out of an entry: a shipped deliverable, a release, an award —
+    or `pace`, the yellow one: how fast it got done and what that cost (overtime), a fact worth showing but not bragging about."""
     out = []
     for dv in e.get("deliverables") or []:
         kind = dv.get("kind", "milestone")
@@ -514,9 +682,14 @@ def _hentry_html(i, level, e):
         kids = "".join(_hentry_html(i + 1 + k, 1, c) for k, c in enumerate(e["children"]))
         children = f'<div class="hchildren">{kids}</div>'
     return (f'<section class="hentry {e["kind"]}{" child" if level else ""}" id="h-{e["slug"]}" data-i="{i}">{when}'
-            f'<h3>{h(e["role"])} · <span class="c">{e["co"]}</span></h3>'
+            f'<h3>{_htitle(e)}</h3>'
             f'<div class="loc">{h(e.get("loc", ""))}<span class="inds">{inds}</span></div>'
             f'{_hfacts(e)}{lede}{pts}{_hgroups(e)}{_hdelivs(e)}{_hstack(e)}{_hlinks(e)}{children}</section>')
+
+def _htitle(e):
+    """Entry headline: `{role} · {company}`, or the company alone when the role is the parent's (role="")."""
+    co = f'<span class="c">{e["co"]}</span>'
+    return f'{h(e["role"])} · {co}' if e.get("role") else co
 
 def history_html():
     return "\n".join(_hentry_html(i, 0, e) for i, lvl, parent, e in history_flat() if lvl == 0)
@@ -906,12 +1079,49 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   function drawNav(){
     nav.innerHTML=data.map(function(e,i){
       if(e.level===1) return '';
-      var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+L(c.role)+'</li>':'';}).join('');
+      var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+(c.co||L(c.role))+'</li>':'';}).join('');
       return '<li data-i="'+i+'">'+e.co+(kids?'<ol>'+kids+'</ol>':'')+'</li>';
     }).join('');
   }
   drawNav();
-  nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) entries[+li.getAttribute('data-i')].scrollIntoView({behavior:'smooth',block:'start'});});
+  /* The reading line: 20% down the viewport at the top of the page, sweeping down as the page is scrolled so that
+     at the very end it sits on the last entry's bottom edge — otherwise the last entries could never reach it.
+     (.htl has bottom padding so that sweep stays short and each entry keeps a fair stretch of scrolling.) */
+  function maxScroll(){return Math.max(1,document.documentElement.scrollHeight-window.innerHeight);}
+  function lineTop(){return window.innerHeight*0.2;}
+  function lineEnd(){ var last=entries[entries.length-1].getBoundingClientRect().bottom+window.scrollY-maxScroll(); return Math.max(lineTop(),Math.min(window.innerHeight,last)); }
+  function sweep(){return 1+(lineEnd()-lineTop())/maxScroll();}   // how much faster the line moves than the page
+  function lineAt(scrollY){ return lineTop()+(lineEnd()-lineTop())*Math.min(1,scrollY/maxScroll()); }
+  /* Zone k = the stretch of the reading line over which entry k is current: [starts[k], starts[k+1]), viewport px.
+     Naturally each entry owns its own height, but a short one (a two-line client, a degree) would own less than a
+     wheel notch and get skipped. So short entries first borrow from neighbours with room to spare, and a run of
+     entries still short then splits its total stretch evenly. MIN is ~120px of actual scrolling. */
+  function zones(){
+    var n=entries.length, r=entries.map(function(el){return el.getBoundingClientRect();}), tops=r.map(function(b){return b.top;});
+    var MIN=120*Math.min(2,sweep());
+    var len=tops.map(function(t,k){return (k+1<n?tops[k+1]:r[n-1].bottom)-t;});
+    var spare=len.map(function(l){return Math.max(0,l-MIN);}), up=[], down=[];
+    for(var k=0;k<n;k++){
+      var need=Math.max(0,MIN-len[k]);
+      up[k]=k>0?Math.min(need,spare[k-1]):0; if(k>0) spare[k-1]-=up[k]; need-=up[k];
+      down[k]=k+1<n?Math.min(need,spare[k+1]):0; if(k+1<n) spare[k+1]-=down[k];
+    }
+    var starts=tops.map(function(t,k){return t-up[k]+(k>0?down[k-1]:0);}), ends=starts.slice(1).concat([r[n-1].bottom]);
+    for(k=0;k<n;){
+      var j=k; while(j<n&&ends[j]-starts[j]<MIN) j++;
+      if(j-k>1){ var span=(ends[j-1]-starts[k])/(j-k); for(var m=k+1;m<j;m++) starts[m]=starts[k]+span*(m-k); }
+      k=j>k?j:k+1;
+    }
+    return starts;
+  }
+  /* scroll so the reading line lands just inside the entry's zone — where the spy picks it, whatever its height */
+  function goTo(i,smooth){
+    var s=zones(), zoneEnd=i+1<s.length?s[i+1]:entries[i].getBoundingClientRect().bottom, t=lineTop();
+    var target=s[i]+Math.min(24,(zoneEnd-s[i])/2)+window.scrollY;   // page px the line must reach
+    var y=(target-t)/sweep();
+    window.scrollTo({top:Math.min(maxScroll(),Math.max(0,y)),behavior:smooth?'smooth':'auto'});
+  }
+  nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) goTo(+li.getAttribute('data-i'),true);});
   var current=-1, timer=null;
   function show(i){
     if(i===current) return; current=i; var e=data[i];
@@ -934,19 +1144,24 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   }
   show(0);
   document.addEventListener('langchange',function(){var i=current;current=-1;drawNav();show(i<0?0:i);});
-  // scroll spy: the entry crossing the 40% line of the viewport is the current one
+  // scroll spy: the entry whose zone holds the reading line is the current one
   // (getBoundingClientRect is used instead of IntersectionObserver because the sheet is CSS-zoomed)
   var ticking=false;
   function spy(){
     ticking=false;
-    var line=window.innerHeight*0.4, i=0;
-    for(var k=0;k<entries.length;k++){ if(entries[k].getBoundingClientRect().top<=line) i=k; }
-    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) i=entries.length-1;  // bottom of page → last entry
+    var s=zones(), y=lineAt(window.scrollY), i=0;
+    for(var k=0;k<s.length;k++){ if(s[k]<=y) i=k; }
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) i=s.length-1;  // bottom of page → last entry
     if(window.scrollY<8) i=0;   // top of page → first (top-level) entry
     show(i);
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } }
-  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); spy();
+  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll);
+  spy();
+  // #h-<slug> in the URL: place that entry at the reading line (the browser alone puts it at the very top, which
+  // the spy reads as the entry after it). The browser does its own fragment jump around load, so this runs after.
+  var target=location.hash&&document.getElementById(location.hash.slice(1)), ti=target?entries.indexOf(target):-1;
+  if(ti>=0){ var place=function(){setTimeout(function(){goTo(ti,false); spy();},0);}; if(document.readyState==='complete') place(); else window.addEventListener('load',place); }
 })();
 </script>
 <script>
@@ -1009,7 +1224,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   /* ---- Extended History: timeline + sticky "subject" panel ---- */
   .sheet.hist-page{overflow:visible;}   /* overflow:hidden on the sheet would defeat position:sticky */
   .hist{display:flex;gap:7mm;margin-top:8px;align-items:flex-start;}
-  .htl{flex:1 1 auto;min-width:0;position:relative;padding-left:16px;}
+  .htl{flex:1 1 auto;min-width:0;position:relative;padding-left:16px;padding-bottom:22vh;}
   .htl::before{content:"";position:absolute;left:4px;top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px;}
   .hentry{position:relative;padding:6px 0 10px;scroll-margin-top:60px;}
   .htl .hentry.job{border-top:0;}
@@ -1055,16 +1270,19 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     border:1px solid rgba(61,220,132,.38);background:linear-gradient(160deg,rgba(61,220,132,.10),rgba(76,201,240,.06));}
   .hdeliv.release{border-color:rgba(76,201,240,.4);background:linear-gradient(160deg,rgba(76,201,240,.10),rgba(61,220,132,.05));}
   .hdeliv.award{border-color:rgba(255,180,84,.45);background:linear-gradient(160deg,rgba(255,180,84,.12),rgba(255,107,157,.05));}
+  .hdeliv.pace{border-color:rgba(255,214,0,.6);background:linear-gradient(160deg,rgba(255,214,0,.17),rgba(255,180,84,.05));}
   .hd-badge{display:inline-block;font-size:6.8px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
     color:var(--green);border:1px solid rgba(61,220,132,.45);border-radius:3px;padding:1px 5px;}
   .hdeliv.release .hd-badge{color:var(--cyan);border-color:rgba(76,201,240,.5);}
   .hdeliv.award .hd-badge{color:var(--amber);border-color:rgba(255,180,84,.55);}
+  .hdeliv.pace .hd-badge{color:var(--amber);border-color:rgba(255,214,0,.75);}
   .hd-t{font-size:10px;font-weight:700;color:var(--fg);margin-top:4px;line-height:1.25;}
   .hd-role{font-size:8.2px;color:var(--muted);margin-top:1px;}
   .hdeliv ul.pts{margin-top:4px;}
   .hd-result{font-size:8.8px;line-height:1.4;color:var(--fg);margin-top:5px;padding-top:5px;border-top:1px dashed rgba(61,220,132,.35);}
   .hd-result b{color:var(--fg);font-weight:600;}
   .hd-result b.mono{font-size:6.8px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--green);margin-right:6px;}
+  .hdeliv.pace .hd-result{border-top-color:rgba(255,214,0,.55);} .hdeliv.pace .hd-result b.mono{color:var(--amber);}
   .hdeliv .dchips{margin-top:6px;}
   .hstack{display:flex;align-items:baseline;gap:6px;margin-top:6px;}
   .hs-h{font-size:7.2px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);flex:0 0 auto;padding-top:2px;}
@@ -1081,7 +1299,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .sub-k{font-size:8px;color:var(--muted);} .sub-k .g{color:var(--green);} .sub-k .c{color:var(--cyan);} .sub-k .f{color:var(--amber);}
   .sub-kind{font-size:7.4px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:8px;}
   .sub-co{font-size:15px;font-weight:700;color:var(--fg);letter-spacing:-.3px;line-height:1.15;margin-top:2px;}
-  .sub-role{font-size:9.6px;font-weight:500;color:var(--cyan);margin-top:2px;}
+  .sub-role{font-size:9.6px;font-weight:500;color:var(--cyan);margin-top:2px;} .sub-role:empty{display:none;}
   .sub-when{font-size:8px;color:var(--green);margin-top:5px;}
   .sub-loc{font-size:8.2px;color:var(--muted);margin-bottom:6px;}
   .sub-h{font-size:8px;color:var(--muted);margin:9px 0 4px;}

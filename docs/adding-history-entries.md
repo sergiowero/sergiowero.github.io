@@ -63,9 +63,11 @@ For a job in `JOBS`, put the children in `history_children` (the Resume keeps it
 ```python
 dict(role="Senior Software Engineer / Tech Lead", co="Wizeline", frm="2020-02", to=None, …,
      history_children=[
-         dict(kind="project", slug="wizeline-global-news", role="Global News Industry", co="Wizeline client",
+         dict(kind="project", slug="wizeline-global-news", role="", co="Dow Jones",   # role="" → headline is just the company
               loc="Remote", inds=["News"], tech=[".NET", "AWS", "PostgreSQL", "Claude Code"],
               pts=["Engineered new features and resolved production issues…"]),
+         dict(kind="project", slug="wizeline-media", role="Tech Lead", co="Fox Corp",   # a role of its own → "Tech Lead · Fox Corp"
+              loc="Remote", inds=["Media & Entertainment"], tech=["Java", "Spring Boot", "AWS"], pts=["…"]),
          dict(kind="milestone", slug="wizeline-tech-lead", role="Promoted to Tech Lead", co="Wizeline",
               frm="2022-03", loc="Remote", inds=[], tech=[], pts=[]),
      ]),
@@ -87,6 +89,7 @@ Rules of thumb:
 - **Two levels only** — children cannot have children.
 - Children may omit `frm`/`to`; undated children keep the order you wrote them, after the dated ones.
 - When a job has `history_children`, its own bullets are hidden on the History page (the children tell the story); the Resume is untouched.
+- A job can also carry `history=dict(...)` with the long-form fields (`lede`, `facts`, `groups`, `deliverables`, `links`; `pts`/`tech` there override the Resume's on the History page only). That is how 1 Simple Idea tells its full story while the Resume keeps four bullets.
 - The side panel shows `↳ inside <parent>` and the mini-timeline nests the children, so the reader always knows where they are.
 
 ### Field reference
@@ -96,6 +99,7 @@ Rules of thumb:
   - `project` → square
   - `education` → diamond
   - `milestone` → pin
+- `role` / `co` — the headline is `{role} · {co}`. The industry is **not** part of it (that is what `inds` is for); on a child that keeps its parent's position, set `role=""` and the headline is the company alone.
 - `slug` — used in the panel header: `cat history/<slug>.md`
 - `frm` / `to` — `"YYYY-MM"`. Omit `to` for a one-day event; `to=None` means *present*.
 - `inds`, `tech` — chips; either can be `[]`.

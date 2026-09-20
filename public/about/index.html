@@ -69,7 +69,7 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   /* ---- Extended History: timeline + sticky "subject" panel ---- */
   .sheet.hist-page{overflow:visible;}   /* overflow:hidden on the sheet would defeat position:sticky */
   .hist{display:flex;gap:7mm;margin-top:8px;align-items:flex-start;}
-  .htl{flex:1 1 auto;min-width:0;position:relative;padding-left:16px;}
+  .htl{flex:1 1 auto;min-width:0;position:relative;padding-left:16px;padding-bottom:22vh;}
   .htl::before{content:"";position:absolute;left:4px;top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px;}
   .hentry{position:relative;padding:6px 0 10px;scroll-margin-top:60px;}
   .htl .hentry.job{border-top:0;}
@@ -115,16 +115,19 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     border:1px solid rgba(61,220,132,.38);background:linear-gradient(160deg,rgba(61,220,132,.10),rgba(76,201,240,.06));}
   .hdeliv.release{border-color:rgba(76,201,240,.4);background:linear-gradient(160deg,rgba(76,201,240,.10),rgba(61,220,132,.05));}
   .hdeliv.award{border-color:rgba(255,180,84,.45);background:linear-gradient(160deg,rgba(255,180,84,.12),rgba(255,107,157,.05));}
+  .hdeliv.pace{border-color:rgba(255,214,0,.6);background:linear-gradient(160deg,rgba(255,214,0,.17),rgba(255,180,84,.05));}
   .hd-badge{display:inline-block;font-size:6.8px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
     color:var(--green);border:1px solid rgba(61,220,132,.45);border-radius:3px;padding:1px 5px;}
   .hdeliv.release .hd-badge{color:var(--cyan);border-color:rgba(76,201,240,.5);}
   .hdeliv.award .hd-badge{color:var(--amber);border-color:rgba(255,180,84,.55);}
+  .hdeliv.pace .hd-badge{color:var(--amber);border-color:rgba(255,214,0,.75);}
   .hd-t{font-size:10px;font-weight:700;color:var(--fg);margin-top:4px;line-height:1.25;}
   .hd-role{font-size:8.2px;color:var(--muted);margin-top:1px;}
   .hdeliv ul.pts{margin-top:4px;}
   .hd-result{font-size:8.8px;line-height:1.4;color:var(--fg);margin-top:5px;padding-top:5px;border-top:1px dashed rgba(61,220,132,.35);}
   .hd-result b{color:var(--fg);font-weight:600;}
   .hd-result b.mono{font-size:6.8px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--green);margin-right:6px;}
+  .hdeliv.pace .hd-result{border-top-color:rgba(255,214,0,.55);} .hdeliv.pace .hd-result b.mono{color:var(--amber);}
   .hdeliv .dchips{margin-top:6px;}
   .hstack{display:flex;align-items:baseline;gap:6px;margin-top:6px;}
   .hs-h{font-size:7.2px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);flex:0 0 auto;padding-top:2px;}
@@ -141,7 +144,7 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .sub-k{font-size:8px;color:var(--muted);} .sub-k .g{color:var(--green);} .sub-k .c{color:var(--cyan);} .sub-k .f{color:var(--amber);}
   .sub-kind{font-size:7.4px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:8px;}
   .sub-co{font-size:15px;font-weight:700;color:var(--fg);letter-spacing:-.3px;line-height:1.15;margin-top:2px;}
-  .sub-role{font-size:9.6px;font-weight:500;color:var(--cyan);margin-top:2px;}
+  .sub-role{font-size:9.6px;font-weight:500;color:var(--cyan);margin-top:2px;} .sub-role:empty{display:none;}
   .sub-when{font-size:8px;color:var(--green);margin-top:5px;}
   .sub-loc{font-size:8.2px;color:var(--muted);margin-bottom:6px;}
   .sub-h{font-size:8px;color:var(--muted);margin:9px 0 4px;}
@@ -317,12 +320,49 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   function drawNav(){
     nav.innerHTML=data.map(function(e,i){
       if(e.level===1) return '';
-      var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+L(c.role)+'</li>':'';}).join('');
+      var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+(c.co||L(c.role))+'</li>':'';}).join('');
       return '<li data-i="'+i+'">'+e.co+(kids?'<ol>'+kids+'</ol>':'')+'</li>';
     }).join('');
   }
   drawNav();
-  nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) entries[+li.getAttribute('data-i')].scrollIntoView({behavior:'smooth',block:'start'});});
+  /* The reading line: 20% down the viewport at the top of the page, sweeping down as the page is scrolled so that
+     at the very end it sits on the last entry's bottom edge — otherwise the last entries could never reach it.
+     (.htl has bottom padding so that sweep stays short and each entry keeps a fair stretch of scrolling.) */
+  function maxScroll(){return Math.max(1,document.documentElement.scrollHeight-window.innerHeight);}
+  function lineTop(){return window.innerHeight*0.2;}
+  function lineEnd(){ var last=entries[entries.length-1].getBoundingClientRect().bottom+window.scrollY-maxScroll(); return Math.max(lineTop(),Math.min(window.innerHeight,last)); }
+  function sweep(){return 1+(lineEnd()-lineTop())/maxScroll();}   // how much faster the line moves than the page
+  function lineAt(scrollY){ return lineTop()+(lineEnd()-lineTop())*Math.min(1,scrollY/maxScroll()); }
+  /* Zone k = the stretch of the reading line over which entry k is current: [starts[k], starts[k+1]), viewport px.
+     Naturally each entry owns its own height, but a short one (a two-line client, a degree) would own less than a
+     wheel notch and get skipped. So short entries first borrow from neighbours with room to spare, and a run of
+     entries still short then splits its total stretch evenly. MIN is ~120px of actual scrolling. */
+  function zones(){
+    var n=entries.length, r=entries.map(function(el){return el.getBoundingClientRect();}), tops=r.map(function(b){return b.top;});
+    var MIN=120*Math.min(2,sweep());
+    var len=tops.map(function(t,k){return (k+1<n?tops[k+1]:r[n-1].bottom)-t;});
+    var spare=len.map(function(l){return Math.max(0,l-MIN);}), up=[], down=[];
+    for(var k=0;k<n;k++){
+      var need=Math.max(0,MIN-len[k]);
+      up[k]=k>0?Math.min(need,spare[k-1]):0; if(k>0) spare[k-1]-=up[k]; need-=up[k];
+      down[k]=k+1<n?Math.min(need,spare[k+1]):0; if(k+1<n) spare[k+1]-=down[k];
+    }
+    var starts=tops.map(function(t,k){return t-up[k]+(k>0?down[k-1]:0);}), ends=starts.slice(1).concat([r[n-1].bottom]);
+    for(k=0;k<n;){
+      var j=k; while(j<n&&ends[j]-starts[j]<MIN) j++;
+      if(j-k>1){ var span=(ends[j-1]-starts[k])/(j-k); for(var m=k+1;m<j;m++) starts[m]=starts[k]+span*(m-k); }
+      k=j>k?j:k+1;
+    }
+    return starts;
+  }
+  /* scroll so the reading line lands just inside the entry's zone — where the spy picks it, whatever its height */
+  function goTo(i,smooth){
+    var s=zones(), zoneEnd=i+1<s.length?s[i+1]:entries[i].getBoundingClientRect().bottom, t=lineTop();
+    var target=s[i]+Math.min(24,(zoneEnd-s[i])/2)+window.scrollY;   // page px the line must reach
+    var y=(target-t)/sweep();
+    window.scrollTo({top:Math.min(maxScroll(),Math.max(0,y)),behavior:smooth?'smooth':'auto'});
+  }
+  nav.addEventListener('click',function(ev){var li=ev.target.closest('li'); if(li) goTo(+li.getAttribute('data-i'),true);});
   var current=-1, timer=null;
   function show(i){
     if(i===current) return; current=i; var e=data[i];
@@ -345,19 +385,24 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   }
   show(0);
   document.addEventListener('langchange',function(){var i=current;current=-1;drawNav();show(i<0?0:i);});
-  // scroll spy: the entry crossing the 40% line of the viewport is the current one
+  // scroll spy: the entry whose zone holds the reading line is the current one
   // (getBoundingClientRect is used instead of IntersectionObserver because the sheet is CSS-zoomed)
   var ticking=false;
   function spy(){
     ticking=false;
-    var line=window.innerHeight*0.4, i=0;
-    for(var k=0;k<entries.length;k++){ if(entries[k].getBoundingClientRect().top<=line) i=k; }
-    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) i=entries.length-1;  // bottom of page → last entry
+    var s=zones(), y=lineAt(window.scrollY), i=0;
+    for(var k=0;k<s.length;k++){ if(s[k]<=y) i=k; }
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) i=s.length-1;  // bottom of page → last entry
     if(window.scrollY<8) i=0;   // top of page → first (top-level) entry
     show(i);
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } }
-  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); spy();
+  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll);
+  spy();
+  // #h-<slug> in the URL: place that entry at the reading line (the browser alone puts it at the very top, which
+  // the spy reads as the entry after it). The browser does its own fragment jump around load, so this runs after.
+  var target=location.hash&&document.getElementById(location.hash.slice(1)), ti=target?entries.indexOf(target):-1;
+  if(ti>=0){ var place=function(){setTimeout(function(){goTo(ti,false); spy();},0);}; if(document.readyState==='complete') place(); else window.addEventListener('load',place); }
 })();
 </script>
 <script>
