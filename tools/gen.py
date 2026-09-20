@@ -475,7 +475,73 @@ JOBS = [
           'Participé como programador adicional en un título lanzado para <b>Nintendo Wii</b>.'),
         T(f'Showcased development work in a demo reel of five released iOS games ({ext(YT_REEL, "gameplay")}).',
           f'Mostré mi trabajo en un demo reel con cinco juegos de iOS publicados ({ext(YT_REEL, "gameplay")}).'),
-    ]),
+    ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
+        tech=["C#", "Unity 3", "iOS", "Nintendo Wii", "Gamebryo", "Lua", T("Mobile games", "Juegos móviles"), T("Console", "Consola")],
+        facts=[(T("Platforms", "Plataformas"), T("iOS · Nintendo Wii")),
+               (T("Engines", "Motores"), T("Unity 3 (C#) · Gamebryo (Lua)")),
+               (T("Team", "Equipo"), T("Two programmers + a team of artists", "Dos programadores + un equipo de artistas")),
+               (T("Shipped", "Publicados"), T("4 iOS games · 1 Wii game", "4 juegos de iOS · 1 juego de Wii"))],
+        lede=T("My first job in games, and my first shipped projects. Almost two years at Kaxan Games programming <b>mobile games in "
+               "Unity</b> — <b>Taco Master</b>, <b>Bread Boy</b>, <b>Mosca</b> and <b>Gogo Armadillo</b>, all published on <b>iOS</b> — "
+               "with one other programmer and a team of artists, on the old Unity 3 and C#. In between, an additional-programmer "
+               "credit on a <b>Nintendo Wii</b> title from the <b>El Chavo del 8</b> franchise, and a first stretch on the "
+               "<b>Gamebryo</b> engine, scripted in Lua, before the studio moved to Unity.",
+               "Mi primer trabajo en videojuegos, y mis primeros proyectos publicados. Casi dos años en Kaxan Games programando "
+               "<b>juegos móviles en Unity</b> —<b>Taco Master</b>, <b>Bread Boy</b>, <b>Mosca</b> y <b>Gogo Armadillo</b>, todos "
+               "publicados en <b>iOS</b>— con otro programador y un equipo de artistas, en el viejo Unity 3 y C#. En medio, un "
+               "crédito como programador adicional en un título de <b>Nintendo Wii</b> de la franquicia de <b>El Chavo del 8</b>, y "
+               "una primera etapa con el motor <b>Gamebryo</b>, programado en Lua, antes de que el estudio pasara a Unity."),
+        pts=[],
+        groups=[
+            dict(h=T("Mobile games in Unity", "Juegos móviles en Unity"), pts=[
+                T("Programmed <b>mobile games in Unity</b> with <b>C#</b>, on the versions of the time — <b>Unity 3</b> — long before the engine looked the way it does now.",
+                  "Programé <b>juegos móviles en Unity</b> con <b>C#</b>, en las versiones de entonces —<b>Unity 3</b>—, mucho antes de que el motor se viera como se ve hoy."),
+                T("Each game was built by <b>two programmers</b> — me and one other team member — working with a <b>team of artists</b>.",
+                  "Cada juego lo hicimos <b>dos programadores</b> —yo y otro miembro del equipo— trabajando con un <b>equipo de artistas</b>."),
+                T("They were my <b>first projects</b>, and it shows: they were not particularly flashy. But every one of them made it through to publication on <b>iOS</b>, and that was the point.",
+                  "Fueron mis <b>primeros proyectos</b>, y se nota: no eran especialmente vistosos. Pero todos llegaron a publicarse en <b>iOS</b>, y de eso se trataba."),
+                T(f"The five iOS games are in a short demo reel ({ext(YT_REEL, 'gameplay')}).",
+                  f"Los cinco juegos de iOS están en un demo reel corto ({ext(YT_REEL, 'gameplay')})."),
+            ]),
+            dict(h=T("Gamebryo and Lua, before Unity", "Gamebryo y Lua, antes de Unity"), pts=[
+                T("The studio started out experimenting with <b>Gamebryo</b>, an engine scripted in <b>Lua</b>, and we received training on it.",
+                  "El estudio empezó experimentando con <b>Gamebryo</b>, un motor que se programaba en <b>Lua</b>, y recibimos training para usarlo."),
+                T("That was the beginning; the studio then moved to <b>Unity</b>, and the games above were all made there.",
+                  "Eso fue el inicio; después el estudio pasó a <b>Unity</b>, y todos los juegos de arriba se hicieron ahí."),
+            ]),
+            dict(h=T("Training from animation and programming experts", "Training con expertos en animación y programación"), pts=[
+                T("Throughout my time at Kaxan we received <b>training from several experts</b> in <b>animation</b> and <b>programming</b> — a big part of how a first job in games turned into a foundation.",
+                  "Durante mi estancia en Kaxan recibimos <b>training de varios expertos</b> en <b>animación</b> y <b>programación</b>: una parte importante de cómo un primer trabajo en videojuegos se volvió una base."),
+            ]),
+        ],
+        deliverables=[
+            dict(kind="release", title="Taco Master", tech=["Unity 3", "C#", "iOS"],
+                 role=T("Mobile game · programmer, one of two", "Juego móvil · programador, uno de dos"),
+                 pts=[T("Built in <b>Unity 3</b> with C# by two programmers and a team of artists, and published on <b>iOS</b>.",
+                        "Hecho en <b>Unity 3</b> con C# por dos programadores y un equipo de artistas, y publicado en <b>iOS</b>.")]),
+            dict(kind="release", title="Bread Boy", tech=["Unity 3", "C#", "iOS"],
+                 role=T("Mobile game · programmer, one of two", "Juego móvil · programador, uno de dos"),
+                 pts=[T("Built in <b>Unity 3</b> with C# by two programmers and a team of artists, and published on <b>iOS</b>.",
+                        "Hecho en <b>Unity 3</b> con C# por dos programadores y un equipo de artistas, y publicado en <b>iOS</b>.")]),
+            dict(kind="release", title="Mosca", tech=["Unity 3", "C#", "iOS"],
+                 role=T("Mobile game · programmer, one of two", "Juego móvil · programador, uno de dos"),
+                 pts=[T("Built in <b>Unity 3</b> with C# by two programmers and a team of artists, and published on <b>iOS</b>.",
+                        "Hecho en <b>Unity 3</b> con C# por dos programadores y un equipo de artistas, y publicado en <b>iOS</b>.")]),
+            dict(kind="release", title="Gogo Armadillo", tech=["Unity 3", "C#", "iOS"],
+                 role=T("Mobile game · programmer, one of two", "Juego móvil · programador, uno de dos"),
+                 pts=[T("Built in <b>Unity 3</b> with C# by two programmers and a team of artists, and published on <b>iOS</b>.",
+                        "Hecho en <b>Unity 3</b> con C# por dos programadores y un equipo de artistas, y publicado en <b>iOS</b>.")]),
+            dict(kind="release", title=T("El Chavo del 8 for Nintendo Wii", "El Chavo del 8 para Nintendo Wii"), tech=["Unity", "C#", "Nintendo Wii"],
+                 role=T("Console game · additional programmer", "Juego de consola · programador adicional"),
+                 pts=[T("A <b>Nintendo Wii</b> game from the <b>El Chavo del 8</b> franchise, also made in <b>Unity</b>. I contributed as an additional programmer.",
+                        "Un juego de <b>Nintendo Wii</b> de la franquicia de <b>El Chavo del 8</b>, hecho también en <b>Unity</b>. Participé como programador adicional."),
+                      T("It was published, and it is still playable today if you have a Wii.",
+                        "Sí se publicó, y hoy en día se puede jugar si tienes un Wii.")],
+                 result=T("A shipped console title, on a franchise everyone in México knows.",
+                          "Un título de consola publicado, de una franquicia que todo México conoce.")),
+        ],
+        links=[(T("Demo reel — five iOS games", "Demo reel: cinco juegos de iOS"), YT_REEL)],
+    )),
 ]
 
 # Core skills on a 1–10 scale: the number drives the bar/percent, the word comes from the band it falls in.
