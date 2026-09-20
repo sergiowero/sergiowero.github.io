@@ -304,7 +304,7 @@ JOBS = [
                   tech=["Python", "React"],
                   pts=[T("Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform.",
                          "Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial.")]),
-         ], period=T("Feb 2020 — Present", "Feb 2020 — Actualidad"), frm="2020-02", to=None,
+         ], period=T("Mar 2020 — Present", "Mar 2020 — Actualidad"), frm="2020-03", to=None,
          inds=[T("News", "Noticias"), T("Media &amp; Entertainment", "Medios y Entretenimiento"), T("Retail"), T("Cybersecurity", "Ciberseguridad")], loc=MX, cur=True, pts=[
         T('<b>Dow Jones:</b> Engineered new features and resolved production issues in a high-velocity environment. Leveraged AI tooling to accelerate development cycles and enhance code quality. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>',
           '<b>Dow Jones:</b> Desarrollé funcionalidades y resolví incidentes en producción en un entorno de alta velocidad. Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>'),
@@ -322,13 +322,13 @@ JOBS = [
                (T("Clients", "Clientes"), "Dow Jones · Fox Corp · Inditex · Cerby"),
                (T("Now", "Ahora"), T("Training as an AI engineer", "Formándome como AI engineer"))],
         lede=T("Wizeline is a <b>software consultancy</b> with many clients: its engineers are placed on client engagements, "
-               "and every entry below is a client I have worked for since joining in February 2020 — Dow Jones, Fox Corp, "
+               "and every entry below is a client I have worked for since joining in March 2020 — Dow Jones, Fox Corp, "
                "Inditex and Cerby. My role is <b>Senior Software Engineer / Tech Lead</b>: I join the client's team, build and "
                "run their backend services, and lead when the engagement calls for it. Alongside the client work there is "
                "<b>constant training</b>; right now it is aimed at becoming an <b>AI engineer</b> — building agents, mainly in "
                "<b>Python</b> with <b>LangChain</b> and the <b>Claude SDK</b>.",
                "Wizeline es una <b>consultora de software</b> con muchos clientes: sus ingenieros se asignan a proyectos de "
-               "cliente, y cada entrada de abajo es un cliente para el que he trabajado desde que entré en febrero de 2020: "
+               "cliente, y cada entrada de abajo es un cliente para el que he trabajado desde que entré en marzo de 2020: "
                "Dow Jones, Fox Corp, Inditex y Cerby. Mi rol es <b>Ingeniero de Software Senior / Tech Lead</b>: me integro al "
                "equipo del cliente, construyo y opero sus servicios backend, y lidero cuando el proyecto lo requiere. Junto al "
                "trabajo con clientes hay <b>capacitación constante</b>; ahora mismo está enfocada en convertirme en "
@@ -336,9 +336,9 @@ JOBS = [
         groups=[
             dict(h=T("The role", "El rol"), pts=[
                 T("Wizeline is a consultancy: it has many clients, and its engineers work embedded in those clients' teams. "
-                  "Since February 2020 I have gone through four of them — each has its own entry below.",
+                  "Since March 2020 I have gone through four of them — each has its own entry below.",
                   "Wizeline es una consultora: tiene muchos clientes, y sus ingenieros trabajan integrados en los equipos de esos "
-                  "clientes. Desde febrero de 2020 he pasado por cuatro; cada uno tiene su propia entrada abajo."),
+                  "clientes. Desde marzo de 2020 he pasado por cuatro; cada uno tiene su propia entrada abajo."),
                 T("Mostly backend: designing services, data models and integrations, and taking features from design to "
                   "production in whatever stack the client runs — <b>.NET</b>, <b>Java / Spring</b>, <b>Node.js</b> or "
                   "<b>Python</b>, on <b>AWS</b>, <b>PostgreSQL</b> and <b>MariaDB</b>.",
@@ -1009,7 +1009,7 @@ FIT_JS = """<script>
   var years=new Date().getFullYear()-START_YEAR;
   document.querySelectorAll('[data-years]').forEach(function(el){el.textContent=years;});
 })();
-/* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Feb 2020 — Present · 6 yrs 8 mos" */
+/* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Mar 2020 — Present · 6 yrs 8 mos" */
 (function(){
   var M={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
          es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']};
