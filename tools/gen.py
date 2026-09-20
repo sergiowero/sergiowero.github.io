@@ -145,6 +145,7 @@ PROFILE = T(
 STEAM = "https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/"
 YT_VR = "https://www.youtube.com/watch?v=dyOfO0sYyp8&amp;t=446s"
 YT_REEL = "https://www.youtube.com/watch?v=PWaarVatoEU"
+CERBY = "https://www.cerby.com/"
 
 def ext(href, text):
     return f'<a href="{href}" target="_blank" rel="noopener noreferrer">{text}</a>'
@@ -302,9 +303,66 @@ JOBS = [
                        T("Designed relational databases, implemented microservices, and built migration services for long-running data imports.",
                          "Modelé bases de datos relacionales, implementé microservicios y construí servicios de migración para importaciones de datos de larga duración.")]),
              dict(kind="project", slug="wizeline-cybersecurity", role="", co="Cerby", loc=REMOTE, inds=[T("Cybersecurity", "Ciberseguridad")],
-                  tech=["Python", "React"],
-                  pts=[T("Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform.",
-                         "Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial.")]),
+                  facts=[(T("Product", "Producto"), T("Credential management", "Gestión de credenciales")),
+                         (T("Team", "Equipo"), T("Founding project team", "Equipo inicial del proyecto")),
+                         (T("Focus", "Enfoque"), "Backend"),
+                         (T("Architecture", "Arquitectura"), T("Modular monolith · DDD", "Monolito modular · DDD"))],
+                  tech=["Python", "Flask", "DDD", T("Modular monolith", "Monolito modular"), "SQLAlchemy", "Alembic",
+                        T("Chrome extension", "Extensión de Chrome"), "Next.js", "React"],
+                  lede=T("Wizeline's engagement with <b>Cerby</b>, a cybersecurity company whose software manages the "
+                         "<b>credentials of a business</b> — the accounts and passwords its teams share for the apps they use. "
+                         "I was part of the <b>initial project team</b>, on the backend: I led the first version of the backend, "
+                         "modelled the initial database and built the company's first Chrome extension.",
+                         "El proyecto de Wizeline con <b>Cerby</b>, una empresa de ciberseguridad cuyo software gestiona las "
+                         "<b>credenciales de una empresa</b>: las cuentas y contraseñas que sus equipos comparten para las apps que usan. "
+                         "Fui parte del <b>equipo inicial del proyecto</b>, en el backend: lideré la primera versión del backend, "
+                         "modelé la base de datos inicial y construí la primera extensión de Chrome de la empresa."),
+                  pts=[],
+                  groups=[
+                      dict(h=T("The product", "El producto"), pts=[
+                          T("<b>Cerby</b> is cybersecurity software for managing a company's credentials: the logins its people share for the applications they work with, kept under control instead of in spreadsheets and chats.",
+                            "<b>Cerby</b> es un software de ciberseguridad para gestionar las credenciales de una empresa: los accesos que su gente comparte para las aplicaciones con las que trabaja, bajo control en vez de en hojas de cálculo y chats."),
+                          T("I joined as part of the <b>initial project team</b>, before there was a platform to build on — my part was the <b>backend</b>.",
+                            "Entré como parte del <b>equipo inicial del proyecto</b>, antes de que existiera una plataforma sobre la cual construir; mi parte fue el <b>backend</b>."),
+                      ]),
+                      dict(h=T("Backend in Python with Flask, designed with DDD", "Backend en Python con Flask, diseñado con DDD"), pts=[
+                          T("Led the <b>first version of the backend</b>, written in <b>Python</b> with <b>Flask</b>.",
+                            "Lideré la <b>primera versión del backend</b>, escrita en <b>Python</b> con <b>Flask</b>."),
+                          T("It was my <b>first time working with Domain-Driven Design</b>: the domain modelled first, the framework kept at the edges.",
+                            "Fue mi <b>primera vez trabajando con Domain-Driven Design</b>: el dominio modelado primero y el framework en los bordes."),
+                          T("The project was a <b>modular monolith</b> — one deployable, split into modules with clear boundaries, so it could grow without becoming a tangle or forcing microservices too early.",
+                            "El proyecto fue un <b>monolito modular</b>: un solo desplegable, dividido en módulos con fronteras claras, para que pudiera crecer sin enredarse ni forzar microservicios antes de tiempo."),
+                      ]),
+                      dict(h=T("Data model &amp; migrations", "Modelo de datos y migraciones"), pts=[
+                          T("For the backend MVP I <b>modelled the initial database</b>.",
+                            "Para el MVP del backend <b>modelé la base de datos inicial</b>."),
+                          T("Schema changes went through a <b>migration system</b> built on <b>SQLAlchemy</b> (with Alembic), so every change to the model was versioned and repeatable across environments.",
+                            "Los cambios de esquema pasaban por un <b>sistema de migraciones</b> hecho sobre <b>SQLAlchemy</b> (con Alembic), de modo que cada cambio al modelo quedaba versionado y era repetible entre entornos."),
+                      ]),
+                      dict(h=T("Frontend, in support", "Frontend, como apoyo"), pts=[
+                          T("Worked as an <b>auxiliary hand on the frontend</b>, built in <b>Next.js</b>, whenever the web side needed it.",
+                            "Trabajé como <b>apoyo en el frontend</b>, hecho en <b>Next.js</b>, cuando el lado web lo necesitaba."),
+                      ]),
+                  ],
+                  deliverables=[
+                      dict(kind="milestone",
+                           title=T("First version of the backend", "Primera versión del backend"),
+                           role=T("Led it — Python, Flask, DDD, modular monolith", "La lideré: Python, Flask, DDD, monolito modular"),
+                           tech=["Python", "Flask", "DDD", T("Modular monolith", "Monolito modular"), "SQLAlchemy", "Alembic"],
+                           pts=[T("The MVP's backend, from the initial data model and its migrations to the service the product launched with.",
+                                  "El backend del MVP, desde el modelo de datos inicial y sus migraciones hasta el servicio con el que se lanzó el producto.")],
+                           result=T("The <b>initial platform launched</b> on it.",
+                                    "La <b>plataforma inicial se lanzó</b> sobre él.")),
+                      dict(kind="release",
+                           title=T("Cerby's first Chrome extension", "La primera extensión de Chrome de Cerby"),
+                           role=T("Built the first version", "Construí la primera versión"),
+                           tech=[T("Chrome extension", "Extensión de Chrome")],
+                           pts=[T("The company's <b>first browser extension</b>: the piece that brings the managed credentials into the browser, where people actually log in.",
+                                  "La <b>primera extensión de navegador</b> de la empresa: la pieza que lleva las credenciales gestionadas al navegador, donde la gente realmente inicia sesión.")],
+                           result=T("Shipped as Cerby's first Chrome extension.",
+                                    "Entregada como la primera extensión de Chrome de Cerby.")),
+                  ],
+                  links=[("cerby.com", CERBY)]),
          ], period=T("Mar 2020 — Present", "Mar 2020 — Actualidad"), frm="2020-03", to=None,
          inds=[T("News", "Noticias"), T("Media &amp; Entertainment", "Medios y Entretenimiento"), T("Retail"), T("Cybersecurity", "Ciberseguridad")], loc=MX, cur=True, pts=[
         T('<b>Dow Jones:</b> Engineered new features and resolved production issues in a high-velocity environment. Leveraged AI tooling to accelerate development cycles and enhance code quality. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>',
