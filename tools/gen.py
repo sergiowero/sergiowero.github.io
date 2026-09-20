@@ -218,23 +218,17 @@ JOBS = [
                                   "Completé el set completo de funcionalidades que Costco necesitaba, cada una entregada con las pruebas unitarias extensas que el proyecto exigía.")],
                            result=T("Delivered in full, earning the <b>client's satisfaction</b>.",
                                     "Entregado por completo, logrando la <b>satisfacción del cliente</b>.")),
-                      dict(kind="milestone",
-                           title=T("Requests that failed at random, optimized", "Optimización de requests que fallaban al azar"),
-                           tech=[".NET", "PostgreSQL"],
-                           pts=[T("Tracked down requests that were failing in a seemingly random way and optimized them until the failures went away.",
-                                  "Rastreé requests que fallaban de manera aparentemente aleatoria y las optimicé hasta que los fallos desaparecieron.")]),
                   ]),
              dict(kind="project", slug="wizeline-media", role=T("Tech Lead"), co="Fox Corp", loc=REMOTE, inds=[T("Media &amp; Entertainment", "Medios y Entretenimiento")],
-                  dur=T("3 yrs", "3 años"),
                   facts=[(T("Team", "Equipo"), T("5 engineers", "5 ingenieros")),
                          (T("Cloud"), "AWS"),
                          (T("Data", "Datos"), "PostgreSQL")],
                   tech=["Java 8", "Java 11", "Spring Boot", "JavaScript", "Node.js", "AWS Lambda", "Amazon SNS",
                         "Amazon SQS", "Amazon ECS", "CloudWatch", "PostgreSQL"],
-                  lede=T("Three years on Wizeline's engagement with Fox Corp, as Tech Lead of a squad of five engineers. "
+                  lede=T("Wizeline's engagement with Fox Corp, where I was Tech Lead of a squad of five engineers. "
                          "Two kinds of services shared one AWS messaging layer: serverless workers written in JavaScript, "
                          "and Java applications running on containers.",
-                         "Tres años en el proyecto de Wizeline con Fox Corp, como Tech Lead de un equipo de cinco ingenieros. "
+                         "El proyecto de Wizeline con Fox Corp, donde fui Tech Lead de un equipo de cinco ingenieros. "
                          "Dos tipos de servicios compartían una misma capa de mensajería en AWS: workers serverless escritos en "
                          "JavaScript y aplicaciones Java corriendo en contenedores."),
                   pts=[],
@@ -250,8 +244,8 @@ JOBS = [
                       dict(h=T("Serverless services in JavaScript", "Servicios serverless en JavaScript"), pts=[
                           T("<b>AWS Lambda</b> ran a good part of the platform — some services, not all of them.",
                             "<b>AWS Lambda</b> corría buena parte de la plataforma: algunos servicios, no todos."),
-                          T("<b>JavaScript</b> was the language of every Lambda, and the one I used most heavily across these three years.",
-                            "<b>JavaScript</b> era el lenguaje de todas las lambdas, y el que más usé durante estos tres años."),
+                          T("<b>JavaScript</b> was the language of every Lambda, and the one I used most heavily on this engagement.",
+                            "<b>JavaScript</b> era el lenguaje de todas las lambdas, y el que más usé en este proyecto."),
                           T("Those functions handled <b>queue-based tasks</b>; the main one was dispatching the calls that transcoded video.",
                             "Esas funciones resolvían <b>tareas basadas en colas</b>; la principal era lanzar las llamadas que transcodificaban video."),
                       ]),
@@ -272,8 +266,8 @@ JOBS = [
                   ],
                   deliverables=[dict(kind="milestone",
                       title=T("Tech Lead"),
-                      role=T("A squad of five engineers, for the three years of the engagement",
-                             "Un equipo de cinco ingenieros, durante los tres años del proyecto"),
+                      role=T("A squad of five engineers, for the whole engagement",
+                             "Un equipo de cinco ingenieros, durante todo el proyecto"),
                       pts=[T("Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders.",
                              "Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos."),
                            T("<b>Pull request reviews</b> for everything the squad shipped.",
@@ -378,9 +372,9 @@ JOBS = [
                         "Eso sí, no salió gratis: hubo algo de tiempo extra en el día a día, y algunos sábados se fueron en terminar el proyecto.")],
                  result=T("Shipped fast — but the overtime was the price of the schedule, not something anyone wanted to repeat.",
                           "Salió rápido, pero las horas extra fueron el precio del calendario, no algo que nadie quisiera repetir.")),
-            dict(kind="release", title=T("Published on Apple Arcade", "Publicado en Apple Arcade"), tech=["iOS", "Apple Arcade"],
-                 pts=[T("<b>The Lullaby of Life</b> shipped on <b>Apple Arcade</b>, Apple's subscription game service, for iOS.",
-                        "<b>The Lullaby of Life</b> salió en <b>Apple Arcade</b>, el servicio de juegos por suscripción de Apple, para iOS.")]),
+            dict(kind="release", title=T("Published on Apple Arcade", "Publicado en Apple Arcade"), tech=["iOS", "Apple TV", "Apple Arcade"],
+                 pts=[T("<b>The Lullaby of Life</b> shipped on <b>Apple Arcade</b>, Apple's subscription game service, for iOS and Apple TV.",
+                        "<b>The Lullaby of Life</b> salió en <b>Apple Arcade</b>, el servicio de juegos por suscripción de Apple, para iOS y Apple TV.")]),
             dict(kind="release", title=T("Published on Steam", "Publicado en Steam"), tech=["Steam"],
                  pts=[T(f"The game later reached Steam: {ext(STEAM, 'The Lullaby of Life on Steam')}.",
                         f"El juego llegó después a Steam: {ext(STEAM, 'The Lullaby of Life en Steam')}.")]),
@@ -404,7 +398,7 @@ JOBS = [
                (T("Engine", "Motor"), T("Unity3D (C#)")),
                (T("Backend"), T("Python · Django (first version in .NET)", "Python · Django (primera versión en .NET)")),
                (T("Shown at", "Mostrado en"), T("Official Formula E events", "Eventos oficiales de Fórmula E"))],
-        lede=T("Three years in Málaga at Virtually Live. Everything rested on one thing: the <b>input data from the Formula E "
+        lede=T("Three years working remotely for Virtually Live, a studio based in Málaga. Everything rested on one thing: the <b>input data from the Formula E "
                "races</b>, which let us <b>simulate the race that was happening live</b>, in a virtual world, only a few minutes "
                "behind. On that base we built two products. First a <b>Steam app</b>, so that people with a <b>VR</b> headset could "
                "<b>watch the race as if they were there</b> — and even <b>ride along with the drivers</b>; the <b>pool</b> and "
@@ -414,7 +408,7 @@ JOBS = [
                "and Django</b> for accounts and friends — after a first version I wrote in .NET. It went <b>live on iOS</b>, and "
                "during a race the <b>Formula E commentators mentioned the players competing in the app</b>. Alongside, a <b>VR "
                "showroom</b> of the racing cars' components, used at the official Formula E events.",
-               "Tres años en Málaga en Virtually Live. Todo se apoyaba en una cosa: los <b>datos de entrada de las carreras de "
+               "Tres años trabajando en remoto para Virtually Live, un estudio de Málaga. Todo se apoyaba en una cosa: los <b>datos de entrada de las carreras de "
                "Fórmula E</b>, que nos permitían <b>simular la carrera que estaba en vivo</b>, en un mundo virtual, con solo unos "
                "minutos de retraso. Sobre esa base hicimos dos productos. Primero una <b>app de Steam</b>, para que la gente con "
                "<b>VR</b> pudiera <b>ver la carrera como si estuviera ahí</b> —e incluso <b>subirse con los pilotos</b>—; los "
@@ -721,14 +715,18 @@ def history_entries():
                  dict(h=T("Coursework", "Materias"), pts=[
                      T("<b>Embedded systems</b>, <b>operating systems</b> and <b>low-level</b> systems programming.",
                        "<b>Sistemas embebidos</b>, <b>sistemas operativos</b> y programación de sistemas a <b>bajo nivel</b>."),
-                     T("<b>Advanced databases</b> and <b>data mining</b>.",
-                       "<b>Bases de datos avanzadas</b> y <b>minería de datos</b>."),
+                     T("<b>Advanced databases</b>.",
+                       "<b>Bases de datos avanzadas</b>."),
+                     T("<b>Data mining</b>.",
+                       "<b>Minería de datos</b>."),
                      T("<b>Mathematics and statistics</b>.",
                        "<b>Matemáticas y estadística</b>."),
                      T("<b>Artificial intelligence</b>.",
                        "<b>Inteligencia artificial</b>."),
-                     T("<b>Mobile programming</b> and <b>systems design</b>.",
-                       "<b>Programación para móviles</b> y <b>diseño de sistemas</b>."),
+                     T("<b>Mobile programming</b>.",
+                       "<b>Programación para móviles</b>."),
+                     T("<b>Systems design</b>.",
+                       "<b>Diseño de sistemas</b>."),
                      T("<b>Project management</b>.",
                        "<b>Gestión de proyectos</b>."),
                  ]),
