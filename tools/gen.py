@@ -396,7 +396,106 @@ JOBS = [
           'Porté el título de VR a iOS desarrollando las mecánicas principales en C# y diseñando los servicios backend RESTful con Python, Django y Go.'),
         T(f'Contributed to the successful release of the iOS adaptation ({ext(YT_VR, "gameplay")}).',
           f'Contribuí al lanzamiento de la adaptación para iOS ({ext(YT_VR, "gameplay")}).'),
-    ]),
+    ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
+        tech=["C#", "Unity3D", "VR", "Steam", "HTC Vive", "Oculus", "Gear VR", "iOS", "Python", "Django", ".NET", "Go", "REST",
+              T("Live race data", "Datos de carrera en vivo"), T("Game modes", "Modos de juego"), T("Prototyping", "Prototipado")],
+        facts=[(T("Data", "Datos"), T("Formula E live race feed", "Datos en vivo de las carreras de Fórmula E")),
+               (T("Products", "Productos"), T("Steam VR app → mobile app (iOS)", "App de VR en Steam → app móvil (iOS)")),
+               (T("Engine", "Motor"), T("Unity3D (C#)")),
+               (T("Backend"), T("Python · Django (first version in .NET)", "Python · Django (primera versión en .NET)")),
+               (T("Shown at", "Mostrado en"), T("Official Formula E events", "Eventos oficiales de Fórmula E"))],
+        lede=T("Three years in Málaga at Virtually Live. Everything rested on one thing: the <b>input data from the Formula E "
+               "races</b>, which let us <b>simulate the race that was happening live</b>, in a virtual world, only a few minutes "
+               "behind. On that base we built two products. First a <b>Steam app</b>, so that people with a <b>VR</b> headset could "
+               "<b>watch the race as if they were there</b> — and even <b>ride along with the drivers</b>; the <b>pool</b> and "
+               "<b>trivia (Jeopardy)</b> prototypes were meant to live inside it. Then the project <b>dropped VR</b> and became a "
+               "<b>mobile app</b> where people watched the race and <b>competed against the drivers</b>: that is where we programmed "
+               "the <b>game modes</b>, the <b>UI</b> and rules such as the <b>safety car</b>. Underneath, a <b>backend in Python "
+               "and Django</b> for accounts and friends — after a first version I wrote in .NET. It went <b>live on iOS</b>, and "
+               "during a race the <b>Formula E commentators mentioned the players competing in the app</b>. Alongside, a <b>VR "
+               "showroom</b> of the racing cars' components, used at the official Formula E events.",
+               "Tres años en Málaga en Virtually Live. Todo se apoyaba en una cosa: los <b>datos de entrada de las carreras de "
+               "Fórmula E</b>, que nos permitían <b>simular la carrera que estaba en vivo</b>, en un mundo virtual, con solo unos "
+               "minutos de retraso. Sobre esa base hicimos dos productos. Primero una <b>app de Steam</b>, para que la gente con "
+               "<b>VR</b> pudiera <b>ver la carrera como si estuviera ahí</b> —e incluso <b>subirse con los pilotos</b>—; los "
+               "prototipos de <b>pool</b> y <b>trivia (Jeopardy)</b> se querían usar dentro de ella. Luego el proyecto <b>descartó el "
+               "VR</b> y se convirtió en una <b>app de móviles</b> donde la gente veía la carrera y <b>competía con los corredores</b>: "
+               "ahí es donde programamos los <b>modos de juego</b>, la <b>UI</b> y reglas como el <b>safety car</b>. Debajo, un "
+               "<b>backend en Python con Django</b> para cuentas y amigos, después de una primera versión que hice en .NET. Salió "
+               "<b>live en iOS</b>, y durante una carrera los <b>locutores de la Fórmula E mencionaron a los jugadores que competían "
+               "en la app</b>. Aparte, un <b>showroom de VR</b> con los componentes de los autos de carreras, usado en los eventos "
+               "oficiales de Fórmula E."),
+        pts=[],
+        groups=[
+            dict(h=T("The base: Formula E's live race data, simulated in a virtual world", "La base: los datos en vivo de la Fórmula E, simulados en un mundo virtual"), pts=[
+                T("We had the <b>input data from the Formula E races</b>.",
+                  "Teníamos los <b>datos de entrada de las carreras de Fórmula E</b>."),
+                T("With it we could <b>simulate the race that was running live</b> in a <b>virtual world</b>, with only <b>a few minutes of delay</b>. The two products below were both built on this same base.",
+                  "Con ellos podíamos <b>simular la carrera que estaba en vivo</b> en un <b>mundo virtual</b>, con solo <b>unos minutos de retraso</b>. Los dos productos de abajo se construyeron sobre esta misma base."),
+            ]),
+            dict(h=T("First product: a Steam app to watch the race in VR", "Primer producto: una app de Steam para ver la carrera en VR"), pts=[
+                T("An app on <b>Steam</b> so that people with a <b>VR</b> headset — <b>HTC Vive</b>, <b>Oculus</b>, <b>Gear VR</b> — could <b>watch the race as if they were there</b>, and even <b>ride along with the drivers</b>.",
+                  "Una app en <b>Steam</b> para que la gente con <b>VR</b> —<b>HTC Vive</b>, <b>Oculus</b>, <b>Gear VR</b>— pudiera <b>ver la carrera como si estuviera ahí</b>, e incluso <b>subirse con los pilotos</b>."),
+                T("Engineered a <b>core abstraction layer</b> for the game modules — <b>VR controllers</b>, <b>social APIs</b> and <b>database access</b> — with <b>JSON</b> for configuration management.",
+                  "Construí una <b>capa de abstracción</b> para los módulos del juego —<b>controles VR</b>, <b>APIs sociales</b> y <b>acceso a datos</b>— con <b>JSON</b> para la gestión de configuración."),
+                T("This is where the <b>online pool</b> and <b>trivia (Jeopardy)</b> games were meant to be used: things to play inside the VR app, around the race. Both stayed prototypes and <b>never saw the light</b>.",
+                  "Aquí es donde se querían usar los juegos de <b>pool online</b> y <b>trivia (Jeopardy)</b>: cosas para jugar dentro de la app de VR, alrededor de la carrera. Los dos se quedaron en prototipo y <b>nunca salieron a la luz</b>."),
+            ]),
+            dict(h=T("The pivot: VR dropped, a mobile app to compete against the drivers", "El giro: se descarta el VR, una app móvil para competir con los corredores"), pts=[
+                T("The project then <b>dropped VR</b> and became a <b>mobile app</b> where people could <b>watch the race</b> and <b>compete against the drivers</b>.",
+                  "Luego el proyecto <b>descartó el VR</b> y se convirtió en una <b>app de móviles</b> donde la gente podía <b>ver la carrera</b> y <b>competir con los corredores</b>."),
+                T("This is the part of the project where we programmed the <b>game modes</b> and the <b>UI</b>, and added rules such as the <b>safety car</b>, among others.",
+                  "En esa parte del proyecto es donde programamos los <b>modos de juego</b> y la <b>UI</b>, y agregamos reglas como el <b>safety car</b>, entre otras."),
+                T("The core gameplay mechanics in <b>C#</b>, on <b>iOS</b>.",
+                  "Las mecánicas principales en <b>C#</b>, en <b>iOS</b>."),
+            ]),
+            dict(h=T("Backend: accounts and friends, in Python with Django", "Backend: cuentas y amigos, en Python con Django"), pts=[
+                T("Implemented the <b>backend</b> so that users could <b>have an account</b> and <b>add friends</b>.",
+                  "Implementé el <b>backend</b> para que los usuarios pudieran <b>tener cuenta</b> y <b>agregar amigos</b>."),
+                T("Written in <b>Python</b> with <b>Django</b>, as <b>RESTful services</b>, with <b>Go</b> alongside.",
+                  "Escrito en <b>Python</b> con <b>Django</b>, como <b>servicios RESTful</b>, con <b>Go</b> al lado."),
+                T("<b>An interesting detail:</b> I implemented a first version of the backend in <b>.NET</b>. Then the company hired a new lead, and everything moved to <b>Python</b>.",
+                  "<b>Un detalle interesante:</b> implementé una versión inicial del backend en <b>.NET</b>. Después la empresa contrató a un nuevo líder y cambió todo a <b>Python</b>."),
+            ]),
+            dict(h=T("A VR showroom for Formula E", "Un showroom de VR para Fórmula E"), pts=[
+                T("Separately, a <b>showroom</b>: an application to show, in <b>virtual reality</b>, the <b>components of the racing cars</b>.",
+                  "Aparte, un <b>showroom</b>: una aplicación para mostrar, en <b>realidad virtual</b>, los <b>componentes de los autos de carreras</b>."),
+                T("This one did ship — it was <b>used at the official Formula E events</b>.",
+                  "Este sí salió: <b>se usó en los eventos oficiales de Fórmula E</b>."),
+            ]),
+        ],
+        deliverables=[
+            dict(kind="prototype", title=T("Online pool in VR", "Pool online en VR"), tech=["Unity3D", "C#", "VR", T("Online")],
+                 role=T("Mini-game for the Steam VR app · prototype", "Minijuego para la app de VR en Steam · prototipo"),
+                 pts=[T("A <b>pool game</b>, <b>online</b>, in <b>virtual reality</b> — meant to be played inside the Steam app, around the live race.",
+                        "Un <b>juego de pool</b>, <b>online</b>, en <b>realidad virtual</b>: pensado para jugarse dentro de la app de Steam, alrededor de la carrera en vivo.")],
+                 result=T("Stayed a prototype; it was never released.", "Se quedó en prototipo; nunca salió a la luz.")),
+            dict(kind="prototype", title=T("Trivia (Jeopardy) in VR", "Trivia (Jeopardy) en VR"), tech=["Unity3D", "C#", "VR"],
+                 role=T("Mini-game for the Steam VR app · prototype", "Minijuego para la app de VR en Steam · prototipo"),
+                 pts=[T("The <b>Jeopardy</b> quiz show as a game in <b>virtual reality</b> — meant for the same Steam app, alongside the pool game.",
+                        "El concurso <b>Jeopardy</b> como juego en <b>realidad virtual</b>: pensado para la misma app de Steam, junto al juego de pool.")],
+                 result=T("Stayed a prototype; it was never released.", "Se quedó en prototipo; nunca salió a la luz.")),
+            dict(kind="milestone", title=T("Live on iOS — real users racing during a Formula E race", "Live en iOS: usuarios compitiendo durante una carrera de Fórmula E"),
+                 role=T("Mobile app · game modes, UI, race rules and backend", "App móvil · modos de juego, UI, reglas de carrera y backend"),
+                 tech=["Unity3D", "C#", "iOS", "Python", "Django"],
+                 pts=[T("The project went <b>live on iOS only</b>.",
+                        "El proyecto salió <b>live solamente en iOS</b>."),
+                      T("There was a <b>race with users playing</b> in the app, competing against the drivers as the real race ran.",
+                        "Se pudo tener una <b>carrera con usuarios jugando</b> en la app, compitiendo con los corredores mientras corría la carrera real."),
+                      T("The <b>Formula E commentators</b>, live on air, <b>mentioned the players who were competing in the app</b>.",
+                        "Los <b>locutores de la Fórmula E</b>, en vivo, <b>mencionaban a los jugadores que estaban compitiendo en la app</b>."),
+                      T(f"Gameplay of the iOS app: {ext(YT_VR, 'video')}.",
+                        f"Gameplay de la app de iOS: {ext(YT_VR, 'video')}.")],
+                 result=T("A live Formula E race with people racing in the app, and the broadcast commentators mentioning them.",
+                          "Una carrera de Fórmula E en vivo con gente compitiendo en la app, y los locutores de la transmisión mencionándolos.")),
+            dict(kind="release", title=T("VR showroom for Formula E", "Showroom de VR para Fórmula E"), tech=["Unity3D", "C#", "VR"],
+                 role=T("VR application · racing-car components", "Aplicación de VR · componentes de los autos de carreras"),
+                 pts=[T("A <b>showroom</b> in <b>virtual reality</b>: an application to show the <b>components of the racing cars</b>.",
+                        "Un <b>showroom</b> en <b>realidad virtual</b>: una aplicación para mostrar los <b>componentes de los autos de carreras</b>.")],
+                 result=T("Used at the official Formula E events.", "Usado en los eventos oficiales de Fórmula E.")),
+        ],
+        links=[(T("iOS app — gameplay", "App de iOS: gameplay"), YT_VR)],
+    )),
     dict(role=T("Software Engineer", "Ingeniero de Software"), co="Intel", tech=["Ruby", "XML", "Automation"], period=T("Feb 2015 — Feb 2017"), frm="2015-02", to="2017-02", inds=[T("Semiconductors", "Semiconductores")], loc=MX, cur=False, pts=[
         T('Engineered <b>APIs in Ruby</b> to support hardware validation teams and streamline testing workflows.',
           'Desarrollé <b>APIs en Ruby</b> para los equipos de validación de hardware y para agilizar los flujos de pruebas.'),
@@ -482,12 +581,12 @@ JOBS = [
                (T("Team", "Equipo"), T("Two programmers + a team of artists", "Dos programadores + un equipo de artistas")),
                (T("Shipped", "Publicados"), T("4 iOS games · 1 Wii game", "4 juegos de iOS · 1 juego de Wii"))],
         lede=T("My first job in games, and my first shipped projects. Almost two years at Kaxan Games programming <b>mobile games in "
-               "Unity</b> — <b>Taco Master</b>, <b>Bread Boy</b>, <b>Mosca</b> and <b>Gogo Armadillo</b>, all published on <b>iOS</b> — "
+               "Unity</b> — <b>Taco Master</b>, <b>Bread Boy</b>, <b>Mosca Gogo</b> and <b>Armadillo</b>, all published on <b>iOS</b> — "
                "with one other programmer and a team of artists, on the old Unity 3 and C#. In between, an additional-programmer "
                "credit on a <b>Nintendo Wii</b> title from the <b>El Chavo del 8</b> franchise, and a first stretch on the "
                "<b>Gamebryo</b> engine, scripted in Lua, before the studio moved to Unity.",
                "Mi primer trabajo en videojuegos, y mis primeros proyectos publicados. Casi dos años en Kaxan Games programando "
-               "<b>juegos móviles en Unity</b> —<b>Taco Master</b>, <b>Bread Boy</b>, <b>Mosca</b> y <b>Gogo Armadillo</b>, todos "
+               "<b>juegos móviles en Unity</b> —<b>Taco Master</b>, <b>Bread Boy</b>, <b>Mosca Gogo</b> y <b>Armadillo</b>, todos "
                "publicados en <b>iOS</b>— con otro programador y un equipo de artistas, en el viejo Unity 3 y C#. En medio, un "
                "crédito como programador adicional en un título de <b>Nintendo Wii</b> de la franquicia de <b>El Chavo del 8</b>, y "
                "una primera etapa con el motor <b>Gamebryo</b>, programado en Lua, antes de que el estudio pasara a Unity."),
@@ -523,11 +622,11 @@ JOBS = [
                  role=T("Mobile game · programmer, one of two", "Juego móvil · programador, uno de dos"),
                  pts=[T("Built in <b>Unity 3</b> with C# by two programmers and a team of artists, and published on <b>iOS</b>.",
                         "Hecho en <b>Unity 3</b> con C# por dos programadores y un equipo de artistas, y publicado en <b>iOS</b>.")]),
-            dict(kind="release", title="Mosca", tech=["Unity 3", "C#", "iOS"],
+            dict(kind="release", title="Mosca Gogo", tech=["Unity 3", "C#", "iOS"],
                  role=T("Mobile game · programmer, one of two", "Juego móvil · programador, uno de dos"),
                  pts=[T("Built in <b>Unity 3</b> with C# by two programmers and a team of artists, and published on <b>iOS</b>.",
                         "Hecho en <b>Unity 3</b> con C# por dos programadores y un equipo de artistas, y publicado en <b>iOS</b>.")]),
-            dict(kind="release", title="Gogo Armadillo", tech=["Unity 3", "C#", "iOS"],
+            dict(kind="release", title="Armadillo", tech=["Unity 3", "C#", "iOS"],
                  role=T("Mobile game · programmer, one of two", "Juego móvil · programador, uno de dos"),
                  pts=[T("Built in <b>Unity 3</b> with C# by two programmers and a team of artists, and published on <b>iOS</b>.",
                         "Hecho en <b>Unity 3</b> con C# por dos programadores y un equipo de artistas, y publicado en <b>iOS</b>.")]),
@@ -585,9 +684,10 @@ STATS = [('<span data-years>15</span>', "+", T("Years building software", "Años
 #   groups: [dict(h=<section title>, pts=[...])] — the long-form body, one titled group per area of work
 #   role:  the position; "" on a child that keeps the parent's (headline is then just the company)
 #   tech:  chips, shown inline on the timeline and in the subject panel     inds: industry chips
-#   deliverables: [dict(kind="milestone"|"release"|"award"|"pace", title=…, role=…, pts=[…], result=…, tech=[…])]
+#   deliverables: [dict(kind="milestone"|"release"|"award"|"pace"|"prototype", title=…, role=…, pts=[…], result=…, tech=[…])]
 #          — a highlighted card for something that stands on its own and can feed the CV later;
-#            "pace" is the yellow one: how long it took and the overtime it cost (fast, but not a pace to repeat)
+#            "pace" is the yellow one: how long it took and the overtime it cost (fast, but not a pace to repeat);
+#            "prototype" is the grey dashed one: built, but it never shipped
 #   links: [(label, href)] external links     children: list of the same dicts (one level only)
 #   On a JOBS dict, put all of the above under `history=dict(...)` — the Resume keeps its own pts/tech untouched.
 def _job_entry(j):
@@ -757,12 +857,13 @@ def _hgroups(e):
     return f'<div class="hgroups">{"".join(out)}</div>' if out else ""
 
 DELIV_BADGE = {"milestone": T("Milestone", "Hito"), "release": T("Release", "Lanzamiento"),
-               "award": T("Award", "Reconocimiento"), "pace": T("Pace", "Ritmo")}
+               "award": T("Award", "Reconocimiento"), "pace": T("Pace", "Ritmo"), "prototype": T("Prototype", "Prototipo")}
 DELIV_RESULT = T("Result", "Resultado")
 
 def _hdelivs(e):
     """Highlighted cards for the things worth pulling out of an entry: a shipped deliverable, a release, an award —
-    or `pace`, the yellow one: how fast it got done and what that cost (overtime), a fact worth showing but not bragging about."""
+    or `pace`, the yellow one: how fast it got done and what that cost (overtime), a fact worth showing but not bragging about —
+    or `prototype`, the grey dashed one: something built that never shipped."""
     out = []
     for dv in e.get("deliverables") or []:
         kind = dv.get("kind", "milestone")
@@ -1392,11 +1493,13 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .hdeliv.release{border-color:rgba(76,201,240,.4);background:linear-gradient(160deg,rgba(76,201,240,.10),rgba(61,220,132,.05));}
   .hdeliv.award{border-color:rgba(255,180,84,.45);background:linear-gradient(160deg,rgba(255,180,84,.12),rgba(255,107,157,.05));}
   .hdeliv.pace{border-color:rgba(255,214,0,.6);background:linear-gradient(160deg,rgba(255,214,0,.17),rgba(255,180,84,.05));}
+  .hdeliv.prototype{border-style:dashed;border-color:rgba(125,138,153,.55);background:linear-gradient(160deg,rgba(125,138,153,.10),rgba(125,138,153,.03));}
   .hd-badge{display:inline-block;font-size:6.8px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
     color:var(--green);border:1px solid rgba(61,220,132,.45);border-radius:3px;padding:1px 5px;}
   .hdeliv.release .hd-badge{color:var(--cyan);border-color:rgba(76,201,240,.5);}
   .hdeliv.award .hd-badge{color:var(--amber);border-color:rgba(255,180,84,.55);}
   .hdeliv.pace .hd-badge{color:var(--amber);border-color:rgba(255,214,0,.75);}
+  .hdeliv.prototype .hd-badge{color:var(--muted);border-color:rgba(125,138,153,.7);}
   .hd-t{font-size:10px;font-weight:700;color:var(--fg);margin-top:4px;line-height:1.25;}
   .hd-role{font-size:8.2px;color:var(--muted);margin-top:1px;}
   .hdeliv ul.pts{margin-top:4px;}
@@ -1404,6 +1507,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .hd-result b{color:var(--fg);font-weight:600;}
   .hd-result b.mono{font-size:6.8px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--green);margin-right:6px;}
   .hdeliv.pace .hd-result{border-top-color:rgba(255,214,0,.55);} .hdeliv.pace .hd-result b.mono{color:var(--amber);}
+  .hdeliv.prototype .hd-result{border-top-color:rgba(125,138,153,.5);} .hdeliv.prototype .hd-result b.mono{color:var(--muted);}
   .hdeliv .dchips{margin-top:6px;}
   .hstack{display:flex;align-items:baseline;gap:6px;margin-top:6px;}
   .hs-h{font-size:7.2px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);flex:0 0 auto;padding-top:2px;}
