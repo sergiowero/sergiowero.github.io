@@ -316,7 +316,7 @@ JOBS = [
           '<b>Cerby:</b> Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial. <span class="stack">Tech: Python, React.</span>'),
     ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
         tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code",
-              "LangChain", "Claude SDK"],
+              "Codex", "LangChain", "Claude SDK"],
         facts=[(T("Company", "Empresa"), T("Software consultancy", "Consultora de software")),
                (T("Role", "Rol"), T("Senior Software Engineer / Tech Lead", "Ingeniero de Software Senior / Tech Lead")),
                (T("Clients", "Clientes"), "Dow Jones · Fox Corp · Inditex · Cerby"),
@@ -325,14 +325,16 @@ JOBS = [
                "and every entry below is a client I have worked for since joining in March 2020 — Dow Jones, Fox Corp, "
                "Inditex and Cerby. My role is <b>Senior Software Engineer / Tech Lead</b>: I join the client's team, build and "
                "run their backend services, and lead when the engagement calls for it. Alongside the client work there is "
-               "<b>constant training</b>; right now it is aimed at becoming an <b>AI engineer</b> — building agents, mainly in "
-               "<b>Python</b> with <b>LangChain</b> and the <b>Claude SDK</b>.",
+               "<b>constant training</b> — including on AI tools such as <b>Claude Code</b> and <b>Codex</b> — and right now it is "
+               "aimed at becoming an <b>AI engineer</b>: building agents, mainly in <b>Python</b> with <b>LangChain</b> and the "
+               "<b>Claude SDK</b>.",
                "Wizeline es una <b>consultora de software</b> con muchos clientes: sus ingenieros se asignan a proyectos de "
                "cliente, y cada entrada de abajo es un cliente para el que he trabajado desde que entré en marzo de 2020: "
                "Dow Jones, Fox Corp, Inditex y Cerby. Mi rol es <b>Ingeniero de Software Senior / Tech Lead</b>: me integro al "
                "equipo del cliente, construyo y opero sus servicios backend, y lidero cuando el proyecto lo requiere. Junto al "
-               "trabajo con clientes hay <b>capacitación constante</b>; ahora mismo está enfocada en convertirme en "
-               "<b>AI engineer</b>: crear agentes, principalmente en <b>Python</b> con <b>LangChain</b> y el <b>Claude SDK</b>."),
+               "trabajo con clientes hay <b>capacitación constante</b> —incluida en herramientas de IA como <b>Claude Code</b> y "
+               "<b>Codex</b>— y ahora mismo está enfocada en convertirme en <b>AI engineer</b>: crear agentes, principalmente en "
+               "<b>Python</b> con <b>LangChain</b> y el <b>Claude SDK</b>."),
         groups=[
             dict(h=T("The role", "El rol"), pts=[
                 T("Wizeline is a consultancy: it has many clients, and its engineers work embedded in those clients' teams. "
@@ -350,16 +352,27 @@ JOBS = [
                   "<b>Tech Lead</b> cuando el proyecto lo requiere: en Fox Corp lideré un equipo de cinco ingenieros durante los "
                   "tres años del proyecto."),
             ]),
-            dict(h=T("Constant training", "Capacitación constante"), pts=[
-                T("Training is a constant part of the job at Wizeline, running alongside the client work rather than between projects.",
-                  "La capacitación es parte constante del trabajo en Wizeline; va en paralelo al trabajo con clientes, no entre proyectos."),
-                T("The current track is <b>AI engineering</b>: I am being trained to build agents, mostly in <b>Python</b>.",
-                  "La ruta actual es <b>AI engineering</b>: me están formando para crear agentes, principalmente en <b>Python</b>."),
-                T("The tooling on that track is <b>LangChain</b> and the <b>Claude SDK</b>, on top of the day-to-day use of "
-                  "<b>Claude Code</b> on client work.",
-                  "Las herramientas de esa ruta son <b>LangChain</b> y el <b>Claude SDK</b>, además del uso diario de "
-                  "<b>Claude Code</b> en el trabajo con clientes."),
-            ]),
+        ],
+        deliverables=[
+            dict(kind="training",
+                 title=T("Constant training &amp; AI at work", "Capacitación constante e IA en el trabajo"),
+                 role=T("Ongoing since 2020 · alongside the client work, not between projects",
+                        "Continua desde 2020 · en paralelo al trabajo con clientes, no entre proyectos"),
+                 tech=["Claude Code", "Codex", "Python", "LangChain", "Claude SDK"],
+                 pts=[
+                     T("Training is a constant part of the job at Wizeline: there is always a track running next to the client work.",
+                       "La capacitación es parte constante del trabajo en Wizeline: siempre hay una ruta corriendo junto al trabajo con clientes."),
+                     T("<b>AI tooling</b>: trained to work with coding agents such as <b>Claude Code</b> and <b>Codex</b>, "
+                       "which I now use day to day on client work.",
+                       "<b>Herramientas de IA</b>: capacitado para trabajar con agentes de programación como <b>Claude Code</b> y "
+                       "<b>Codex</b>, que hoy uso a diario en el trabajo con clientes."),
+                     T("<b>AI engineering</b>: the current track — being trained to build agents, mainly in <b>Python</b> "
+                       "with <b>LangChain</b> and the <b>Claude SDK</b>.",
+                       "<b>AI engineering</b>: la ruta actual; me están formando para crear agentes, principalmente en <b>Python</b> "
+                       "con <b>LangChain</b> y el <b>Claude SDK</b>."),
+                 ],
+                 result=T("In training to become an <b>AI engineer</b>: agents in Python, LangChain and the Claude SDK.",
+                          "En formación para ser <b>AI engineer</b>: agentes en Python, LangChain y el Claude SDK.")),
         ],
     )),
     dict(role=T("Senior Software Engineer", "Ingeniero de Software Senior"), co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period=T("Jul 2019 — Mar 2020"), frm="2019-07", to="2020-03", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
@@ -725,10 +738,11 @@ STATS = [('<span data-years>15</span>', "+", T("Years building software", "Años
 #   groups: [dict(h=<section title>, pts=[...])] — the long-form body, one titled group per area of work
 #   role:  the position; "" on a child that keeps the parent's (headline is then just the company)
 #   tech:  chips, shown inline on the timeline and in the subject panel     inds: industry chips
-#   deliverables: [dict(kind="milestone"|"release"|"award"|"pace"|"prototype", title=…, role=…, pts=[…], result=…, tech=[…])]
+#   deliverables: [dict(kind="milestone"|"release"|"award"|"pace"|"prototype"|"training", title=…, role=…, pts=[…], result=…, tech=[…])]
 #          — a highlighted card for something that stands on its own and can feed the CV later;
 #            "pace" is the yellow one: how long it took and the overtime it cost (fast, but not a pace to repeat);
-#            "prototype" is the grey dashed one: built, but it never shipped
+#            "prototype" is the grey dashed one: built, but it never shipped;
+#            "training" is the pink one: learning that runs alongside the work (footer reads Now, not Result)
 #   links: [(label, href)] external links     children: list of the same dicts (one level only)
 #   On a JOBS dict, put all of the above under `history=dict(...)` — the Resume keeps its own pts/tech untouched.
 def _job_entry(j):
@@ -902,18 +916,21 @@ def _hgroups(e):
     return f'<div class="hgroups">{"".join(out)}</div>' if out else ""
 
 DELIV_BADGE = {"milestone": T("Milestone", "Hito"), "release": T("Release", "Lanzamiento"),
-               "award": T("Award", "Reconocimiento"), "pace": T("Pace", "Ritmo"), "prototype": T("Prototype", "Prototipo")}
+               "award": T("Award", "Reconocimiento"), "pace": T("Pace", "Ritmo"), "prototype": T("Prototype", "Prototipo"),
+               "training": T("Training", "Capacitación")}
 DELIV_RESULT = T("Result", "Resultado")
+DELIV_FOOT = {"training": T("Now", "Ahora")}   # footer label per kind; the rest say Result
 
 def _hdelivs(e):
     """Highlighted cards for the things worth pulling out of an entry: a shipped deliverable, a release, an award —
     or `pace`, the yellow one: how fast it got done and what that cost (overtime), a fact worth showing but not bragging about —
-    or `prototype`, the grey dashed one: something built that never shipped."""
+    or `prototype`, the grey dashed one: something built that never shipped —
+    or `training`, the pink one: learning that runs alongside the work (its footer says Now instead of Result)."""
     out = []
     for dv in e.get("deliverables") or []:
         kind = dv.get("kind", "milestone")
         role = f'<div class="hd-role">{h(dv["role"])}</div>' if dv.get("role") else ""
-        result = (f'<div class="hd-result"><b class="mono">{h(DELIV_RESULT)}</b> {h(dv["result"])}</div>'
+        result = (f'<div class="hd-result"><b class="mono">{h(DELIV_FOOT.get(kind, DELIV_RESULT))}</b> {h(dv["result"])}</div>'
                   if dv.get("result") else "")
         chips = ("".join(f'<span class="dchip">{h(t)}</span>' for t in dv.get("tech", [])))
         chips = f'<div class="dchips">{chips}</div>' if chips else ""
@@ -1539,12 +1556,14 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .hdeliv.award{border-color:rgba(255,180,84,.45);background:linear-gradient(160deg,rgba(255,180,84,.12),rgba(255,107,157,.05));}
   .hdeliv.pace{border-color:rgba(255,214,0,.6);background:linear-gradient(160deg,rgba(255,214,0,.17),rgba(255,180,84,.05));}
   .hdeliv.prototype{border-style:dashed;border-color:rgba(125,138,153,.55);background:linear-gradient(160deg,rgba(125,138,153,.10),rgba(125,138,153,.03));}
+  .hdeliv.training{border-color:rgba(255,107,157,.5);background:linear-gradient(160deg,rgba(255,107,157,.13),rgba(124,77,255,.06));}
   .hd-badge{display:inline-block;font-size:6.8px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
     color:var(--green);border:1px solid rgba(61,220,132,.45);border-radius:3px;padding:1px 5px;}
   .hdeliv.release .hd-badge{color:var(--cyan);border-color:rgba(76,201,240,.5);}
   .hdeliv.award .hd-badge{color:var(--amber);border-color:rgba(255,180,84,.55);}
   .hdeliv.pace .hd-badge{color:var(--amber);border-color:rgba(255,214,0,.75);}
   .hdeliv.prototype .hd-badge{color:var(--muted);border-color:rgba(125,138,153,.7);}
+  .hdeliv.training .hd-badge{color:var(--pink);border-color:rgba(255,107,157,.6);}
   .hd-t{font-size:10px;font-weight:700;color:var(--fg);margin-top:4px;line-height:1.25;}
   .hd-role{font-size:8.2px;color:var(--muted);margin-top:1px;}
   .hdeliv ul.pts{margin-top:4px;}
@@ -1553,6 +1572,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .hd-result b.mono{font-size:6.8px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--green);margin-right:6px;}
   .hdeliv.pace .hd-result{border-top-color:rgba(255,214,0,.55);} .hdeliv.pace .hd-result b.mono{color:var(--amber);}
   .hdeliv.prototype .hd-result{border-top-color:rgba(125,138,153,.5);} .hdeliv.prototype .hd-result b.mono{color:var(--muted);}
+  .hdeliv.training .hd-result{border-top-color:rgba(255,107,157,.5);} .hdeliv.training .hd-result b.mono{color:var(--pink);}
   .hdeliv .dchips{margin-top:6px;}
   .hstack{display:flex;align-items:baseline;gap:6px;margin-top:6px;}
   .hs-h{font-size:7.2px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);flex:0 0 auto;padding-top:2px;}
