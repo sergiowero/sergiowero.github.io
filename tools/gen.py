@@ -1292,7 +1292,7 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
 
 FLAG_MX = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8.7 5v14M15.3 5v14"/><circle cx="12" cy="12" r="1.6"/></svg>'
 FLAG_US = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 12h20M11 8.5h11M11 15.5H2M2 12v7"/><path d="M2 12h9V5"/></svg>'
-SECTIONS = [("cv", "/", "Resume", "Currículum"), ("history", "/timeline/", "Timeline", "Historial"),
+SECTIONS = [("cv", "/", "Resume", "Currículum"), ("history", "/timeline/", "Timeline", "Mi línea de tiempo"),
             ("blog", "/blog/", "Blog", "Blog"), ("about", "/about/", "About me", "Sobre mí")]
 
 HL = '<span class="hl">/</span>'
@@ -1309,7 +1309,7 @@ LABELS = {
     "$L_TOOLBOX$": T("ls toolbox/", "ls herramientas/"),
     "$L_CONTACT$": T("cat contact.md", "cat contacto.md"),
     "$L_CVFILE$": T("cv.md"),
-    "$L_HISTFILE$": T("timeline.md", "historial.md"),
+    "$L_HISTFILE$": T("timeline.md"),
 }
 
 DL_ICON = '<svg viewBox="0 0 24 24"><path d="M12 3v11M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>'
