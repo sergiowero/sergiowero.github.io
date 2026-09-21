@@ -58,19 +58,25 @@
   .htl::before{content:"";position:absolute;left:4px;top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px;}
   .hentry{position:relative;padding:6px 0 10px;scroll-margin-top:60px;}
   .htl .hentry.job{border-top:0;}
-  .hentry::before{content:"";position:absolute;left:-16px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--muted);transition:.25s;}
+  /* Markers sit centred on the rail. The rail's centre is 11px left of an entry's content edge
+     (.htl padding 16px, line at 4px + 1px) and 14.5px left of a child's (.hchildren border 1px + padding 14px).
+     `*{box-sizing}` does not reach pseudo-elements, so each marker sets border-box and its outer size in --mk;
+     `left` is then derived from --mk, which keeps every kind on the rail. */
+  .hentry::before{content:"";position:absolute;box-sizing:border-box;--mk:14px;width:var(--mk);height:var(--mk);left:calc(-11px - var(--mk) / 2);top:9px;
+    border-radius:50%;background:var(--bg);border:2px solid var(--muted);transition:.25s;}
   .hentry.active::before{border-color:var(--green);background:var(--green);box-shadow:0 0 0 4px rgba(61,220,132,.18);}
   .hentry.education::before{border-radius:2px;transform:rotate(45deg);}
-  .hentry.project::before{border-radius:2px;width:8px;height:8px;left:-15px;top:10px;}
+  .hentry.project::before{border-radius:2px;--mk:12px;top:10px;}
   .hentry.milestone::before{border-radius:50% 50% 50% 0;transform:rotate(-45deg);}
-  .hentry.release::before{border-radius:2px;width:12px;height:7px;top:11px;left:-17px;}
-  .hentry.award::before{border:0;background:var(--muted);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+  .hentry.release::before{border-radius:2px;--mk:16px;height:11px;top:11px;}
+  .hentry.award::before{border:0;--mk:10px;background:var(--muted);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
   .hentry.award.active::before{background:var(--green);box-shadow:none;}
   .hentry.talk::before{border-radius:4px 4px 4px 0;}
   .hchildren{margin:4px 0 0;padding-left:14px;border-left:1px dashed var(--line);}
   .hentry.child{padding:5px 0 6px;}
-  .hentry.child::before{left:-13px;top:9px;width:7px;height:7px;}
-  .hentry.child.project::before{width:6px;height:6px;left:-12.5px;top:10px;}
+  .hentry.child::before{--mk:11px;left:calc(-14.5px - var(--mk) / 2);top:9px;}
+  .hentry.child.project::before{--mk:10px;top:10px;}
+  .hentry.child.award::before{--mk:7px;}
   .hentry.child h3{font-size:10.5px;}
   .hentry.child .hdate{font-size:7.6px;}
   .hentry.parent-active > .hhead h3 .c{color:var(--green);}
