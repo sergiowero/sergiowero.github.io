@@ -1366,7 +1366,7 @@ def fill(tpl, active="cv"):
         tpl = tpl.replace(key, h(label))
     return (tpl.replace("$NAV$", nav_html(active)).replace("$CVDATA$", cv_data_html())
             .replace("$DOWNLOAD$", DOWNLOAD_TPL if active == "cv" else "").replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html())
-            .replace("$I18N_HISTORY_TITLE$", i18n("Timeline", "Mi historia"))
+            .replace("$I18N_HISTORY_TITLE$", i18n("Timeline", "Mi línea de tiempo"))
             .replace("$I18N_HISTORY_SUB$", i18n("All the projects I have worked on so far, newest first — scroll and the panel on the right follows.", "Todos los proyectos en los que he trabajado hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html())
             .replace("$TECH$", chips_html(TECH)).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
             .replace("$TITLES$", titles_html()).replace("$EDU$", edu_html()).replace("$STATS$", stats_html())
