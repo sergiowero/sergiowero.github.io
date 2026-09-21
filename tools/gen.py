@@ -91,7 +91,7 @@ SITE_PAGES = {
     </aside>
   </div>
 </div>"""),
-    "history/index.html": ("history", """<div class="sheet hist-page">
+    "timeline/index.html": ("history", """<div class="sheet hist-page">
   $NAV$
   <header class="top">
     <div>
@@ -104,7 +104,7 @@ SITE_PAGES = {
   <div class="hist">
     <main class="htl">$HISTORY$</main>
     <aside class="subject" aria-live="polite">
-      <div class="sub-k mono"><span class="g">➜</span> <span class="c">~</span> cat history/<span class="f" data-sub="slug"></span>.md</div>
+      <div class="sub-k mono"><span class="g">➜</span> <span class="c">~</span> cat timeline/<span class="f" data-sub="slug"></span>.md</div>
       <div class="sub-kind mono" data-sub="kind"></div>
       <div class="sub-parent" data-sub="parent"></div>
       <div class="sub-co" data-sub="co"></div>
@@ -122,8 +122,8 @@ SITE_PAGES = {
   <script type="application/json" id="history-data">$HISTORY_JSON$</script>
 </div>"""),
 }
-# old /cv/ links keep working
-REDIRECTS = {"cv/index.html": "/"}
+# old /cv/ and /history/ links keep working
+REDIRECTS = {"cv/index.html": "/", "history/index.html": "/timeline/"}
 
 # ------------------------------------------------------------------ DATA
 NAME = "Sergio de Jesús Sánchez Robles"
@@ -432,7 +432,7 @@ JOBS = [
           '<b>Inditex:</b> Diseñé la arquitectura backend de un sistema de auditoría complejo. Modelé bases de datos relacionales, implementé microservicios y construí servicios de migración para importaciones de larga duración. <span class="stack">Tech: Java, Spring, MariaDB.</span>'),
         T('<b>Cerby:</b> Spearheaded the full-stack development of an MVP as a contingent engineer to successfully launch the initial platform. <span class="stack">Tech: Python, React.</span>',
           '<b>Cerby:</b> Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial. <span class="stack">Tech: Python, React.</span>'),
-    ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
+    ], history=dict(   # the full story for /timeline/; the Resume keeps the bullets above
         tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code",
               "Codex", "LangChain", "Claude SDK"],
         facts=[(T("Company", "Empresa"), T("Software consultancy", "Consultora de software")),
@@ -502,7 +502,7 @@ JOBS = [
           'Aceleré el ciclo de desarrollo y reduje los bugs con un paradigma modular que recortó de forma notable el tiempo de integración de assets para los equipos de arte.'),
         T(f'Released on <b>Apple Arcade</b>, now on Steam: {ext(STEAM, "The Lullaby of Life")}.',
           f'Publicado en <b>Apple Arcade</b> y ahora en Steam: {ext(STEAM, "The Lullaby of Life")}.'),
-    ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
+    ], history=dict(   # the full story for /timeline/; the Resume keeps the bullets above
         tech=["C#", "Unity3D", "iOS", "Apple Arcade", "IoC / DI", T("Unit tests", "Pruebas unitarias"), "Flow"],
         facts=[(T("Game", "Juego"), "The Lullaby of Life"),
                (T("Engine", "Motor"), "Unity3D"),
@@ -568,7 +568,7 @@ JOBS = [
           'Porté el título de VR a iOS desarrollando las mecánicas principales en C# y diseñando los servicios backend RESTful con Python, Django y Go.'),
         T(f'Contributed to the successful release of the iOS adaptation ({ext(YT_VR, "gameplay")}).',
           f'Contribuí al lanzamiento de la adaptación para iOS ({ext(YT_VR, "gameplay")}).'),
-    ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
+    ], history=dict(   # the full story for /timeline/; the Resume keeps the bullets above
         tech=["C#", "Unity3D", "VR", "Steam", "HTC Vive", "Oculus", "Gear VR", "iOS", "Python", "Django", ".NET", "Go", "REST",
               T("Live race data", "Datos de carrera en vivo"), T("Game modes", "Modos de juego"), T("Prototyping", "Prototipado")],
         facts=[(T("Data", "Datos"), T("Formula E live race feed", "Datos en vivo de las carreras de Fórmula E")),
@@ -675,7 +675,7 @@ JOBS = [
           'Creé herramientas y scripts de automatización para sincronizar despliegues de APIs con los entornos cliente en varias sedes globales de Intel.'),
         T('Leveraged Ruby metaprogramming to parse XML-formatted design documents and dynamically generate executable files.',
           'Usé metaprogramación en Ruby para interpretar documentos de diseño en XML y generar ejecutables de forma dinámica.'),
-    ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
+    ], history=dict(   # the full story for /timeline/; the Resume keeps the bullets above
         tech=["Ruby", T("Ruby metaprogramming", "Metaprogramación en Ruby"), "XML", T("Custom libraries", "Librerías personalizadas"),
               T("Hardware validation", "Validación de hardware"), T("Automation", "Automatización"), "Git", "CI/CD"],
         facts=[(T("Area", "Área"), T("Hardware validation", "Validación de hardware")),
@@ -746,7 +746,7 @@ JOBS = [
           'Participé como programador adicional en un título lanzado para <b>Nintendo Wii</b>.'),
         T(f'Showcased development work in a demo reel of five released iOS games ({ext(YT_REEL, "gameplay")}).',
           f'Mostré mi trabajo en un demo reel con cinco juegos de iOS publicados ({ext(YT_REEL, "gameplay")}).'),
-    ], history=dict(   # the full story for /history/; the Resume keeps the bullets above
+    ], history=dict(   # the full story for /timeline/; the Resume keeps the bullets above
         tech=["C#", "Unity 3", "iOS", "Nintendo Wii", "Gamebryo", "Lua", T("Mobile games", "Juegos móviles"), T("Console", "Consola")],
         facts=[(T("Platforms", "Plataformas"), T("iOS · Nintendo Wii")),
                (T("Engines", "Motores"), T("Unity 3 (C#) · Gamebryo (Lua)")),
@@ -867,7 +867,7 @@ def _job_entry(j):
     e = dict(kind="job", slug=j["co"].lower().replace(" ", "-").replace("&amp;", "and"), role=j["role"], co=j["co"],
              frm=j["frm"], to=j["to"], loc=j["loc"], inds=j["inds"], tech=j.get("tech", []),
              pts=[] if j.get("history_children") else j["pts"], children=j.get("history_children", []))
-    e.update(j.get("history", {}))   # long-form fields for /history/ only; may also override pts/tech
+    e.update(j.get("history", {}))   # long-form fields for /timeline/ only; may also override pts/tech
     return e
 
 def _sorted(entries):
@@ -1292,7 +1292,7 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
 
 FLAG_MX = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8.7 5v14M15.3 5v14"/><circle cx="12" cy="12" r="1.6"/></svg>'
 FLAG_US = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 12h20M11 8.5h11M11 15.5H2M2 12v7"/><path d="M2 12h9V5"/></svg>'
-SECTIONS = [("cv", "/", "Resume", "Currículum"), ("history", "/history/", "History", "Historial"),
+SECTIONS = [("cv", "/", "Resume", "Currículum"), ("history", "/timeline/", "Timeline", "Historial"),
             ("blog", "/blog/", "Blog", "Blog"), ("about", "/about/", "About me", "Sobre mí")]
 
 HL = '<span class="hl">/</span>'
@@ -1309,7 +1309,7 @@ LABELS = {
     "$L_TOOLBOX$": T("ls toolbox/", "ls herramientas/"),
     "$L_CONTACT$": T("cat contact.md", "cat contacto.md"),
     "$L_CVFILE$": T("cv.md"),
-    "$L_HISTFILE$": T("history.md", "historial.md"),
+    "$L_HISTFILE$": T("timeline.md", "historial.md"),
 }
 
 DL_ICON = '<svg viewBox="0 0 24 24"><path d="M12 3v11M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>'
@@ -1768,7 +1768,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .name .cur{display:inline-block;width:.45em;height:.9em;background:var(--green);vertical-align:-.08em;margin-left:3px;animation:blink 1s steps(1) infinite;}
   @keyframes blink{50%{opacity:0;}}
   @media print{.name .cur{animation:none;}}
-  .hname{font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:-.1px;margin-top:6px;}   /* /history/: the name, secondary to the title */
+  .hname{font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:-.1px;margin-top:6px;}   /* /timeline/: the name, secondary to the title */
   .sub{font-size:9px;color:var(--muted);margin-top:5px;}
   .sub .hl{color:var(--amber);}
   .top{display:flex;justify-content:space-between;align-items:flex-end;gap:8mm;}

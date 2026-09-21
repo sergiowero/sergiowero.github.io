@@ -5,7 +5,7 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 | Ruta | Sección | Origen |
 |---|---|---|
 | `/` | Resume / CV | estático (`public/index.html`, generado por `tools/gen.py`; `/cv/` redirige aquí) |
-| `/history/` | Extended History | estático: línea de tiempo con panel lateral que sigue el scroll (`tools/gen.py` → `history_entries()`) |
+| `/timeline/` | Extended History | estático: línea de tiempo con panel lateral que sigue el scroll (`tools/gen.py` → `history_entries()`) |
 | `/blog/` | Blog | Astro: índice, páginas por tag (`/blog/tags/<tag>/`) y entradas (`/blog/<en|es>/<slug>/`) |
 | `/about/` | About me | estático (placeholder con el nombre) |
 
@@ -22,7 +22,7 @@ El CV cabe en **una sola hoja A4 en los dos idiomas** (1123 px). Si agregas text
 
 ## Textos en dos idiomas
 
-Los datos del CV en `tools/gen.py` son `T(en, es)`; `T("solo esto")` sirve cuando el texto es igual en ambos. De ahí salen las dos versiones del HTML (CSS muestra una según `html[data-lang]`) y el JSON que usa el DOCX, así que **se traduce en un solo lugar**. Lo que se dibuja desde JS (fechas, panel de `/history/`) se redibuja con el evento `langchange`.
+Los datos del CV en `tools/gen.py` son `T(en, es)`; `T("solo esto")` sirve cuando el texto es igual en ambos. De ahí salen las dos versiones del HTML (CSS muestra una según `html[data-lang]`) y el JSON que usa el DOCX, así que **se traduce en un solo lugar**. Lo que se dibuja desde JS (fechas, panel de `/timeline/`) se redibuja con el evento `langchange`.
 
 ## Publicar una entrada del blog
 
@@ -39,7 +39,7 @@ Los datos del CV en `tools/gen.py` son `T(en, es)`; `T("solo esto")` sirve cuand
    ```
 3. `git push` → GitHub Actions construye y despliega (≈1 min).
 
-## Agregar entradas al historial (`/history/`)
+## Agregar entradas al timeline (`/timeline/`)
 
 Los empleos de `JOBS` y la educación ya aparecen. Para añadir otra cosa (charla, proyecto, certificación…), agrega un dict a `EXTRA_HISTORY` en `tools/gen.py`:
 
@@ -59,7 +59,7 @@ Hasta **dos niveles**: cualquier entrada acepta `children=[…]` (en un empleo d
 npm install
 npm run dev        # http://localhost:4321
 npm run build      # genera dist/
-python3 tools/gen.py   # regenera las páginas estáticas (CV, About, History, Backups) y src/shell/
+python3 tools/gen.py   # regenera las páginas estáticas (CV, About, Timeline, Backups) y src/shell/
 ```
 
 - `public/Backups/` — las 9 variantes de diseño evaluadas (`public/Backups/index.html` es el selector).

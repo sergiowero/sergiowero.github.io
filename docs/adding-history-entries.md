@@ -1,8 +1,8 @@
-# How to add entries to the History page
+# How to add entries to the Timeline page
 
 A step-by-step guide to the timeline data in `tools/gen.py`, including two-level entries.
 
-The **History** tab is generated from a small Python list in `tools/gen.py`. This doc walks through adding an entry.
+The **Timeline** tab (`/timeline/`) is generated from a small Python list in `tools/gen.py`. This doc walks through adding an entry.
 
 ## 1. Where the data lives
 
@@ -100,7 +100,7 @@ Rules of thumb:
   - `education` → diamond
   - `milestone` → pin
 - `role` / `co` — the headline is `{role} · {co}`. The industry is **not** part of it (that is what `inds` is for); on a child that keeps its parent's position, set `role=""` and the headline is the company alone.
-- `slug` — used in the panel header: `cat history/<slug>.md`
+- `slug` — used in the panel header: `cat timeline/<slug>.md`
 - `frm` / `to` — `"YYYY-MM"`. Omit `to` for a one-day event; `to=None` means *present*.
 - `inds`, `tech` — chips; either can be `[]`.
 - `pts` — bullets (HTML allowed); `[]` hides the list.
