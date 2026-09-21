@@ -864,7 +864,37 @@ def history_entries():
                  ]),
              ]),
         dict(kind="education", slug="udg-cs", role=EDU[1][0], co="Universidad de Guadalajara",
-             frm="2010-12", loc=MX, inds=[T("Education", "Educación")], tech=[], pts=[]),
+             frm="2010-12", loc=MX, inds=[T("Education", "Educación")],
+             tech=["C", "Java", "C#"],   # the languages the courses were taught in
+             lede=T("Computer Science degree at the Universidad de Guadalajara, completed in December 2010. "
+                    "The programme started from the ground up — programming in <b>C</b>, data structures, operating systems "
+                    "and compilers — and went on to object-oriented programming in <b>Java</b>, software architecture in <b>C#</b> "
+                    "and computer graphics, again in <b>C</b>.",
+                    "Carrera de Ciencias Computacionales en la Universidad de Guadalajara, concluida en diciembre de 2010. "
+                    "El programa partió desde la base —programación en <b>C</b>, estructuras de datos, sistemas operativos "
+                    "y compiladores— y siguió con programación orientada a objetos en <b>Java</b>, arquitectura de software en <b>C#</b> "
+                    "y gráficos por computadora, de nuevo en <b>C</b>."),
+             pts=[],
+             groups=[
+                 dict(h=T("Coursework", "Materias"), pts=[
+                     T("<b>Introduction to programming</b>, in <b>C</b>.",
+                       "<b>Introducción a la programación</b>, en <b>C</b>."),
+                     T("<b>Object-oriented programming</b>, in <b>Java</b>.",
+                       "<b>Programación orientada a objetos</b>, en <b>Java</b>."),
+                     T("<b>Software architecture</b>, in <b>C#</b>.",
+                       "<b>Arquitectura de software</b>, en <b>C#</b>."),
+                     T("<b>Computer graphics</b>, in <b>C</b>.",
+                       "<b>Gráficos por computadora</b>, en <b>C</b>."),
+                     T("<b>Data structures</b>.",
+                       "<b>Estructuras de datos</b>."),
+                     T("<b>Operating systems</b>.",
+                       "<b>Sistemas operativos</b>."),
+                     T("<b>Compilers</b>.",
+                       "<b>Compiladores</b>."),
+                     T("Among others.",
+                       "Entre otras."),
+                 ]),
+             ]),
     ]
     entries += EXTRA_HISTORY
     for e in entries:
