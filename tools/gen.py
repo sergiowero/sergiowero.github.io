@@ -102,7 +102,10 @@ SITE_PAGES = {
     </div>
   </header>
   <div class="hist">
-    <main class="htl">$HISTORY$</main>
+    <div class="hcol">
+      $HSEARCH$
+      <main class="htl">$HISTORY$</main>
+    </div>
     <aside class="subject" aria-live="polite">
       <div class="sub-k mono"><span class="g">➜</span> <span class="c">~</span> cat timeline/<span class="f" data-sub="slug"></span>.md</div>
       <div class="sub-kind mono" data-sub="kind"></div>
@@ -559,7 +562,7 @@ JOBS = [
         ],
         links=[(T("The Lullaby of Life on Steam", "The Lullaby of Life en Steam"), STEAM)],
     )),
-    dict(role=T("Lead Software Engineer", "Ingeniero de Software Líder"), co="Virtually Live", tech=["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"], period=T("Feb 2017 — Jan 2020", "Feb 2017 — Ene 2020"), frm="2017-02", to="2020-01", inds=[T("Gaming · VR", "Videojuegos · VR")], loc=T("Málaga, Spain", "Málaga, España"), cur=False, pts=[
+    dict(role=T("Senior Software Engineer", "Ingeniero de Software Senior"), co="Virtually Live", tech=["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"], period=T("Feb 2017 — Jan 2020", "Feb 2017 — Ene 2020"), frm="2017-02", to="2020-01", inds=[T("Gaming · VR", "Videojuegos · VR")], loc=T("Málaga, Spain", "Málaga, España"), cur=False, pts=[
         T('Developed <b>racing games</b> for HTC Vive, Oculus, and Gear VR platforms.',
           'Desarrollé <b>juegos de carreras</b> para HTC Vive, Oculus y Gear VR.'),
         T('Engineered a core abstraction layer for game modules, encompassing VR controllers, Social APIs, and database access, utilizing JSON for configuration management.',
@@ -731,9 +734,9 @@ JOBS = [
                           "Colaboración más fácil en funcionalidades en paralelo, y un CI/CD simplificado y modernizado.")),
         ],
     )),
-    dict(role=T("3D &amp; Online Programmer", "Programador 3D y Online"), co="Gameloft", tech=["C++", "Java", "Objective-C", "Android", "iOS"], period=T("May 2011 — Jan 2015", "May 2011 — Ene 2015"), frm="2011-05", to="2015-01", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
-        T('Programmed 3D games and internal development tools using portable <b>C++, Java, and Objective-C</b> to ensure seamless cross-platform compatibility across Android and iOS.',
-          'Programé juegos 3D y herramientas internas con <b>C++, Java y Objective-C</b> portables, garantizando compatibilidad entre Android e iOS.'),
+    dict(role=T("3D &amp; Online Programmer", "Programador 3D y Online"), co="Gameloft", tech=["C++", "JavaScript", "jQuery", "Objective-C", "Android", "iOS"], period=T("May 2011 — Jan 2015", "May 2011 — Ene 2015"), frm="2011-05", to="2015-01", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
+        T('Programmed 3D games and internal development tools using portable <b>C++, JavaScript (jQuery), and Objective-C</b> to ensure seamless cross-platform compatibility across Android and iOS.',
+          'Programé juegos 3D y herramientas internas con <b>C++, JavaScript (jQuery) y Objective-C</b> portables, garantizando compatibilidad entre Android e iOS.'),
         T('Integrated proprietary REST-based online services into multiple Android titles.',
           'Integré servicios online propietarios basados en REST en varios títulos de Android.'),
         T('Contributed to the development and release of major mobile titles, including <b>The Oregon Trail: American Settler</b> and <b>9mm</b>.',
@@ -1047,19 +1050,34 @@ import json
 
 _MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 
-def _bullets(pts):
-    return '<ul class="pts">' + "".join(f"<li>{h(p)}</li>" for p in pts) + "</ul>"
+def _bullets(pts, cls="pts", attrs=""):
+    return f'<ul class="{cls}"{attrs}>' + "".join(f"<li>{h(p)}</li>" for p in pts) + "</ul>"
+
+# Every block of an entry (spec row, lede, bullets, each group, each deliverable card, stack, links) is an `.hblock`
+# with a bilingual label: the search on /timeline/ folds the blocks a query does not touch into a one-line
+# `▸ // label` row (CSS attr()). Groups and cards use their own title; the headless ones use these.
+BLOCK_LABELS = {"facts": T("specs", "datos"), "lede": T("summary", "resumen"), "pts": T("highlights", "puntos"),
+                "stack": T("stack"), "links": T("links", "enlaces")}
+KIND_LABELS = {"job": T("job", "empleo"), "project": T("project", "proyecto"), "education": T("education", "educación"),
+               "milestone": T("milestone", "hito"), "release": T("release", "lanzamiento"), "award": T("award", "reconocimiento"),
+               "talk": T("talk", "charla")}
+
+def _blk(label):
+    """The class + label attributes that make an element a foldable block (see BLOCK_LABELS)."""
+    label = label if isinstance(label, T) else T(label)
+    attr = lambda s: re.sub(r"<[^>]+>", "", s).replace('"', "&quot;")   # plain text, safe inside the quotes
+    return f' data-label-en="{attr(label.en)}" data-label-es="{attr(label.es)}"'
 
 def _hfacts(e):
     """Spec row under the title: key/value pairs, e.g. Team 5 engineers · Cloud AWS."""
     facts = e.get("facts") or []
-    return ('<div class="hfacts mono">'
+    return (f'<div class="hfacts mono hblock"{_blk(BLOCK_LABELS["facts"])}>'
             + "".join(f'<span class="hfact"><b>{h(k)}</b>{h(v)}</span>' for k, v in facts)
             + "</div>") if facts else ""
 
 def _hgroups(e):
     """Bullets split into titled sections, so a long entry stays readable."""
-    out = [f'<section class="hgroup"><h4 class="hg-h mono">{h(g["h"])}</h4>{_bullets(g["pts"])}</section>'
+    out = [f'<section class="hgroup hblock"{_blk(g["h"])}><h4 class="hg-h mono">{h(g["h"])}</h4>{_bullets(g["pts"])}</section>'
            for g in (e.get("groups") or [])]
     return f'<div class="hgroups">{"".join(out)}</div>' if out else ""
 
@@ -1082,19 +1100,19 @@ def _hdelivs(e):
                   if dv.get("result") else "")
         chips = ("".join(f'<span class="dchip">{h(t)}</span>' for t in dv.get("tech", [])))
         chips = f'<div class="dchips">{chips}</div>' if chips else ""
-        out.append(f'<section class="hdeliv {kind}"><div class="hd-badge mono">{h(DELIV_BADGE[kind])}</div>'
+        out.append(f'<section class="hdeliv {kind} hblock"{_blk(dv["title"])}><div class="hd-badge mono">{h(DELIV_BADGE[kind])}</div>'
                    f'<h4 class="hd-t">{h(dv["title"])}</h4>{role}{_bullets(dv["pts"])}{result}{chips}</section>')
     return "".join(out)
 
 def _hstack(e):
     """The entry's own tech chips, inline on the timeline (the sticky panel shows them too)."""
     tech = e.get("tech") or []
-    return ('<div class="hstack"><span class="hs-h mono">stack</span><div class="dchips">'
+    return (f'<div class="hstack hblock"{_blk(BLOCK_LABELS["stack"])}><span class="hs-h mono">stack</span><div class="dchips">'
             + "".join(f'<span class="dchip">{h(t)}</span>' for t in tech) + "</div></div>") if tech else ""
 
 def _hlinks(e):
     links = e.get("links") or []
-    return ('<div class="hlinks mono">' + "".join(ext(href, h(label)) for label, href in links) + "</div>") if links else ""
+    return (f'<div class="hlinks mono hblock"{_blk(BLOCK_LABELS["links"])}>' + "".join(ext(href, h(label)) for label, href in links) + "</div>") if links else ""
 
 def _hentry_html(i, level, e):
     frm = e.get("frm")
@@ -1106,17 +1124,18 @@ def _hentry_html(i, level, e):
         dur = f'<span class="hdur">{h(e["dur"])}</span>' if e.get("dur") else ""
         when = f'<div class="hdate mono" data-from="{frm}"{f" data-to=\"{e["to"]}\"" if e["to"] else ""}>{frm}</div>{dur}'
     inds = "".join(f'<span class="ind">{h(x)}</span>' for x in e.get("inds", []))
-    lede = f'<p class="hlede">{h(e["lede"])}</p>' if e.get("lede") else ""
-    pts = _bullets(e["pts"]) if e.get("pts") else ""
+    lede = f'<p class="hlede hblock"{_blk(BLOCK_LABELS["lede"])}>{h(e["lede"])}</p>' if e.get("lede") else ""
+    pts = _bullets(e["pts"], "pts hblock", _blk(BLOCK_LABELS["pts"])) if e.get("pts") else ""
     children = ""
     if level == 0 and e.get("children"):
         # indices of children follow the parent in history_flat()
         kids = "".join(_hentry_html(i + 1 + k, 1, c) for k, c in enumerate(e["children"]))
         children = f'<div class="hchildren">{kids}</div>'
-    return (f'<section class="hentry {e["kind"]}{" child" if level else ""}" id="h-{e["slug"]}" data-i="{i}">{when}'
-            f'<h3>{_htitle(e)}</h3>'
-            f'<div class="loc">{h(e.get("loc", ""))}<span class="inds">{inds}</span></div>'
-            f'{_hfacts(e)}{lede}{pts}{_hgroups(e)}{_hdelivs(e)}{_hstack(e)}{_hlinks(e)}{children}</section>')
+    # .hhead is all that stays when the search dims an entry; .hbody holds the foldable blocks; children sit outside both
+    return (f'<section class="hentry {e["kind"]}{" child" if level else ""}" id="h-{e["slug"]}" data-i="{i}" data-kind="{e["kind"]}">'
+            f'<div class="hhead">{when}<h3>{_htitle(e)}</h3>'
+            f'<div class="loc">{h(e.get("loc", ""))}<span class="inds">{inds}</span></div></div>'
+            f'<div class="hbody">{_hfacts(e)}{lede}{pts}{_hgroups(e)}{_hdelivs(e)}{_hstack(e)}{_hlinks(e)}</div>{children}</section>')
 
 def _htitle(e):
     """Entry headline: `{role} · {company}`, or the company alone when the role is the parent's (role="")."""
@@ -1125,6 +1144,61 @@ def _htitle(e):
 
 def history_html():
     return "\n".join(_hentry_html(i, 0, e) for i, lvl, parent, e in history_flat() if lvl == 0)
+
+# ---- /timeline/ search: a sticky `grep -i` bar over the timeline column, plus optional facet chips.
+# A facet chip only adds its word to the query (or removes it) — the query is the only state, so a link is just ?q=…
+SEARCH_LABELS = dict(   # the clear button's label and the placeholder live in the JS (attributes cannot hold both languages)
+    filters=T("filters", "filtros"),
+    empty=T("no matches", "sin coincidencias"),
+    more=T("more", "más"),
+    tech=T("tech"), industry=T("industry", "industria"), kind=T("kind", "tipo"),
+)
+FACET_MIN = 2   # a tech chip is shown up front when this many entries carry it; the rest sit behind "+N more"
+
+def _facet_chips(items, folded=()):
+    """`items`: [(T label, count)] → chip buttons carrying the term in both languages (the JS picks the visible one)."""
+    def chip(t, hidden):
+        t = t if isinstance(t, T) else T(t)
+        term = lambda s: re.sub(r"<[^>]+>", "", s).replace('"', "&quot;")
+        return (f'<button type="button" class="dchip{" extra" if hidden else ""}" data-term-en="{term(t.en)}" data-term-es="{term(t.es)}">'
+                f'{h(t)}</button>')
+    return "".join(chip(t, False) for t in items) + "".join(chip(t, True) for t in folded)
+
+def history_search_html():
+    flat = history_flat()
+    key = lambda t: t.en if isinstance(t, T) else t
+    # tech: how many entries carry each chip; the common ones up front, the long tail folded
+    seen, count = {}, {}
+    for _, _, _, e in flat:
+        for t in e.get("tech") or []:
+            seen.setdefault(key(t), t); count[key(t)] = count.get(key(t), 0) + 1
+    order = sorted(seen, key=lambda k: (-count[k], k.lower()))
+    top = [seen[k] for k in order if count[k] >= FACET_MIN]
+    rest = [seen[k] for k in order if count[k] < FACET_MIN]
+    # industry: "Gaming · Mobile" is two atoms, each searchable on its own
+    inds = {}
+    for _, _, _, e in flat:
+        for t in e.get("inds") or []:
+            t = t if isinstance(t, T) else T(t)
+            for en, es in zip(t.en.split(" · "), t.es.split(" · ")):
+                inds.setdefault(en, T(en, es))
+    kinds = []
+    for _, _, _, e in flat:
+        if KIND_LABELS[e["kind"]] not in kinds: kinds.append(KIND_LABELS[e["kind"]])
+    L = {k: h(v) for k, v in SEARCH_LABELS.items()}
+    more = f'<button type="button" class="hq-morechips mono">+{len(rest)} {L["more"]}</button>' if rest else ""
+    facet = lambda name, chips: f'<div class="hq-facet"><span class="hq-fh mono">// {L[name]}</span><div class="dchips">{chips}</div></div>'
+    return (f'<div class="hq" role="search">'
+            f'<div class="hq-row">'
+            f'<label class="hq-prompt mono" for="hq-in"><span class="g">➜</span> <span class="c">~</span> grep -i</label>'
+            f'<span class="hq-field"><input class="hq-in mono" id="hq-in" type="text" inputmode="search" enterkeyhint="search" autocomplete="off" spellcheck="false" placeholder="lead · aws · 2021 · unity…">'
+            f'<button type="button" class="hq-x mono" aria-label="Clear search" hidden>×</button></span>'
+            f'<span class="hq-count mono" aria-live="polite"></span>'
+            f'<button type="button" class="hq-more mono" aria-expanded="false" aria-controls="hq-facets">// {L["filters"]} <i>▸</i></button>'
+            f'</div>'
+            f'<div class="hq-facets" id="hq-facets" hidden>{facet("tech", _facet_chips(top, rest) + more)}{facet("industry", _facet_chips(inds.values()))}{facet("kind", _facet_chips(kinds))}</div>'
+            f'<div class="hq-empty mono" hidden>// {L["empty"]}</div>'
+            f'</div>')
 
 ROLE_PLAIN = T("Senior Software Engineer / Tech Lead / Backend &amp; Full-Stack / Game Dev / AI-Assisted",
                "Ingeniero de Software Senior / Tech Lead / Backend y Full-Stack / Videojuegos / Asistido por IA")
@@ -1161,7 +1235,7 @@ def cv_data_html():
             '<script src="/cv-export.js" defer></script>')
 
 def history_json():
-    data = [dict(kind=e["kind"], slug=e["slug"], role=d(e["role"]), co=e["co"], frm=e.get("frm"), dur=d(e.get("dur")),
+    data = [dict(kind=e["kind"], kind_label=d(KIND_LABELS[e["kind"]]), slug=e["slug"], role=d(e["role"]), co=e["co"], frm=e.get("frm"), dur=d(e.get("dur")),
                  to=("single" if "to" not in e else e["to"]), loc=d(e.get("loc", "")), inds=d(e.get("inds", [])), tech=d(e.get("tech", [])),
                  level=lvl, parent=parent) for i, lvl, parent, e in history_flat()]
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
@@ -1365,7 +1439,7 @@ def fill(tpl, active="cv"):
     for key, label in LABELS.items():
         tpl = tpl.replace(key, h(label))
     return (tpl.replace("$NAV$", nav_html(active)).replace("$CVDATA$", cv_data_html())
-            .replace("$DOWNLOAD$", DOWNLOAD_TPL if active == "cv" else "").replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html())
+            .replace("$DOWNLOAD$", DOWNLOAD_TPL if active == "cv" else "").replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html()).replace("$HSEARCH$", history_search_html())
             .replace("$I18N_HISTORY_TITLE$", i18n("Timeline", "Mi línea de tiempo"))
             .replace("$I18N_HISTORY_SUB$", i18n("All the projects I have worked on so far, newest first — scroll and the panel on the right follows.", "Todos los proyectos en los que he trabajado hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html())
             .replace("$TECH$", chips_html(TECH)).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
@@ -1487,14 +1561,14 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     nav="--nav-bg:transparent;--nav-line:transparent;--nav-fg:#1f2328;--nav-muted:#6e7781;--nav-active-bg:#1a7f37;--nav-active-fg:#fff;--nav-font:'JetBrains Mono',Menlo,monospace;",
     title="Sergio Sanchez CV",
     extra_js="""<script>
-/* Extended History: the subject panel follows the entry currently in view */
+/* Extended History: the subject panel follows the entry currently in view; the grep bar above the timeline filters it */
 (function(){
   var dataEl=document.getElementById('history-data'), panel=document.querySelector('.subject'); if(!dataEl||!panel) return;
   var data=JSON.parse(dataEl.textContent), entries=[].slice.call(document.querySelectorAll('.hentry'));
   var M={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
          es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']};
-  var W={en:{present:'Present',inside:'inside',yr:' yr',yrs:' yrs',mo:' mo',mos:' mos'},
-         es:{present:'Actualidad',inside:'dentro de',yr:' año',yrs:' años',mo:' mes',mos:' meses'}};
+  var W={en:{present:'Present',inside:'inside',yr:' yr',yrs:' yrs',mo:' mo',mos:' mos',clear:'Clear search'},
+         es:{present:'Actualidad',inside:'dentro de',yr:' año',yrs:' años',mo:' mes',mos:' meses',clear:'Limpiar búsqueda'}};
   /* bilingual values from the JSON arrive as {en, es} */
   function L(v){return (v&&typeof v==='object'&&!Array.isArray(v))?(v[window.cvLang()]||v.en):v;}
   function w(){return W[window.cvLang()];}
@@ -1506,14 +1580,19 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
     var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
     if(y) parts.push(y+(y===1?w().yr:w().yrs)); if(m) parts.push(m+(m===1?w().mo:w().mos));
-    return label(e.frm)+' \u2014 '+(e.to?label(e.to):w().present)+' \u00b7 '+parts.join(' ');
+    return label(e.frm)+' — '+(e.to?label(e.to):w().present)+' · '+parts.join(' ');
   }
+  /* `live` = the entries the reader can land on: all of them, or only the ones the search kept (.dim = filtered out) */
+  var live=[];
+  function relive(){ live=[]; entries.forEach(function(el,i){ if(!el.classList.contains('dim')) live.push(i); }); }
+  relive();
   var nav=panel.querySelector('[data-sub=nav]');
+  function dimAttr(i){ return entries[i].classList.contains('dim')?' class="dim"':''; }
   function drawNav(){
     nav.innerHTML=data.map(function(e,i){
       if(e.level===1) return '';
-      var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'">'+(c.co||L(c.role))+'</li>':'';}).join('');
-      return '<li data-i="'+i+'">'+e.co+(kids?'<ol>'+kids+'</ol>':'')+'</li>';
+      var kids=data.map(function(c,k){return c.parent===i?'<li data-i="'+k+'"'+dimAttr(k)+'>'+(c.co||L(c.role))+'</li>':'';}).join('');
+      return '<li data-i="'+i+'"'+dimAttr(i)+'>'+e.co+(kids?'<ol>'+kids+'</ol>':'')+'</li>';
     }).join('');
   }
   drawNav();
@@ -1522,15 +1601,15 @@ VERSIONS["v3-dark-terminal.html"] = dict(
      (.htl has bottom padding so that sweep stays short and each entry keeps a fair stretch of scrolling.) */
   function maxScroll(){return Math.max(1,document.documentElement.scrollHeight-window.innerHeight);}
   function lineTop(){return window.innerHeight*0.2;}
-  function lineEnd(){ var last=entries[entries.length-1].getBoundingClientRect().bottom+window.scrollY-maxScroll(); return Math.max(lineTop(),Math.min(window.innerHeight,last)); }
+  function lineEnd(){ var last=entries[live[live.length-1]].getBoundingClientRect().bottom+window.scrollY-maxScroll(); return Math.max(lineTop(),Math.min(window.innerHeight,last)); }
   function sweep(){return 1+(lineEnd()-lineTop())/maxScroll();}   // how much faster the line moves than the page
   function lineAt(scrollY){ return lineTop()+(lineEnd()-lineTop())*Math.min(1,scrollY/maxScroll()); }
-  /* Zone k = the stretch of the reading line over which entry k is current: [starts[k], starts[k+1]), viewport px.
+  /* Zone k = the stretch of the reading line over which live entry k is current: [starts[k], starts[k+1]), viewport px.
      Naturally each entry owns its own height, but a short one (a two-line client, a degree) would own less than a
      wheel notch and get skipped. So short entries first borrow from neighbours with room to spare, and a run of
      entries still short then splits its total stretch evenly. MIN is ~120px of actual scrolling. */
   function zones(){
-    var n=entries.length, r=entries.map(function(el){return el.getBoundingClientRect();}), tops=r.map(function(b){return b.top;});
+    var n=live.length, r=live.map(function(i){return entries[i].getBoundingClientRect();}), tops=r.map(function(b){return b.top;});
     var MIN=120*Math.min(2,sweep());
     var len=tops.map(function(t,k){return (k+1<n?tops[k+1]:r[n-1].bottom)-t;});
     var spare=len.map(function(l){return Math.max(0,l-MIN);}), up=[], down=[];
@@ -1549,8 +1628,9 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   }
   /* scroll so the reading line lands just inside the entry's zone — where the spy picks it, whatever its height */
   function goTo(i,smooth){
-    var s=zones(), zoneEnd=i+1<s.length?s[i+1]:entries[i].getBoundingClientRect().bottom, t=lineTop();
-    var target=s[i]+Math.min(24,(zoneEnd-s[i])/2)+window.scrollY;   // page px the line must reach
+    var k=live.indexOf(i); if(k<0) return;   // a filtered-out entry cannot be the subject
+    var s=zones(), zoneEnd=k+1<s.length?s[k+1]:entries[i].getBoundingClientRect().bottom, t=lineTop();
+    var target=s[k]+Math.min(24,(zoneEnd-s[k])/2)+window.scrollY;   // page px the line must reach
     var y=(target-t)/sweep();
     window.scrollTo({top:Math.min(maxScroll(),Math.max(0,y)),behavior:smooth?'smooth':'auto'});
   }
@@ -1561,8 +1641,8 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     panel.classList.add('swap'); clearTimeout(timer);
     timer=setTimeout(function(){
       panel.querySelector('[data-sub=slug]').textContent=e.slug;
-      panel.querySelector('[data-sub=kind]').textContent=e.kind;
-      panel.querySelector('[data-sub=parent]').innerHTML=(e.parent!==null&&e.parent!==undefined)?'\u21b3 '+w().inside+' <b>'+data[e.parent].co+'</b>':'';
+      panel.querySelector('[data-sub=kind]').textContent=L(e.kind_label);
+      panel.querySelector('[data-sub=parent]').innerHTML=(e.parent!==null&&e.parent!==undefined)?'↳ '+w().inside+' <b>'+data[e.parent].co+'</b>':'';
       panel.querySelector('[data-sub=co]').textContent=e.co;
       panel.querySelector('[data-sub=role]').innerHTML=L(e.role);
       panel.querySelector('[data-sub=when]').textContent=when(e);
@@ -1571,22 +1651,22 @@ VERSIONS["v3-dark-terminal.html"] = dict(
       panel.querySelector('[data-sub=tech]').innerHTML=e.tech.map(function(x){return '<span class="dchip">'+L(x)+'</span>';}).join('');
       [].forEach.call(nav.querySelectorAll('li'),function(li){li.classList.toggle('active',+li.getAttribute('data-i')===i);});
       entries.forEach(function(el,k){el.classList.toggle('active',k===i);el.classList.toggle('parent-active',k===e.parent);});
-      panel.querySelector('.sub-progress i').style.width=((i+1)/data.length*100)+'%';
+      panel.querySelector('.sub-progress i').style.width=((live.indexOf(i)+1)/live.length*100)+'%';
       panel.classList.remove('swap');
     },120);
   }
   show(0);
   document.addEventListener('langchange',function(){var i=current;current=-1;drawNav();show(i<0?0:i);});
-  // scroll spy: the entry whose zone holds the reading line is the current one
+  // scroll spy: the live entry whose zone holds the reading line is the current one
   // (getBoundingClientRect is used instead of IntersectionObserver because the sheet is CSS-zoomed)
   var ticking=false;
   function spy(){
-    ticking=false;
-    var s=zones(), y=lineAt(window.scrollY), i=0;
-    for(var k=0;k<s.length;k++){ if(s[k]<=y) i=k; }
-    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) i=s.length-1;  // bottom of page → last entry
-    if(window.scrollY<8) i=0;   // top of page → first (top-level) entry
-    show(i);
+    ticking=false; if(!live.length) return;
+    var s=zones(), y=lineAt(window.scrollY), k=0;
+    for(var j=0;j<s.length;j++){ if(s[j]<=y) k=j; }
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2) k=s.length-1;  // bottom of page → last entry
+    if(window.scrollY<8) k=0;   // top of page → first (top-level) entry
+    show(live[k]);
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } }
   window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll);
@@ -1595,6 +1675,124 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   // the spy reads as the entry after it). The browser does its own fragment jump around load, so this runs after.
   var target=location.hash&&document.getElementById(location.hash.slice(1)), ti=target?entries.indexOf(target):-1;
   if(ti>=0){ var place=function(){setTimeout(function(){goTo(ti,false); spy();},0);}; if(document.readyState==='complete') place(); else window.addEventListener('load',place); }
+
+  /* ---- grep bar: ?q= filters the timeline. Words are OR-ed; each is looked for in the visible language, ignoring
+     case and accents; a 4-digit year (or year-year) also matches every entry whose period covers it.
+     An entry with no hit dims to its head (title, company, dates); in a kept entry the blocks the query does not
+     touch fold into a one-line `▸ // label` row (click to open); hits are wrapped in <mark>. ---- */
+  var box=document.querySelector('.hq'); if(!box) return;
+  var input=box.querySelector('.hq-in'), clearBtn=box.querySelector('.hq-x'), count=box.querySelector('.hq-count'),
+      empty=box.querySelector('.hq-empty'), more=box.querySelector('.hq-more'), facets=box.querySelector('.hq-facets');
+  var DIA=new RegExp('['+String.fromCharCode(0x300)+'-'+String.fromCharCode(0x36f)+']','g');
+  function fold(s){ return s.normalize('NFD').replace(DIA,'').toLowerCase(); }
+  var TOK=/"([^"]*)"|(\\S+)/g, YEAR=/^([0-9]{4})(?:-([0-9]{4}))?$/;
+  function tokens(q){   // words, or "quoted phrases"; y0..y1 set when the token is a year or a year range
+    var out=[], m; TOK.lastIndex=0;
+    while((m=TOK.exec(q))){ var t=fold(m[1]!==undefined?m[1]:m[2]).trim(); if(!t) continue;
+      var y=YEAR.exec(t); out.push({t:t,y0:y?+y[1]:0,y1:y?+(y[2]||y[1]):0}); }
+    return out;
+  }
+  function hiddenLang(){ return window.cvLang()==='es'?'i18n-en':'i18n-es'; }
+  function textNodes(root){   // the text a reader actually sees: the other language's spans are skipped
+    var out=[], skip=hiddenLang(), walker=document.createTreeWalker(root,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      if(n.nodeType===1) return n.classList.contains(skip)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_SKIP;
+      return n.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP; }});
+    var n; while((n=walker.nextNode())) out.push(n); return out;
+  }
+  function textOf(el){ return textNodes(el).map(function(n){return n.nodeValue;}).join(' ').replace(/\\s+/g,' '); }
+  var idx=null;   // built on the first query, dropped on langchange (the visible language is what gets indexed)
+  function index(){
+    idx=entries.map(function(el,i){
+      var e=data[i], p=(e.parent!==null&&e.parent!==undefined)?data[e.parent]:null, src=e.frm?e:(p||e);   // an undated child spans its parent's period
+      var y0=src.frm?+src.frm.slice(0,4):0, y1=!src.frm?0:src.to==='single'?y0:src.to?+src.to.slice(0,4):new Date().getFullYear();
+      return {head:fold(textOf(el.querySelector('.hhead'))+' '+e.kind_label.en+' '+e.kind_label.es),
+              blocks:[].slice.call(el.querySelectorAll('.hbody .hblock')).map(function(b){return {el:b,t:fold(textOf(b))};}), y0:y0, y1:y1};
+    });
+  }
+  function hit(text,toks){ for(var k=0;k<toks.length;k++){ if(text.indexOf(toks[k].t)>=0) return true; } return false; }
+  function yearHit(x,toks){ for(var k=0;k<toks.length;k++){ var t=toks[k]; if(t.y0&&x.y0&&t.y0<=x.y1&&t.y1>=x.y0) return true; } return false; }
+  function markNode(n,toks){   // wrap every hit inside one text node; folded string → original offsets, so accents do not shift things
+    var s=n.nodeValue, f=[], map=[];
+    for(var i=0;i<s.length;i++){ var c=fold(s[i]); for(var j=0;j<c.length;j++){ f.push(c[j]); map.push(i); } }
+    f=f.join('');
+    var ranges=[];
+    toks.forEach(function(t){ var at=0, p; while((p=f.indexOf(t.t,at))>=0){ ranges.push([map[p],map[p+t.t.length-1]+1]); at=p+t.t.length; } });
+    if(!ranges.length) return;
+    ranges.sort(function(a,b){return a[0]-b[0];});
+    var merged=[]; ranges.forEach(function(r){ var l=merged[merged.length-1]; if(l&&r[0]<=l[1]) l[1]=Math.max(l[1],r[1]); else merged.push(r.slice()); });
+    var frag=document.createDocumentFragment(), at=0;
+    merged.forEach(function(r){ if(r[0]>at) frag.appendChild(document.createTextNode(s.slice(at,r[0])));
+      var m=document.createElement('mark'); m.className='hm'; m.textContent=s.slice(r[0],r[1]); frag.appendChild(m); at=r[1]; });
+    if(at<s.length) frag.appendChild(document.createTextNode(s.slice(at)));
+    n.parentNode.replaceChild(frag,n);
+  }
+  function mark(el,toks){
+    var roots=[el.querySelector('.hhead')].concat([].slice.call(el.querySelectorAll('.hbody .hblock:not(.fold)')));
+    roots.forEach(function(r){ textNodes(r).forEach(function(n){ markNode(n,toks); }); });
+  }
+  function unmark(){ [].forEach.call(document.querySelectorAll('mark.hm'),function(m){ var p=m.parentNode; p.replaceChild(document.createTextNode(m.textContent),m); p.normalize(); }); }
+  function termOf(chip){ return chip.getAttribute('data-term-'+window.cvLang())||chip.getAttribute('data-term-en'); }
+  function hasTerm(chip){ var t=fold(termOf(chip)); return tokens(input.value).some(function(k){return k.t===t;}); }
+  var q='';
+  function apply(){
+    var toks=tokens(input.value); q=input.value.trim();
+    unmark();
+    entries.forEach(function(el){ el.classList.remove('dim'); [].forEach.call(el.querySelectorAll('.hblock.fold'),function(b){b.classList.remove('fold');}); });
+    clearBtn.hidden=!q;
+    if(toks.length){
+      if(!idx) index();
+      var own=idx.map(function(x){ return {head:hit(x.head,toks)||yearHit(x,toks), blocks:x.blocks.map(function(b){return hit(b.t,toks);})}; });
+      var self=own.map(function(o){ return o.head||o.blocks.some(Boolean); });
+      // a parent stays for a matching child; a child of a matching parent only stays on its own merit
+      var keep=self.map(function(s,i){ return s||data.some(function(c,k){ return c.parent===i&&self[k]; }); });
+      entries.forEach(function(el,i){
+        if(!keep[i]){ el.classList.add('dim'); return; }
+        var o=own[i], any=o.blocks.some(Boolean);
+        // some block hit → the others fold; only the head (or the period) hit → the whole entry is the answer, nothing folds;
+        // kept only for a child → everything folds, the child tells the story
+        if(any||!o.head) idx[i].blocks.forEach(function(b,k){ if(!o.blocks[k]) b.el.classList.add('fold'); });
+        mark(el,toks);
+      });
+    }
+    relive(); drawNav();
+    var kept=live.length;
+    count.textContent=toks.length?kept+'/'+entries.length:'';
+    empty.hidden=!(toks.length&&!kept);
+    [].forEach.call(facets.querySelectorAll('.dchip'),function(c){ c.classList.toggle('on',hasTerm(c)); });
+    current=-1;
+    if(kept) spy(); else panel.classList.add('swap');
+  }
+  function sync(){ var u=new URL(location.href); if(q) u.searchParams.set('q',q); else u.searchParams.delete('q'); history.replaceState(null,'',u); }
+  function set(v){ input.value=v; apply(); sync(); }
+  function toggleTerm(chip){   // add the chip's word to the query, or take it out when it is already there
+    var t=termOf(chip), f=fold(t), parts=[], m, found=false, v=input.value; TOK.lastIndex=0;
+    while((m=TOK.exec(v))){ if(fold(m[1]!==undefined?m[1]:m[2]).trim()===f) found=true; else parts.push(m[0]); }
+    if(!found) parts.push(/\\s/.test(t)?'"'+t+'"':t);
+    set(parts.join(' ')); input.focus();
+  }
+  var syncT=null;
+  input.addEventListener('input',function(){ apply(); clearTimeout(syncT); syncT=setTimeout(sync,150); });
+  input.addEventListener('keydown',function(ev){ if(ev.key==='Escape'){ if(input.value) set(''); else input.blur(); } });
+  clearBtn.addEventListener('click',function(){ set(''); input.focus(); });
+  more.addEventListener('click',function(){ var open=facets.hidden; facets.hidden=!open; more.setAttribute('aria-expanded',open?'true':'false'); });
+  facets.addEventListener('click',function(ev){
+    var chip=ev.target.closest('.dchip'); if(chip){ toggleTerm(chip); return; }
+    var mc=ev.target.closest('.hq-morechips'); if(mc) mc.closest('.hq-facet').classList.add('all');
+  });
+  document.querySelector('.htl').addEventListener('click',function(ev){ var b=ev.target.closest('.hblock.fold'); if(b){ b.classList.remove('fold'); onScroll(); } });
+  document.addEventListener('keydown',function(ev){   // `/` focuses the search, like on GitHub
+    if(ev.key!=='/'||ev.ctrlKey||ev.metaKey||ev.altKey) return;
+    var a=document.activeElement; if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.isContentEditable)) return;
+    ev.preventDefault(); input.focus(); input.select();
+  });
+  function relabel(){ clearBtn.setAttribute('aria-label',w().clear); clearBtn.title=w().clear; }
+  relabel();
+  // the date labels are redrawn by a later script on langchange, so the reindex waits a tick
+  document.addEventListener('langchange',function(){ relabel(); setTimeout(function(){ unmark(); idx=null; apply(); },0); });
+  var q0=new URL(location.href).searchParams.get('q'); if(q0) input.value=q0;
+  // the dates are drawn by a later script; the first query waits until every inline script has run
+  function boot(){ if(input.value) apply(); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 </script>
 <script>
@@ -1660,7 +1858,8 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   /* ---- Extended History: timeline + sticky "subject" panel ---- */
   .sheet.hist-page{overflow:visible;}   /* overflow:hidden on the sheet would defeat position:sticky */
   .hist{display:flex;gap:7mm;margin-top:8px;align-items:flex-start;}
-  .htl{flex:1 1 auto;min-width:0;position:relative;padding-left:16px;padding-bottom:22vh;}
+  .hcol{flex:1 1 auto;min-width:0;}
+  .htl{position:relative;padding-left:16px;padding-bottom:22vh;}
   .htl::before{content:"";position:absolute;left:4px;top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px;}
   .hentry{position:relative;padding:6px 0 10px;scroll-margin-top:60px;}
   .htl .hentry.job{border-top:0;}
@@ -1679,8 +1878,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .hentry.child.project::before{width:6px;height:6px;left:-12.5px;top:10px;}
   .hentry.child h3{font-size:10.5px;}
   .hentry.child .hdate{font-size:7.6px;}
-  .hentry.parent-active{}
-  .hentry.parent-active > h3 .c{color:var(--green);}
+  .hentry.parent-active > .hhead h3 .c{color:var(--green);}
   .sub-parent{font-size:8px;color:var(--muted);margin-top:6px;} .sub-parent:empty{display:none;}
   .sub-parent b{color:var(--cyan);font-weight:600;}
   .sub-nav ol{list-style:none;margin:0;padding-left:10px;border-left:1px dashed var(--line);}
@@ -1753,6 +1951,47 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .sub-nav li:hover{color:var(--cyan);}
   .sub-progress{height:3px;border-radius:2px;background:var(--line);margin-top:9px;overflow:hidden;}
   .sub-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));transition:width .3s;}
+  /* ---- /timeline/ search: a `grep -i` bar that sticks to the top of the timeline column ---- */
+  .hq{position:sticky;top:0;z-index:5;margin:0 0 6px -16px;padding:6px 0 7px 16px;
+    background:color-mix(in srgb,var(--bg) 90%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
+  .hq-row{display:flex;align-items:center;gap:8px;}
+  .hq-prompt{font-size:8.6px;color:var(--muted);white-space:nowrap;cursor:text;} .hq-prompt .g{color:var(--green);} .hq-prompt .c{color:var(--cyan);}
+  .hq-field{flex:1 1 auto;min-width:0;display:flex;align-items:center;border-bottom:1px solid var(--line);transition:border-color .15s;}
+  .hq-field:focus-within{border-color:var(--green);}
+  .hq-in{flex:1 1 auto;min-width:0;background:none;border:0;outline:0;font:inherit;font-size:9.4px;color:var(--fg);padding:3px 0;caret-color:var(--green);}
+  .hq-in::placeholder{color:var(--muted);opacity:.7;}
+  .hq-x{background:none;border:0;cursor:pointer;font:inherit;font-size:12px;line-height:1;color:var(--muted);padding:0 3px;} .hq-x:hover{color:var(--pink);}
+  .hq-count{font-size:8px;color:var(--muted);white-space:nowrap;} .hq-count:empty{display:none;}
+  .hq-more{background:none;border:0;cursor:pointer;font:inherit;font-size:8px;color:var(--muted);white-space:nowrap;padding:2px 0;}
+  .hq-more:hover,.hq-more[aria-expanded="true"]{color:var(--cyan);} .hq-more i{font-style:normal;display:inline-block;transition:transform .15s;} .hq-more[aria-expanded="true"] i{transform:rotate(90deg);}
+  .hq-facets{display:grid;gap:5px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);} .hq-facets[hidden]{display:none;}
+  .hq-facet{display:flex;align-items:flex-start;gap:8px;}
+  .hq-fh{font-size:7.4px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);flex:0 0 58px;padding-top:3px;}
+  .hq-facet .dchips{gap:3px;}
+  .hq-facet .dchip{cursor:pointer;font:inherit;font-size:7.6px;padding:1px 6px;} .hq-facet .dchip:hover{border-color:var(--cyan);color:var(--cyan);}
+  .hq-facet .dchip.on{border-color:var(--green);color:var(--green);background:rgba(61,220,132,.10);}
+  .hq-facet .dchip.extra{display:none;} .hq-facet.all .dchip.extra{display:inline-block;} .hq-facet.all .hq-morechips{display:none;}
+  .hq-morechips{background:none;border:0;cursor:pointer;font:inherit;font-size:7.4px;color:var(--cyan);padding:1px 4px;}
+  .hq-empty{font-size:8.6px;color:var(--amber);margin-top:6px;}
+  /* filter states: a dimmed entry keeps only its head; an untouched block folds into its label; hits are marked */
+  .hentry.dim .hbody,.hentry.dim .loc{display:none;}
+  .hentry.dim .hhead{opacity:.5;}
+  .hentry.dim > .hhead h3,.hentry.dim > .hhead h3 .c,.hentry.dim > .hhead .hdate{color:var(--muted);}
+  .hentry.dim::before{border-color:var(--line);background:var(--bg);box-shadow:none;}
+  .hblock.fold{cursor:pointer;margin-top:4px;padding:1px 0 1px 9px;position:relative;font-family:'JetBrains Mono',monospace;font-size:7.6px;color:var(--muted);}
+  .hblock.fold::after{content:"";position:absolute;left:0;top:3px;bottom:2px;width:2px;border-radius:2px;border-left:2px dotted var(--line);}
+  .hblock.fold > *{display:none !important;}
+  /* (.hgroup::before is normally its absolute 2px bar — here it becomes the label, so every box property is reset) */
+  .hentry .hblock.fold::before{content:"▸ // " attr(data-label-en);position:static;display:inline;width:auto;height:auto;background:none;border:0;border-radius:0;}
+  html[data-lang="es"] .hentry .hblock.fold::before{content:"▸ // " attr(data-label-es);}
+  .hblock.fold:hover{color:var(--cyan);}
+  .hgroups .hblock.fold{margin-top:0;} .hlede.hblock.fold{margin-top:5px;}
+  .hdeliv.hblock.fold,.hgroup.hblock.fold{border:0;background:none;border-radius:0;padding:1px 0 1px 9px;}
+  mark.hm{background:rgba(255,180,84,.30);color:inherit;border-radius:2px;padding:0 1px;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+  .hentry.dim mark.hm{background:none;}
+  .sub-nav li.dim{opacity:.4;pointer-events:none;}
+  .hq-in:focus{outline:0;}
+  @media print{.hq{display:none !important;}}
   @view-transition{navigation:auto;}   /* smooth cross-fade between the site's pages (same shell everywhere) */
   .empty{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;}
   body{font-family:'Inter',system-ui,sans-serif;color:var(--text);font-size:10px;line-height:1.5;background:var(--bg);}

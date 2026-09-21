@@ -53,7 +53,8 @@
   /* ---- Extended History: timeline + sticky "subject" panel ---- */
   .sheet.hist-page{overflow:visible;}   /* overflow:hidden on the sheet would defeat position:sticky */
   .hist{display:flex;gap:7mm;margin-top:8px;align-items:flex-start;}
-  .htl{flex:1 1 auto;min-width:0;position:relative;padding-left:16px;padding-bottom:22vh;}
+  .hcol{flex:1 1 auto;min-width:0;}
+  .htl{position:relative;padding-left:16px;padding-bottom:22vh;}
   .htl::before{content:"";position:absolute;left:4px;top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px;}
   .hentry{position:relative;padding:6px 0 10px;scroll-margin-top:60px;}
   .htl .hentry.job{border-top:0;}
@@ -72,8 +73,7 @@
   .hentry.child.project::before{width:6px;height:6px;left:-12.5px;top:10px;}
   .hentry.child h3{font-size:10.5px;}
   .hentry.child .hdate{font-size:7.6px;}
-  .hentry.parent-active{}
-  .hentry.parent-active > h3 .c{color:var(--green);}
+  .hentry.parent-active > .hhead h3 .c{color:var(--green);}
   .sub-parent{font-size:8px;color:var(--muted);margin-top:6px;} .sub-parent:empty{display:none;}
   .sub-parent b{color:var(--cyan);font-weight:600;}
   .sub-nav ol{list-style:none;margin:0;padding-left:10px;border-left:1px dashed var(--line);}
@@ -146,6 +146,47 @@
   .sub-nav li:hover{color:var(--cyan);}
   .sub-progress{height:3px;border-radius:2px;background:var(--line);margin-top:9px;overflow:hidden;}
   .sub-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));transition:width .3s;}
+  /* ---- /timeline/ search: a `grep -i` bar that sticks to the top of the timeline column ---- */
+  .hq{position:sticky;top:0;z-index:5;margin:0 0 6px -16px;padding:6px 0 7px 16px;
+    background:color-mix(in srgb,var(--bg) 90%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
+  .hq-row{display:flex;align-items:center;gap:8px;}
+  .hq-prompt{font-size:8.6px;color:var(--muted);white-space:nowrap;cursor:text;} .hq-prompt .g{color:var(--green);} .hq-prompt .c{color:var(--cyan);}
+  .hq-field{flex:1 1 auto;min-width:0;display:flex;align-items:center;border-bottom:1px solid var(--line);transition:border-color .15s;}
+  .hq-field:focus-within{border-color:var(--green);}
+  .hq-in{flex:1 1 auto;min-width:0;background:none;border:0;outline:0;font:inherit;font-size:9.4px;color:var(--fg);padding:3px 0;caret-color:var(--green);}
+  .hq-in::placeholder{color:var(--muted);opacity:.7;}
+  .hq-x{background:none;border:0;cursor:pointer;font:inherit;font-size:12px;line-height:1;color:var(--muted);padding:0 3px;} .hq-x:hover{color:var(--pink);}
+  .hq-count{font-size:8px;color:var(--muted);white-space:nowrap;} .hq-count:empty{display:none;}
+  .hq-more{background:none;border:0;cursor:pointer;font:inherit;font-size:8px;color:var(--muted);white-space:nowrap;padding:2px 0;}
+  .hq-more:hover,.hq-more[aria-expanded="true"]{color:var(--cyan);} .hq-more i{font-style:normal;display:inline-block;transition:transform .15s;} .hq-more[aria-expanded="true"] i{transform:rotate(90deg);}
+  .hq-facets{display:grid;gap:5px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);} .hq-facets[hidden]{display:none;}
+  .hq-facet{display:flex;align-items:flex-start;gap:8px;}
+  .hq-fh{font-size:7.4px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);flex:0 0 58px;padding-top:3px;}
+  .hq-facet .dchips{gap:3px;}
+  .hq-facet .dchip{cursor:pointer;font:inherit;font-size:7.6px;padding:1px 6px;} .hq-facet .dchip:hover{border-color:var(--cyan);color:var(--cyan);}
+  .hq-facet .dchip.on{border-color:var(--green);color:var(--green);background:rgba(61,220,132,.10);}
+  .hq-facet .dchip.extra{display:none;} .hq-facet.all .dchip.extra{display:inline-block;} .hq-facet.all .hq-morechips{display:none;}
+  .hq-morechips{background:none;border:0;cursor:pointer;font:inherit;font-size:7.4px;color:var(--cyan);padding:1px 4px;}
+  .hq-empty{font-size:8.6px;color:var(--amber);margin-top:6px;}
+  /* filter states: a dimmed entry keeps only its head; an untouched block folds into its label; hits are marked */
+  .hentry.dim .hbody,.hentry.dim .loc{display:none;}
+  .hentry.dim .hhead{opacity:.5;}
+  .hentry.dim > .hhead h3,.hentry.dim > .hhead h3 .c,.hentry.dim > .hhead .hdate{color:var(--muted);}
+  .hentry.dim::before{border-color:var(--line);background:var(--bg);box-shadow:none;}
+  .hblock.fold{cursor:pointer;margin-top:4px;padding:1px 0 1px 9px;position:relative;font-family:'JetBrains Mono',monospace;font-size:7.6px;color:var(--muted);}
+  .hblock.fold::after{content:"";position:absolute;left:0;top:3px;bottom:2px;width:2px;border-radius:2px;border-left:2px dotted var(--line);}
+  .hblock.fold > *{display:none !important;}
+  /* (.hgroup::before is normally its absolute 2px bar — here it becomes the label, so every box property is reset) */
+  .hentry .hblock.fold::before{content:"▸ // " attr(data-label-en);position:static;display:inline;width:auto;height:auto;background:none;border:0;border-radius:0;}
+  html[data-lang="es"] .hentry .hblock.fold::before{content:"▸ // " attr(data-label-es);}
+  .hblock.fold:hover{color:var(--cyan);}
+  .hgroups .hblock.fold{margin-top:0;} .hlede.hblock.fold{margin-top:5px;}
+  .hdeliv.hblock.fold,.hgroup.hblock.fold{border:0;background:none;border-radius:0;padding:1px 0 1px 9px;}
+  mark.hm{background:rgba(255,180,84,.30);color:inherit;border-radius:2px;padding:0 1px;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+  .hentry.dim mark.hm{background:none;}
+  .sub-nav li.dim{opacity:.4;pointer-events:none;}
+  .hq-in:focus{outline:0;}
+  @media print{.hq{display:none !important;}}
   @view-transition{navigation:auto;}   /* smooth cross-fade between the site's pages (same shell everywhere) */
   .empty{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;}
   body{font-family:'Inter',system-ui,sans-serif;color:var(--text);font-size:10px;line-height:1.5;background:var(--bg);}
