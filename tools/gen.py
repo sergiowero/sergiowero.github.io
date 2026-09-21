@@ -493,7 +493,7 @@ JOBS = [
                           "En formación para ser <b>AI engineer</b>: agentes en Python, LangChain y el Claude SDK.")),
         ],
     )),
-    dict(role=T("Senior Software Engineer", "Ingeniero de Software Senior"), co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period=T("Jul 2019 — Mar 2020"), frm="2019-07", to="2020-03", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
+    dict(role=T("Lead Software Engineer", "Ingeniero de Software Líder"), co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period=T("Jul 2019 — Mar 2020"), frm="2019-07", to="2020-03", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
         T('Led a small programming team in the development of a mobile iOS game, taking ownership of the <b>core game architecture</b>.',
           'Lideré un equipo pequeño de programación en un juego móvil para iOS, a cargo de la <b>arquitectura central del juego</b>.'),
         T('Architected and implemented an Inversion of Control (IoC), Dependency Injection (DI), and a robust event-driven system.',
