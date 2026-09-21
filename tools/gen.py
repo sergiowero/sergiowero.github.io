@@ -146,6 +146,7 @@ STEAM = "https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/"
 YT_VR = "https://www.youtube.com/watch?v=dyOfO0sYyp8&amp;t=446s"
 YT_REEL = "https://www.youtube.com/watch?v=PWaarVatoEU"
 CERBY = "https://www.cerby.com/"
+INDITEX = "https://www.inditex.com/"
 
 def ext(href, text):
     return f'<a href="{href}" target="_blank" rel="noopener noreferrer">{text}</a>'
@@ -297,11 +298,61 @@ JOBS = [
                       result=T("Shipped to production and migrated <b>over 100,000 legacy videos</b>, metadata included, into Fox's new system.",
                                "Entregado en producción y migró <b>más de 100,000 videos legacy</b>, metadatos incluidos, al nuevo sistema de Fox."))]),
              dict(kind="project", slug="wizeline-retail", role="", co="Inditex", loc=REMOTE, inds=[T("Retail")],
-                  tech=["Java", "Spring", "MariaDB"],
-                  pts=[T("Architected backend services for a complex audit system.",
-                         "Diseñé la arquitectura de los servicios backend de un sistema de auditoría complejo."),
-                       T("Designed relational databases, implemented microservices, and built migration services for long-running data imports.",
-                         "Modelé bases de datos relacionales, implementé microservicios y construí servicios de migración para importaciones de datos de larga duración.")]),
+                  facts=[(T("Product", "Producto"), T("Factory audit viewer", "Visor de auditorías de fábricas")),
+                         (T("Focus", "Enfoque"), "Backend"),
+                         (T("Architecture", "Arquitectura"), T("Microservices · Clean Architecture", "Microservicios · Clean Architecture")),
+                         (T("Workflow", "Flujo de trabajo"), "API first · OpenAPI")],
+                  tech=["Java 11", "Spring", "Spring Batch", "MariaDB", "OpenAPI", "Clean Architecture",
+                        T("Microservices", "Microservicios"), "Snowflake"],
+                  lede=T("Wizeline's engagement with <b>Inditex</b>, the retail group behind Zara. The project was a "
+                         "<b>viewer for the audits of the company's factories</b>: a set of <b>Java 11</b> microservices built with "
+                         "<b>Clean Architecture</b> and an <b>API-first</b> workflow, backed by <b>MariaDB</b>. I architected the backend "
+                         "services, modelled the relational database and built the service that migrated the audit data out of "
+                         "<b>Snowflake</b> with <b>Spring Batch</b>.",
+                         "El proyecto de Wizeline con <b>Inditex</b>, el grupo de retail detrás de Zara. El proyecto era un "
+                         "<b>visualizador de las auditorías de las fábricas de la empresa</b>: un conjunto de microservicios en <b>Java 11</b> "
+                         "hechos con <b>Clean Architecture</b> y un flujo de trabajo <b>API first</b>, sobre <b>MariaDB</b>. Diseñé la "
+                         "arquitectura de los servicios backend, modelé la base de datos relacional y construí el servicio que migró los "
+                         "datos de auditorías desde <b>Snowflake</b> con <b>Spring Batch</b>."),
+                  pts=[],
+                  groups=[
+                      dict(h=T("The product", "El producto"), pts=[
+                          T("A <b>viewer for the audits</b> Inditex runs on its <b>factories</b>: the audit data brought into one system where it could be looked at.",
+                            "Un <b>visualizador de las auditorías</b> que Inditex hace a sus <b>fábricas</b>: los datos de las auditorías reunidos en un sistema donde se pudieran consultar."),
+                          T("I architected the <b>backend services</b> behind it.",
+                            "Diseñé la arquitectura de los <b>servicios backend</b> que lo sostenían."),
+                      ]),
+                      dict(h=T("API first, with OpenAPI", "API first, con OpenAPI"), pts=[
+                          T("We worked <b>API first</b>: before any change started, its API was defined in an <b>OpenAPI</b> spec and agreed on; only then did the implementation begin.",
+                            "Trabajábamos <b>API first</b>: antes de empezar cualquier cambio, su API se definía en una especificación <b>OpenAPI</b> y se acordaba; solo entonces empezaba la implementación."),
+                          T("The contract came first and the code followed it, so what a service exposed was never a surprise.",
+                            "El contrato iba primero y el código lo seguía, de modo que lo que exponía un servicio nunca era una sorpresa."),
+                      ]),
+                      dict(h=T("Microservices in Java 11, with Clean Architecture", "Microservicios en Java 11, con Clean Architecture"), pts=[
+                          T("The backend was a set of <b>microservices</b> written in <b>Java 11</b> with <b>Spring</b>.",
+                            "El backend era un conjunto de <b>microservicios</b> escritos en <b>Java 11</b> con <b>Spring</b>."),
+                          T("Each one followed <b>Clean Architecture</b>: the domain and use cases at the centre; framework, database and HTTP at the edges, depending inward.",
+                            "Cada uno seguía <b>Clean Architecture</b>: el dominio y los casos de uso al centro; framework, base de datos y HTTP en los bordes, dependiendo hacia adentro."),
+                      ]),
+                      dict(h=T("Data", "Datos"), pts=[
+                          T("The data lived in <b>MariaDB</b>; I modelled the relational schema the services worked against.",
+                            "Los datos vivían en <b>MariaDB</b>; modelé el esquema relacional sobre el que trabajaban los servicios."),
+                      ]),
+                  ],
+                  deliverables=[
+                      dict(kind="milestone",
+                           title=T("Snowflake → MariaDB audit migration service",
+                                   "Servicio de migración de auditorías de Snowflake a MariaDB"),
+                           role=T("Built it — a long-running import on Spring Batch", "Lo construí: una importación de larga duración sobre Spring Batch"),
+                           tech=["Java 11", "Spring Batch", "Snowflake", "MariaDB"],
+                           pts=[T("A service that moved the audit data from <b>Snowflake</b>, where Inditex kept it, into the project's <b>MariaDB</b> database.",
+                                  "Un servicio que llevaba los datos de auditorías desde <b>Snowflake</b>, donde Inditex los guardaba, a la base de datos <b>MariaDB</b> del proyecto."),
+                                T("Built on <b>Spring Batch</b>, made for exactly this kind of long-running, chunked import.",
+                                  "Hecho sobre <b>Spring Batch</b>, pensado justo para este tipo de importaciones largas y por lotes.")],
+                           result=T("Delivered: the audits landed in <b>MariaDB</b>, and the viewer had its data.",
+                                    "Entregado: las auditorías quedaron en <b>MariaDB</b> y el visualizador tuvo sus datos.")),
+                  ],
+                  links=[("inditex.com", INDITEX)]),
              dict(kind="project", slug="wizeline-cybersecurity", role="", co="Cerby", loc=REMOTE, inds=[T("Cybersecurity", "Ciberseguridad")],
                   facts=[(T("Product", "Producto"), T("Credential management", "Gestión de credenciales")),
                          (T("Team", "Equipo"), T("Founding project team", "Equipo inicial del proyecto")),
