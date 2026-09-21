@@ -106,6 +106,16 @@ Rules of thumb:
 - `pts` — bullets (HTML allowed); `[]` hides the list.
 - `children` (or `history_children` on a job) — nested entries, one level deep.
 
+#### Blocks and the search bar
+
+Every piece of an entry (`facts`, `lede`, `pts`, each group, each deliverable card, the stack, the links) is rendered as an `.hblock` with a bilingual label. The search on the Timeline page folds the blocks a query does not touch into a one-line `▸ // label` row, so:
+
+- groups and deliverables use their own `h` / `title` as the label — keep those short;
+- the headless blocks take their label from `BLOCK_LABELS` in `tools/gen.py`; a new block shape needs an entry there;
+- a new `kind` needs an entry in `KIND_LABELS` (it is what the "kind" facet and the panel show).
+
+The search index is built in the browser from the visible text, so anything you write in an entry is searchable as soon as you regenerate — nothing to declare.
+
 #### Checklist before you regenerate
 
 - [x] Dates in `YYYY-MM`

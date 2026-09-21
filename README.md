@@ -5,7 +5,7 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 | Ruta | Sección | Origen |
 |---|---|---|
 | `/` | Resume / CV | estático (`public/index.html`, generado por `tools/gen.py`; `/cv/` redirige aquí) |
-| `/timeline/` | Extended History | estático: línea de tiempo con panel lateral que sigue el scroll (`tools/gen.py` → `history_entries()`) |
+| `/timeline/` | Extended History | estático: línea de tiempo con panel lateral que sigue el scroll y un buscador (`tools/gen.py` → `history_entries()`) |
 | `/blog/` | Blog | Astro: índice, páginas por tag (`/blog/tags/<tag>/`) y entradas (`/blog/<en|es>/<slug>/`) |
 | `/about/` | About me | estático (placeholder con el nombre) |
 
@@ -50,6 +50,16 @@ dict(kind="milestone", slug="mi-charla", role="Speaker", co="Nombre del evento",
 ```
 
 y corre `python3 tools/gen.py`. Las entradas se ordenan solas de la más reciente a la más antigua.
+
+### Buscar en el timeline
+
+La barra `grep -i` arriba del timeline (se queda pegada al hacer scroll; `/` la enfoca) filtra las entradas y el filtro viaja en la URL, así que un link como `/timeline/?q=aws` abre la página ya filtrada:
+
+- Varias palabras se combinan con **O** (`lead aws` = cualquiera de las dos); `"tech lead"` busca la frase. Sin distinguir mayúsculas ni acentos, y solo en el idioma que está en pantalla.
+- Un año (`2021`) o un rango (`2009-2011`) conserva las entradas cuyo periodo lo cubre; un hijo sin fecha hereda el periodo de su padre.
+- Las entradas sin coincidencia se **atenúan**: quedan solo el puesto, la empresa y las fechas, y el panel lateral las salta.
+- En las que sí coinciden, los bloques que no mencionan el término se pliegan a una línea `▸ // título` (clic para abrirlo); si solo coincidió el encabezado (empresa, puesto, fecha) la entrada se muestra completa. Las coincidencias se resaltan.
+- `// filters` despliega chips de tech, industria y tipo; cada chip solo agrega (o quita) su palabra al buscador. La `×` (o Esc) limpia todo.
 
 Hasta **dos niveles**: cualquier entrada acepta `children=[…]` (en un empleo de `JOBS`, `history_children=[…]`) con dicts del mismo formato; se dibujan anidados y el panel lateral indica `↳ inside <padre>`. Guía completa en [`docs/adding-history-entries.md`](docs/adding-history-entries.md).
 
