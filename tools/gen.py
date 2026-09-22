@@ -1910,6 +1910,8 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   Array.prototype.forEach.call(els,function(t){
     var full=t.textContent; t.textContent=''; var i=0;
     (function tick(){ if(i<=full.length){ t.textContent=full.slice(0,i++); setTimeout(tick,i<8?90:45);} })();
+    /* printing mid-animation would catch half a name: finish it at once */
+    window.addEventListener('beforeprint',function(){ i=full.length+1; t.textContent=full; });
   });
 })();
 </script>""",
