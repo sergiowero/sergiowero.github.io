@@ -42,7 +42,8 @@
     border:1.5px solid var(--nav-active-bg);padding:9.5px 13.5px;}
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-  @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
+  @media (max-width:600px){.dl-fab{right:12px;bottom:12px;gap:6px;} .dl-fab .dl-k{display:none;}
+    .dl-fab button{font-size:11px;padding:9px 11px;gap:4px;} .dl-fab button.alt{padding:7.5px 9.5px;}}
   /* section headings carry both skins (see sh_label): the shell command for the screen, a plain heading for print */
   h2.sh .ats{display:none;}
   @media print{
@@ -324,4 +325,14 @@
     .sk-word{display:inline;color:var(--muted);}                  /* the level as a word instead: Expert / Avanzado */
     .toolcard .tt::before{content:none;}
     .hlinks a::before{content:none;}
+
+    /* "PDF ATS" prints with html[data-print="ats"] (cv-export.js also drops the dark theme for it).
+       Two columns are the classic way to lose a resume in a parser that rebuilds text by position,
+       so this one linearises: main first, then everything the aside held, full width. */
+    :root[data-print="ats"] .cols{display:block;}
+    :root[data-print="ats"] .main,:root[data-print="ats"] .aside{flex:none;width:100%;min-width:0;}
+    :root[data-print="ats"] .aside{margin-top:8px;}
+    :root[data-print="ats"] .sk-top{justify-content:flex-start;gap:10px;}
+    :root[data-print="ats"] .sk-top .sk-pct{margin-left:auto;}
+    :root[data-print="ats"] .ai{background:none;border-color:var(--line);}
   }

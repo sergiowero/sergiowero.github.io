@@ -1,6 +1,9 @@
 /* Downloads the CV in whatever language is on screen, without the site header.
-   PDF  — the browser's own print dialog (.site-nav is display:none when printing, so the header never lands in it).
-   DOCX — written here from #cv-data (same source as the page), always on a light page so it stays editable.
+   PDF      — the browser's own print dialog (.site-nav is display:none when printing, so the header never lands in it).
+   PDF ATS  — the same dialog, but printed with html[data-print="ats"] and the dark theme off: one column,
+              light page. Both are restored on afterprint, so the screen is never left changed.
+   DOCX ATS — written here from #cv-data (same source as the page), always on a light page so it stays editable.
+   Every export drops the terminal decoration (see @media print); only plain "PDF" keeps the design intact.
    No dependencies: the zip container and the OOXML parts are built by hand. */
 (function () {
   var dataEl = document.getElementById('cv-data');
@@ -19,15 +22,30 @@
   function fileBase() { return 'Sergio-Sanchez-CV-' + lang().toUpperCase(); }
 
   // ---------------------------------------------------------------- PDF (print dialog)
-  /* Prints exactly what is on screen — current theme and language. The page sets
-     print-color-adjust:exact on <html>, so the dark background survives the print dialog too. */
-  function exportPDF() {
-    var prev = document.title;
-    document.title = fileBase();   // browsers propose the document title as the PDF file name
-    window.addEventListener('afterprint', function restore() {
-      document.title = prev;
+  /* Plain: prints exactly what is on screen — current theme and language. The page sets
+     print-color-adjust:exact on <html>, so the dark background survives the print dialog too.
+     ATS: the two columns become one (CSS keys on html[data-print="ats"]) and the dark theme is
+     dropped, because a parser that rebuilds text by position reads a single light column best.
+     The language always follows the screen; only the layout and the theme are forced. */
+  function exportPDF(ats) {
+    var root = document.documentElement;
+    var prevTitle = document.title, prevTheme = root.getAttribute('data-theme');
+    document.title = fileBase() + (ats ? '-ATS' : '');   // browsers propose the title as the PDF file name
+    if (ats) {
+      root.setAttribute('data-print', 'ats');
+      root.removeAttribute('data-theme');   // light page; localStorage is untouched, so the screen comes back
+    }
+    var restored = false;
+    function restore() {
+      if (restored) return;
+      restored = true;
+      document.title = prevTitle;
+      root.removeAttribute('data-print');
+      if (prevTheme) root.setAttribute('data-theme', prevTheme);
       window.removeEventListener('afterprint', restore);
-    });
+    }
+    window.addEventListener('afterprint', restore);
+    setTimeout(restore, 60000);   // afterprint is reliable, but never leave the page in print state
     window.print();
   }
 
@@ -201,9 +219,6 @@
     body += para(run(textOf(L(CV.ai.text)), { color: BODY }), { after: 30 });
     body += para(run(CV.ai.chips.join('  ·  '), { color: GREEN, b: true, sz: 17 }));
 
-    body += heading(label('titles'));
-    L(CV.titles).forEach(function (t) { body += para(runsFrom(L(t)), { bullet: true }); });
-
     body += heading(label('education'));
     CV.edu.forEach(function (e) {
       body += para(run(textOf(L(e.deg)), { b: true, color: INK }) +
@@ -305,7 +320,10 @@
 
   document.querySelectorAll('[data-export]').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      if (btn.getAttribute('data-export') === 'pdf') exportPDF(); else exportDOCX();
+      var kind = btn.getAttribute('data-export');
+      if (kind === 'pdf') exportPDF(false);
+      else if (kind === 'pdf-ats') exportPDF(true);
+      else exportDOCX();
     });
   });
 })();

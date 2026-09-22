@@ -58,7 +58,8 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     border:1.5px solid var(--nav-active-bg);padding:9.5px 13.5px;}
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-  @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
+  @media (max-width:600px){.dl-fab{right:12px;bottom:12px;gap:6px;} .dl-fab .dl-k{display:none;}
+    .dl-fab button{font-size:11px;padding:9px 11px;gap:4px;} .dl-fab button.alt{padding:7.5px 9.5px;}}
   /* section headings carry both skins (see sh_label): the shell command for the screen, a plain heading for print */
   h2.sh .ats{display:none;}
   @media print{

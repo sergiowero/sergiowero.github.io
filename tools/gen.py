@@ -1255,7 +1255,6 @@ DOC_LABELS = {
     "experience": T("Work Experience", "Experiencia laboral"),
     "core": T("Skills", "Habilidades"),
     "tech": T("Technical Skills", "Habilidades técnicas"),
-    "titles": T("Projects", "Proyectos"),
     "education": T("Education", "Educación"),
     "present": T("Present", "Actualidad"),
     "yr": T(" yr", " año"), "yrs": T(" yrs", " años"), "mo": T(" mo", " mes"), "mos": T(" mos", " meses"),
@@ -1270,7 +1269,7 @@ def cv_data_json():
         jobs=[dict(role=d(j["role"]), co=j["co"], frm=j["frm"], to=j["to"],
                    loc=d(j["loc"]), inds=d(j["inds"]), pts=d(j["pts"])) for j in JOBS],
         core=[dict(name=name, word=d(level(lvl)[0]), pct=level(lvl)[1]) for name, lvl in CORE],
-        tech=d(TECH), titles=d(TITLES),
+        tech=d(TECH),
         ai=dict(head=d(AI_HEAD), text=d(AI_TEXT), chips=AI_CHIPS),
         edu=[dict(deg=d(deg), meta=d(meta)) for deg, meta in EDU],
         labels={k: d(v) for k, v in DOC_LABELS.items()},
@@ -1411,7 +1410,8 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
     border:1.5px solid var(--nav-active-bg);padding:9.5px 13.5px;}
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-  @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
+  @media (max-width:600px){.dl-fab{right:12px;bottom:12px;gap:6px;} .dl-fab .dl-k{display:none;}
+    .dl-fab button{font-size:11px;padding:9px 11px;gap:4px;} .dl-fab button.alt{padding:7.5px 9.5px;}}
   /* section headings carry both skins (see sh_label): the shell command for the screen, a plain heading for print */
   h2.sh .ats{display:none;}
   @media print{
@@ -1444,7 +1444,6 @@ LABELS = {
     "$L_EXP$": sh_label(T("cat experience.log", "cat experiencia.log"), DOC_LABELS["experience"]),
     "$L_CORE$": sh_label(T("ls core-skills/", "ls habilidades/"), DOC_LABELS["core"]),
     "$L_TECH$": sh_label(T("ls tech/"), DOC_LABELS["tech"]),
-    "$L_SHIPPED$": sh_label(T("cat shipped.txt", "cat lanzamientos.txt"), DOC_LABELS["titles"]),
     "$L_EDU$": sh_label(T("cat education.txt", "cat educacion.txt"), DOC_LABELS["education"]),
     "$L_ABOUT$": sh_label(T("cat about.md", "cat sobre-mi.md"), T("About", "Sobre mí")),
     "$L_TOOLBOX$": sh_label(T("ls toolbox/", "ls herramientas/"), T("Toolbox", "Herramientas")),
@@ -1456,11 +1455,15 @@ LABELS = {
 DL_ICON = '<svg viewBox="0 0 24 24"><path d="M12 3v11M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>'
 # Fixed to the viewport, outside the sheet, so it keeps its size on every screen (the sheet is CSS-zoomed);
 # display:none when printing, so it never reaches the PDF.
-# DOCX leads and PDF is the outlined secondary: the Word file is one column with plain headings,
-# real bullets and live hyperlinks, so it is the one that survives an applicant tracking system intact.
+# Three exports, ATS-first (see public/cv-export.js):
+#   DOCX ATS — one column, plain headings, real bullets, live hyperlinks: the safest thing to upload.
+#   PDF ATS  — printed with html[data-print="ats"]: single column and forced light, whatever is on screen.
+#   PDF      — printed as it looks: the theme and the two columns the reader chose.
+# All three drop the terminal decoration; only the last keeps the design intact.
 DOWNLOAD_TPL = ('<div class="dl-fab" role="group" aria-label="Download CV / Descargar CV">'
                 f'<span class="dl-k">{i18n("download", "descargar")}</span>'
-                f'<button type="button" data-export="docx">{DL_ICON}DOCX</button>'
+                f'<button type="button" data-export="docx">{DL_ICON}DOCX ATS</button>'
+                f'<button type="button" data-export="pdf-ats">{DL_ICON}PDF ATS</button>'
                 f'<button type="button" class="alt" data-export="pdf">{DL_ICON}PDF</button></div>')
 
 def nav_html(active="cv"):
@@ -2190,6 +2193,16 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     .sk-word{display:inline;color:var(--muted);}                  /* the level as a word instead: Expert / Avanzado */
     .toolcard .tt::before{content:none;}
     .hlinks a::before{content:none;}
+
+    /* "PDF ATS" prints with html[data-print="ats"] (cv-export.js also drops the dark theme for it).
+       Two columns are the classic way to lose a resume in a parser that rebuilds text by position,
+       so this one linearises: main first, then everything the aside held, full width. */
+    :root[data-print="ats"] .cols{display:block;}
+    :root[data-print="ats"] .main,:root[data-print="ats"] .aside{flex:none;width:100%;min-width:0;}
+    :root[data-print="ats"] .aside{margin-top:8px;}
+    :root[data-print="ats"] .sk-top{justify-content:flex-start;gap:10px;}
+    :root[data-print="ats"] .sk-top .sk-pct{margin-left:auto;}
+    :root[data-print="ats"] .ai{background:none;border-color:var(--line);}
   }
 """,
     body="""<div class="sheet">
@@ -2212,7 +2225,6 @@ VERSIONS["v3-dark-terminal.html"] = dict(
       <section>$AI$</section>
       <section><h2 class="sh">$L_CORE$</h2>$CORE$</section>
       <section><h2 class="sh">$L_TECH$</h2>$TECH$</section>
-      <section><h2 class="sh">$L_SHIPPED$</h2>$TITLES$</section>
       <section><h2 class="sh">$L_EDU$</h2>$EDU$</section>
     </aside>
   </div>
