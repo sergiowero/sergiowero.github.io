@@ -57,7 +57,17 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
   @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
-  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dl-fab{display:none !important;}}
+  /* section headings carry both skins (see sh_label): the shell command for the screen, a plain heading for print */
+  h2.sh .ats{display:none;}
+  @media print{
+    .sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;}
+    .site-nav,.dl-fab{display:none !important;}
+    /* ATS pass: no shell decoration reaches the PDF — plain headings, no prompts, no ASCII meters */
+    h2.sh .cmd{display:none;} h2.sh .ats{display:inline;}
+    h2.sh::before,h2.sh::after{content:none !important;}
+    .prompt,.foot{display:none !important;}
+    .name .cur{display:none;}
+  }
   :root{--nav-bg:transparent;--nav-line:transparent;--nav-fg:#1f2328;--nav-muted:#6e7781;--nav-active-bg:#1a7f37;--nav-active-fg:#fff;--nav-font:'JetBrains Mono',Menlo,monospace;}
 
   /* light mode is the default */
@@ -208,7 +218,6 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .hentry.dim mark.hm{background:none;}
   .sub-nav li.dim{opacity:.4;pointer-events:none;}
   .hq-in:focus{outline:0;}
-  @media print{.hq{display:none !important;}}
   @view-transition{navigation:auto;}   /* smooth cross-fade between the site's pages (same shell everywhere) */
   .empty{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;}
   body{font-family:'Inter',system-ui,sans-serif;color:var(--text);font-size:10px;line-height:1.5;background:var(--bg);}
@@ -223,7 +232,6 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .name{font-size:29px;font-weight:700;letter-spacing:-1px;line-height:1;color:var(--fg);margin-top:5px;}
   .name .cur{display:inline-block;width:.45em;height:.9em;background:var(--green);vertical-align:-.08em;margin-left:3px;animation:blink 1s steps(1) infinite;}
   @keyframes blink{50%{opacity:0;}}
-  @media print{.name .cur{animation:none;}}
   .hname{font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:-.1px;margin-top:6px;}   /* /timeline/: the name, secondary to the title */
   .sub{font-size:9px;color:var(--muted);margin-top:5px;}
   .sub .hl{color:var(--amber);}
@@ -311,6 +319,26 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .avatar{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:35% 50%;
     border:1px solid var(--line);border-radius:10px;background:var(--panel);}
 
+  /* ---------------------------------------------------------------- printing / ATS
+     The terminal skin is screen-only. When the page is printed (that is what the PDF button does),
+     everything that reads as a shell command is dropped, so a resume parser gets plain text:
+     the `sergio@…:~$ cat cv.md` prompt, the `➜ ~ ` and `// ` prefixes, the `#` on industry tags,
+     the `[████░░]` skill meters (replaced by the word: Expert / Advanced …) and the `exit 0` footer. */
+  @media print{
+    .hq{display:none !important;}
+    .name .cur{display:none;}            /* the blinking caret is screen decoration */
+    h2.sh{font-family:'Inter',system-ui,sans-serif;font-size:9.4px;font-weight:700;color:var(--fg);
+      text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--line);padding-bottom:3px;}
+    .stat .l::before,.ai .h::before,.hg-h::before{content:none;}
+    .stat .l{font-family:'Inter',system-ui,sans-serif;text-transform:none;}
+    ul.pts li::before{content:"•";font-weight:400;}   /* a bullet every parser knows, instead of ">" */
+    .ind::before{content:none;} .ind{padding-left:2px;}
+    .sk-dots{display:none !important;}                            /* the ASCII bar carries no text worth parsing */
+    .sk-word{display:inline;color:var(--muted);}                  /* the level as a word instead: Expert / Avanzado */
+    .toolcard .tt::before{content:none;}
+    .hlinks a::before{content:none;}
+  }
+
 </style>
 </head>
 <body>
@@ -340,8 +368,8 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   <div class="stats"><div class="stat"><div class="n"><span data-years>15</span><span class="u">+</span></div><div class="l"><span class="i18n-en">Years building software</span><span class="i18n-es">Años de experiencia</span></div></div><div class="stat best"><div class="n"><span class="bs"><span class="i18n-en">Gaming</span><span class="i18n-es">Videojuegos</span></span><span class="bs"><span class="i18n-en">Media</span><span class="i18n-es">Medios</span></span><span class="bs"><span class="i18n-en">Enterprise</span><span class="i18n-es">Empresa</span></span></div><div class="l"><span class="i18n-en">Industries</span><span class="i18n-es">Industrias</span></div></div><div class="stat"><div class="n">6<span class="u"></span></div><div class="l"><span class="i18n-en">Max engineers led</span><span class="i18n-es">Ingenieros a cargo</span></div></div><div class="stat best"><div class="n"><span class="bs">.NET</span><span class="bs">Spring</span><span class="bs">Python</span><span class="bs">Node.js</span></div><div class="l"><span class="i18n-en">Best skills</span><span class="i18n-es">Fortalezas</span></div></div></div>
   <div class="cols">
     <main class="main">
-      <section><h2 class="sh"><span class="i18n-en">cat profile.md</span><span class="i18n-es">cat perfil.md</span></h2><p class="profile"><span class="i18n-en">Software developer with <b><span data-years>15</span> years of experience</b> across the gaming, media, and enterprise sectors, collaborating with major global companies. As an <b>AI enthusiast</b>, I actively leverage AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously <b>led teams of up to six people</b>, I consistently deliver high-quality, scalable software solutions on time and within budget.</span><span class="i18n-es">Desarrollador de software con <b><span data-years>15</span> años de experiencia</b> en videojuegos, medios y empresa, con compañías globales de primer nivel. Como <b>entusiasta de la IA</b>, uso herramientas asistidas por IA en mi día a día para optimizar el backend y acelerar la entrega de proyectos. Aprendo rápido y me adapto a nuevos stacks tecnológicos. Habiendo <b>liderado equipos de hasta seis personas</b>, entrego soluciones escalables y de alta calidad, a tiempo y en presupuesto.</span></p></section>
-      <section><h2 class="sh"><span class="i18n-en">cat experience.log</span><span class="i18n-es">cat experiencia.log</span></h2><div class="tl">
+      <section><h2 class="sh"><span class="cmd"><span class="i18n-en">cat profile.md</span><span class="i18n-es">cat perfil.md</span></span><span class="ats"><span class="i18n-en">Profile</span><span class="i18n-es">Perfil</span></span></h2><p class="profile"><span class="i18n-en">Software developer with <b><span data-years>15</span> years of experience</b> across the gaming, media, and enterprise sectors, collaborating with major global companies. As an <b>AI enthusiast</b>, I actively leverage AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously <b>led teams of up to six people</b>, I consistently deliver high-quality, scalable software solutions on time and within budget.</span><span class="i18n-es">Desarrollador de software con <b><span data-years>15</span> años de experiencia</b> en videojuegos, medios y empresa, con compañías globales de primer nivel. Como <b>entusiasta de la IA</b>, uso herramientas asistidas por IA en mi día a día para optimizar el backend y acelerar la entrega de proyectos. Aprendo rápido y me adapto a nuevos stacks tecnológicos. Habiendo <b>liderado equipos de hasta seis personas</b>, entrego soluciones escalables y de alta calidad, a tiempo y en presupuesto.</span></p></section>
+      <section><h2 class="sh"><span class="cmd"><span class="i18n-en">cat experience.log</span><span class="i18n-es">cat experiencia.log</span></span><span class="ats"><span class="i18n-en">Experience</span><span class="i18n-es">Experiencia</span></span></h2><div class="tl">
 <div class="job cur">
 <div class="job-head"><div class="r"><span class="i18n-en">Senior Software Engineer / Tech Lead</span><span class="i18n-es">Ingeniero de Software Senior / Tech Lead</span> · <span class="c">Wizeline</span></div><div class="p" data-from="2020-03"><span class="i18n-en">Mar 2020 — Present</span><span class="i18n-es">Mar 2020 — Actualidad</span></div></div>
 <div class="loc">Guadalajara, México<span class="inds"><span class="ind"><span class="i18n-en">News</span><span class="i18n-es">Noticias</span></span><span class="ind"><span class="i18n-en">Media &amp; Entertainment</span><span class="i18n-es">Medios y Entretenimiento</span></span><span class="ind">Retail</span><span class="ind"><span class="i18n-en">Cybersecurity</span><span class="i18n-es">Ciberseguridad</span></span></span></div>
@@ -376,18 +404,18 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     </main>
     <aside class="aside">
       <section><div class="ai"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3.5"/></svg><span class="i18n-en">AI-Assisted Dev</span><span class="i18n-es">Desarrollo asistido por IA</span></div><p><span class="i18n-en">AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery.</span><span class="i18n-es">Herramientas asistidas por IA en mi trabajo diario para optimizar el desarrollo backend y acelerar la entrega de proyectos.</span></p><div class="dchips"><span class="dchip">Claude Code</span><span class="dchip">opencode</span><span class="dchip">Codex</span></div></div></section>
-      <section><h2 class="sh"><span class="i18n-en">ls core-skills/</span><span class="i18n-es">ls habilidades/</span></h2><div class="cskill" data-lvl="10" data-max="10"><div class="sk-top"><span class="sk-name">C# / .NET</span><span class="sk-word"><span class="i18n-en">Expert</span><span class="i18n-es">Experto</span></span><span class="sk-pct">100%</span></div><div class="sk-track"><div class="sk-fill" style="width:100%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+      <section><h2 class="sh"><span class="cmd"><span class="i18n-en">ls core-skills/</span><span class="i18n-es">ls habilidades/</span></span><span class="ats"><span class="i18n-en">Core Skills</span><span class="i18n-es">Habilidades principales</span></span></h2><div class="cskill" data-lvl="10" data-max="10"><div class="sk-top"><span class="sk-name">C# / .NET</span><span class="sk-word"><span class="i18n-en">Expert</span><span class="i18n-es">Experto</span></span><span class="sk-pct">100%</span></div><div class="sk-track"><div class="sk-fill" style="width:100%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
 <div class="cskill" data-lvl="9" data-max="10"><div class="sk-top"><span class="sk-name">Java / Spring</span><span class="sk-word"><span class="i18n-en">Expert</span><span class="i18n-es">Experto</span></span><span class="sk-pct">90%</span></div><div class="sk-track"><div class="sk-fill" style="width:90%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
 <div class="cskill" data-lvl="8" data-max="10"><div class="sk-top"><span class="sk-name">Python / FastAPI</span><span class="sk-word"><span class="i18n-en">Advanced</span><span class="i18n-es">Avanzado</span></span><span class="sk-pct">80%</span></div><div class="sk-track"><div class="sk-fill" style="width:80%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
 <div class="cskill" data-lvl="6" data-max="10"><div class="sk-top"><span class="sk-name">JavaScript / Node.js</span><span class="sk-word"><span class="i18n-en">Proficient</span><span class="i18n-es">Competente</span></span><span class="sk-pct">60%</span></div><div class="sk-track"><div class="sk-fill" style="width:60%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div></div>
 <div class="cskill" data-lvl="7" data-max="10"><div class="sk-top"><span class="sk-name">AWS</span><span class="sk-word"><span class="i18n-en">Advanced</span><span class="i18n-es">Avanzado</span></span><span class="sk-pct">70%</span></div><div class="sk-track"><div class="sk-fill" style="width:70%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
 <div class="cskill" data-lvl="8" data-max="10"><div class="sk-top"><span class="sk-name">SQL / Postgres</span><span class="sk-word"><span class="i18n-en">Advanced</span><span class="i18n-es">Avanzado</span></span><span class="sk-pct">80%</span></div><div class="sk-track"><div class="sk-fill" style="width:80%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div></section>
-      <section><h2 class="sh">ls tech/</h2><div class="dchips"><span class="dchip">C#</span><span class="dchip">.NET</span><span class="dchip">Java</span><span class="dchip">Spring</span><span class="dchip">Python</span><span class="dchip">FastAPI</span><span class="dchip">JavaScript</span><span class="dchip">Node.js</span><span class="dchip">React</span><span class="dchip">AWS</span><span class="dchip">PostgreSQL</span><span class="dchip"><span class="i18n-en">Microservices</span><span class="i18n-es">Microservicios</span></span><span class="dchip"><span class="i18n-en">RESTful APIs</span><span class="i18n-es">APIs RESTful</span></span><span class="dchip"><span class="i18n-en">Unit Testing</span><span class="i18n-es">Pruebas unitarias</span></span><span class="dchip"><span class="i18n-en">OOP</span><span class="i18n-es">POO</span></span><span class="dchip">Unity3D</span><span class="dchip">Git</span><span class="dchip">Full-Stack</span><span class="dchip">Typescript</span><span class="dchip">Docker</span></div></section>
-      <section><h2 class="sh"><span class="i18n-en">cat shipped.txt</span><span class="i18n-es">cat lanzamientos.txt</span></h2><div class="award"><b>The Lullaby of Life</b> — Apple Arcade &amp; <a href="https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/" target="_blank" rel="noopener noreferrer">Steam</a></div>
+      <section><h2 class="sh"><span class="cmd">ls tech/</span><span class="ats"><span class="i18n-en">Tech &amp; Tools</span><span class="i18n-es">Tecnologías y herramientas</span></span></h2><div class="dchips"><span class="dchip">C#</span><span class="dchip">.NET</span><span class="dchip">Java</span><span class="dchip">Spring</span><span class="dchip">Python</span><span class="dchip">FastAPI</span><span class="dchip">JavaScript</span><span class="dchip">Node.js</span><span class="dchip">React</span><span class="dchip">AWS</span><span class="dchip">PostgreSQL</span><span class="dchip"><span class="i18n-en">Microservices</span><span class="i18n-es">Microservicios</span></span><span class="dchip"><span class="i18n-en">RESTful APIs</span><span class="i18n-es">APIs RESTful</span></span><span class="dchip"><span class="i18n-en">Unit Testing</span><span class="i18n-es">Pruebas unitarias</span></span><span class="dchip"><span class="i18n-en">OOP</span><span class="i18n-es">POO</span></span><span class="dchip">Unity3D</span><span class="dchip">Git</span><span class="dchip">Full-Stack</span><span class="dchip">Typescript</span><span class="dchip">Docker</span></div></section>
+      <section><h2 class="sh"><span class="cmd"><span class="i18n-en">cat shipped.txt</span><span class="i18n-es">cat lanzamientos.txt</span></span><span class="ats"><span class="i18n-en">Shipped Titles</span><span class="i18n-es">Títulos publicados</span></span></h2><div class="award"><b>The Lullaby of Life</b> — Apple Arcade &amp; <a href="https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/" target="_blank" rel="noopener noreferrer">Steam</a></div>
 <div class="award"><span class="i18n-en"><b>VR racing games</b> — HTC Vive, Oculus, Gear VR &amp; <a href="https://www.youtube.com/watch?v=dyOfO0sYyp8&amp;t=446s" target="_blank" rel="noopener noreferrer">iOS</a></span><span class="i18n-es"><b>Juegos de carreras VR</b> — HTC Vive, Oculus, Gear VR e <a href="https://www.youtube.com/watch?v=dyOfO0sYyp8&amp;t=446s" target="_blank" rel="noopener noreferrer">iOS</a></span></div>
 <div class="award"><b>The Oregon Trail: American Settler</b>, <b>9mm</b> — Gameloft</div>
 <div class="award"><span class="i18n-en"><b>5+ iOS games</b> &amp; a Nintendo Wii title — <a href="https://www.youtube.com/watch?v=PWaarVatoEU" target="_blank" rel="noopener noreferrer">demo reel</a></span><span class="i18n-es"><b>5+ juegos de iOS</b> y un título de Nintendo Wii — <a href="https://www.youtube.com/watch?v=PWaarVatoEU" target="_blank" rel="noopener noreferrer">demo reel</a></span></div></section>
-      <section><h2 class="sh"><span class="i18n-en">cat education.txt</span><span class="i18n-es">cat educacion.txt</span></h2><div class="edu"><div class="d"><span class="i18n-en">Master in Computer Science</span><span class="i18n-es">Maestría en Ciencias Computacionales</span></div><div class="m"><span class="i18n-en">Universidad Autónoma de Guadalajara · Aug 2018</span><span class="i18n-es">Universidad Autónoma de Guadalajara · Ago 2018</span></div></div>
+      <section><h2 class="sh"><span class="cmd"><span class="i18n-en">cat education.txt</span><span class="i18n-es">cat educacion.txt</span></span><span class="ats"><span class="i18n-en">Education</span><span class="i18n-es">Educación</span></span></h2><div class="edu"><div class="d"><span class="i18n-en">Master in Computer Science</span><span class="i18n-es">Maestría en Ciencias Computacionales</span></div><div class="m"><span class="i18n-en">Universidad Autónoma de Guadalajara · Aug 2018</span><span class="i18n-es">Universidad Autónoma de Guadalajara · Ago 2018</span></div></div>
 <div class="edu"><div class="d"><span class="i18n-en">Computer Science</span><span class="i18n-es">Ciencias Computacionales</span></div><div class="m"><span class="i18n-en">Universidad de Guadalajara · Dec 2010</span><span class="i18n-es">Universidad de Guadalajara · Dic 2010</span></div></div></section>
     </aside>
   </div>
@@ -677,10 +705,14 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   if(window.matchMedia&&(window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.matchMedia('print').matches)) return;
   /* a bilingual title holds one span per language (CSS shows one): type each on its own */
   var els=el.querySelectorAll('.i18n-en,.i18n-es'); if(!els.length) els=[el];
+  var done=[];
   Array.prototype.forEach.call(els,function(t){
     var full=t.textContent; t.textContent=''; var i=0;
+    done.push(function(){ t.textContent=full; });
     (function tick(){ if(i<=full.length){ t.textContent=full.slice(0,i++); setTimeout(tick,i<8?90:45);} })();
   });
+  /* printing mid-animation would put a half-typed name in the PDF: finish it first */
+  window.addEventListener('beforeprint',function(){ done.forEach(function(f){f();}); });
 })();
 </script>
 <script>

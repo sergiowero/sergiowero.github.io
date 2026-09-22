@@ -57,7 +57,17 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
   @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
-  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dl-fab{display:none !important;}}
+  /* section headings carry both skins (see sh_label): the shell command for the screen, a plain heading for print */
+  h2.sh .ats{display:none;}
+  @media print{
+    .sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;}
+    .site-nav,.dl-fab{display:none !important;}
+    /* ATS pass: no shell decoration reaches the PDF — plain headings, no prompts, no ASCII meters */
+    h2.sh .cmd{display:none;} h2.sh .ats{display:inline;}
+    h2.sh::before,h2.sh::after{content:none !important;}
+    .prompt,.foot{display:none !important;}
+    .name .cur{display:none;}
+  }
   :root{--nav-bg:#fff;--nav-line:#111;--nav-fg:#111;--nav-muted:#7a7a7a;--nav-active-bg:#ffd500;--nav-active-fg:#111;}
 
   :root{--ink:#111;--body:#3a3a3a;--muted:#7a7a7a;--line:#e3e3e3;--rail:#f4f4f4;--yellow:#ffd500;}

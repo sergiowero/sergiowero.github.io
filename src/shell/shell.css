@@ -41,7 +41,17 @@
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
   @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
-  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dl-fab{display:none !important;}}
+  /* section headings carry both skins (see sh_label): the shell command for the screen, a plain heading for print */
+  h2.sh .ats{display:none;}
+  @media print{
+    .sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;}
+    .site-nav,.dl-fab{display:none !important;}
+    /* ATS pass: no shell decoration reaches the PDF — plain headings, no prompts, no ASCII meters */
+    h2.sh .cmd{display:none;} h2.sh .ats{display:inline;}
+    h2.sh::before,h2.sh::after{content:none !important;}
+    .prompt,.foot{display:none !important;}
+    .name .cur{display:none;}
+  }
   :root{--nav-bg:transparent;--nav-line:transparent;--nav-fg:#1f2328;--nav-muted:#6e7781;--nav-active-bg:#1a7f37;--nav-active-fg:#fff;--nav-font:'JetBrains Mono',Menlo,monospace;}
 
   /* light mode is the default */
@@ -192,7 +202,6 @@
   .hentry.dim mark.hm{background:none;}
   .sub-nav li.dim{opacity:.4;pointer-events:none;}
   .hq-in:focus{outline:0;}
-  @media print{.hq{display:none !important;}}
   @view-transition{navigation:auto;}   /* smooth cross-fade between the site's pages (same shell everywhere) */
   .empty{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;}
   body{font-family:'Inter',system-ui,sans-serif;color:var(--text);font-size:10px;line-height:1.5;background:var(--bg);}
@@ -207,7 +216,6 @@
   .name{font-size:29px;font-weight:700;letter-spacing:-1px;line-height:1;color:var(--fg);margin-top:5px;}
   .name .cur{display:inline-block;width:.45em;height:.9em;background:var(--green);vertical-align:-.08em;margin-left:3px;animation:blink 1s steps(1) infinite;}
   @keyframes blink{50%{opacity:0;}}
-  @media print{.name .cur{animation:none;}}
   .hname{font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:-.1px;margin-top:6px;}   /* /timeline/: the name, secondary to the title */
   .sub{font-size:9px;color:var(--muted);margin-top:5px;}
   .sub .hl{color:var(--amber);}
@@ -294,3 +302,23 @@
   /* profile photo — 4:5 portrait like the reference page; the square source is cropped, keeping the face on the left */
   .avatar{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:35% 50%;
     border:1px solid var(--line);border-radius:10px;background:var(--panel);}
+
+  /* ---------------------------------------------------------------- printing / ATS
+     The terminal skin is screen-only. When the page is printed (that is what the PDF button does),
+     everything that reads as a shell command is dropped, so a resume parser gets plain text:
+     the `sergio@…:~$ cat cv.md` prompt, the `➜ ~ ` and `// ` prefixes, the `#` on industry tags,
+     the `[████░░]` skill meters (replaced by the word: Expert / Advanced …) and the `exit 0` footer. */
+  @media print{
+    .hq{display:none !important;}
+    .name .cur{display:none;}            /* the blinking caret is screen decoration */
+    h2.sh{font-family:'Inter',system-ui,sans-serif;font-size:9.4px;font-weight:700;color:var(--fg);
+      text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--line);padding-bottom:3px;}
+    .stat .l::before,.ai .h::before,.hg-h::before{content:none;}
+    .stat .l{font-family:'Inter',system-ui,sans-serif;text-transform:none;}
+    ul.pts li::before{content:"•";font-weight:400;}   /* a bullet every parser knows, instead of ">" */
+    .ind::before{content:none;} .ind{padding-left:2px;}
+    .sk-dots{display:none !important;}                            /* the ASCII bar carries no text worth parsing */
+    .sk-word{display:inline;color:var(--muted);}                  /* the level as a word instead: Expert / Avanzado */
+    .toolcard .tt::before{content:none;}
+    .hlinks a::before{content:none;}
+  }

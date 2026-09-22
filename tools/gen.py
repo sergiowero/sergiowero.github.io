@@ -1407,7 +1407,17 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
   @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
-  @media print{.sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;} .site-nav,.dl-fab{display:none !important;}}"""
+  /* section headings carry both skins (see sh_label): the shell command for the screen, a plain heading for print */
+  h2.sh .ats{display:none;}
+  @media print{
+    .sheet{zoom:1 !important;box-shadow:none !important;border-radius:0 !important;}
+    .site-nav,.dl-fab{display:none !important;}
+    /* ATS pass: no shell decoration reaches the PDF — plain headings, no prompts, no ASCII meters */
+    h2.sh .cmd{display:none;} h2.sh .ats{display:inline;}
+    h2.sh::before,h2.sh::after{content:none !important;}
+    .prompt,.foot{display:none !important;}
+    .name .cur{display:none;}
+  }"""
 
 FLAG_MX = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8.7 5v14M15.3 5v14"/><circle cx="12" cy="12" r="1.6"/></svg>'
 FLAG_US = '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 12h20M11 8.5h11M11 15.5H2M2 12v7"/><path d="M2 12h9V5"/></svg>'
@@ -1415,18 +1425,24 @@ SECTIONS = [("cv", "/", "Resume", "Currículum"), ("history", "/timeline/", "Tim
             ("blog", "/blog/", "Blog", "Blog"), ("about", "/about/", "About me", "Sobre mí")]
 
 HL = '<span class="hl">/</span>'
+
+def sh_label(cmd, ats):
+    """A section heading in two skins: the shell command on screen, a plain heading when printing.
+       CSS swaps them in @media print, so a PDF (and any ATS reading it) never sees `cat profile.md`."""
+    return f'<span class="cmd">{h(cmd)}</span><span class="ats">{h(ats)}</span>'
+
 LABELS = {
     "$L_SUB$": T(f"Senior Software Engineer {HL} Tech Lead {HL} Backend &amp; Full-Stack {HL} Game Dev {HL} AI-Assisted",
                  f"Ingeniero de Software Senior {HL} Tech Lead {HL} Backend y Full-Stack {HL} Videojuegos {HL} Asistido por IA"),
-    "$L_PROFILE$": T("cat profile.md", "cat perfil.md"),
-    "$L_EXP$": T("cat experience.log", "cat experiencia.log"),
-    "$L_CORE$": T("ls core-skills/", "ls habilidades/"),
-    "$L_TECH$": T("ls tech/"),
-    "$L_SHIPPED$": T("cat shipped.txt", "cat lanzamientos.txt"),
-    "$L_EDU$": T("cat education.txt", "cat educacion.txt"),
-    "$L_ABOUT$": T("cat about.md", "cat sobre-mi.md"),
-    "$L_TOOLBOX$": T("ls toolbox/", "ls herramientas/"),
-    "$L_CONTACT$": T("cat contact.md", "cat contacto.md"),
+    "$L_PROFILE$": sh_label(T("cat profile.md", "cat perfil.md"), DOC_LABELS["profile"]),
+    "$L_EXP$": sh_label(T("cat experience.log", "cat experiencia.log"), DOC_LABELS["experience"]),
+    "$L_CORE$": sh_label(T("ls core-skills/", "ls habilidades/"), DOC_LABELS["core"]),
+    "$L_TECH$": sh_label(T("ls tech/"), DOC_LABELS["tech"]),
+    "$L_SHIPPED$": sh_label(T("cat shipped.txt", "cat lanzamientos.txt"), DOC_LABELS["titles"]),
+    "$L_EDU$": sh_label(T("cat education.txt", "cat educacion.txt"), DOC_LABELS["education"]),
+    "$L_ABOUT$": sh_label(T("cat about.md", "cat sobre-mi.md"), T("About", "Sobre mí")),
+    "$L_TOOLBOX$": sh_label(T("ls toolbox/", "ls herramientas/"), T("Toolbox", "Herramientas")),
+    "$L_CONTACT$": sh_label(T("cat contact.md", "cat contacto.md"), T("Contact", "Contacto")),
     "$L_CVFILE$": T("cv.md"),
     "$L_HISTFILE$": T("timeline.md"),
 }
@@ -1886,10 +1902,14 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   if(window.matchMedia&&(window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.matchMedia('print').matches)) return;
   /* a bilingual title holds one span per language (CSS shows one): type each on its own */
   var els=el.querySelectorAll('.i18n-en,.i18n-es'); if(!els.length) els=[el];
+  var done=[];
   Array.prototype.forEach.call(els,function(t){
     var full=t.textContent; t.textContent=''; var i=0;
+    done.push(function(){ t.textContent=full; });
     (function tick(){ if(i<=full.length){ t.textContent=full.slice(0,i++); setTimeout(tick,i<8?90:45);} })();
   });
+  /* printing mid-animation would put a half-typed name in the PDF: finish it first */
+  window.addEventListener('beforeprint',function(){ done.forEach(function(f){f();}); });
 })();
 </script>""",
     fonts="family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700",
@@ -2042,7 +2062,6 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .hentry.dim mark.hm{background:none;}
   .sub-nav li.dim{opacity:.4;pointer-events:none;}
   .hq-in:focus{outline:0;}
-  @media print{.hq{display:none !important;}}
   @view-transition{navigation:auto;}   /* smooth cross-fade between the site's pages (same shell everywhere) */
   .empty{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;}
   body{font-family:'Inter',system-ui,sans-serif;color:var(--text);font-size:10px;line-height:1.5;background:var(--bg);}
@@ -2057,7 +2076,6 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .name{font-size:29px;font-weight:700;letter-spacing:-1px;line-height:1;color:var(--fg);margin-top:5px;}
   .name .cur{display:inline-block;width:.45em;height:.9em;background:var(--green);vertical-align:-.08em;margin-left:3px;animation:blink 1s steps(1) infinite;}
   @keyframes blink{50%{opacity:0;}}
-  @media print{.name .cur{animation:none;}}
   .hname{font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:-.1px;margin-top:6px;}   /* /timeline/: the name, secondary to the title */
   .sub{font-size:9px;color:var(--muted);margin-top:5px;}
   .sub .hl{color:var(--amber);}
@@ -2144,6 +2162,26 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   /* profile photo — 4:5 portrait like the reference page; the square source is cropped, keeping the face on the left */
   .avatar{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:35% 50%;
     border:1px solid var(--line);border-radius:10px;background:var(--panel);}
+
+  /* ---------------------------------------------------------------- printing / ATS
+     The terminal skin is screen-only. When the page is printed (that is what the PDF button does),
+     everything that reads as a shell command is dropped, so a resume parser gets plain text:
+     the `sergio@…:~$ cat cv.md` prompt, the `➜ ~ ` and `// ` prefixes, the `#` on industry tags,
+     the `[████░░]` skill meters (replaced by the word: Expert / Advanced …) and the `exit 0` footer. */
+  @media print{
+    .hq{display:none !important;}
+    .name .cur{display:none;}            /* the blinking caret is screen decoration */
+    h2.sh{font-family:'Inter',system-ui,sans-serif;font-size:9.4px;font-weight:700;color:var(--fg);
+      text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--line);padding-bottom:3px;}
+    .stat .l::before,.ai .h::before,.hg-h::before{content:none;}
+    .stat .l{font-family:'Inter',system-ui,sans-serif;text-transform:none;}
+    ul.pts li::before{content:"•";font-weight:400;}   /* a bullet every parser knows, instead of ">" */
+    .ind::before{content:none;} .ind{padding-left:2px;}
+    .sk-dots{display:none !important;}                            /* the ASCII bar carries no text worth parsing */
+    .sk-word{display:inline;color:var(--muted);}                  /* the level as a word instead: Expert / Avanzado */
+    .toolcard .tt::before{content:none;}
+    .hlinks a::before{content:none;}
+  }
 """,
     body="""<div class="sheet">
   $NAV$
