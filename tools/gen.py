@@ -1039,6 +1039,7 @@ ICON = {
     "mail": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
     "in": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4"/></svg>',
     "gh": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 19c-4.5 1.5-4.5-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>',
+    "tl": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="6" cy="19" r="2"/><path d="M6 7v3M6 14v3M11 5h9M11 12h9M11 19h6"/></svg>',
     "ai": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3.5"/></svg>',
 }
 CONTACT = [
@@ -1047,13 +1048,14 @@ CONTACT = [
     ("mail", "sergioj.sanchezr@gmail.com", "mailto:sergioj.sanchezr@gmail.com"),
     ("in", "linkedin.com/in/sergiojsanchez", "https://www.linkedin.com/in/sergiojsanchez/"),
     ("gh", "github.com/sergiowero", "https://github.com/sergiowero"),
+    ("tl", T("Explore my full career →", "Explora toda mi trayectoria →"), "https://sergiowero.github.io/timeline/"),
 ]
 
 # ------------------------------------------------------------------ BLOCKS
 def contact_html():
     out = []
     for ic, text, href in CONTACT:
-        inner = f'<a href="{href}"{" target=\"_blank\" rel=\"noopener noreferrer\"" if href and href.startswith("http") else ""}>{text}</a>' if href else text
+        inner = f'<a href="{href}"{" target=\"_blank\" rel=\"noopener noreferrer\"" if href and href.startswith("http") else ""}>{h(text)}</a>' if href else h(text)
         out.append(f'<div class="cline">{ICON[ic]}{inner}</div>')
     return "\n".join(out)
 
@@ -1281,7 +1283,7 @@ def cv_data_json():
     """Everything the in-browser DOCX writer needs, in both languages. Same source as the page itself."""
     data = dict(
         name=NAME, role=d(ROLE_PLAIN), site="sergiowero.github.io",
-        contact=[dict(text=text, href=href) for _, text, href in CONTACT],
+        contact=[dict(text=d(text), href=href) for _, text, href in CONTACT],
         profile=d(PROFILE),
         jobs=[dict(role=d(j["role"]), co=j["co"], frm=j["frm"], to=j["to"],
                    loc=d(j["loc"]), inds=d(j["inds"]), pts=d(j["pts"])) for j in JOBS],
