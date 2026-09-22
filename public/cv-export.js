@@ -189,7 +189,7 @@
     var contact = '';
     CV.contact.forEach(function (c, i) {
       if (i) contact += run('  ·  ', { color: RULE, sz: 17 });
-      contact += run(c.text, c.href ? { href: c.href, color: LINK, sz: 17 } : { color: BODY, sz: 17 });
+      contact += run(L(c.text), c.href ? { href: c.href, color: LINK, sz: 17 } : { color: BODY, sz: 17 });
     });
     body += para(contact, { after: 60, rule: true });
 

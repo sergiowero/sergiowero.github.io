@@ -357,12 +357,10 @@
   if(window.matchMedia&&(window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.matchMedia('print').matches)) return;
   /* a bilingual title holds one span per language (CSS shows one): type each on its own */
   var els=el.querySelectorAll('.i18n-en,.i18n-es'); if(!els.length) els=[el];
-  var done=[];
   Array.prototype.forEach.call(els,function(t){
     var full=t.textContent; t.textContent=''; var i=0;
-    done.push(function(){ t.textContent=full; });
     (function tick(){ if(i<=full.length){ t.textContent=full.slice(0,i++); setTimeout(tick,i<8?90:45);} })();
+    /* printing mid-animation would catch half a name: finish it at once */
+    window.addEventListener('beforeprint',function(){ i=full.length+1; t.textContent=full; });
   });
-  /* printing mid-animation would put a half-typed name in the PDF: finish it first */
-  window.addEventListener('beforeprint',function(){ done.forEach(function(f){f();}); });
 })();

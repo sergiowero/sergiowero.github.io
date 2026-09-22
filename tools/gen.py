@@ -475,6 +475,25 @@ JOBS = [
             ]),
         ],
         deliverables=[
+            dict(kind="milestone",
+                 title=T("Mentor &amp; Associate Manager", "Mentor y Associate Manager"),
+                 role=T("Trained for both roles · 5 direct reports · 6 months as Associate Manager",
+                        "Capacitado para ambos roles · 5 reportes directos · 6 meses como Associate Manager"),
+                 tech=[T("Mentorship", "Mentoría"), T("People management", "Gestión de personas"), T("Biweekly 1:1s", "1:1 quincenales")],
+                 pts=[
+                     T("Completed Wizeline's full training to become a <b>mentor</b> and an <b>Associate Manager</b>, and took on a team of <b>5 direct reports</b>.",
+                       "Completé toda la capacitación de Wizeline para ser <b>mentor</b> y <b>Associate Manager</b>, y tomé un equipo de <b>5 reportes directos</b>."),
+                     T("Guided each of them along the <b>career path the company expected</b>, and helped them shift to a <b>consultancy mindset</b> and adopt the company's values.",
+                       "Guié a cada uno por el <b>plan de carrera que la empresa esperaba</b>, y los ayudé a cambiar a una <b>mentalidad de consultoría</b> y a adoptar los valores de la empresa."),
+                     T("Made sure they were properly trained through the company's <b>learning sources</b>.",
+                       "Me aseguré de que se capacitaran correctamente con las <b>fuentes de aprendizaje</b> de la empresa."),
+                     T("Built a good relationship with each one, with <b>1:1s every two weeks</b> to check how they were doing.",
+                       "Construí una buena relación con cada uno, con <b>reuniones 1:1 cada 15 días</b> para ver cómo estaban."),
+                     T("After six months in the programme the company discontinued the Associate Manager role; I kept on as <b>mentor for 2 of my direct reports</b>.",
+                       "A los seis meses del programa la empresa descontinuó el rol de Associate Manager; seguí como <b>mentor de 2 de mis reportes directos</b>."),
+                 ],
+                 result=T("My direct reports moved along the expected path, and I helped one of them earn a <b>promotion</b>.",
+                          "Mis reportes directos avanzaron por el plan esperado, y ayudé a uno de ellos a lograr su <b>promoción</b>.")),
             dict(kind="training",
                  title=T("Constant training &amp; AI at work", "Capacitación constante e IA en el trabajo"),
                  role=T("Ongoing since 2020 · alongside the client work, not between projects",
@@ -1020,6 +1039,7 @@ ICON = {
     "mail": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
     "in": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4"/></svg>',
     "gh": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 19c-4.5 1.5-4.5-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>',
+    "tl": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="6" cy="19" r="2"/><path d="M6 7v3M6 14v3M11 5h9M11 12h9M11 19h6"/></svg>',
     "ai": '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3.5"/></svg>',
 }
 CONTACT = [
@@ -1028,13 +1048,14 @@ CONTACT = [
     ("mail", "sergioj.sanchezr@gmail.com", "mailto:sergioj.sanchezr@gmail.com"),
     ("in", "linkedin.com/in/sergiojsanchez", "https://www.linkedin.com/in/sergiojsanchez/"),
     ("gh", "github.com/sergiowero", "https://github.com/sergiowero"),
+    ("tl", T("Explore my full career →", "Explora toda mi trayectoria →"), "https://sergiowero.github.io/timeline/"),
 ]
 
 # ------------------------------------------------------------------ BLOCKS
 def contact_html():
     out = []
     for ic, text, href in CONTACT:
-        inner = f'<a href="{href}"{" target=\"_blank\" rel=\"noopener noreferrer\"" if href and href.startswith("http") else ""}>{text}</a>' if href else text
+        inner = f'<a href="{href}"{" target=\"_blank\" rel=\"noopener noreferrer\"" if href and href.startswith("http") else ""}>{h(text)}</a>' if href else h(text)
         out.append(f'<div class="cline">{ICON[ic]}{inner}</div>')
     return "\n".join(out)
 
@@ -1264,7 +1285,7 @@ def cv_data_json():
     """Everything the in-browser DOCX writer needs, in both languages. Same source as the page itself."""
     data = dict(
         name=NAME, role=d(ROLE_PLAIN), site="sergiowero.github.io",
-        contact=[dict(text=text, href=href) for _, text, href in CONTACT],
+        contact=[dict(text=d(text), href=href) for _, text, href in CONTACT],
         profile=d(PROFILE),
         jobs=[dict(role=d(j["role"]), co=j["co"], frm=j["frm"], to=j["to"],
                    loc=d(j["loc"]), inds=d(j["inds"]), pts=d(j["pts"])) for j in JOBS],
@@ -1913,14 +1934,12 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   if(window.matchMedia&&(window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.matchMedia('print').matches)) return;
   /* a bilingual title holds one span per language (CSS shows one): type each on its own */
   var els=el.querySelectorAll('.i18n-en,.i18n-es'); if(!els.length) els=[el];
-  var done=[];
   Array.prototype.forEach.call(els,function(t){
     var full=t.textContent; t.textContent=''; var i=0;
-    done.push(function(){ t.textContent=full; });
     (function tick(){ if(i<=full.length){ t.textContent=full.slice(0,i++); setTimeout(tick,i<8?90:45);} })();
+    /* printing mid-animation would catch half a name: finish it at once */
+    window.addEventListener('beforeprint',function(){ i=full.length+1; t.textContent=full; });
   });
-  /* printing mid-animation would put a half-typed name in the PDF: finish it first */
-  window.addEventListener('beforeprint',function(){ done.forEach(function(f){f();}); });
 })();
 </script>""",
     fonts="family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700",
