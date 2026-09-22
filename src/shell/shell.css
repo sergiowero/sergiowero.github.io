@@ -38,6 +38,8 @@
   .dl-fab button{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:12.5px;font-weight:700;letter-spacing:.3px;
     padding:11px 15px;border-radius:999px;border:0;cursor:pointer;background:var(--nav-active-bg);color:var(--nav-active-fg);
     box-shadow:0 12px 28px -8px rgba(0,0,0,.6),0 2px 6px rgba(0,0,0,.25);transition:transform .12s,filter .12s;}
+  .dl-fab button.alt{background:transparent;color:var(--nav-active-bg);box-shadow:none;
+    border:1.5px solid var(--nav-active-bg);padding:9.5px 13.5px;}
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
   @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
@@ -219,6 +221,7 @@
   .hname{font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:-.1px;margin-top:6px;}   /* /timeline/: the name, secondary to the title */
   .sub{font-size:9px;color:var(--muted);margin-top:5px;}
   .sub .hl{color:var(--amber);}
+  .sub .r0{color:var(--green);font-weight:600;font-size:10px;letter-spacing:-.1px;}  /* the headline role, ahead of the rest */
   .top{display:flex;justify-content:space-between;align-items:flex-end;gap:8mm;}
   .contact{display:grid;gap:3px;flex:none;}
   .cline{display:flex;align-items:center;gap:6px;font-size:8.4px;color:var(--muted);}

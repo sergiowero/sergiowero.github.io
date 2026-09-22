@@ -157,7 +157,8 @@
     var y = Math.floor(months / 12), m = months % 12, parts = [];
     if (y) parts.push(y + label(y === 1 ? 'yr' : 'yrs'));
     if (m) parts.push(m + label(m === 1 ? 'mo' : 'mos'));
-    return fmt(a) + ' — ' + (job.to ? fmt(b) : label('present')) + ' · ' + parts.join(' ');
+    // plain hyphen, not an em dash: it is what a resume parser's date regex expects
+    return fmt(a) + ' - ' + (job.to ? fmt(b) : label('present')) + ' · ' + parts.join(' ');
   }
 
   function documentXml() {

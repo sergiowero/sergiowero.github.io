@@ -425,7 +425,7 @@ JOBS = [
                                     "Entregada como la primera extensión de Chrome de Cerby.")),
                   ],
                   links=[("cerby.com", CERBY)]),
-         ], period=T("Mar 2020 — Present", "Mar 2020 — Actualidad"), frm="2020-03", to=None,
+         ], period=T("Mar 2020 - Present", "Mar 2020 - Actualidad"), frm="2020-03", to=None,
          inds=[T("News", "Noticias"), T("Media &amp; Entertainment", "Medios y Entretenimiento"), T("Retail"), T("Cybersecurity", "Ciberseguridad")], loc=MX, cur=True, pts=[
         T('<b>Dow Jones:</b> Engineered new features and resolved production issues in a high-velocity environment. Leveraged AI tooling to accelerate development cycles and enhance code quality. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>',
           '<b>Dow Jones:</b> Desarrollé funcionalidades y resolví incidentes en producción en un entorno de alta velocidad. Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span>'),
@@ -496,7 +496,7 @@ JOBS = [
                           "En formación para ser <b>AI engineer</b>: agentes en Python, LangChain y el Claude SDK.")),
         ],
     )),
-    dict(role=T("Lead Software Engineer", "Ingeniero de Software Líder"), co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period=T("Jul 2019 — Mar 2020"), frm="2019-07", to="2020-03", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
+    dict(role=T("Lead Software Engineer", "Ingeniero de Software Líder"), co="1 Simple Idea", tech=["C#", "Unity3D", "iOS", "IoC / DI"], period=T("Jul 2019 - Mar 2020"), frm="2019-07", to="2020-03", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
         T('Led a small programming team in the development of a mobile iOS game, taking ownership of the <b>core game architecture</b>.',
           'Lideré un equipo pequeño de programación en un juego móvil para iOS, a cargo de la <b>arquitectura central del juego</b>.'),
         T('Architected and implemented an Inversion of Control (IoC), Dependency Injection (DI), and a robust event-driven system.',
@@ -562,7 +562,7 @@ JOBS = [
         ],
         links=[(T("The Lullaby of Life on Steam", "The Lullaby of Life en Steam"), STEAM)],
     )),
-    dict(role=T("Senior Software Engineer", "Ingeniero de Software Senior"), co="Virtually Live", tech=["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"], period=T("Feb 2017 — Jan 2020", "Feb 2017 — Ene 2020"), frm="2017-02", to="2020-01", inds=[T("Gaming · VR", "Videojuegos · VR")], loc=T("Málaga, Spain", "Málaga, España"), cur=False, pts=[
+    dict(role=T("Senior Software Engineer", "Ingeniero de Software Senior"), co="Virtually Live", tech=["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"], period=T("Feb 2017 - Jan 2020", "Feb 2017 - Ene 2020"), frm="2017-02", to="2020-01", inds=[T("Gaming · VR", "Videojuegos · VR")], loc=T("Málaga, Spain", "Málaga, España"), cur=False, pts=[
         T('Developed <b>racing games</b> for HTC Vive, Oculus, and Gear VR platforms.',
           'Desarrollé <b>juegos de carreras</b> para HTC Vive, Oculus y Gear VR.'),
         T('Engineered a core abstraction layer for game modules, encompassing VR controllers, Social APIs, and database access, utilizing JSON for configuration management.',
@@ -671,7 +671,7 @@ JOBS = [
         ],
         links=[(T("iOS app — gameplay", "App de iOS: gameplay"), YT_VR)],
     )),
-    dict(role=T("Software Engineer", "Ingeniero de Software"), co="Intel", tech=["Ruby", "XML", "Automation"], period=T("Feb 2015 — Feb 2017"), frm="2015-02", to="2017-02", inds=[T("Semiconductors", "Semiconductores")], loc=MX, cur=False, pts=[
+    dict(role=T("Software Engineer", "Ingeniero de Software"), co="Intel", tech=["Ruby", "XML", "Automation"], period=T("Feb 2015 - Feb 2017"), frm="2015-02", to="2017-02", inds=[T("Semiconductors", "Semiconductores")], loc=MX, cur=False, pts=[
         T('Engineered <b>APIs in Ruby</b> to support hardware validation teams and streamline testing workflows.',
           'Desarrollé <b>APIs en Ruby</b> para los equipos de validación de hardware y para agilizar los flujos de pruebas.'),
         T('Created automation tools and scripts to synchronize API deployments with client environments across multiple global Intel sites.',
@@ -734,7 +734,7 @@ JOBS = [
                           "Colaboración más fácil en funcionalidades en paralelo, y un CI/CD simplificado y modernizado.")),
         ],
     )),
-    dict(role=T("3D &amp; Online Programmer", "Programador 3D y Online"), co="Gameloft", tech=["C++", "JavaScript", "jQuery", "Objective-C", "Android", "iOS"], period=T("May 2011 — Jan 2015", "May 2011 — Ene 2015"), frm="2011-05", to="2015-01", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
+    dict(role=T("3D &amp; Online Programmer", "Programador 3D y Online"), co="Gameloft", tech=["C++", "JavaScript", "jQuery", "Objective-C", "Android", "iOS"], period=T("May 2011 - Jan 2015", "May 2011 - Ene 2015"), frm="2011-05", to="2015-01", inds=[T("Gaming · Mobile", "Videojuegos · Móvil")], loc=MX, cur=False, pts=[
         T('Programmed 3D games and internal development tools using portable <b>C++, JavaScript (jQuery), and Objective-C</b> to ensure seamless cross-platform compatibility across Android and iOS.',
           'Programé juegos 3D y herramientas internas con <b>C++, JavaScript (jQuery) y Objective-C</b> portables, garantizando compatibilidad entre Android e iOS.'),
         T('Integrated proprietary REST-based online services into multiple Android titles.',
@@ -787,7 +787,7 @@ JOBS = [
                         "Tomé el juego de Cars de Disney de <b>iOS</b> e hice el port a <b>Android</b>, en <b>C++</b>. Publicado.")]),
         ],
     )),
-    dict(role=T("Game Developer", "Desarrollador de Videojuegos"), co="Kaxan Games", tech=["C#", "Unity3D", "iOS", "Nintendo Wii"], period=T("Aug 2009 — May 2011", "Ago 2009 — May 2011"), frm="2009-08", to="2011-05", inds=[T("Gaming · Mobile &amp; Console", "Videojuegos · Móvil y Consola")], loc=MX, cur=False, pts=[
+    dict(role=T("Game Developer", "Desarrollador de Videojuegos"), co="Kaxan Games", tech=["C#", "Unity3D", "iOS", "Nintendo Wii"], period=T("Aug 2009 - May 2011", "Ago 2009 - May 2011"), frm="2009-08", to="2011-05", inds=[T("Gaming · Mobile &amp; Console", "Videojuegos · Móvil y Consola")], loc=MX, cur=False, pts=[
         T('Developed and published <b>over five mobile games</b> for iPhone and iPad utilizing C# and Unity3D.',
           'Desarrollé y publiqué <b>más de cinco juegos móviles</b> para iPhone y iPad con C# y Unity3D.'),
         T('Contributed as an additional programmer to a released <b>Nintendo Wii</b> title.',
@@ -1247,12 +1247,15 @@ def history_search_html():
 
 ROLE_PLAIN = T("Senior Software Engineer / Tech Lead / Backend &amp; Full-Stack / Game Dev / AI-Assisted",
                "Ingeniero de Software Senior / Tech Lead / Backend y Full-Stack / Videojuegos / Asistido por IA")
+# The headings the DOCX uses and that @media print swaps in for the shell commands (see sh_label).
+# Wording is deliberately the canonical one resume parsers look for — "Professional Summary",
+# "Work Experience", "Skills", "Projects", "Education" — not the site's own section names.
 DOC_LABELS = {
-    "profile": T("Profile", "Perfil"),
-    "experience": T("Experience", "Experiencia"),
-    "core": T("Core Skills", "Habilidades principales"),
-    "tech": T("Tech &amp; Tools", "Tecnologías y herramientas"),
-    "titles": T("Shipped Titles", "Títulos publicados"),
+    "profile": T("Professional Summary", "Resumen profesional"),
+    "experience": T("Work Experience", "Experiencia laboral"),
+    "core": T("Skills", "Habilidades"),
+    "tech": T("Technical Skills", "Habilidades técnicas"),
+    "titles": T("Projects", "Proyectos"),
     "education": T("Education", "Educación"),
     "present": T("Present", "Actualidad"),
     "yr": T(" yr", " año"), "yrs": T(" yrs", " años"), "mo": T(" mo", " mes"), "mos": T(" mos", " meses"),
@@ -1293,7 +1296,7 @@ FIT_JS = """<script>
   var years=new Date().getFullYear()-START_YEAR;
   document.querySelectorAll('[data-years]').forEach(function(el){el.textContent=years;});
 })();
-/* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Mar 2020 — Present · 6 yrs 8 mos" */
+/* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Mar 2020 - Present · 6 yrs 8 mos" */
 (function(){
   var M={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
          es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']};
@@ -1311,7 +1314,7 @@ FIT_JS = """<script>
     var y=Math.floor(months/12), m=months%12, parts=[];
     if(y) parts.push(y+(y===1?w.yr:w.yrs));
     if(m) parts.push(m+(m===1?w.mo:w.mos));
-    el.textContent=label(a)+' \u2014 '+(toAttr?label(b):w.present);
+    el.textContent=label(a)+' - '+(toAttr?label(b):w.present);   // plain hyphen: resume parsers' date regexes expect it
     var d=document.createElement('span'); d.className='dur'; d.textContent=' \u00b7 '+parts.join(' ');
     el.appendChild(d);
   });
@@ -1404,6 +1407,8 @@ BASE_CSS = """*{margin:0;padding:0;box-sizing:border-box;}
   .dl-fab button{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:12.5px;font-weight:700;letter-spacing:.3px;
     padding:11px 15px;border-radius:999px;border:0;cursor:pointer;background:var(--nav-active-bg);color:var(--nav-active-fg);
     box-shadow:0 12px 28px -8px rgba(0,0,0,.6),0 2px 6px rgba(0,0,0,.25);transition:transform .12s,filter .12s;}
+  .dl-fab button.alt{background:transparent;color:var(--nav-active-bg);box-shadow:none;
+    border:1.5px solid var(--nav-active-bg);padding:9.5px 13.5px;}
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
   @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
@@ -1432,8 +1437,9 @@ def sh_label(cmd, ats):
     return f'<span class="cmd">{h(cmd)}</span><span class="ats">{h(ats)}</span>'
 
 LABELS = {
-    "$L_SUB$": T(f"Senior Software Engineer {HL} Tech Lead {HL} Backend &amp; Full-Stack {HL} Game Dev {HL} AI-Assisted",
-                 f"Ingeniero de Software Senior {HL} Tech Lead {HL} Backend y Full-Stack {HL} Videojuegos {HL} Asistido por IA"),
+    # the first role is the headline one: it gets the green, the rest stay muted
+    "$L_SUB$": T(f'<span class="r0">Senior Software Engineer</span> {HL} Tech Lead {HL} Backend &amp; Full-Stack {HL} Game Dev {HL} AI-Assisted',
+                 f'<span class="r0">Ingeniero de Software Senior</span> {HL} Tech Lead {HL} Backend y Full-Stack {HL} Videojuegos {HL} Asistido por IA'),
     "$L_PROFILE$": sh_label(T("cat profile.md", "cat perfil.md"), DOC_LABELS["profile"]),
     "$L_EXP$": sh_label(T("cat experience.log", "cat experiencia.log"), DOC_LABELS["experience"]),
     "$L_CORE$": sh_label(T("ls core-skills/", "ls habilidades/"), DOC_LABELS["core"]),
@@ -1450,10 +1456,12 @@ LABELS = {
 DL_ICON = '<svg viewBox="0 0 24 24"><path d="M12 3v11M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>'
 # Fixed to the viewport, outside the sheet, so it keeps its size on every screen (the sheet is CSS-zoomed);
 # display:none when printing, so it never reaches the PDF.
+# DOCX leads and PDF is the outlined secondary: the Word file is one column with plain headings,
+# real bullets and live hyperlinks, so it is the one that survives an applicant tracking system intact.
 DOWNLOAD_TPL = ('<div class="dl-fab" role="group" aria-label="Download CV / Descargar CV">'
                 f'<span class="dl-k">{i18n("download", "descargar")}</span>'
-                f'<button type="button" data-export="pdf">{DL_ICON}PDF</button>'
-                f'<button type="button" data-export="docx">{DL_ICON}DOCX</button></div>')
+                f'<button type="button" data-export="docx">{DL_ICON}DOCX</button>'
+                f'<button type="button" class="alt" data-export="pdf">{DL_ICON}PDF</button></div>')
 
 def nav_html(active="cv"):
     tabs = "".join(
@@ -1641,7 +1649,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
     var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
     if(y) parts.push(y+(y===1?w().yr:w().yrs)); if(m) parts.push(m+(m===1?w().mo:w().mos));
-    return label(e.frm)+' — '+(e.to?label(e.to):w().present)+' · '+parts.join(' ');
+    return label(e.frm)+' - '+(e.to?label(e.to):w().present)+' · '+parts.join(' ');
   }
   /* `live` = the entries the reader can land on: all of them, or only the ones the search kept (.dim = filtered out) */
   var live=[];
@@ -2079,6 +2087,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .hname{font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:-.1px;margin-top:6px;}   /* /timeline/: the name, secondary to the title */
   .sub{font-size:9px;color:var(--muted);margin-top:5px;}
   .sub .hl{color:var(--amber);}
+  .sub .r0{color:var(--green);font-weight:600;font-size:10px;letter-spacing:-.1px;}  /* the headline role, ahead of the rest */
   .top{display:flex;justify-content:space-between;align-items:flex-end;gap:8mm;}
   .contact{display:grid;gap:3px;flex:none;}
   .cline{display:flex;align-items:center;gap:6px;font-size:8.4px;color:var(--muted);}

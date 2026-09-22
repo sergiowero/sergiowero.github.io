@@ -6,7 +6,7 @@
   var years=new Date().getFullYear()-START_YEAR;
   document.querySelectorAll('[data-years]').forEach(function(el){el.textContent=years;});
 })();
-/* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Mar 2020 — Present · 6 yrs 8 mos" */
+/* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Mar 2020 - Present · 6 yrs 8 mos" */
 (function(){
   var M={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
          es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']};
@@ -24,7 +24,7 @@
     var y=Math.floor(months/12), m=months%12, parts=[];
     if(y) parts.push(y+(y===1?w.yr:w.yrs));
     if(m) parts.push(m+(m===1?w.mo:w.mos));
-    el.textContent=label(a)+' — '+(toAttr?label(b):w.present);
+    el.textContent=label(a)+' - '+(toAttr?label(b):w.present);   // plain hyphen: resume parsers' date regexes expect it
     var d=document.createElement('span'); d.className='dur'; d.textContent=' · '+parts.join(' ');
     el.appendChild(d);
   });
@@ -96,7 +96,7 @@
     var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
     var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
     if(y) parts.push(y+(y===1?w().yr:w().yrs)); if(m) parts.push(m+(m===1?w().mo:w().mos));
-    return label(e.frm)+' — '+(e.to?label(e.to):w().present)+' · '+parts.join(' ');
+    return label(e.frm)+' - '+(e.to?label(e.to):w().present)+' · '+parts.join(' ');
   }
   /* `live` = the entries the reader can land on: all of them, or only the ones the search kept (.dim = filtered out) */
   var live=[];

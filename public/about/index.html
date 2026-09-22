@@ -54,6 +54,8 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .dl-fab button{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:12.5px;font-weight:700;letter-spacing:.3px;
     padding:11px 15px;border-radius:999px;border:0;cursor:pointer;background:var(--nav-active-bg);color:var(--nav-active-fg);
     box-shadow:0 12px 28px -8px rgba(0,0,0,.6),0 2px 6px rgba(0,0,0,.25);transition:transform .12s,filter .12s;}
+  .dl-fab button.alt{background:transparent;color:var(--nav-active-bg);box-shadow:none;
+    border:1.5px solid var(--nav-active-bg);padding:9.5px 13.5px;}
   .dl-fab button:hover{transform:translateY(-1px);filter:brightness(1.08);}
   .dl-fab button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
   @media (max-width:600px){.dl-fab{right:12px;bottom:12px;} .dl-fab .dl-k{display:none;}}
@@ -235,6 +237,7 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .hname{font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:-.1px;margin-top:6px;}   /* /timeline/: the name, secondary to the title */
   .sub{font-size:9px;color:var(--muted);margin-top:5px;}
   .sub .hl{color:var(--amber);}
+  .sub .r0{color:var(--green);font-weight:600;font-size:10px;letter-spacing:-.1px;}  /* the headline role, ahead of the rest */
   .top{display:flex;justify-content:space-between;align-items:flex-end;gap:8mm;}
   .contact{display:grid;gap:3px;flex:none;}
   .cline{display:flex;align-items:center;gap:6px;font-size:8.4px;color:var(--muted);}
@@ -357,7 +360,7 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     <div>
       <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ whoami</div>
       <div class="name"><span id="typed">Sergio de Jesús Sánchez Robles</span><span class="cur"></span></div>
-      <div class="sub mono"><span class="i18n-en">Senior Software Engineer <span class="hl">/</span> Tech Lead <span class="hl">/</span> Backend &amp; Full-Stack <span class="hl">/</span> Game Dev <span class="hl">/</span> AI-Assisted</span><span class="i18n-es">Ingeniero de Software Senior <span class="hl">/</span> Tech Lead <span class="hl">/</span> Backend y Full-Stack <span class="hl">/</span> Videojuegos <span class="hl">/</span> Asistido por IA</span></div>
+      <div class="sub mono"><span class="i18n-en"><span class="r0">Senior Software Engineer</span> <span class="hl">/</span> Tech Lead <span class="hl">/</span> Backend &amp; Full-Stack <span class="hl">/</span> Game Dev <span class="hl">/</span> AI-Assisted</span><span class="i18n-es"><span class="r0">Ingeniero de Software Senior</span> <span class="hl">/</span> Tech Lead <span class="hl">/</span> Backend y Full-Stack <span class="hl">/</span> Videojuegos <span class="hl">/</span> Asistido por IA</span></div>
     </div>
   </header>
   <div class="cols">
@@ -396,7 +399,7 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     var now=new Date(), a=ym(e.frm), b=ym(e.to||(now.getFullYear()+'-'+(now.getMonth()+1)));
     var months=(b.y-a.y)*12+(b.m-a.m)+1, y=Math.floor(months/12), m=months%12, parts=[];
     if(y) parts.push(y+(y===1?w().yr:w().yrs)); if(m) parts.push(m+(m===1?w().mo:w().mos));
-    return label(e.frm)+' — '+(e.to?label(e.to):w().present)+' · '+parts.join(' ');
+    return label(e.frm)+' - '+(e.to?label(e.to):w().present)+' · '+parts.join(' ');
   }
   /* `live` = the entries the reader can land on: all of them, or only the ones the search kept (.dim = filtered out) */
   var live=[];
@@ -675,7 +678,7 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   var years=new Date().getFullYear()-START_YEAR;
   document.querySelectorAll('[data-years]').forEach(function(el){el.textContent=years;});
 })();
-/* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Mar 2020 — Present · 6 yrs 8 mos" */
+/* Job dates rendered from data-from / data-to (YYYY-MM; no data-to = present): "Mar 2020 - Present · 6 yrs 8 mos" */
 (function(){
   var M={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
          es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']};
@@ -693,7 +696,7 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     var y=Math.floor(months/12), m=months%12, parts=[];
     if(y) parts.push(y+(y===1?w.yr:w.yrs));
     if(m) parts.push(m+(m===1?w.mo:w.mos));
-    el.textContent=label(a)+' — '+(toAttr?label(b):w.present);
+    el.textContent=label(a)+' - '+(toAttr?label(b):w.present);   // plain hyphen: resume parsers' date regexes expect it
     var d=document.createElement('span'); d.className='dur'; d.textContent=' · '+parts.join(' ');
     el.appendChild(d);
   });
