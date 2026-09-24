@@ -8,7 +8,7 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 | `/timeline/` | Extended History | estático: línea de tiempo con panel lateral que sigue el scroll y un buscador (`tools/gen.py` → `history_entries()`) |
 | `/blog/` | Blog | Astro: índice, páginas por tag (`/blog/tags/<tag>/`) y entradas (`/blog/<en|es>/<slug>/`) |
 | `/about/` | About me | estático (placeholder con el nombre) |
-| `/llms.txt`, `/llms-full.txt` | Perfil para IA | estático (`tools/gen.py`), ver abajo |
+| `/llms.txt` | Perfil para IA | estático (`tools/gen.py`), ver abajo |
 | `/robots.txt` | Crawlers | estático (`public/robots.txt`) |
 
 Todas las páginas comparten el mismo cascarón (diseño "Dark Terminal"): fondo, hoja A4, encabezado con pestañas, ES/EN y claro/oscuro. El idioma y el tema se guardan en `localStorage` y se conservan entre páginas.
@@ -67,9 +67,9 @@ Hasta **dos niveles**: cualquier entrada acepta `children=[…]` (en un empleo d
 
 ## Perfil para IA (`/llms.txt`)
 
-[`/llms.txt`](https://llmstxt.org) es el perfil en Markdown para LLMs y crawlers de IA (ChatGPT, Claude, Perplexity…): resumen, contacto, skills, un renglón por empleo y links. [`/llms-full.txt`](https://sergiowero.github.io/llms-full.txt) trae el CV y el timeline completos en un solo archivo. Ambos en inglés.
+[`/llms.txt`](https://llmstxt.org) es el perfil en Markdown para LLMs y crawlers de IA (ChatGPT, Claude, Perplexity…): el CV y el timeline completos en un solo archivo, en inglés: resumen, contacto, skills, un renglón por empleo, la historia completa de cada uno y links.
 
-- Salen de los **mismos datos** que el CV y el timeline: `python3 tools/gen.py` los escribe en `public/` (no editar a mano), así que basta regenerar como con cualquier cambio del CV.
+- Sale de los **mismos datos** que el CV y el timeline: `python3 tools/gen.py` lo escribe en `public/` (no editar a mano), así que basta regenerar como con cualquier cambio del CV.
 - Los años de experiencia (año actual − 2010, igual que el CV) se calculan al correr `gen.py`: regenera una vez al año para que no se queden atrás.
 - `public/robots.txt` deja pasar a todos los crawlers y los aleja de `/Backups/` y `/favicons/`, que repiten el CV en borradores de diseño.
 

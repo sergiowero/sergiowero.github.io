@@ -1308,7 +1308,7 @@ def history_json():
                  level=lvl, parent=parent) for i, lvl, parent, e in history_flat()]
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
-# ---- /llms.txt and /llms-full.txt (https://llmstxt.org): the profile as plain Markdown for LLMs and AI crawlers.
+# ---- /llms.txt (https://llmstxt.org): the profile as plain Markdown for LLMs and AI crawlers.
 # English only, from the same data as the CV and the timeline; written to public/ like the pages.
 from html import unescape as _unescape
 from datetime import date
@@ -1401,34 +1401,26 @@ def _llms_skills():
             f"- **Shipped titles:** " + "; ".join(md(t) for t in TITLES)]
 
 def llms_md():
-    """/llms.txt: summary, key facts, one line per job, then link lists (the spec allows no headings before the first H2)."""
+    """/llms.txt: everything the CV and the timeline say, in one Markdown file."""
     jobs = [f"- **{md(j['role'])} · {j['co']}** — {_md_when(j)}, {md(j['loc'])} ({_md_list(j['inds'])}). "
             f"Stack: {_md_list(j.get('tech', []))}." for j in JOBS]
-    return "\n".join(_llms_head() + [md(PROFILE), ""] + _llms_contact() + _llms_skills() + [
-        "", "Work experience, newest first:", ""] + jobs + [
-        "", "## Profile", "",
+    out = _llms_head() + [
+        f"From the CV ({SITE}/) and the career timeline ({SITE}/timeline/); both pages are also in Spanish.", "",
+        "## Contact", ""] + _llms_contact() + [
+        "", "## Professional summary", "", md(PROFILE), "",
+        "## Skills", ""] + _llms_skills() + [
+        "", "## Work experience", "", "Newest first; the full story of each one is under Career history.", ""] + jobs + [
+        "", "## Career history", "", "Newest first. Jobs, client engagements inside them, and education.", ""]
+    for e in history_entries():
+        out += _md_entry(e, 0)
+    return "\n".join(out + [
+        "## Links", "",
         f"- [Resume / CV]({SITE}/): one-page CV in English and Spanish, with PDF and DOCX downloads",
-        f"- [Career timeline]({SITE}/timeline/): long-form history — every job, client engagement, shipped game and degree",
-        f"- [Full profile in Markdown]({SITE}/llms-full.txt): the whole CV and timeline in one file",
-        "", "## Optional", "",
+        f"- [Career timeline]({SITE}/timeline/): the long-form history above, as a searchable page",
         f"- [The Lullaby of Life on Steam]({STEAM}): the Unity3D game shipped on Apple Arcade and Steam",
         f"- [VR racing game — iOS gameplay]({_unescape(YT_VR)}): Virtually Live, Formula E",
         f"- [Demo reel]({YT_REEL}): five iOS games from Kaxan Games",
         ""])
-
-def llms_full_md():
-    """/llms-full.txt: everything the CV and the timeline say, in one Markdown file."""
-    out = _llms_head() + [
-        f"The complete profile in one file. Short version: {SITE}/llms.txt · human version: {SITE}/ (CV) "
-        f"and {SITE}/timeline/ (career history).", "",
-        "## Contact", ""] + _llms_contact() + [
-        "", "## Professional summary", "", md(PROFILE), "",
-        "## Skills", ""] + _llms_skills() + [
-        "",
-        "## Career history", "", "Newest first. Jobs, client engagements inside them, and education.", ""]
-    for e in history_entries():
-        out += _md_entry(e, 0)
-    return "\n".join(out)
 
 FIT_JS = """<script>
 /* window.cvLang() is defined in <head>; anything rendered from JS redraws on the 'langchange' event below */
@@ -2941,7 +2933,6 @@ if __name__ == "__main__":
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(f'<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url={target}"><link rel="canonical" href="https://sergiowero.github.io{target}"><title>Redirecting…</title><a href="{target}">{target}</a>')
                 print(f"wrote {rel} → {target}")
-    for name, content in {"llms.txt": llms_md(), "llms-full.txt": llms_full_md()}.items():
-        with open(os.path.join(PUBLIC, name), "w", encoding="utf-8") as f:
-            f.write(content)
-    print("wrote llms.txt, llms-full.txt")
+    with open(os.path.join(PUBLIC, "llms.txt"), "w", encoding="utf-8") as f:
+        f.write(llms_md())
+    print("wrote llms.txt")
