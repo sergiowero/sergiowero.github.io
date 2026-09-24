@@ -1,8 +1,8 @@
 # Sergio de Jesús Sánchez Robles
 
-> Senior Software Engineer · Tech Lead based in Zapopan, Jalisco, México, with {{years}} years building software across gaming, media and enterprise. Core stack: C# / .NET, Java / Spring, Python / FastAPI, JavaScript / Node.js, AWS, SQL / Postgres. Currently Senior Software Engineer / Tech Lead at Wizeline (since Mar 2020).
+> Senior Software Engineer · Tech Lead based in Zapopan, Jalisco, México, with 16 years building software across gaming, media and enterprise. Core stack: C# / .NET, Java / Spring, Python / FastAPI, JavaScript / Node.js, AWS, SQL / Postgres. Currently Senior Software Engineer / Tech Lead at Wizeline (since Mar 2020).
 
-Software developer with **{{years}} years of experience** across the gaming, media, and enterprise sectors, collaborating with major global companies. As an **AI enthusiast**, I actively leverage AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously **led teams of up to six people**, I consistently deliver high-quality, scalable software solutions on time and within budget.
+Software developer with **16 years of experience** across the gaming, media, and enterprise sectors, collaborating with major global companies. As an **AI enthusiast**, I actively leverage AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously **led teams of up to six people**, I consistently deliver high-quality, scalable software solutions on time and within budget.
 
 - **Location:** Zapopan, Jalisco, México
 - **Phone:** [+52 1 33 1799 1812](tel:+5213317991812)
@@ -28,12 +28,7 @@ Work experience, newest first:
 
 - [Resume / CV](https://sergiowero.github.io/): one-page CV in English and Spanish, with PDF and DOCX downloads
 - [Career timeline](https://sergiowero.github.io/timeline/): long-form history — every job, client engagement, shipped game and degree
-- [About me](https://sergiowero.github.io/about/): short bio, toolbox and contact
 - [Full profile in Markdown](https://sergiowero.github.io/llms-full.txt): the whole CV and timeline in one file
-
-## Blog
-
-{{blog}}
 
 ## Optional
 

@@ -1309,18 +1309,17 @@ def history_json():
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
 # ---- /llms.txt and /llms-full.txt (https://llmstxt.org): the profile as plain Markdown for LLMs and AI crawlers.
-# English only, from the same data as the CV and the timeline. gen.py writes the templates to src/llms/;
-# src/pages/llms.txt.ts and llms-full.txt.ts fill {{years}} and {{blog}} at build time (src/lib/llms.ts),
-# so a new blog post shows up there on the next deploy without running gen.py.
+# English only, from the same data as the CV and the timeline; written to public/ like the pages.
 from html import unescape as _unescape
-LLMS_DIR = os.path.join(ROOT, "src", "llms")
+from datetime import date
 SITE = "https://sergiowero.github.io"
+START_YEAR = 2010   # same as START_YEAR in FIT_JS; the pages count the years in the browser, these files at gen time
 CONTACT_LABELS = {"pin": "Location", "phone": "Phone", "mail": "Email", "in": "LinkedIn", "gh": "GitHub"}
 
 def md(v):
     """A data string (T or plain, HTML allowed) as one line of English Markdown."""
     s = v.en if isinstance(v, T) else str(v or "")
-    s = re.sub(r"<span data-years>\d+</span>", "{{years}}", s)
+    s = re.sub(r"<span data-years>\d+</span>", str(date.today().year - START_YEAR), s)
     s = re.sub(r'<a href="([^"]*)"[^>]*>(.*?)</a>', r"[\2](\1)", s)
     s = re.sub(r"</?b>", "**", s)
     s = re.sub(r"</?i>", "*", s)
@@ -1386,7 +1385,7 @@ def _llms_head():
     cur = next(j for j in JOBS if j["to"] is None)
     inds = [md(x).lower() for x in INDUSTRIES]
     return [f"# {NAME}", "",
-            f"> {md(ROLE)} based in {CONTACT[0][1]}, with {{{{years}}}} years building software across "
+            f"> {md(ROLE)} based in {CONTACT[0][1]}, with {date.today().year - START_YEAR} years building software across "
             f"{', '.join(inds[:-1])} and {inds[-1]}. Core stack: {', '.join(n for n, _ in CORE)}. "
             f"Currently {md(cur['role'])} at {cur['co']} (since {_md_ym(cur['frm'])}).", ""]
 
@@ -1410,9 +1409,7 @@ def llms_md():
         "", "## Profile", "",
         f"- [Resume / CV]({SITE}/): one-page CV in English and Spanish, with PDF and DOCX downloads",
         f"- [Career timeline]({SITE}/timeline/): long-form history — every job, client engagement, shipped game and degree",
-        f"- [About me]({SITE}/about/): short bio, toolbox and contact",
         f"- [Full profile in Markdown]({SITE}/llms-full.txt): the whole CV and timeline in one file",
-        "", "## Blog", "", "{{blog}}",
         "", "## Optional", "",
         f"- [The Lullaby of Life on Steam]({STEAM}): the Unity3D game shipped on Apple Arcade and Steam",
         f"- [VR racing game — iOS gameplay]({_unescape(YT_VR)}): Virtually Live, Formula E",
@@ -1420,18 +1417,18 @@ def llms_md():
         ""])
 
 def llms_full_md():
-    """/llms-full.txt: everything the CV, the timeline and About say, in one Markdown file."""
+    """/llms-full.txt: everything the CV and the timeline say, in one Markdown file."""
     out = _llms_head() + [
         f"The complete profile in one file. Short version: {SITE}/llms.txt · human version: {SITE}/ (CV) "
         f"and {SITE}/timeline/ (career history).", "",
         "## Contact", ""] + _llms_contact() + [
-        "", "## Professional summary", "", md(PROFILE), "", ABOUT_BIO_EN, "",
+        "", "## Professional summary", "", md(PROFILE), "",
         "## Skills", ""] + _llms_skills() + [
-        "- **Toolbox:** " + "; ".join(f"{name} — {en.rstrip('.')}" for name, en, _ in TOOLBOX), "",
+        "",
         "## Career history", "", "Newest first. Jobs, client engagements inside them, and education.", ""]
     for e in history_entries():
         out += _md_entry(e, 0)
-    return "\n".join(out + ["## Blog", "", "{{blog}}", ""])
+    return "\n".join(out)
 
 FIT_JS = """<script>
 /* window.cvLang() is defined in <head>; anything rendered from JS redraws on the 'langchange' event below */
@@ -2944,8 +2941,7 @@ if __name__ == "__main__":
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(f'<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url={target}"><link rel="canonical" href="https://sergiowero.github.io{target}"><title>Redirecting…</title><a href="{target}">{target}</a>')
                 print(f"wrote {rel} → {target}")
-    os.makedirs(LLMS_DIR, exist_ok=True)
-    for name, content in {"llms.md": llms_md(), "llms-full.md": llms_full_md()}.items():
-        with open(os.path.join(LLMS_DIR, name), "w", encoding="utf-8") as f:
+    for name, content in {"llms.txt": llms_md(), "llms-full.txt": llms_full_md()}.items():
+        with open(os.path.join(PUBLIC, name), "w", encoding="utf-8") as f:
             f.write(content)
-    print("wrote src/llms/{llms.md,llms-full.md}")
+    print("wrote llms.txt, llms-full.txt")

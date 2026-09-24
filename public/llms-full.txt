@@ -1,6 +1,6 @@
 # Sergio de Jesús Sánchez Robles
 
-> Senior Software Engineer · Tech Lead based in Zapopan, Jalisco, México, with {{years}} years building software across gaming, media and enterprise. Core stack: C# / .NET, Java / Spring, Python / FastAPI, JavaScript / Node.js, AWS, SQL / Postgres. Currently Senior Software Engineer / Tech Lead at Wizeline (since Mar 2020).
+> Senior Software Engineer · Tech Lead based in Zapopan, Jalisco, México, with 16 years building software across gaming, media and enterprise. Core stack: C# / .NET, Java / Spring, Python / FastAPI, JavaScript / Node.js, AWS, SQL / Postgres. Currently Senior Software Engineer / Tech Lead at Wizeline (since Mar 2020).
 
 The complete profile in one file. Short version: https://sergiowero.github.io/llms.txt · human version: https://sergiowero.github.io/ (CV) and https://sergiowero.github.io/timeline/ (career history).
 
@@ -14,9 +14,7 @@ The complete profile in one file. Short version: https://sergiowero.github.io/ll
 
 ## Professional summary
 
-Software developer with **{{years}} years of experience** across the gaming, media, and enterprise sectors, collaborating with major global companies. As an **AI enthusiast**, I actively leverage AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously **led teams of up to six people**, I consistently deliver high-quality, scalable software solutions on time and within budget.
-
-I'm Sergio Sánchez, a software engineer with over 15 years of experience across gaming, media, and enterprise. I move between backend architecture, game systems, and developer tooling — wherever a good idea needs to become something that actually ships. I've led teams of up to six engineers, and lately spend a good part of my time figuring out how AI agents fit into that process without losing rigor.
+Software developer with **16 years of experience** across the gaming, media, and enterprise sectors, collaborating with major global companies. As an **AI enthusiast**, I actively leverage AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously **led teams of up to six people**, I consistently deliver high-quality, scalable software solutions on time and within budget.
 
 ## Skills
 
@@ -25,7 +23,6 @@ I'm Sergio Sánchez, a software engineer with over 15 years of experience across
 - **AI-Assisted Dev:** AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. Tools: Claude Code, opencode, Codex.
 - **Education:** Master in Computer Science — Universidad Autónoma de Guadalajara · Aug 2018; Computer Science — Universidad de Guadalajara · Dec 2010
 - **Shipped titles:** **The Lullaby of Life** — Apple Arcade & [Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/); **VR racing games** — HTC Vive, Oculus, Gear VR & [iOS](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s); **The Oregon Trail: American Settler**, **9mm** — Gameloft; **5+ iOS games** & a Nintendo Wii title — [demo reel](https://www.youtube.com/watch?v=PWaarVatoEU)
-- **Toolbox:** VS Code — General-purpose editor for scripts and web work; IntelliJ IDEA — IDE for Java / Spring backends; Rider — .NET and Unity3D IDE; Unity3D — Game engine for the titles I've shipped; PostgreSQL — Go-to relational database; AWS — Cloud infrastructure for backend services; Git — Version control, every day
 
 ## Career history
 
@@ -633,7 +630,3 @@ My first job in games, and my first shipped projects. Almost two years at Kaxan 
 - It was published, and it is still playable today if you have a Wii.
 - **Result:** A shipped console title, on a franchise everyone in México knows.
 - **Skills:** Unity, C#, Nintendo Wii
-
-## Blog
-
-{{blog}}
