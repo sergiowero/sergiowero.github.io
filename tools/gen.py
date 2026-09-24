@@ -1308,6 +1308,120 @@ def history_json():
                  level=lvl, parent=parent) for i, lvl, parent, e in history_flat()]
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
+# ---- /llms.txt (https://llmstxt.org): the profile as plain Markdown for LLMs and AI crawlers.
+# English only, from the same data as the CV and the timeline; written to public/ like the pages.
+from html import unescape as _unescape
+from datetime import date
+SITE = "https://sergiowero.github.io"
+START_YEAR = 2010   # same as START_YEAR in FIT_JS; the pages count the years in the browser, these files at gen time
+CONTACT_LABELS = {"pin": "Location", "phone": "Phone", "mail": "Email", "in": "LinkedIn", "gh": "GitHub"}
+
+def md(v):
+    """A data string (T or plain, HTML allowed) as one line of English Markdown."""
+    s = v.en if isinstance(v, T) else str(v or "")
+    s = re.sub(r"<span data-years>\d+</span>", str(date.today().year - START_YEAR), s)
+    s = re.sub(r'<a href="([^"]*)"[^>]*>(.*?)</a>', r"[\2](\1)", s)
+    s = re.sub(r"</?b>", "**", s)
+    s = re.sub(r"</?i>", "*", s)
+    s = re.sub(r"<[^>]+>", "", s)
+    return _unescape(s).strip()
+
+def _md_ym(ym):
+    y, m = ym.split("-")
+    return f"{_MONTHS[int(m) - 1]} {y}"
+
+def _md_when(e):
+    """'Mar 2020 – Present', 'Aug 2018' (single date) or the free-form `dur`."""
+    frm, dur = e.get("frm"), md(e.get("dur"))
+    if not frm:
+        return dur
+    if "to" not in e:
+        return _md_ym(frm)
+    span = f"{_md_ym(frm)} – {_md_ym(e['to']) if e['to'] else 'Present'}"
+    return f"{span} ({dur})" if dur else span
+
+def _md_title(e):
+    return f"{md(e['role'])} · {md(e['co'])}" if md(e.get("role")) else md(e["co"])
+
+def _md_list(items):
+    return ", ".join(md(x) for x in items)
+
+def _md_bullets(pts):
+    return [f"- {md(p)}" for p in pts]
+
+def _md_entry(e, level, parent=None):
+    """One timeline entry (and its children one heading level down) with every long-form field."""
+    hx = "#" * (3 + level)
+    fields = [("Part of", parent and _md_title(parent)), ("Dates", _md_when(e)), ("Location", md(e.get("loc"))),
+              ("Type", md(KIND_LABELS[e["kind"]])),
+              ("Industries", _md_list(e.get("inds", [])))]
+    fields += [(md(k), md(v)) for k, v in e.get("facts") or []]
+    fields += [("Stack", _md_list(e.get("tech", []))),
+               ("Links", ", ".join(f"[{md(label)}]({_unescape(href)})" for label, href in e.get("links") or []))]
+    out = [f"{hx} {_md_title(e)}", ""] + [f"- **{k}:** {v}" for k, v in fields if v] + [""]
+    if e.get("lede"):
+        out += [md(e["lede"]), ""]
+    if e.get("pts"):
+        out += _md_bullets(e["pts"]) + [""]
+    for g in e.get("groups") or []:
+        out += [f"{hx}# {md(g['h'])}", ""] + _md_bullets(g["pts"]) + [""]
+    for dv in e.get("deliverables") or []:
+        kind = dv.get("kind", "milestone")
+        out += [f"{hx}# {md(DELIV_BADGE[kind])}: {md(dv['title'])}", ""]
+        if dv.get("role"):
+            out += [f"*{md(dv['role'])}*", ""]
+        out += _md_bullets(dv["pts"])
+        if dv.get("result"):
+            out += [f"- **{md(DELIV_FOOT.get(kind, DELIV_RESULT))}:** {md(dv['result'])}"]
+        if dv.get("tech"):
+            out += [f"- **Skills:** {_md_list(dv['tech'])}"]
+        out += [""]
+    for c in e.get("children", []):
+        out += _md_entry(c, level + 1, e)
+    return out
+
+def _llms_head():
+    """H1 + blockquote summary: the part an LLM reads first, identical in both files."""
+    cur = next(j for j in JOBS if j["to"] is None)
+    inds = [md(x).lower() for x in INDUSTRIES]
+    return [f"# {NAME}", "",
+            f"> {md(ROLE)} based in {CONTACT[0][1]}, with {date.today().year - START_YEAR} years building software across "
+            f"{', '.join(inds[:-1])} and {inds[-1]}. Core stack: {', '.join(n for n, _ in CORE)}. "
+            f"Currently {md(cur['role'])} at {cur['co']} (since {_md_ym(cur['frm'])}).", ""]
+
+def _llms_contact():
+    return [f"- **{CONTACT_LABELS[ic]}:** {f'[{md(text)}]({href})' if href else md(text)}"
+            for ic, text, href in CONTACT if ic in CONTACT_LABELS]
+
+def _llms_skills():
+    return [f"- **Core skills:** " + ", ".join(f"{n} ({md(level(lvl)[0])})" for n, lvl in CORE),
+            f"- **Technologies:** {_md_list(TECH)}",
+            f"- **{md(AI_HEAD)}:** {md(AI_TEXT)} Tools: {', '.join(AI_CHIPS)}.",
+            f"- **Education:** " + "; ".join(f"{md(deg)} — {md(meta)}" for deg, meta in EDU),
+            f"- **Shipped titles:** " + "; ".join(md(t) for t in TITLES)]
+
+def llms_md():
+    """/llms.txt: everything the CV and the timeline say, in one Markdown file."""
+    jobs = [f"- **{md(j['role'])} · {j['co']}** — {_md_when(j)}, {md(j['loc'])} ({_md_list(j['inds'])}). "
+            f"Stack: {_md_list(j.get('tech', []))}." for j in JOBS]
+    out = _llms_head() + [
+        f"From the CV ({SITE}/) and the career timeline ({SITE}/timeline/); both pages are also in Spanish.", "",
+        "## Contact", ""] + _llms_contact() + [
+        "", "## Professional summary", "", md(PROFILE), "",
+        "## Skills", ""] + _llms_skills() + [
+        "", "## Work experience", "", "Newest first; the full story of each one is under Career history.", ""] + jobs + [
+        "", "## Career history", "", "Newest first. Jobs, client engagements inside them, and education.", ""]
+    for e in history_entries():
+        out += _md_entry(e, 0)
+    return "\n".join(out + [
+        "## Links", "",
+        f"- [Resume / CV]({SITE}/): one-page CV in English and Spanish, with PDF and DOCX downloads",
+        f"- [Career timeline]({SITE}/timeline/): the long-form history above, as a searchable page",
+        f"- [The Lullaby of Life on Steam]({STEAM}): the Unity3D game shipped on Apple Arcade and Steam",
+        f"- [VR racing game — iOS gameplay]({_unescape(YT_VR)}): Virtually Live, Formula E",
+        f"- [Demo reel]({YT_REEL}): five iOS games from Kaxan Games",
+        ""])
+
 FIT_JS = """<script>
 /* window.cvLang() is defined in <head>; anything rendered from JS redraws on the 'langchange' event below */
 /* Years of experience, computed from the year I started working */
@@ -2819,3 +2933,6 @@ if __name__ == "__main__":
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(f'<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url={target}"><link rel="canonical" href="https://sergiowero.github.io{target}"><title>Redirecting…</title><a href="{target}">{target}</a>')
                 print(f"wrote {rel} → {target}")
+    with open(os.path.join(PUBLIC, "llms.txt"), "w", encoding="utf-8") as f:
+        f.write(llms_md())
+    print("wrote llms.txt")
