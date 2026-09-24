@@ -1,0 +1,7 @@
+# Every crawler is welcome, AI crawlers included.
+# Plain-Markdown profile for LLMs: https://sergiowero.github.io/llms.txt (full: /llms-full.txt)
+User-agent: *
+Allow: /
+# Design drafts that repeat the CV: keep crawlers on the live pages.
+Disallow: /Backups/
+Disallow: /favicons/

@@ -1,0 +1,639 @@
+# Sergio de Jesús Sánchez Robles
+
+> Senior Software Engineer · Tech Lead based in Zapopan, Jalisco, México, with {{years}} years building software across gaming, media and enterprise. Core stack: C# / .NET, Java / Spring, Python / FastAPI, JavaScript / Node.js, AWS, SQL / Postgres. Currently Senior Software Engineer / Tech Lead at Wizeline (since Mar 2020).
+
+The complete profile in one file. Short version: https://sergiowero.github.io/llms.txt · human version: https://sergiowero.github.io/ (CV) and https://sergiowero.github.io/timeline/ (career history).
+
+## Contact
+
+- **Location:** Zapopan, Jalisco, México
+- **Phone:** [+52 1 33 1799 1812](tel:+5213317991812)
+- **Email:** [sergioj.sanchezr@gmail.com](mailto:sergioj.sanchezr@gmail.com)
+- **LinkedIn:** [linkedin.com/in/sergiojsanchez](https://www.linkedin.com/in/sergiojsanchez/)
+- **GitHub:** [github.com/sergiowero](https://github.com/sergiowero)
+
+## Professional summary
+
+Software developer with **{{years}} years of experience** across the gaming, media, and enterprise sectors, collaborating with major global companies. As an **AI enthusiast**, I actively leverage AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously **led teams of up to six people**, I consistently deliver high-quality, scalable software solutions on time and within budget.
+
+I'm Sergio Sánchez, a software engineer with over 15 years of experience across gaming, media, and enterprise. I move between backend architecture, game systems, and developer tooling — wherever a good idea needs to become something that actually ships. I've led teams of up to six engineers, and lately spend a good part of my time figuring out how AI agents fit into that process without losing rigor.
+
+## Skills
+
+- **Core skills:** C# / .NET (Expert), Java / Spring (Expert), Python / FastAPI (Advanced), JavaScript / Node.js (Proficient), AWS (Advanced), SQL / Postgres (Advanced)
+- **Technologies:** C#, .NET, Java, Spring, Python, FastAPI, JavaScript, Node.js, React, AWS, PostgreSQL, Microservices, RESTful APIs, Unit Testing, OOP, Unity3D, Git, Full-Stack, Typescript, Docker
+- **AI-Assisted Dev:** AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. Tools: Claude Code, opencode, Codex.
+- **Education:** Master in Computer Science — Universidad Autónoma de Guadalajara · Aug 2018; Computer Science — Universidad de Guadalajara · Dec 2010
+- **Shipped titles:** **The Lullaby of Life** — Apple Arcade & [Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/); **VR racing games** — HTC Vive, Oculus, Gear VR & [iOS](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s); **The Oregon Trail: American Settler**, **9mm** — Gameloft; **5+ iOS games** & a Nintendo Wii title — [demo reel](https://www.youtube.com/watch?v=PWaarVatoEU)
+- **Toolbox:** VS Code — General-purpose editor for scripts and web work; IntelliJ IDEA — IDE for Java / Spring backends; Rider — .NET and Unity3D IDE; Unity3D — Game engine for the titles I've shipped; PostgreSQL — Go-to relational database; AWS — Cloud infrastructure for backend services; Git — Version control, every day
+
+## Career history
+
+Newest first. Jobs, client engagements inside them, and education.
+
+### Senior Software Engineer / Tech Lead · Wizeline
+
+- **Dates:** Mar 2020 – Present
+- **Location:** Guadalajara, México
+- **Type:** job
+- **Industries:** News, Media & Entertainment, Retail, Cybersecurity
+- **Company:** Software consultancy
+- **Role:** Senior Software Engineer / Tech Lead
+- **Clients:** Dow Jones · Fox Corp · Inditex · Cerby
+- **Now:** Training as an AI engineer
+- **Stack:** .NET, Java, Spring, Node.js, Python, React, AWS, PostgreSQL, MariaDB, Claude Code, Codex, LangChain, Claude SDK
+
+Wizeline is a **software consultancy** with many clients: its engineers are placed on client engagements, and every entry below is a client I have worked for since joining in March 2020 — Dow Jones, Fox Corp, Inditex and Cerby. My role is **Senior Software Engineer / Tech Lead**: I join the client's team, build and run their backend services, and lead when the engagement calls for it. Alongside the client work there is **constant training** — including on AI tools such as **Claude Code** and **Codex** — and right now it is aimed at becoming an **AI engineer**: building agents, mainly in **Python** with **LangChain** and the **Claude SDK**.
+
+#### The role
+
+- Wizeline is a consultancy: it has many clients, and its engineers work embedded in those clients' teams. Since March 2020 I have gone through four of them — each has its own entry below.
+- Mostly backend: designing services, data models and integrations, and taking features from design to production in whatever stack the client runs — **.NET**, **Java / Spring**, **Node.js** or **Python**, on **AWS**, **PostgreSQL** and **MariaDB**.
+- **Tech Lead** when the engagement calls for it: at Fox Corp I led a squad of five engineers for the three years of the engagement.
+
+#### Milestone: Mentor & Associate Manager
+
+*Trained for both roles · 5 direct reports · 6 months as Associate Manager*
+
+- Completed Wizeline's full training to become a **mentor** and an **Associate Manager**, and took on a team of **5 direct reports**.
+- Guided each of them along the **career path the company expected**, and helped them shift to a **consultancy mindset** and adopt the company's values.
+- Made sure they were properly trained through the company's **learning sources**.
+- Built a good relationship with each one, with **1:1s every two weeks** to check how they were doing.
+- After six months in the programme the company discontinued the Associate Manager role; I kept on as **mentor for 2 of my direct reports**.
+- **Result:** My direct reports moved along the expected path, and I helped one of them earn a **promotion**.
+- **Skills:** Mentorship, People management, Biweekly 1:1s
+
+#### Training: Constant training & AI at work
+
+*Ongoing since 2020 · alongside the client work, not between projects*
+
+- Training is a constant part of the job at Wizeline: there is always a track running next to the client work.
+- **AI tooling**: trained to work with coding agents such as **Claude Code** and **Codex**, which I now use day to day on client work.
+- **AI engineering**: the current track — being trained to build agents, mainly in **Python** with **LangChain** and the **Claude SDK**.
+- **Now:** In training to become an **AI engineer**: agents in Python, LangChain and the Claude SDK.
+- **Skills:** Claude Code, Codex, Python, LangChain, Claude SDK
+
+#### Dow Jones
+
+- **Part of:** Senior Software Engineer / Tech Lead · Wizeline
+- **Location:** Remote
+- **Type:** project
+- **Industries:** News
+- **Product:** Gas-price SaaS
+- **Architecture:** DDD
+- **Cloud:** AWS
+- **Data:** PostgreSQL
+- **Stack:** .NET, C#, PostgreSQL, AWS, DDD, Domain events, Message queues, Outbox pattern, Unit tests, Claude Code
+
+Wizeline's engagement with Dow Jones, on a **gas-price SaaS**: a platform that helps gas station owners keep a history of their prices, see what competitors are charging and set their own prices automatically with strategies they define. Built in **.NET** on **PostgreSQL**, designed with **Domain-Driven Design**, and split into many services that talk to each other through message queues.
+
+##### The product
+
+- **Price history:** every price a station has had is kept, so owners can look back at how their prices and the market moved.
+- **Competitor prices:** the platform shows what the competition around each station is charging.
+- **Automatic pricing:** owners define their own strategies and the system sets the station's prices by following them.
+- Clients use the tool to keep their stations up to date with the market and to protect the business' revenue.
+
+##### .NET, PostgreSQL and Domain-Driven Design
+
+- Services written in **.NET**, with the platform's data in **PostgreSQL**.
+- The system was designed with **DDD**: the business rules lived in a domain model, and what happened in it was expressed as domain events.
+
+##### Many services, domain events and the Outbox pattern
+
+- There were many services, and they communicated with each other through **message queues** carrying **domain events** instead of calling each other directly.
+- Publishing followed the **Outbox pattern**: an event was saved to the database in the same transaction as the change that produced it, and sent to the queue from there — so no change went out without its event, and no event went out for a change that was rolled back.
+
+##### Unit tests as part of "done"
+
+- The project with the **most unit tests** I have seen in my career.
+- A feature was not complete until it shipped with extensive unit tests covering all of it — the tests were part of the deliverable, not an afterthought.
+
+##### Day to day
+
+- Engineered new features and resolved production issues in a high-velocity environment.
+- Leveraged AI tooling to accelerate development cycles and enhance code quality.
+
+##### Milestone: Feature set delivered for Costco
+
+*A set of features built for one client of the platform: Costco*
+
+- Completed the full set of features Costco needed, each one delivered with the extensive unit tests the project required.
+- **Result:** Delivered in full, earning the **client's satisfaction**.
+- **Skills:** .NET, PostgreSQL, DDD, Unit tests
+
+#### Tech Lead · Fox Corp
+
+- **Part of:** Senior Software Engineer / Tech Lead · Wizeline
+- **Location:** Remote
+- **Type:** project
+- **Industries:** Media & Entertainment
+- **Team:** 5 engineers
+- **Cloud:** AWS
+- **Data:** PostgreSQL
+- **Stack:** Java 8, Java 11, Spring Boot, JavaScript, Node.js, AWS Lambda, Amazon SNS, Amazon SQS, Amazon ECS, CloudWatch, PostgreSQL
+
+Wizeline's engagement with Fox Corp, where I was Tech Lead of a squad of five engineers. Two kinds of services shared one AWS messaging layer: serverless workers written in JavaScript, and Java applications running on containers.
+
+##### AWS & service-to-service messaging
+
+- **SNS** and **SQS** were the connective tissue of the platform: services published and consumed messages instead of calling each other directly.
+- The same messaging layer carried the integrations with **external systems** — services owned by clients and by other companies we worked with.
+- Anything that could be processed asynchronously was modelled as a queue, so producers and consumers could move at their own pace.
+
+##### Serverless services in JavaScript
+
+- **AWS Lambda** ran a good part of the platform — some services, not all of them.
+- **JavaScript** was the language of every Lambda, and the one I used most heavily on this engagement.
+- Those functions handled **queue-based tasks**; the main one was dispatching the calls that transcoded video.
+
+##### Java services on containers
+
+- Every Java-based service was a **Spring Boot** application.
+- They were deployed on **Amazon ECS**, AWS's own container orchestrator — its in-house counterpart to Kubernetes.
+- Those services talked to a **PostgreSQL** database, where the platform's data lived.
+- Two runtimes coexisted: **Java 8** on some services and **Java 11** on others.
+
+##### Observability & debugging
+
+- **CloudWatch** was where we read the logs — following what a message actually did across services and debugging the problems that turned up.
+
+##### Milestone: Tech Lead
+
+*A squad of five engineers, for the whole engagement*
+
+- Directed a team of 5 engineers as Tech Lead, designing and implementing customized, scalable software solutions for internal stakeholders.
+- **Pull request reviews** for everything the squad shipped.
+- **Solution design** done together with the team members, not handed down to them.
+- **Requirements refinement** directly with the business side, before the work reached the team.
+- **Result:** Within **3 months** every member of the team could work independently, and our results earned us the **trust of the stakeholders**.
+
+##### Milestone: Legacy → Media Cloud video migration service
+
+*Mine end to end — designed, built and shipped to production on my own*
+
+- A service that moved video out of Fox's legacy system and into **Media Cloud**, the new platform the team was building on.
+- Built in **Java 11** with **Spring Boot**, taking its work from an **SQS** queue and keeping its state in **PostgreSQL**.
+- Processing followed the **Inbox pattern**: every incoming message was written to the database before being acted on, so a redelivered message never migrated the same video twice.
+- **Result:** Shipped to production and migrated **over 100,000 legacy videos**, metadata included, into Fox's new system.
+- **Skills:** Java 11, Spring Boot, Amazon SQS, PostgreSQL, Inbox pattern
+
+#### Inditex
+
+- **Part of:** Senior Software Engineer / Tech Lead · Wizeline
+- **Location:** Remote
+- **Type:** project
+- **Industries:** Retail
+- **Product:** Factory audit viewer
+- **Focus:** Backend
+- **Architecture:** Microservices · Clean Architecture
+- **Workflow:** API first · OpenAPI
+- **Stack:** Java 11, Spring, Spring Batch, MariaDB, OpenAPI, Clean Architecture, Microservices, Snowflake
+- **Links:** [inditex.com](https://www.inditex.com/)
+
+Wizeline's engagement with **Inditex**, the retail group behind Zara. The project was a **viewer for the audits of the company's factories**: a set of **Java 11** microservices built with **Clean Architecture** and an **API-first** workflow, backed by **MariaDB**. I architected the backend services, modelled the relational database and built the service that migrated the audit data out of **Snowflake** with **Spring Batch**.
+
+##### The product
+
+- A **viewer for the audits** Inditex runs on its **factories**: the audit data brought into one system where it could be looked at.
+- I architected the **backend services** behind it.
+
+##### API first, with OpenAPI
+
+- We worked **API first**: before any change started, its API was defined in an **OpenAPI** spec and agreed on; only then did the implementation begin.
+- The contract came first and the code followed it, so what a service exposed was never a surprise.
+
+##### Microservices in Java 11, with Clean Architecture
+
+- The backend was a set of **microservices** written in **Java 11** with **Spring**.
+- Each one followed **Clean Architecture**: the domain and use cases at the centre; framework, database and HTTP at the edges, depending inward.
+
+##### Data
+
+- The data lived in **MariaDB**; I modelled the relational schema the services worked against.
+
+##### Milestone: Snowflake → MariaDB audit migration service
+
+*Built it — a long-running import on Spring Batch*
+
+- A service that moved the audit data from **Snowflake**, where Inditex kept it, into the project's **MariaDB** database.
+- Built on **Spring Batch**, made for exactly this kind of long-running, chunked import.
+- **Result:** Delivered: the audits landed in **MariaDB**, and the viewer had its data.
+- **Skills:** Java 11, Spring Batch, Snowflake, MariaDB
+
+#### Cerby
+
+- **Part of:** Senior Software Engineer / Tech Lead · Wizeline
+- **Location:** Remote
+- **Type:** project
+- **Industries:** Cybersecurity
+- **Product:** Credential management
+- **Team:** Founding project team
+- **Focus:** Backend
+- **Architecture:** Modular monolith · DDD
+- **Stack:** Python, Flask, DDD, Modular monolith, SQLAlchemy, Alembic, Chrome extension, Next.js, React
+- **Links:** [cerby.com](https://www.cerby.com/)
+
+Wizeline's engagement with **Cerby**, a cybersecurity company whose software manages the **credentials of a business** — the accounts and passwords its teams share for the apps they use. I was part of the **initial project team**, on the backend: I led the first version of the backend, modelled the initial database and built the company's first Chrome extension.
+
+##### The product
+
+- **Cerby** is cybersecurity software for managing a company's credentials: the logins its people share for the applications they work with, kept under control instead of in spreadsheets and chats.
+- I joined as part of the **initial project team**, before there was a platform to build on — my part was the **backend**.
+
+##### Backend in Python with Flask, designed with DDD
+
+- Led the **first version of the backend**, written in **Python** with **Flask**.
+- It was my **first time working with Domain-Driven Design**: the domain modelled first, the framework kept at the edges.
+- The project was a **modular monolith** — one deployable, split into modules with clear boundaries, so it could grow without becoming a tangle or forcing microservices too early.
+
+##### Data model & migrations
+
+- For the backend MVP I **modelled the initial database**.
+- Schema changes went through a **migration system** built on **SQLAlchemy** (with Alembic), so every change to the model was versioned and repeatable across environments.
+
+##### Frontend, in support
+
+- Worked as an **auxiliary hand on the frontend**, built in **Next.js**, whenever the web side needed it.
+
+##### Milestone: The MVP, delivered
+
+*The initial platform Cerby launched with*
+
+- The whole MVP — backend, web frontend and Chrome extension — shipped as the product's first version.
+- **Result:** A **success**: it is what allowed Cerby to keep going — the company is **still alive today**, built on what that MVP started.
+- **Skills:** Python, Flask, Next.js, Chrome extension
+
+##### Milestone: First version of the backend
+
+*Led it — Python, Flask, DDD, modular monolith*
+
+- The MVP's backend, from the initial data model and its migrations to the service the product launched with.
+- **Result:** The **initial platform launched** on it.
+- **Skills:** Python, Flask, DDD, Modular monolith, SQLAlchemy, Alembic
+
+##### Release: Cerby's first Chrome extension
+
+*Built the first version*
+
+- The company's **first browser extension**: the piece that brings the managed credentials into the browser, where people actually log in.
+- **Result:** Shipped as Cerby's first Chrome extension.
+- **Skills:** Chrome extension
+
+### Lead Software Engineer · 1 Simple Idea
+
+- **Dates:** Jul 2019 – Mar 2020
+- **Location:** Guadalajara, México
+- **Type:** job
+- **Industries:** Gaming · Mobile
+- **Game:** The Lullaby of Life
+- **Engine:** Unity3D
+- **Platform:** iOS · Apple Arcade
+- **Built in:** 9 months
+- **Stack:** C#, Unity3D, iOS, Apple Arcade, IoC / DI, Unit tests, Flow
+- **Links:** [The Lullaby of Life on Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/)
+
+Nine months at 1 Simple Idea on **The Lullaby of Life**, a mobile game for iOS built in **Unity3D**. The game was split in two — the visual and gameplay side, and a logic layer covered by unit tests — and held together by two systems written specifically for it: a hand-made IoC / DI container and **Flow**, a data-connection system.
+
+#### Inversion of Control & Dependency Injection
+
+- A hand-made **IoC / DI** system, written specifically for this game instead of taken from a library.
+- Game components declared what they needed and the container supplied it, so no component depended directly on another.
+
+#### Two layers: visual + gameplay, and logic
+
+- The game was divided in two parts: the **visual and gameplay** layer, and the **logic** layer.
+- Keeping the logic apart from the visuals is what made it testable: the whole logic layer had **unit tests**.
+
+#### Flow — connecting data between components
+
+- **Flow**, a data-connection system built specially for the game: a variable in one component could be connected to a variable in another transparently, without the two components knowing about each other.
+- Together with the DI container it gave the project a modular paradigm that cut bug rates and the time art teams spent integrating assets.
+
+#### Milestone: Lead Programmer
+
+*Led the small programming team that built the game*
+
+- Led a small programming team in the development of a mobile iOS game, taking ownership of the **core game architecture**.
+
+#### Pace: Finished in nine months
+
+*Fast and well organized — with some overtime along the way*
+
+- The game went from start to finish in **nine months**. The whole team worked fast and in a very organized way, and that is what made the timeline possible.
+- It did not come for free, though: there was some extra time in the day-to-day, and a few Saturdays went into getting the project finished.
+- **Result:** Shipped fast — but the overtime was the price of the schedule, not something anyone wanted to repeat.
+
+#### Release: Published on Apple Arcade
+
+- **The Lullaby of Life** shipped on **Apple Arcade**, Apple's subscription game service, for iOS and Apple TV.
+- **Skills:** iOS, Apple TV, Apple Arcade
+
+#### Release: Published on Steam
+
+- The game later reached Steam: [The Lullaby of Life on Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/).
+- **Skills:** Steam
+
+### Master in Computer Science · Universidad Autónoma de Guadalajara
+
+- **Dates:** Aug 2018
+- **Location:** Guadalajara, México
+- **Type:** education
+- **Industries:** Education
+- **Stack:** Java, C++, JavaScript, SQL, C#
+
+Master's degree in Computer Science at the Universidad Autónoma de Guadalajara, completed in August 2018. The programme ran from the low level — embedded systems and operating systems — through data, mathematics and artificial intelligence, up to mobile programming, systems design and project management; the projects delivered along the way were written in **Java**, **C++**, **JavaScript**, **SQL** and **C#**.
+
+#### Coursework
+
+- **Embedded systems**, **operating systems** and **low-level** systems programming.
+- **Advanced databases**.
+- **Data mining**.
+- **Mathematics and statistics**.
+- **Artificial intelligence**.
+- **Mobile programming**.
+- **Systems design**.
+- **Project management**.
+
+#### Course projects
+
+- The projects delivered during the courses were built in **Java**, **C++**, **JavaScript**, **SQL** and **C#** — the stack below is theirs.
+
+### Senior Software Engineer · Virtually Live
+
+- **Dates:** Feb 2017 – Jan 2020
+- **Location:** Málaga, Spain
+- **Type:** job
+- **Industries:** Gaming · VR
+- **Data:** Formula E live race feed
+- **Products:** Steam VR app → mobile app (iOS)
+- **Engine:** Unity3D (C#)
+- **Backend:** Python · Django (first version in .NET)
+- **Shown at:** Official Formula E events
+- **Stack:** C#, Unity3D, VR, Steam, HTC Vive, Oculus, Gear VR, iOS, Python, Django, .NET, Go, REST, Live race data, Game modes, Prototyping
+- **Links:** [iOS app — gameplay](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s)
+
+Three years working remotely for Virtually Live, a studio based in Málaga. Everything rested on one thing: the **input data from the Formula E races**, which let us **simulate the race that was happening live**, in a virtual world, only a few minutes behind. On that base we built two products. First a **Steam app**, so that people with a **VR** headset could **watch the race as if they were there** — and even **ride along with the drivers**; the **pool** and **trivia (Jeopardy)** prototypes were meant to live inside it. Then the project **dropped VR** and became a **mobile app** where people watched the race and **competed against the drivers**: that is where we programmed the **game modes**, the **UI** and rules such as the **safety car**. Underneath, a **backend in Python and Django** for accounts and friends — after a first version I wrote in .NET. It went **live on iOS**, and during a race the **Formula E commentators mentioned the players competing in the app**. Alongside, a **VR showroom** of the racing cars' components, used at the official Formula E events.
+
+#### The base: Formula E's live race data, simulated in a virtual world
+
+- We had the **input data from the Formula E races**.
+- With it we could **simulate the race that was running live** in a **virtual world**, with only **a few minutes of delay**. The two products below were both built on this same base.
+
+#### First product: a Steam app to watch the race in VR
+
+- An app on **Steam** so that people with a **VR** headset — **HTC Vive**, **Oculus**, **Gear VR** — could **watch the race as if they were there**, and even **ride along with the drivers**.
+- Engineered a **core abstraction layer** for the game modules — **VR controllers**, **social APIs** and **database access** — with **JSON** for configuration management.
+- This is where the **online pool** and **trivia (Jeopardy)** games were meant to be used: things to play inside the VR app, around the race. Both stayed prototypes and **never saw the light**.
+
+#### The pivot: VR dropped, a mobile app to compete against the drivers
+
+- The project then **dropped VR** and became a **mobile app** where people could **watch the race** and **compete against the drivers**.
+- This is the part of the project where we programmed the **game modes** and the **UI**, and added rules such as the **safety car**, among others.
+- The core gameplay mechanics in **C#**, on **iOS**.
+
+#### Backend: accounts and friends, in Python with Django
+
+- Implemented the **backend** so that users could **have an account** and **add friends**.
+- Written in **Python** with **Django**, as **RESTful services**, with **Go** alongside.
+- **An interesting detail:** I implemented a first version of the backend in **.NET**. Then the company hired a new lead, and everything moved to **Python**.
+
+#### A VR showroom for Formula E
+
+- Separately, a **showroom**: an application to show, in **virtual reality**, the **components of the racing cars**.
+- This one did ship — it was **used at the official Formula E events**.
+
+#### Prototype: Online pool in VR
+
+*Mini-game for the Steam VR app · prototype*
+
+- A **pool game**, **online**, in **virtual reality** — meant to be played inside the Steam app, around the live race.
+- **Result:** Stayed a prototype; it was never released.
+- **Skills:** Unity3D, C#, VR, Online
+
+#### Prototype: Trivia (Jeopardy) in VR
+
+*Mini-game for the Steam VR app · prototype*
+
+- The **Jeopardy** quiz show as a game in **virtual reality** — meant for the same Steam app, alongside the pool game.
+- **Result:** Stayed a prototype; it was never released.
+- **Skills:** Unity3D, C#, VR
+
+#### Milestone: Live on iOS — real users racing during a Formula E race
+
+*Mobile app · game modes, UI, race rules and backend*
+
+- The project went **live on iOS only**.
+- There was a **race with users playing** in the app, competing against the drivers as the real race ran.
+- The **Formula E commentators**, live on air, **mentioned the players who were competing in the app**.
+- Gameplay of the iOS app: [video](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s).
+- **Result:** A live Formula E race with people racing in the app, and the broadcast commentators mentioning them.
+- **Skills:** Unity3D, C#, iOS, Python, Django
+
+#### Release: VR showroom for Formula E
+
+*VR application · racing-car components*
+
+- A **showroom** in **virtual reality**: an application to show the **components of the racing cars**.
+- **Result:** Used at the official Formula E events.
+- **Skills:** Unity3D, C#, VR
+
+### Software Engineer · Intel
+
+- **Dates:** Feb 2015 – Feb 2017
+- **Location:** Guadalajara, México
+- **Type:** job
+- **Industries:** Semiconductors
+- **Area:** Hardware validation
+- **Language:** Ruby
+- **Input:** XML design documents
+- **Reach:** Intel sites worldwide
+- **Stack:** Ruby, Ruby metaprogramming, XML, Custom libraries, Hardware validation, Automation, Git, CI/CD
+
+Two years at Intel writing **custom Ruby libraries** for the hardware validation teams. The libraries are what the teams use to **validate all of their chip designs before sending them to real simulation**: a design document in XML goes in, and the executable that checks it comes out, generated on the fly with Ruby metaprogramming. Around the libraries, the automation that kept them deployed and in sync across Intel's sites around the world.
+
+#### Custom Ruby libraries for validation
+
+- The core of the job: **libraries written specifically for validation**, in Ruby, made for the hardware validation teams rather than taken off the shelf.
+- The teams use the library to **validate every chip design** they produce **before it goes to real simulation** — a design does not reach the simulator until the library has checked it.
+- Catching a problem at this stage is what makes the library worth it: real simulation is the expensive step, and a design that fails there costs far more than one that fails a check in Ruby.
+- Exposed as **APIs in Ruby** so each team could plug the validation into its own testing workflow.
+
+#### From XML design documents to executables, with metaprogramming
+
+- The chip designs arrived as **design documents in XML**.
+- The library parsed those documents and, using **Ruby metaprogramming**, **generated the executable files dynamically** from what the document described — the code that validated a design was built from the design itself, not written by hand for each one.
+
+#### Deployment automation across Intel sites
+
+- The validation teams were spread over **several Intel sites around the world**, each with its own client environment.
+- Wrote the **automation tools and scripts** that synchronized the API deployments with those environments, so every site was running the same version of the libraries.
+
+#### Milestone: Moved the project from SVN to Git
+
+*My own initiative — proposed it and carried it through*
+
+- The project lived in **SVN**. I put forward the initiative to move it to **Git** and led the change.
+- With Git branches, each person could **work on several features at the same time**, and working together on the same codebase got easier.
+- The **CI/CD** built on top of it was **simpler and more modern** than what SVN allowed.
+- **Result:** Easier collaboration on parallel features, and a simplified, modernized CI/CD.
+- **Skills:** SVN, Git, CI/CD
+
+### 3D & Online Programmer · Gameloft
+
+- **Dates:** May 2011 – Jan 2015
+- **Location:** Guadalajara, México
+- **Type:** job
+- **Industries:** Gaming · Mobile
+- **Stack:** C++, Objective-C, OpenGL, Android, iOS, Mac OS, BlackBerry PlayBook, Unity, JavaScript, PHP, jQuery, Game servers
+
+- Programmed 3D games and internal development tools using portable **C++, JavaScript (jQuery), and Objective-C** to ensure seamless cross-platform compatibility across Android and iOS.
+- Integrated proprietary REST-based online services into multiple Android titles.
+- Contributed to the development and release of major mobile titles, including **The Oregon Trail: American Settler** and **9mm**.
+
+#### Release: The Oregon Trail: American Settler
+
+*iOS · new features, a Travel mode and community events*
+
+- Published on **iOS**. We added new features and a **Travel mode**.
+- Added **community events**: many players take part in a **harvest competition**, with a **leaderboard** and prizes.
+- **Result:** The community events increased the game's revenue over the following months.
+- **Skills:** C++, iOS
+
+#### Milestone: Event configuration tool for The Oregon Trail
+
+*Internal tool, built by me*
+
+- Built a **specialised tool** to configure the game's events, in **JavaScript**, **PHP** and **jQuery**.
+- **Skills:** JavaScript, PHP, jQuery
+
+#### Release: Spider-Man on the BlackBerry PlayBook
+
+*Port · iOS → Android for the PlayBook*
+
+- Took the **iOS** game and ported it to **Android** for the **PlayBook**, in the **C++ / OpenGL** codebase.
+- **Skills:** C++, OpenGL, Android, BlackBerry PlayBook
+
+#### Release: Zombiewood — multiplayer mode
+
+*Game server · cooperative play*
+
+- Implemented a **game server** for Zombiewood where players fought zombies **cooperatively**.
+- **Result:** Published, and it kept the game alive for one more year.
+- **Skills:** Game server, Multiplayer
+
+#### Release: 9mm on Mac OS
+
+*Port · iOS → Mac OS*
+
+- Ported in **C++ / OpenGL**; implemented **mouse and keyboard** controls, **joystick** support and a new **quick-time events** system.
+- Released.
+- **Skills:** C++, OpenGL, Mac OS
+
+#### Release: Texas Poker — multiplayer server
+
+*Game server in C++ · Unity client integration*
+
+- Built the **multiplayer server** in **C++**. The game was made in **Unity**; on that side I only integrated the **communication with the server** for multiplayer.
+- Released.
+- **Skills:** C++, Unity, Multiplayer
+
+#### Release: Disney Cars on Android
+
+*Port · iOS → Android*
+
+- Took the **iOS** Disney Cars game and ported it to **Android**, in **C++**. Released.
+- **Skills:** C++, Android
+
+### Computer Science · Universidad de Guadalajara
+
+- **Dates:** Dec 2010
+- **Location:** Guadalajara, México
+- **Type:** education
+- **Industries:** Education
+- **Stack:** C, Java, C#
+
+Computer Science degree at the Universidad de Guadalajara, completed in December 2010. The programme started from the ground up — programming in **C**, data structures, operating systems and compilers — and went on to object-oriented programming in **Java**, software architecture in **C#** and computer graphics, again in **C**.
+
+#### Coursework
+
+- **Introduction to programming**, in **C**.
+- **Object-oriented programming**, in **Java**.
+- **Software architecture**, in **C#**.
+- **Computer graphics**, in **C**.
+- **Data structures**.
+- **Operating systems**.
+- **Compilers**.
+- Among others.
+
+### Game Developer · Kaxan Games
+
+- **Dates:** Aug 2009 – May 2011
+- **Location:** Guadalajara, México
+- **Type:** job
+- **Industries:** Gaming · Mobile & Console
+- **Platforms:** iOS · Nintendo Wii
+- **Engines:** Unity 3 (C#) · Gamebryo (Lua)
+- **Team:** Two programmers + a team of artists
+- **Shipped:** 4 iOS games · 1 Wii game
+- **Stack:** C#, Unity 3, iOS, Nintendo Wii, Gamebryo, Lua, Mobile games, Console
+- **Links:** [Demo reel — five iOS games](https://www.youtube.com/watch?v=PWaarVatoEU)
+
+My first job in games, and my first shipped projects. Almost two years at Kaxan Games programming **mobile games in Unity** — **Taco Master**, **Bread Boy**, **Mosca Gogo** and **Armadillo**, all published on **iOS** — with one other programmer and a team of artists, on the old Unity 3 and C#. In between, an additional-programmer credit on a **Nintendo Wii** title from the **El Chavo del 8** franchise, and a first stretch on the **Gamebryo** engine, scripted in Lua, before the studio moved to Unity.
+
+#### Mobile games in Unity
+
+- Programmed **mobile games in Unity** with **C#**, on the versions of the time — **Unity 3** — long before the engine looked the way it does now.
+- Each game was built by **two programmers** — me and one other team member — working with a **team of artists**.
+- They were my **first projects**, and it shows: they were not particularly flashy. But every one of them made it through to publication on **iOS**, and that was the point.
+- The five iOS games are in a short demo reel ([gameplay](https://www.youtube.com/watch?v=PWaarVatoEU)).
+
+#### Gamebryo and Lua, before Unity
+
+- The studio started out experimenting with **Gamebryo**, an engine scripted in **Lua**, and we received training on it.
+- That was the beginning; the studio then moved to **Unity**, and the games above were all made there.
+
+#### Training from animation and programming experts
+
+- Throughout my time at Kaxan we received **training from several experts** in **animation** and **programming** — a big part of how a first job in games turned into a foundation.
+
+#### Release: Taco Master
+
+*Mobile game · programmer, one of two*
+
+- Built in **Unity 3** with C# by two programmers and a team of artists, and published on **iOS**.
+- **Skills:** Unity 3, C#, iOS
+
+#### Release: Bread Boy
+
+*Mobile game · programmer, one of two*
+
+- Built in **Unity 3** with C# by two programmers and a team of artists, and published on **iOS**.
+- **Skills:** Unity 3, C#, iOS
+
+#### Release: Mosca Gogo
+
+*Mobile game · programmer, one of two*
+
+- Built in **Unity 3** with C# by two programmers and a team of artists, and published on **iOS**.
+- **Skills:** Unity 3, C#, iOS
+
+#### Release: Armadillo
+
+*Mobile game · programmer, one of two*
+
+- Built in **Unity 3** with C# by two programmers and a team of artists, and published on **iOS**.
+- **Skills:** Unity 3, C#, iOS
+
+#### Release: El Chavo del 8 for Nintendo Wii
+
+*Console game · additional programmer*
+
+- A **Nintendo Wii** game from the **El Chavo del 8** franchise, also made in **Unity**. I contributed as an additional programmer.
+- It was published, and it is still playable today if you have a Wii.
+- **Result:** A shipped console title, on a franchise everyone in México knows.
+- **Skills:** Unity, C#, Nintendo Wii
+
+## Blog
+
+{{blog}}

@@ -1,0 +1,42 @@
+# Sergio de Jesús Sánchez Robles
+
+> Senior Software Engineer · Tech Lead based in Zapopan, Jalisco, México, with {{years}} years building software across gaming, media and enterprise. Core stack: C# / .NET, Java / Spring, Python / FastAPI, JavaScript / Node.js, AWS, SQL / Postgres. Currently Senior Software Engineer / Tech Lead at Wizeline (since Mar 2020).
+
+Software developer with **{{years}} years of experience** across the gaming, media, and enterprise sectors, collaborating with major global companies. As an **AI enthusiast**, I actively leverage AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously **led teams of up to six people**, I consistently deliver high-quality, scalable software solutions on time and within budget.
+
+- **Location:** Zapopan, Jalisco, México
+- **Phone:** [+52 1 33 1799 1812](tel:+5213317991812)
+- **Email:** [sergioj.sanchezr@gmail.com](mailto:sergioj.sanchezr@gmail.com)
+- **LinkedIn:** [linkedin.com/in/sergiojsanchez](https://www.linkedin.com/in/sergiojsanchez/)
+- **GitHub:** [github.com/sergiowero](https://github.com/sergiowero)
+- **Core skills:** C# / .NET (Expert), Java / Spring (Expert), Python / FastAPI (Advanced), JavaScript / Node.js (Proficient), AWS (Advanced), SQL / Postgres (Advanced)
+- **Technologies:** C#, .NET, Java, Spring, Python, FastAPI, JavaScript, Node.js, React, AWS, PostgreSQL, Microservices, RESTful APIs, Unit Testing, OOP, Unity3D, Git, Full-Stack, Typescript, Docker
+- **AI-Assisted Dev:** AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. Tools: Claude Code, opencode, Codex.
+- **Education:** Master in Computer Science — Universidad Autónoma de Guadalajara · Aug 2018; Computer Science — Universidad de Guadalajara · Dec 2010
+- **Shipped titles:** **The Lullaby of Life** — Apple Arcade & [Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/); **VR racing games** — HTC Vive, Oculus, Gear VR & [iOS](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s); **The Oregon Trail: American Settler**, **9mm** — Gameloft; **5+ iOS games** & a Nintendo Wii title — [demo reel](https://www.youtube.com/watch?v=PWaarVatoEU)
+
+Work experience, newest first:
+
+- **Senior Software Engineer / Tech Lead · Wizeline** — Mar 2020 – Present, Guadalajara, México (News, Media & Entertainment, Retail, Cybersecurity). Stack: .NET, Java, Spring, Node.js, Python, React, AWS, PostgreSQL, MariaDB, Claude Code.
+- **Lead Software Engineer · 1 Simple Idea** — Jul 2019 – Mar 2020, Guadalajara, México (Gaming · Mobile). Stack: C#, Unity3D, iOS, IoC / DI.
+- **Senior Software Engineer · Virtually Live** — Feb 2017 – Jan 2020, Málaga, Spain (Gaming · VR). Stack: C#, Unity3D, VR, Python, Django, Go, REST.
+- **Software Engineer · Intel** — Feb 2015 – Feb 2017, Guadalajara, México (Semiconductors). Stack: Ruby, XML, Automation.
+- **3D & Online Programmer · Gameloft** — May 2011 – Jan 2015, Guadalajara, México (Gaming · Mobile). Stack: C++, JavaScript, jQuery, Objective-C, Android, iOS.
+- **Game Developer · Kaxan Games** — Aug 2009 – May 2011, Guadalajara, México (Gaming · Mobile & Console). Stack: C#, Unity3D, iOS, Nintendo Wii.
+
+## Profile
+
+- [Resume / CV](https://sergiowero.github.io/): one-page CV in English and Spanish, with PDF and DOCX downloads
+- [Career timeline](https://sergiowero.github.io/timeline/): long-form history — every job, client engagement, shipped game and degree
+- [About me](https://sergiowero.github.io/about/): short bio, toolbox and contact
+- [Full profile in Markdown](https://sergiowero.github.io/llms-full.txt): the whole CV and timeline in one file
+
+## Blog
+
+{{blog}}
+
+## Optional
+
+- [The Lullaby of Life on Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/): the Unity3D game shipped on Apple Arcade and Steam
+- [VR racing game — iOS gameplay](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s): Virtually Live, Formula E
+- [Demo reel](https://www.youtube.com/watch?v=PWaarVatoEU): five iOS games from Kaxan Games
