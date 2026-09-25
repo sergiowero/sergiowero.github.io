@@ -210,8 +210,8 @@ JOBS = [
                       dict(h=T("Day to day", "Día a día"), pts=[
                           T("Engineered new features and resolved production issues in a high-velocity environment.",
                             "Desarrollé nuevas funcionalidades y resolví incidentes en producción en un entorno de alta velocidad."),
-                          T("Leveraged AI tooling to accelerate development cycles and enhance code quality.",
-                            "Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código."),
+                          T("Worked with <b>Claude Code</b> for the whole engagement: it is how I implemented my changes, to accelerate development cycles and enhance code quality.",
+                            "Trabajé con <b>Claude Code</b> durante todo el proyecto: fue con lo que implementé mis cambios, para acelerar los ciclos de desarrollo y elevar la calidad del código."),
                       ]),
                   ],
                   deliverables=[
@@ -230,7 +230,7 @@ JOBS = [
                          (T("Cloud"), "AWS"),
                          (T("Data", "Datos"), "PostgreSQL")],
                   tech=["Java 8", "Java 11", "Spring Boot", "JavaScript", "Node.js", "AWS Lambda", "Amazon SNS",
-                        "Amazon SQS", "Amazon ECS", "CloudWatch", "PostgreSQL"],
+                        "Amazon SQS", "Amazon ECS", "CloudWatch", "PostgreSQL", "Cursor"],
                   lede=T("Wizeline's engagement with Fox Corp, where I was Tech Lead of a squad of five engineers. "
                          "Two kinds of services shared one AWS messaging layer: serverless workers written in JavaScript, "
                          "and Java applications running on containers.",
@@ -268,6 +268,10 @@ JOBS = [
                       dict(h=T("Observability &amp; debugging", "Observabilidad y depuración"), pts=[
                           T("<b>CloudWatch</b> was where we read the logs — following what a message actually did across services and debugging the problems that turned up.",
                             "<b>CloudWatch</b> era donde leíamos los logs: seguir qué hizo realmente un mensaje entre servicios y depurar los problemas que aparecían."),
+                      ]),
+                      dict(h=T("AI tooling", "Herramientas de IA"), pts=[
+                          T("Worked with <b>Cursor</b> during my last two months on the engagement.",
+                            "Trabajé con <b>Cursor</b> durante mis últimos dos meses en el proyecto."),
                       ]),
                   ],
                   deliverables=[dict(kind="milestone",
@@ -437,7 +441,7 @@ JOBS = [
           '<b>Cerby:</b> Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial. <span class="stack">Tech: Python, React.</span>'),
     ], history=dict(   # the full story for /timeline/; the Resume keeps the bullets above
         tech=[".NET", "Java", "Spring", "Node.js", "Python", "React", "AWS", "PostgreSQL", "MariaDB", "Claude Code",
-              "Codex", "LangChain", "Claude SDK"],
+              "Codex", "OpenCode", "GitHub Copilot", "Cursor", "LangChain", "Claude SDK"],
         facts=[(T("Company", "Empresa"), T("Software consultancy", "Consultora de software")),
                (T("Role", "Rol"), T("Senior Software Engineer / Tech Lead", "Ingeniero de Software Senior / Tech Lead")),
                (T("Clients", "Clientes"), "Dow Jones · Fox Corp · Inditex · Cerby"),
@@ -473,6 +477,16 @@ JOBS = [
                   "<b>Tech Lead</b> cuando el proyecto lo requiere: en Fox Corp lideré un equipo de cinco ingenieros durante los "
                   "tres años del proyecto."),
             ]),
+            dict(h=T("Working with AI", "Trabajo con IA"), pts=[
+                T("For the past <b>year</b> I have worked <b>100% with AI tools</b>: <b>Claude Code</b>, <b>Codex</b>, "
+                  "<b>OpenCode</b> and <b>GitHub Copilot</b>.",
+                  "Desde hace un <b>año</b> trabajo <b>100% con herramientas de IA</b>: <b>Claude Code</b>, <b>Codex</b>, "
+                  "<b>OpenCode</b> y <b>GitHub Copilot</b>."),
+                T("At <b>Dow Jones</b> I implemented my changes with <b>Claude Code</b> for the whole engagement; at "
+                  "<b>Fox Corp</b> I worked with <b>Cursor</b> in my last two months.",
+                  "En <b>Dow Jones</b> implementé mis cambios con <b>Claude Code</b> durante todo el proyecto; en "
+                  "<b>Fox Corp</b> trabajé con <b>Cursor</b> en mis últimos dos meses."),
+            ]),
         ],
         deliverables=[
             dict(kind="milestone",
@@ -498,14 +512,14 @@ JOBS = [
                  title=T("Constant training &amp; AI at work", "Capacitación constante e IA en el trabajo"),
                  role=T("Ongoing since 2020 · alongside the client work, not between projects",
                         "Continua desde 2020 · en paralelo al trabajo con clientes, no entre proyectos"),
-                 tech=["Claude Code", "Codex", "Python", "LangChain", "Claude SDK"],
+                 tech=["Claude Code", "Codex", "OpenCode", "GitHub Copilot", "Python", "LangChain", "Claude SDK"],
                  pts=[
                      T("Training is a constant part of the job at Wizeline: there is always a track running next to the client work.",
                        "La capacitación es parte constante del trabajo en Wizeline: siempre hay una ruta corriendo junto al trabajo con clientes."),
-                     T("<b>AI tooling</b>: trained to work with coding agents such as <b>Claude Code</b> and <b>Codex</b>, "
-                       "which I now use day to day on client work.",
-                       "<b>Herramientas de IA</b>: capacitado para trabajar con agentes de programación como <b>Claude Code</b> y "
-                       "<b>Codex</b>, que hoy uso a diario en el trabajo con clientes."),
+                     T("<b>AI tooling</b>: trained to work with coding agents such as <b>Claude Code</b>, <b>Codex</b>, "
+                       "<b>OpenCode</b> and <b>GitHub Copilot</b>, which I now use day to day on client work.",
+                       "<b>Herramientas de IA</b>: capacitado para trabajar con agentes de programación como <b>Claude Code</b>, "
+                       "<b>Codex</b>, <b>OpenCode</b> y <b>GitHub Copilot</b>, que hoy uso a diario en el trabajo con clientes."),
                      T("<b>AI engineering</b>: the current track — being trained to build agents, mainly in <b>Python</b> "
                        "with <b>LangChain</b> and the <b>Claude SDK</b>.",
                        "<b>AI engineering</b>: la ruta actual; me están formando para crear agentes, principalmente en <b>Python</b> "

@@ -49,7 +49,7 @@ Newest first. Jobs, client engagements inside them, and education.
 - **Role:** Senior Software Engineer / Tech Lead
 - **Clients:** Dow Jones · Fox Corp · Inditex · Cerby
 - **Now:** Training as an AI engineer
-- **Stack:** .NET, Java, Spring, Node.js, Python, React, AWS, PostgreSQL, MariaDB, Claude Code, Codex, LangChain, Claude SDK
+- **Stack:** .NET, Java, Spring, Node.js, Python, React, AWS, PostgreSQL, MariaDB, Claude Code, Codex, OpenCode, GitHub Copilot, Cursor, LangChain, Claude SDK
 
 Wizeline is a **software consultancy** with many clients: its engineers are placed on client engagements, and every entry below is a client I have worked for since joining in March 2020 — Dow Jones, Fox Corp, Inditex and Cerby. My role is **Senior Software Engineer / Tech Lead**: I join the client's team, build and run their backend services, and lead when the engagement calls for it. Alongside the client work there is **constant training** — including on AI tools such as **Claude Code** and **Codex** — and right now it is aimed at becoming an **AI engineer**: building agents, mainly in **Python** with **LangChain** and the **Claude SDK**.
 
@@ -58,6 +58,11 @@ Wizeline is a **software consultancy** with many clients: its engineers are plac
 - Wizeline is a consultancy: it has many clients, and its engineers work embedded in those clients' teams. Since March 2020 I have gone through four of them — each has its own entry below.
 - Mostly backend: designing services, data models and integrations, and taking features from design to production in whatever stack the client runs — **.NET**, **Java / Spring**, **Node.js** or **Python**, on **AWS**, **PostgreSQL** and **MariaDB**.
 - **Tech Lead** when the engagement calls for it: at Fox Corp I led a squad of five engineers for the three years of the engagement.
+
+#### Working with AI
+
+- For the past **year** I have worked **100% with AI tools**: **Claude Code**, **Codex**, **OpenCode** and **GitHub Copilot**.
+- At **Dow Jones** I implemented my changes with **Claude Code** for the whole engagement; at **Fox Corp** I worked with **Cursor** in my last two months.
 
 #### Milestone: Mentor & Associate Manager
 
@@ -76,10 +81,10 @@ Wizeline is a **software consultancy** with many clients: its engineers are plac
 *Ongoing since 2020 · alongside the client work, not between projects*
 
 - Training is a constant part of the job at Wizeline: there is always a track running next to the client work.
-- **AI tooling**: trained to work with coding agents such as **Claude Code** and **Codex**, which I now use day to day on client work.
+- **AI tooling**: trained to work with coding agents such as **Claude Code**, **Codex**, **OpenCode** and **GitHub Copilot**, which I now use day to day on client work.
 - **AI engineering**: the current track — being trained to build agents, mainly in **Python** with **LangChain** and the **Claude SDK**.
 - **Now:** In training to become an **AI engineer**: agents in Python, LangChain and the Claude SDK.
-- **Skills:** Claude Code, Codex, Python, LangChain, Claude SDK
+- **Skills:** Claude Code, Codex, OpenCode, GitHub Copilot, Python, LangChain, Claude SDK
 
 #### Dow Jones
 
@@ -120,7 +125,7 @@ Wizeline's engagement with Dow Jones, on a **gas-price SaaS**: a platform that h
 ##### Day to day
 
 - Engineered new features and resolved production issues in a high-velocity environment.
-- Leveraged AI tooling to accelerate development cycles and enhance code quality.
+- Worked with **Claude Code** for the whole engagement: it is how I implemented my changes, to accelerate development cycles and enhance code quality.
 
 ##### Milestone: Feature set delivered for Costco
 
@@ -139,7 +144,7 @@ Wizeline's engagement with Dow Jones, on a **gas-price SaaS**: a platform that h
 - **Team:** 5 engineers
 - **Cloud:** AWS
 - **Data:** PostgreSQL
-- **Stack:** Java 8, Java 11, Spring Boot, JavaScript, Node.js, AWS Lambda, Amazon SNS, Amazon SQS, Amazon ECS, CloudWatch, PostgreSQL
+- **Stack:** Java 8, Java 11, Spring Boot, JavaScript, Node.js, AWS Lambda, Amazon SNS, Amazon SQS, Amazon ECS, CloudWatch, PostgreSQL, Cursor
 
 Wizeline's engagement with Fox Corp, where I was Tech Lead of a squad of five engineers. Two kinds of services shared one AWS messaging layer: serverless workers written in JavaScript, and Java applications running on containers.
 
@@ -165,6 +170,10 @@ Wizeline's engagement with Fox Corp, where I was Tech Lead of a squad of five en
 ##### Observability & debugging
 
 - **CloudWatch** was where we read the logs — following what a message actually did across services and debugging the problems that turned up.
+
+##### AI tooling
+
+- Worked with **Cursor** during my last two months on the engagement.
 
 ##### Milestone: Tech Lead
 
