@@ -150,6 +150,7 @@ YT_VR = "https://www.youtube.com/watch?v=dyOfO0sYyp8&amp;t=446s"
 YT_REEL = "https://www.youtube.com/watch?v=PWaarVatoEU"
 CERBY = "https://www.cerby.com/"
 INDITEX = "https://www.inditex.com/"
+PRICEPRO = "https://pricepro.opisnet.com/"
 
 def ext(href, text):
     return f'<a href="{href}" target="_blank" rel="noopener noreferrer">{text}</a>'
@@ -224,7 +225,8 @@ JOBS = [
                                   "Completé el set completo de funcionalidades que Costco necesitaba, cada una entregada con las pruebas unitarias extensas que el proyecto exigía.")],
                            result=T("Delivered in full, earning the <b>client's satisfaction</b>.",
                                     "Entregado por completo, logrando la <b>satisfacción del cliente</b>.")),
-                  ]),
+                  ],
+                  links=[("pricepro.opisnet.com", PRICEPRO)]),
              dict(kind="project", slug="wizeline-media", role=T("Tech Lead"), co="Fox Corp", loc=REMOTE, inds=[T("Media &amp; Entertainment", "Medios y Entretenimiento")],
                   facts=[(T("Team", "Equipo"), T("5 engineers", "5 ingenieros")),
                          (T("Cloud"), "AWS"),

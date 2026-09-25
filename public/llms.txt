@@ -97,6 +97,7 @@ Wizeline is a **software consultancy** with many clients: its engineers are plac
 - **Cloud:** AWS
 - **Data:** PostgreSQL
 - **Stack:** .NET, C#, PostgreSQL, AWS, DDD, Domain events, Message queues, Outbox pattern, Unit tests, Claude Code
+- **Links:** [pricepro.opisnet.com](https://pricepro.opisnet.com/)
 
 Wizeline's engagement with Dow Jones, on a **gas-price SaaS**: a platform that helps gas station owners keep a history of their prices, see what competitors are charging and set their own prices automatically with strategies they define. Built in **.NET** on **PostgreSQL**, designed with **Domain-Driven Design**, and split into many services that talk to each other through message queues.
 
