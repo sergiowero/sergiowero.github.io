@@ -249,7 +249,7 @@ Wizeline's engagement with **Inditex**, the retail group behind Zara. The projec
 - **Team:** Founding project team
 - **Focus:** Backend
 - **Architecture:** Modular monolith · DDD
-- **Stack:** Python, Flask, DDD, Modular monolith, SQLAlchemy, Alembic, Chrome extension, Next.js, React
+- **Stack:** Python, Flask, DDD, Modular monolith, SQLAlchemy, Alembic, Chrome extension, Next.js, TypeScript, React
 - **Links:** [cerby.com](https://www.cerby.com/)
 
 Wizeline's engagement with **Cerby**, a cybersecurity company whose software manages the **credentials of a business** — the accounts and passwords its teams share for the apps they use. I was part of the **initial project team**, on the backend: I led the first version of the backend, modelled the initial database and built the company's first Chrome extension.
@@ -272,7 +272,7 @@ Wizeline's engagement with **Cerby**, a cybersecurity company whose software man
 
 ##### Frontend, in support
 
-- Worked as an **auxiliary hand on the frontend**, built in **Next.js**, whenever the web side needed it.
+- Worked as an **auxiliary hand on the frontend**, built in **Next.js** with **TypeScript**, whenever the web side needed it.
 
 ##### Milestone: The MVP, delivered
 
@@ -280,7 +280,7 @@ Wizeline's engagement with **Cerby**, a cybersecurity company whose software man
 
 - The whole MVP — backend, web frontend and Chrome extension — shipped as the product's first version.
 - **Result:** A **success**: it is what allowed Cerby to keep going — the company is **still alive today**, built on what that MVP started.
-- **Skills:** Python, Flask, Next.js, Chrome extension
+- **Skills:** Python, Flask, Next.js, TypeScript, Chrome extension
 
 ##### Milestone: First version of the backend
 

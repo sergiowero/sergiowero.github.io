@@ -368,7 +368,7 @@ JOBS = [
                          (T("Focus", "Enfoque"), "Backend"),
                          (T("Architecture", "Arquitectura"), T("Modular monolith · DDD", "Monolito modular · DDD"))],
                   tech=["Python", "Flask", "DDD", T("Modular monolith", "Monolito modular"), "SQLAlchemy", "Alembic",
-                        T("Chrome extension", "Extensión de Chrome"), "Next.js", "React"],
+                        T("Chrome extension", "Extensión de Chrome"), "Next.js", "TypeScript", "React"],
                   lede=T("Wizeline's engagement with <b>Cerby</b>, a cybersecurity company whose software manages the "
                          "<b>credentials of a business</b> — the accounts and passwords its teams share for the apps they use. "
                          "I was part of the <b>initial project team</b>, on the backend: I led the first version of the backend, "
@@ -400,15 +400,15 @@ JOBS = [
                             "Los cambios de esquema pasaban por un <b>sistema de migraciones</b> hecho sobre <b>SQLAlchemy</b> (con Alembic), de modo que cada cambio al modelo quedaba versionado y era repetible entre entornos."),
                       ]),
                       dict(h=T("Frontend, in support", "Frontend, como apoyo"), pts=[
-                          T("Worked as an <b>auxiliary hand on the frontend</b>, built in <b>Next.js</b>, whenever the web side needed it.",
-                            "Trabajé como <b>apoyo en el frontend</b>, hecho en <b>Next.js</b>, cuando el lado web lo necesitaba."),
+                          T("Worked as an <b>auxiliary hand on the frontend</b>, built in <b>Next.js</b> with <b>TypeScript</b>, whenever the web side needed it.",
+                            "Trabajé como <b>apoyo en el frontend</b>, hecho en <b>Next.js</b> con <b>TypeScript</b>, cuando el lado web lo necesitaba."),
                       ]),
                   ],
                   deliverables=[
                       dict(kind="milestone",
                            title=T("The MVP, delivered", "El MVP, entregado"),
                            role=T("The initial platform Cerby launched with", "La plataforma inicial con la que Cerby se lanzó"),
-                           tech=["Python", "Flask", "Next.js", T("Chrome extension", "Extensión de Chrome")],
+                           tech=["Python", "Flask", "Next.js", "TypeScript", T("Chrome extension", "Extensión de Chrome")],
                            pts=[T("The whole MVP — backend, web frontend and Chrome extension — shipped as the product's first version.",
                                   "El MVP completo, backend, frontend web y extensión de Chrome, entregado como la primera versión del producto.")],
                            result=T("A <b>success</b>: it is what allowed Cerby to keep going — the company is <b>still alive today</b>, built on what that MVP started.",
