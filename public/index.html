@@ -337,19 +337,21 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     .stat .l{font-family:'Inter',system-ui,sans-serif;text-transform:none;}
     ul.pts li::before{content:"•";font-weight:400;}   /* a bullet every parser knows, instead of ">" */
     .ind::before{content:none;} .ind{padding-left:2px;}
-    .sk-dots{display:none !important;}                            /* the ASCII bar carries no text worth parsing */
-    .sk-word{display:inline;color:var(--muted);}                  /* the level as a word instead: Expert / Avanzado */
     .toolcard .tt::before{content:none;}
     .hlinks a::before{content:none;}
 
     /* "PDF ATS" prints with html[data-print="ats"] (cv-export.js also drops the dark theme for it).
        Two columns are the classic way to lose a resume in a parser that rebuilds text by position,
-       so this one linearises: main first, then everything the aside held, full width. */
+       so this one linearises: main first, then everything the aside held, full width. Plain "PDF"
+       keeps the on-screen skin, including the ASCII skill meters — only the ATS pass swaps them
+       for a plain word (Expert / Advanced …), since a parser can't read "[████░░]". */
     :root[data-print="ats"] .cols{display:block;}
     :root[data-print="ats"] .main,:root[data-print="ats"] .aside{flex:none;width:100%;min-width:0;}
     :root[data-print="ats"] .aside{margin-top:8px;}
     :root[data-print="ats"] .sk-top{justify-content:flex-start;gap:10px;}
     :root[data-print="ats"] .sk-top .sk-pct{margin-left:auto;}
+    :root[data-print="ats"] .sk-dots{display:none !important;}
+    :root[data-print="ats"] .sk-word{display:inline;color:var(--muted);}
     :root[data-print="ats"] .ai{background:none;border-color:var(--line);}
   }
 
