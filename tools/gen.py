@@ -3,8 +3,9 @@ import re
 """Generates the A4-sheet CV variants (v2-v4, v6-v9) from shared data.
 v1 and v5 are hand-written and left untouched."""
 import os
+import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT =os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUBLIC = os.path.join(ROOT, "public")        # static files, copied as-is by Astro
 OUT = os.path.join(PUBLIC, "Backups")        # all variants
 LIVE = ("v3-dark-terminal.html", os.path.join(PUBLIC, "index.html"))   # the chosen design, published at the root
@@ -2913,6 +2914,9 @@ def finish_body(body, v):
 
 # ------------------------------------------------------------------ BUILD
 if __name__ == "__main__":
+    # the log prints "→"; a Windows console defaults to cp1252 and can't encode it (macOS/Linux are already UTF-8)
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     for fname, v in VERSIONS.items():
         body = fill(v["body"]).replace("$AI_TEXT$", h(AI_TEXT)).replace("$AI_CHIPS$", chips_html(AI_CHIPS))
         body = finish_body(body, v)
