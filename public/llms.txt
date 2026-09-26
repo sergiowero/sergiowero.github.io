@@ -309,7 +309,7 @@ Wizeline's engagement with **Cerby**, a cybersecurity company whose software man
 - **Platform:** iOS · Apple Arcade
 - **Built in:** 9 months
 - **Stack:** C#, Unity3D, iOS, Apple Arcade, IoC / DI, Unit tests, Flow
-- **Links:** [The Lullaby of Life on Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/)
+- **Links:** [1simpleidea.mx](https://1simpleidea.mx/), [The Lullaby of Life on Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/)
 
 Nine months at 1 Simple Idea on **The Lullaby of Life**, a mobile game for iOS built in **Unity3D**. The game was split in two — the visual and gameplay side, and a logic layer covered by unit tests — and held together by two systems written specifically for it: a hand-made IoC / DI container and **Flow**, a data-connection system.
 

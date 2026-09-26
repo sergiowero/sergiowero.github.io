@@ -152,6 +152,7 @@ YT_REEL = "https://www.youtube.com/watch?v=PWaarVatoEU"
 CERBY = "https://www.cerby.com/"
 INDITEX = "https://www.inditex.com/"
 PRICEPRO = "https://pricepro.opisnet.com/"
+SIMPLEIDEA = "https://1simpleidea.mx/"
 
 def ext(href, text):
     return f'<a href="{href}" target="_blank" rel="noopener noreferrer">{text}</a>'
@@ -596,7 +597,7 @@ JOBS = [
                  pts=[T(f"The game later reached Steam: {ext(STEAM, 'The Lullaby of Life on Steam')}.",
                         f"El juego llegó después a Steam: {ext(STEAM, 'The Lullaby of Life en Steam')}.")]),
         ],
-        links=[(T("The Lullaby of Life on Steam", "The Lullaby of Life en Steam"), STEAM)],
+        links=[("1simpleidea.mx", SIMPLEIDEA), (T("The Lullaby of Life on Steam", "The Lullaby of Life en Steam"), STEAM)],
     )),
     dict(role=T("Senior Software Engineer", "Ingeniero de Software Senior"), co="Virtually Live", tech=["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"], period=T("Feb 2017 - Jan 2020", "Feb 2017 - Ene 2020"), frm="2017-02", to="2020-01", inds=[T("Gaming · VR", "Videojuegos · VR")], loc=T("Málaga, Spain", "Málaga, España"), cur=False, pts=[
         T('Developed <b>racing games</b> for HTC Vive, Oculus, and Gear VR platforms.',
