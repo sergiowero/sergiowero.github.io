@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Shell from '../../../layouts/Shell.astro';
+import AiNote from '../../../components/AiNote.astro';
 import { formatDate, getPosts, langOf, readingTime, slugOf, tagSlug, translationOf, urlOf } from '../../../lib/blog';
 
 export async function getStaticPaths() {
@@ -32,6 +33,7 @@ const minutes = readingTime(post.body);
           : <>also in <a href={urlOf(alt)}>English</a></>}</span>
       )}
     </div>
+    <AiNote lang={lang} />
     <div class="prose"><Content /></div>
     <a class="back" href="/blog/">← cd ..</a>
   </article>

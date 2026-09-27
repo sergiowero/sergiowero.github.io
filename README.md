@@ -41,6 +41,8 @@ Los datos del CV en `tools/gen.py` son `T(en, es)`; `T("solo esto")` sirve cuand
    ```
 3. `git push` → GitHub Actions construye y despliega (≈1 min).
 
+Cada entrada abre con una nota (en el idioma de la entrada) que dice que yo la escribo y la IA solo revisa gramática y estructura. La pone el template, no se escribe en el `.md`: el texto está en [`src/components/AiNote.astro`](src/components/AiNote.astro).
+
 ## Agregar entradas al timeline (`/timeline/`)
 
 Los empleos de `JOBS` y la educación ya aparecen. Para añadir otra cosa (charla, proyecto, certificación…), agrega un dict a `EXTRA_HISTORY` en `tools/gen.py`:
