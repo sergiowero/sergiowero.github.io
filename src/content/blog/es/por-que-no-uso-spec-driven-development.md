@@ -89,8 +89,9 @@ mi-proyecto/
 
 ### 2. Dos fuentes de verdad: la spec se pudre
 
+El código siempre será la verdadera fuente de verdad. Una lista de specs mal actualizadas solo agrega contexto innecesario y erróneo, y puede causar un efecto de bola de nieve donde, al final, la spec ya no podrá ser salvada.
+
 - *Drift*: el código cambia, el markdown no.
-- En la práctica nadie actualiza la spec; el código siempre gana.
 
 <!-- Ejemplo de sesión de terminal: bloque "console". Las líneas con "$ " se pintan como comandos, el resto como salida.
      Los hashes y mensajes son de relleno: pon los de tu repo. -->
