@@ -1,0 +1,122 @@
+{
+  "site": {
+    "name": "Sergio Sánchez",
+    "full_name": "Sergio de Jesús Sánchez Robles",
+    "url": "https://sergiowero.github.io",
+    "locales": {
+      "en": "en_US",
+      "es": "es_MX"
+    }
+  },
+  "cards": {
+    "cv": {
+      "path": "/",
+      "prompt": "cat cv.md",
+      "title": "Sergio de Jesús Sánchez Robles",
+      "roles": [
+        "Senior Software Engineer",
+        "Tech Lead",
+        "Backend & Full-Stack",
+        "Game Dev",
+        "AI-Assisted"
+      ],
+      "stats": [
+        {
+          "n": "16+",
+          "l": "yrs experience"
+        },
+        {
+          "n": "6",
+          "l": "engineers led"
+        },
+        {
+          "n": "Gaming · Media · Enterprise",
+          "l": "industries"
+        }
+      ],
+      "chips": [
+        ".NET",
+        "Spring",
+        "Python",
+        "Node.js",
+        "C#",
+        "Java",
+        "FastAPI",
+        "JavaScript",
+        "React",
+        "AWS",
+        "PostgreSQL",
+        "Microservices",
+        "RESTful APIs",
+        "Unit Testing",
+        "OOP",
+        "Unity3D",
+        "Git",
+        "Full-Stack",
+        "Typescript",
+        "Docker"
+      ],
+      "photo": true,
+      "section": "Resume / CV",
+      "lang": "EN · ES"
+    },
+    "timeline": {
+      "path": "/timeline/",
+      "prompt": "cat timeline.md",
+      "title": "Timeline",
+      "subtitle": "Sergio de Jesús Sánchez Robles",
+      "text": "All the projects I have worked on so far, newest first: role, stack and results of each one.",
+      "stats": [
+        {
+          "n": "2009 – today",
+          "l": "span"
+        },
+        {
+          "n": "6",
+          "l": "companies"
+        },
+        {
+          "n": "4",
+          "l": "client projects"
+        }
+      ],
+      "chips": [
+        "Wizeline",
+        "Dow Jones",
+        "Fox Corp",
+        "Inditex",
+        "Cerby",
+        "1 Simple Idea",
+        "Virtually Live",
+        "Intel",
+        "Gameloft",
+        "Kaxan Games"
+      ],
+      "chipRows": 2,
+      "section": "Timeline",
+      "lang": "EN · ES"
+    },
+    "about": {
+      "path": "/about/",
+      "prompt": "whoami",
+      "title": "Sergio de Jesús Sánchez Robles",
+      "subtitle": "Senior Software Engineer · Tech Lead",
+      "text": "I'm Sergio Sánchez, a software engineer with over 15 years of experience across gaming, media, and enterprise.",
+      "chips": [
+        "VS Code",
+        "IntelliJ IDEA",
+        "Rider",
+        "Unity3D",
+        "PostgreSQL",
+        "AWS",
+        "Git",
+        "Claude Code",
+        "opencode",
+        "Codex"
+      ],
+      "photo": true,
+      "section": "About me",
+      "lang": "EN · ES"
+    }
+  }
+}

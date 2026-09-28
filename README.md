@@ -11,6 +11,7 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 | `/llms.txt` | Perfil para IA | estático (`tools/gen.py`), ver abajo |
 | `/cv/{en,es}/source.yaml`, `/cv/template.html` | Datos y plantilla del CV para generadores externos | estático (`tools/gen.py`), ver abajo |
 | `/robots.txt` | Crawlers | estático (`public/robots.txt`) |
+| `/og/<página>.png` | Imagen de la link card de cada página | Astro, en el build (`src/pages/og/[...card].png.ts`), ver abajo |
 
 Todas las páginas comparten el mismo cascarón (diseño "Dark Terminal"): fondo, hoja A4, encabezado con pestañas, ES/EN y claro/oscuro. El idioma y el tema se guardan en `localStorage` y se conservan entre páginas.
 
@@ -40,7 +41,8 @@ Los datos del CV en `tools/gen.py` son `T(en, es)`; `T("solo esto")` sirve cuand
    draft: false   # true lo oculta en producción
    ---
    ```
-3. `git push` → GitHub Actions construye y despliega (≈1 min).
+   `title`, `description`, fecha y tags son también lo que muestra su link card (sin `description`, se usa el primer párrafo).
+3. `git push` → GitHub Actions construye y despliega (≈1 min), con la imagen de su link card incluida.
 
 ## Agregar entradas al timeline (`/timeline/`)
 
@@ -65,6 +67,25 @@ La barra `grep -i` arriba del timeline (se queda pegada al hacer scroll; `/` la 
 - `// filters` despliega chips de tech, industria y tipo; cada chip solo agrega (o quita) su palabra al buscador. La `×` (o Esc) limpia todo.
 
 Hasta **dos niveles**: cualquier entrada acepta `children=[…]` (en un empleo de `JOBS`, `history_children=[…]`) con dicts del mismo formato; se dibujan anidados y el panel lateral indica `↳ inside <padre>`. Guía completa en [`docs/adding-history-entries.md`](docs/adding-history-entries.md).
+
+## Link cards (vista previa al compartir un link)
+
+Cada página trae su `<title>`, `description`, `canonical` y las etiquetas Open Graph y Twitter, así que un link pegado en WhatsApp, LinkedIn, Slack, X, Discord o Teams se ve como una tarjeta con título, resumen e imagen propios:
+
+| Página | Tarjeta | Imagen |
+|---|---|---|
+| `/` (y `/cv/`) | nombre, roles, años de experiencia, industrias, skills, foto | `/og/cv.png` |
+| `/timeline/` (y `/history/`) | periodo, empresas y proyectos de cliente | `/og/timeline.png` |
+| `/about/` | bio, herramientas, foto | `/og/about.png` |
+| `/blog/` | número de entradas, tags | `/og/blog.png` |
+| `/blog/<en\|es>/<slug>/` | título, descripción, fecha, tiempo de lectura, tags (`og:type` `article`) | `/og/blog/<en\|es>/<slug>.png` |
+| `/blog/tags/<tag>/` | entradas con ese tag | `/og/blog/tags/<tag>.png` |
+
+- Las imágenes (1200×630, diseño "Dark Terminal") se dibujan en el build con [satori](https://github.com/vercel/satori) + [resvg](https://github.com/yisibl/resvg-js): una sola plantilla en `src/lib/og.ts`, el contenido de cada tarjeta en `src/lib/cards.ts`. No se guardan en el repo: una entrada nueva del blog tiene la suya en el siguiente deploy sin hacer nada.
+- CV, Timeline y About salen de los **mismos datos** que las páginas: `python3 tools/gen.py` escribe sus etiquetas en el HTML y el contenido de sus imágenes en `src/shell/cards.json`. Los años de experiencia se cuentan al correr `gen.py`, igual que en `/llms.txt`.
+- Van en inglés (el idioma que lee un crawler; ES se elige en el navegador), con `og:locale:alternate` `es_MX`. Las entradas del blog van en su idioma.
+- Slack muestra además dos datos bajo la tarjeta (`twitter:label1/2`): experiencia y ubicación, empresas, tiempo de lectura y tags…
+- Para verla antes de compartir: `npm run dev` y abre `http://localhost:4321/og/cv.png`. Ya publicada, los depuradores de cada red la vuelven a leer si cambió: [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/), [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/). WhatsApp y X guardan la tarjeta en caché un tiempo, así que un cambio puede tardar en verse ahí.
 
 ## Perfil para IA (`/llms.txt`)
 
@@ -107,5 +128,5 @@ python3 tools/gen.py   # regenera las páginas estáticas (CV, About, Timeline, 
 
 - `public/Backups/` — las 9 variantes de diseño evaluadas (`public/Backups/index.html` es el selector).
 - `public/favicons/` — las 6 opciones de favicon; la elegida está en `public/` como `favicon.svg`, `favicon.ico` y `apple-touch-icon.png`.
-- `src/shell/` — CSS, head, header y scripts del cascarón, exportados por `tools/gen.py` y usados por `src/layouts/Shell.astro`. No editar a mano.
+- `src/shell/` — CSS, head, header y scripts del cascarón, exportados por `tools/gen.py` y usados por `src/layouts/Shell.astro`, más `cards.json` (las link cards de CV, Timeline y About). No editar a mano.
 - `public/cv-export.js` — la descarga en PDF/DOCX. Este sí se edita a mano; `tools/gen.py` solo lo enlaza desde el CV junto con el JSON de datos.
