@@ -310,6 +310,11 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   .edu:last-child{border-bottom:0;}
   .edu .d{font-size:9.5px;font-weight:600;color:var(--fg);}
   .edu .m{font-size:8.2px;color:var(--muted);}
+  .spoken{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 0;border-bottom:1px dashed var(--line);}
+  .spoken:last-child{border-bottom:0;}
+  .spoken .ln{font-size:9.5px;font-weight:600;color:var(--fg);}
+  .spoken .lv{font-family:'JetBrains Mono',monospace;font-size:8.2px;color:var(--green);}
+  .spoken .sep{display:none;}
   .foot{margin-top:auto;padding-top:5px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:7.6px;color:var(--muted);display:flex;justify-content:space-between;}
   .foot .g{color:var(--green);}
 
@@ -353,6 +358,8 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     :root[data-print="ats"] .sk-dots{display:none !important;}
     :root[data-print="ats"] .sk-word{display:inline;color:var(--muted);}
     :root[data-print="ats"] .ai{background:none;border-color:var(--line);}
+    :root[data-print="ats"] .spoken{display:block;}   /* one line of text a parser reads as "Spanish — Native" */
+    :root[data-print="ats"] .spoken .sep{display:inline;}
   }
 
 </style>
