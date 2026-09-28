@@ -660,4 +660,4 @@ My first job in games, and my first shipped projects. Almost two years at Kaxan 
 - [The Lullaby of Life on Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/): the Unity3D game shipped on Apple Arcade and Steam
 - [VR racing game — iOS gameplay](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s): Virtually Live, Formula E
 - [Demo reel](https://www.youtube.com/watch?v=PWaarVatoEU): five iOS games from Kaxan Games
-- [Structured CV data](https://sergiowero.github.io/cv/en/source.yaml): everything above as YAML, for tools ([Spanish](https://sergiowero.github.io/cv/es/source.yaml))
+- [Timeline as a tree of records](https://sergiowero.github.io/cv/en/tree.json): everything above as JSON records with tech and tags, for programs ([Spanish](https://sergiowero.github.io/cv/es/tree.json), [schema](https://sergiowero.github.io/cv/tree.schema.json))

@@ -9,7 +9,7 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 | `/blog/` | Blog | Astro: índice, páginas por tag (`/blog/tags/<tag>/`) y entradas (`/blog/<en|es>/<slug>/`) |
 | `/about/` | About me | estático (placeholder con el nombre) |
 | `/llms.txt` | Perfil para IA | estático (`tools/gen.py`), ver abajo |
-| `/cv/{en,es}/source.yaml`, `/cv/template.html` | Datos y plantilla del CV para generadores externos | estático (`tools/gen.py`), ver abajo |
+| `/cv/{en,es}/tree.json`, `/cv/tree.schema.json`, `/cv/template.html` | El timeline como árbol de records, su esquema y la plantilla del CV | estático (`tools/gen.py`), ver abajo |
 | `/robots.txt` | Crawlers | estático (`public/robots.txt`) |
 
 Todas las páginas comparten el mismo cascarón (diseño "Dark Terminal"): fondo, hoja A4, encabezado con pestañas, ES/EN y claro/oscuro. El idioma y el tema se guardan en `localStorage` y se conservan entre páginas.
@@ -74,27 +74,37 @@ Hasta **dos niveles**: cualquier entrada acepta `children=[…]` (en un empleo d
 - Los años de experiencia (año actual − 2010, igual que el CV) se calculan al correr `gen.py`: regenera una vez al año para que no se queden atrás.
 - `public/robots.txt` deja pasar a todos los crawlers y los aleja de `/Backups/` y `/favicons/`, que repiten el CV en borradores de diseño.
 
-## Datos del CV para generadores externos (`/cv/`)
+## El timeline como árbol de records (`/cv/`)
 
-Para armar CVs enfocados desde otro proyecto, `python3 tools/gen.py` publica el CV como datos, de los **mismos datos** que el CV, el timeline y About (no editar a mano):
+Para armar CVs dinámicos desde otro programa, `python3 tools/gen.py` publica todo el timeline como un **árbol de records tipados**, de los mismos datos que el CV, el timeline y About (no editar a mano). **El timeline (`/timeline/`) se dibuja desde ese mismo árbol**, así que la página y el JSON no pueden diferir.
 
-- **`/cv/en/source.yaml`** y **`/cv/es/source.yaml`** — todo en un idioma por archivo: `meta`, `profile` (nombre, roles, resumen, bio), `contact`, `stats`, `skills`, `languages`, `experience`, `education`, `other`, `shipped_titles`, `toolbox` y `labels` (títulos de sección en pantalla y para ATS, meses, "Actualidad"…). Cada entrada del timeline trae todo lo largo (`summary`, `facts`, `highlights`, `sections`, `achievements`, `stack`, `links`, `children`), y los empleos y títulos además un bloque `cv` con exactamente lo que imprime el CV de una hoja.
-- **`/cv/template.html`** — el CV actual como plantilla [Mustache](https://mustache.github.io): el mismo HTML y CSS (autocontenido), con etiquetas donde va el contenido. Se renderiza con **cualquier** motor Mustache (mustache.js, Stubble en C#, JMustache en Java, chevron en Python) usando un `source.yaml` como vista:
+- **`/cv/en/tree.json`** y **`/cv/es/tree.json`** — un archivo por idioma, con los mismos `id`, la misma estructura y los mismos tags:
+  - `records` — cada nodo del árbol, en orden de página. Todos tienen **las mismas llaves** (`null` o `[]` cuando no aplican). Tipos (`type`): `person` (la raíz), `job`, `project` (trabajo para un cliente dentro de un empleo), `education`, los logros `milestone`, `release`, `prototype`, `award`, `pace`, `training` (y `talk`), `topic` (un área de trabajo con título dentro de una entrada) y `highlight` (cada bullet). `category` los agrupa: position, work, education, achievement, content.
+  - Cada record trae `tech` (ids del catálogo de tecnologías), `tags` (ids del vocabulario) y `tag_sources` (de dónde salió cada tag). También `context` (empleo, cliente, rol, periodo, lugar e industria heredados de sus ancestros) y `embedding_text` (un texto plano autocontenido listo para embeddings o para un prompt).
+  - `tree` — la misma estructura como ids anidados; `parent`, `children` y `path` en cada record dicen lo mismo.
+  - `vocabulary` — los tipos; los tags con su faceta (domain, practice, competency, outcome, industry); y las tecnologías con categoría, alias, tags implícitos, dominio autoevaluado (`proficiency`) y `usage` (en qué entradas aparece, meses, años; `exact: false` cuando parte del tiempo viene de un proyecto sin fechas).
+  - `profile` — la persona: nombre, roles, resumen, bio, contacto, idiomas.
+  - `resume` — el CV de una hoja como vista lista para `template.html`; sus `highlight_ids` apuntan a records.
+- **`/cv/tree.schema.json`** — el spec: JSON Schema (2020-12) de cada tipo y campo, con los enums del vocabulario (un validador rechaza un tag o una tecnología que no existe).
+- **`/cv/template.html`** — el CV actual como plantilla [Mustache](https://mustache.github.io), autocontenida. Se renderiza con **cualquier** motor Mustache (mustache.js, Stubble en C#, JMustache en Java, chevron en Python) usando `resume` como vista:
   1. Convierte cada texto a HTML: escapa `& < > "` y luego `**x**` → `<b>x</b>`, `[x](url)` → `<a href="url">x</a>` (por eso la plantilla usa `{{{triple llave}}}`).
-  2. Para un CV enfocado, recorta los datos antes de renderizar (`experience`, los `cv.highlights` de cada empleo, `skills.technologies`…): cada lista pinta lo que trae, en orden.
+  2. Para enfocar el CV, edita la vista: deja en `experience` los empleos que quieras y pon en sus `highlights` el `text` de los records `highlight` que elegiste (por tags, tech o embeddings). Cada lista pinta lo que trae, en orden.
   3. Imprime a PDF desde un navegador (A4, sin márgenes, con fondos; en Chromium `page.pdf` con `preferCSSPageSize` y `printBackground`).
   - En `<html>`: `data-theme="dark"` para el tema oscuro, `data-print="ats"` para el PDF de una columna para ATS.
-  - Sin lógica a propósito (solo secciones, secciones invertidas, nombres con punto y `{{.}}`): los datos traen ya calculado lo que la página calcula con JS (duración de cada empleo en `dates.elapsed`, la barra ASCII de cada skill en `meter`), y lo que dependía del marcado (íconos de contacto, separadores de roles) va en CSS.
-  - Probado: mustache.js y chevron dan el mismo HTML byte a byte, y el render se ve igual al CV publicado salvo el gris de los "Tech: …" en los puntos de Wizeline (el Markdown del YAML no lleva ese matiz).
 
-Reglas del formato, pensadas para leerlo de forma determinista:
+### Tecnologías y tags (en `tools/gen.py`)
 
-- Un solo documento YAML por archivo; los metadatos van en `meta:` (primer bloque), no en un segundo documento.
-- Todo texto va entre comillas dobles, así ningún parser adivina tipos (`"2020-03"` y `"no"` siguen siendo texto). Las fechas son `"YYYY-MM"`; `dates.end: null` con `ongoing: true` = actualidad.
-- El texto solo puede traer `**negritas**` y `[texto](url)`; `gen.py` falla si un texto choca con eso.
-- Los `id` son estables e iguales en los dos idiomas: empleos y títulos usan su `slug` (el mismo ancla de `/timeline/#h-<slug>`); secciones y logros usan `<id-de-la-entrada>/<título en inglés>`. Si renombras el título de un logro o de un grupo, su `id` cambia: fíjalo con `id="…"` en su `dict` si ya lo usa un generador.
-- Si PyYAML está instalado, `gen.py` vuelve a leer cada archivo y verifica que salga igual a los datos; sin PyYAML solo lo escribe.
-- `meta.schema` (`cv-source/1`, `cv-template/1`) sube cuando se renombra o se quita una llave; agregar llaves no lo cambia.
+- **`TECH_CATALOG`** — cada tecnología: nombre, categoría (language, framework, cloud, database, engine, platform, ai-tool…), padre (`aws-lambda` → `aws`), los alias con que la escriben los datos (`"Java 11"` → `java`), el patrón que la encuentra en un texto y los tags que implica (`unity` → `game-dev`).
+- **`TAGS`** — el vocabulario controlado: faceta, etiqueta en los dos idiomas, un patrón de palabras clave sobre el texto en inglés y los alias de las listas `tech=[…]` que en realidad son prácticas o competencias (`"Mentorship"` → `mentoring`, `"Outbox pattern"` → `reliable-messaging`).
+- Los tags de un record salen de reglas deterministas: su stack, las tecnologías que menciona su texto, palabras clave, su tipo (`release` → `shipped`), su industria y si es remoto. A mano: `tags=["…"]` en una entrada, un grupo o un logro.
+- Cada cadena de un `tech=[…]` tiene que existir en `TECH_CATALOG` o en los alias de `TAGS`: si agregas una nueva, `gen.py` se detiene y te dice cuál falta.
+
+Reglas que un programa puede dar por hechas (`gen.py` se detiene si alguna falla):
+
+- Los `id` son estables e iguales en los dos idiomas: las entradas usan su `slug` (el mismo ancla de `/timeline/#h-<slug>`); topics y logros usan `<entrada>/<título en inglés>` (fíjalo con `id="…"` en su `dict` si ya lo usa un generador); los highlights son posicionales (`<padre>/<n>`, o `<empleo>/cv<n>` para un bullet que solo sale en el CV).
+- Cada record tiene las mismas llaves; cada `parent` lista a su hijo; `tech` y `tags` solo usan ids del vocabulario; los árboles en inglés y en español tienen la misma estructura, tech y tags.
+- El texto solo trae `**negritas**` y `[texto](url)`. Las fechas son `"YYYY-MM"`; `dates.end: null` con `ongoing: true` es actualidad.
+- `meta.schema` (`cv-tree/1`) sube cuando se renombra o se quita una llave; agregar llaves no lo cambia.
 
 ## Desarrollo local
 
