@@ -3,6 +3,11 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 export type Post = CollectionEntry<'blog'>;
 export type Lang = 'en' | 'es';
 
+export const BLOG_DESCRIPTION: Record<Lang, string> = {
+  en: 'Notes on software, games and AI-assisted engineering.',
+  es: 'Notas sobre software, videojuegos e ingeniería asistida por IA.',
+};
+
 export const langOf = (post: Post): Lang => post.id.split('/')[0] as Lang;
 export const slugOf = (post: Post) => post.id.split('/').slice(1).join('/');
 export const urlOf = (post: Post) => `/blog/${langOf(post)}/${slugOf(post)}/`;
@@ -21,6 +26,13 @@ export function translationOf(post: Post, all: Post[]): Post | undefined {
 
 export function formatDate(d: Date, lang: Lang) {
   return d.toLocaleDateString(lang === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+}
+
+/** Description fallback: the post's first paragraph as plain text, cut at a word near `max` characters. */
+export function excerpt(body: string | undefined, max = 180) {
+  const para = (body ?? '').split(/\n\s*\n/).map((p) => p.trim()).find((p) => p && !/^(#|```|>|[-*] |\d+\. |---)/.test(p)) ?? '';
+  const text = para.replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*_`]+/g, '').replace(/\s+/g, ' ').trim();
+  return text.length <= max ? text : text.slice(0, text.lastIndexOf(' ', max - 1)).replace(/[,;:.]$/, '') + '…';
 }
 
 export function readingTime(body: string | undefined) {

@@ -1,7 +1,8 @@
 ---
 import Shell from '../../../layouts/Shell.astro';
 import PostList from '../../../components/PostList.astro';
-import { getPosts, langOf, tagIndex, tagSlug } from '../../../lib/blog';
+import { getPosts, langOf, slugOf, tagIndex, tagSlug } from '../../../lib/blog';
+import { SITE_NAME, tagCard } from '../../../lib/cards';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -11,8 +12,12 @@ const { tag } = Astro.props;
 const posts = (await getPosts()).filter((p) => p.data.tags.some((t) => tagSlug(t) === tagSlug(tag)));
 const en = posts.filter((p) => langOf(p) === 'en');
 const es = posts.filter((p) => langOf(p) === 'es');
+const count = new Set(posts.map(slugOf)).size;
+const titles = [...new Set(posts.map((p) => p.data.title))].join(' · ');
 ---
-<Shell title={`#${tag} — Blog`} description={`Posts tagged ${tag}`}>
+<Shell title={`#${tag} — Blog — ${SITE_NAME}`} card={tagCard(tag)}
+  description={`${count} post${count === 1 ? '' : 's'} tagged #${tag} on ${SITE_NAME}'s blog: ${titles}.`}
+  imageAlt={`#${tag} on ${SITE_NAME}'s blog: ${titles}`} labels={[['Posts', String(count)]]}>
   <section class="blog">
     <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ grep -rl <span class="f">"#{tag}"</span> blog/</div>
     <h1 class="name"><span id="typed">#{tag}</span><span class="cur"></span></h1>

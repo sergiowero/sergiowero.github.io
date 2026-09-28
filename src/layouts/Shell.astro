@@ -6,15 +6,29 @@ import headHtml from '../shell/head.html?raw';
 import headerHtml from '../shell/header.html?raw';
 import shellJs from '../shell/shell.js?raw';
 import blogCss from '../styles/blog.css?raw';
+import generated from '../shell/cards.json';
+import { LOCALES, SITE_NAME } from '../lib/cards';
+import type { Lang } from '../lib/blog';
 
 interface Props {
   title?: string;
   description?: string;
   /** URLs of this page in the other language(s): the ES/EN switch navigates there. */
-  alt?: Partial<Record<'en' | 'es', string>>;
-  lang?: 'en' | 'es';
+  alt?: Partial<Record<Lang, string>>;
+  lang?: Lang;
+  /** The link card's image, /og/<card>.png (src/lib/cards.ts), and its alt text. */
+  card?: string;
+  imageAlt?: string;
+  /** A blog post: og:type article, with its dates and tags. Without it the page lists posts in both languages. */
+  article?: { published: Date; modified?: Date; tags: string[] };
+  /** Up to two label/value pairs Slack shows under the card. */
+  labels?: [string, string][];
 }
-const { title = 'Sergio Sanchez CV', description = 'Sergio Sánchez — blog', alt = {}, lang = 'en' } = Astro.props;
+const { title = `Blog — ${SITE_NAME}`, description = '', alt = {}, lang = 'en', card = 'blog', imageAlt = title, article, labels = [] } = Astro.props;
+const url = new URL(Astro.url.pathname, Astro.site).href;
+const image = new URL(`/og/${card}.png`, Astro.site).href;
+// a post is in one language (plus its translation, if any); an index lists both
+const alternates = (article ? Object.keys(alt) : ['en', 'es'].filter((l) => l !== lang)) as Lang[];
 ---
 <!DOCTYPE html>
 <html lang={lang}>
@@ -24,6 +38,35 @@ const { title = 'Sergio Sanchez CV', description = 'Sergio Sánchez — blog', a
 <Fragment set:html={headHtml} />
 <title>{title}</title>
 <meta name="description" content={description}>
+<link rel="canonical" href={url}>
+<meta property="og:type" content={article ? 'article' : 'website'}>
+<meta property="og:site_name" content={SITE_NAME}>
+<meta property="og:url" content={url}>
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:locale" content={LOCALES[lang]}>
+{alternates.map((l) => <meta property="og:locale:alternate" content={LOCALES[l]}>)}
+<meta property="og:image" content={image}>
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content={imageAlt}>
+{article && <>
+<meta property="article:published_time" content={article.published.toISOString()}>
+{article.modified && <meta property="article:modified_time" content={article.modified.toISOString()}>}
+<meta property="article:author" content={new URL('/about/', Astro.site).href}>
+{article.tags.map((t) => <meta property="article:tag" content={t}>)}
+</>}
+<meta name="author" content={generated.site.full_name}>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={description}>
+<meta name="twitter:image" content={image}>
+<meta name="twitter:image:alt" content={imageAlt}>
+{labels.slice(0, 2).flatMap(([label, data], i) => [
+  <meta name={`twitter:label${i + 1}`} content={label}>,
+  <meta name={`twitter:data${i + 1}`} content={data}>,
+])}
 <Fragment set:html={`<style>${shellCss}\n${blogCss}</style>`} />
 <slot name="head" />
 </head>

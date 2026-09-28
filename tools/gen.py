@@ -1660,7 +1660,103 @@ NAV_TPL = """<header class="site-nav" aria-label="Site sections">
   <div class="grp theme" aria-label="Theme"><button class="tab" type="button" data-toggle-theme title="Toggle theme" aria-label="Toggle theme"><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></div>
 </header>"""
 
-def page(title, fonts, css, body):
+# ---- Link cards: what WhatsApp, LinkedIn, Slack, X, Discord or Teams show for a shared link (Open Graph + Twitter tags).
+# Each page below gets its own <title>, description, canonical URL and card tags (meta_html). The 1200×630 image is
+# drawn at build time by src/pages/og/[...card].png.ts from src/shell/cards.json, written by this script from the
+# same data; the blog pages (Astro) build theirs from each post's front matter with the same template.
+# In English, like the page a crawler reads (ES is a client-side switch); og:locale:alternate says Spanish is there too.
+import html as _html
+SHORT_NAME = "Sergio Sánchez"
+OG_LOCALES = ("en_US", "es_MX")
+YEARS = date.today().year - START_YEAR   # like /llms.txt: counted when this script runs, so regenerate once a year
+
+def plain(v, lang="en"):
+    """A data string (T or plain, HTML allowed) as plain text in one language."""
+    s = getattr(v, lang) if isinstance(v, T) else str(v or "")
+    s = re.sub(r"<span data-years>\d+</span>", str(YEARS), s)
+    return _unescape(re.sub(r"<[^>]+>", "", s)).strip()
+
+def _sentences(s, n):
+    return " ".join(re.split(r"(?<=\.) ", s)[:n])
+
+def page_cards():
+    """Per page: its link-card meta, and `card`, what the image shows (src/lib/og.ts, `Card`)."""
+    flat = [e for _, _, _, e in history_flat()]
+    jobs = [e for e in history_entries() if e["kind"] == "job"]
+    clients = [c["co"] for j in jobs for c in j["children"] if c["kind"] == "project"]
+    since = min(e["frm"] for e in flat if e.get("frm"))[:4]
+    where = CONTACT[0][1]
+    roles = [r.strip() for r in plain(LABELS["$L_SUB$"]).split(" / ")]
+    industries = " · ".join(plain(x) for x in INDUSTRIES)
+    inds = [plain(x).lower() for x in INDUSTRIES]
+    skills = list(dict.fromkeys(BEST_SKILLS + [plain(t) for t in TECH]))
+    worked = ", ".join(j["co"] + (f" ({', '.join(c['co'] for c in j['children'] if c['kind'] == 'project')})"
+                                  if any(c["kind"] == "project" for c in j["children"]) else "") for j in jobs)
+    return {
+        "cv": dict(
+            path="/", type="profile", title=f"{SHORT_NAME} — {plain(ROLE)} | CV",
+            description=(f"{plain(ROLE)} based in {where}, with {YEARS}+ years across {', '.join(inds[:-1])} and {inds[-1]}. "
+                         f"{', '.join(BEST_SKILLS)}, AWS. One-page CV in English and Spanish, with PDF and DOCX downloads."),
+            labels=[("Experience", f"{YEARS}+ years"), ("Based in", where)],
+            image_alt=f"{NAME}: {', '.join(roles)}. {YEARS}+ years across {industries}; {', '.join(BEST_SKILLS)}.",
+            card=dict(prompt="cat cv.md", title=NAME, roles=roles,
+                      stats=[dict(n=f"{YEARS}+", l="yrs experience"), dict(n=STATS[1][0], l="engineers led"), dict(n=industries, l="industries")],
+                      chips=skills, photo=True, section="Resume / CV", lang="EN · ES")),
+        "timeline": dict(
+            path="/timeline/", type="website", title=f"Career timeline — {SHORT_NAME}",
+            description=(f"Every job, client project and degree of {SHORT_NAME} since {since}: {worked}. "
+                         "Role, stack and results of each one, searchable, in English and Spanish."),
+            labels=[("Since", since), ("Companies", ", ".join(j["co"] for j in jobs))],
+            image_alt=f"Career timeline of {NAME} since {since}: {worked}.",
+            card=dict(prompt="cat timeline.md", title="Timeline", subtitle=NAME,
+                      text="All the projects I have worked on so far, newest first: role, stack and results of each one.",
+                      stats=[dict(n=f"{since} – today", l="span"), dict(n=str(len(jobs)), l="companies"),
+                             dict(n=str(len(clients)), l="client projects")],
+                      chips=[e["co"] for e in flat if e["kind"] in ("job", "project")], chipRows=2, section="Timeline", lang="EN · ES")),
+        "about": dict(
+            path="/about/", type="profile", title=f"About me — {SHORT_NAME}",
+            description=_sentences(ABOUT_BIO_EN, 2),
+            labels=[("Based in", where), ("Experience", f"{YEARS}+ years")],
+            image_alt=f"{SHORT_NAME} at the Golden Gate Bridge — {plain(ROLE)}, {where}.",
+            card=dict(prompt="whoami", title=NAME, subtitle=plain(ROLE),
+                      text=_sentences(ABOUT_BIO_EN, 1), chips=[name for name, _, _ in TOOLBOX] + AI_CHIPS,
+                      photo=True, section="About me", lang="EN · ES")),
+    }
+
+# page in public/ → its card; the redirects share their target's
+PAGE_FILES = {"index.html": "cv", "timeline/index.html": "timeline", "about/index.html": "about",
+              "cv/index.html": "cv", "history/index.html": "timeline"}
+
+def meta_html(name, m):
+    """<title>, description, canonical and the Open Graph / Twitter card tags of one page."""
+    a = lambda s: _html.escape(s, quote=False).replace('"', "&quot;")   # attribute values, always double-quoted
+    url, img = SITE + m["path"], f"{SITE}/og/{name}.png"
+    props = [("og:type", m["type"]), ("og:site_name", SHORT_NAME), ("og:url", url), ("og:title", m["title"]),
+             ("og:description", m["description"]), ("og:locale", OG_LOCALES[0]), ("og:locale:alternate", OG_LOCALES[1]),
+             ("og:image", img), ("og:image:type", "image/png"), ("og:image:width", "1200"), ("og:image:height", "630"),
+             ("og:image:alt", m["image_alt"])]
+    if m["type"] == "profile":
+        first, *last = NAME.rsplit(" ", 2)   # given names, then both surnames
+        props += [("profile:first_name", first), ("profile:last_name", " ".join(last)), ("profile:username", "sergiowero")]
+    names = [("author", NAME), ("twitter:card", "summary_large_image"), ("twitter:title", m["title"]),
+             ("twitter:description", m["description"]), ("twitter:image", img), ("twitter:image:alt", m["image_alt"])]
+    for i, (label, data) in enumerate(m.get("labels", []), 1):   # Slack shows these two pairs under the card
+        names += [(f"twitter:label{i}", label), (f"twitter:data{i}", data)]
+    return "\n".join([f"<title>{a(m['title'])}</title>", f'<meta name="description" content="{a(m["description"])}">',
+                      f'<link rel="canonical" href="{url}">']
+                     + [f'<meta property="{k}" content="{a(v)}">' for k, v in props]
+                     + [f'<meta name="{k}" content="{a(v)}">' for k, v in names])
+
+def cards_json(pages):
+    """src/shell/cards.json: the images of the pages above (page_cards) plus what the blog's cards need from here."""
+    cards = {name: dict(path=m["path"], **m["card"]) for name, m in pages.items()}
+    site = dict(name=SHORT_NAME, full_name=NAME, url=SITE, locales=dict(en=OG_LOCALES[0], es=OG_LOCALES[1]))
+    return json.dumps(dict(site=site, cards=cards), ensure_ascii=False, indent=2) + "\n"
+
+def page(title, fonts, css, body, meta=None):
+    """meta: the page's <title> + card tags (meta_html); the design drafts in Backups/ go without."""
+    head = meta or (f"<title>{title}</title>\n"
+                    '<meta name="description" content="Sergio de Jesús Sánchez Robles — Senior Software Engineer / Tech Lead. 15 years across gaming, media and enterprise.">')
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1671,8 +1767,7 @@ window.cvLang=function(){{return document.documentElement.getAttribute('data-lan
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>{title}</title>
-<meta name="description" content="Sergio de Jesús Sánchez Robles — Senior Software Engineer / Tech Lead. 15 years across gaming, media and enterprise.">
+{head}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{fonts}&display=swap" rel="stylesheet">
@@ -3294,6 +3389,8 @@ if __name__ == "__main__":
     # the log prints "→"; a Windows console defaults to cp1252 and can't encode it (macOS/Linux are already UTF-8)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
+    cards = page_cards()
+    meta = {rel: meta_html(name, cards[name]) for rel, name in PAGE_FILES.items()}
     for fname, v in VERSIONS.items():
         body = fill(v["body"]).replace("$AI_TEXT$", h(AI_TEXT)).replace("$AI_CHIPS$", chips_html(AI_CHIPS))
         body = finish_body(body, v)
@@ -3306,7 +3403,7 @@ if __name__ == "__main__":
         if fname == LIVE[0]:
             os.makedirs(os.path.dirname(LIVE[1]), exist_ok=True)
             with open(LIVE[1], "w", encoding="utf-8") as f:
-                f.write(html)
+                f.write(page(v["title"], v["fonts"], css, body + "\n" + v.get("extra_js", ""), meta["index.html"]))
             print(f"wrote index.html (from {fname})")
             # shell pieces for the Astro blog pages (same look, same header, same scripts)
             os.makedirs(SHELL_DIR, exist_ok=True)
@@ -3317,11 +3414,13 @@ if __name__ == "__main__":
             for name, content in {"shell.css": BASE_CSS + "\n" + css, "head.html": head, "header.html": finish_body(nav_html("blog"), v), "shell.js": scripts}.items():
                 with open(os.path.join(SHELL_DIR, name), "w", encoding="utf-8") as f:
                     f.write(content)
-            print("wrote src/shell/{shell.css,head.html,header.html,shell.js}")
+            with open(os.path.join(SHELL_DIR, "cards.json"), "w", encoding="utf-8", newline="\n") as f:
+                f.write(cards_json(cards))
+            print("wrote src/shell/{shell.css,head.html,header.html,shell.js,cards.json}")
             # the other sections, same shell
             for rel, (active, tpl) in SITE_PAGES.items():
                 body = finish_body(fill(tpl, active=active), v) + "\n" + v.get("extra_js", "")
-                page_html = page(v["title"], v["fonts"], css, body)
+                page_html = page(v["title"], v["fonts"], css, body, meta[rel])
                 path = os.path.join(PUBLIC, rel)
                 os.makedirs(os.path.dirname(path), exist_ok=True)
                 with open(path, "w", encoding="utf-8") as f:
@@ -3330,7 +3429,8 @@ if __name__ == "__main__":
             for rel, target in REDIRECTS.items():
                 path = os.path.join(PUBLIC, rel); os.makedirs(os.path.dirname(path), exist_ok=True)
                 with open(path, "w", encoding="utf-8") as f:
-                    f.write(f'<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url={target}"><link rel="canonical" href="https://sergiowero.github.io{target}"><title>Redirecting…</title><a href="{target}">{target}</a>')
+                    # the target's title, canonical and card: a shared old link still previews as the page it lands on
+                    f.write(f'<!DOCTYPE html>\n<meta charset="utf-8">\n<meta http-equiv="refresh" content="0; url={target}">\n{meta[rel]}\n<a href="{target}">{target}</a>\n')
                 print(f"wrote {rel} → {target}")
     with open(os.path.join(PUBLIC, "llms.txt"), "w", encoding="utf-8") as f:
         f.write(llms_md())
