@@ -8,8 +8,7 @@ meta:
   sources:
     en: "https://sergiowero.github.io/cv/en/source.yaml"
     es: "https://sergiowero.github.io/cv/es/source.yaml"
-  template: "https://sergiowero.github.io/cv/template.yaml"
-  stylesheet: "https://sergiowero.github.io/cv/cv.css"
+  template: "https://sergiowero.github.io/cv/template.html"
   pages:
     cv: "https://sergiowero.github.io/"
     timeline: "https://sergiowero.github.io/timeline/"
@@ -84,31 +83,55 @@ skills:
       max: 10
       percent: 100
       word: "Expert"
+      meter:
+        cells: 37
+        filled: "█████████████████████████████████████"
+        empty: ""
     - name: "Java / Spring"
       level: 9
       max: 10
       percent: 90
       word: "Expert"
+      meter:
+        cells: 37
+        filled: "█████████████████████████████████"
+        empty: "░░░░"
     - name: "Python / FastAPI"
       level: 8
       max: 10
       percent: 80
       word: "Advanced"
+      meter:
+        cells: 37
+        filled: "██████████████████████████████"
+        empty: "░░░░░░░"
     - name: "JavaScript / Node.js"
       level: 6
       max: 10
       percent: 60
       word: "Proficient"
+      meter:
+        cells: 37
+        filled: "██████████████████████"
+        empty: "░░░░░░░░░░░░░░░"
     - name: "AWS"
       level: 7
       max: 10
       percent: 70
       word: "Advanced"
+      meter:
+        cells: 37
+        filled: "██████████████████████████"
+        empty: "░░░░░░░░░░░"
     - name: "SQL / Postgres"
       level: 8
       max: 10
       percent: 80
       word: "Advanced"
+      meter:
+        cells: 37
+        filled: "██████████████████████████████"
+        empty: "░░░░░░░"
   best: [".NET", "Spring", "Python", "Node.js"]
   technologies:
     - "C#"
@@ -157,6 +180,8 @@ experience:
       end: null
       ongoing: true
       text: "Mar 2020 - Present"
+      months: 79
+      elapsed: "6 yrs 7 mos"
     duration: null
     location: "Guadalajara, México"
     industries: ["News", "Media & Entertainment", "Retail", "Cybersecurity"]
@@ -579,6 +604,8 @@ experience:
       end: "2020-03"
       ongoing: false
       text: "Jul 2019 - Mar 2020"
+      months: 9
+      elapsed: "9 mos"
     duration: null
     location: "Guadalajara, México"
     industries: ["Gaming · Mobile"]
@@ -679,6 +706,8 @@ experience:
       end: "2020-01"
       ongoing: false
       text: "Feb 2017 - Jan 2020"
+      months: 36
+      elapsed: "3 yrs"
     duration: null
     location: "Málaga, Spain"
     industries: ["Gaming · VR"]
@@ -810,6 +839,8 @@ experience:
       end: "2017-02"
       ongoing: false
       text: "Feb 2015 - Feb 2017"
+      months: 25
+      elapsed: "2 yrs 1 mo"
     duration: null
     location: "Guadalajara, México"
     industries: ["Semiconductors"]
@@ -886,6 +917,8 @@ experience:
       end: "2015-01"
       ongoing: false
       text: "May 2011 - Jan 2015"
+      months: 45
+      elapsed: "3 yrs 9 mos"
     duration: null
     location: "Guadalajara, México"
     industries: ["Gaming · Mobile"]
@@ -1003,6 +1036,8 @@ experience:
       end: "2011-05"
       ongoing: false
       text: "Aug 2009 - May 2011"
+      months: 22
+      elapsed: "1 yr 10 mos"
     duration: null
     location: "Guadalajara, México"
     industries: ["Gaming · Mobile & Console"]
@@ -1108,6 +1143,8 @@ education:
       end: "2018-08"
       ongoing: false
       text: "Aug 2018"
+      months: null
+      elapsed: null
     duration: null
     location: "Guadalajara, México"
     industries: ["Education"]
@@ -1150,6 +1187,8 @@ education:
       end: "2010-12"
       ongoing: false
       text: "Dec 2010"
+      months: null
+      elapsed: null
     duration: null
     location: "Guadalajara, México"
     industries: ["Education"]

@@ -9,7 +9,7 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 | `/blog/` | Blog | Astro: índice, páginas por tag (`/blog/tags/<tag>/`) y entradas (`/blog/<en|es>/<slug>/`) |
 | `/about/` | About me | estático (placeholder con el nombre) |
 | `/llms.txt` | Perfil para IA | estático (`tools/gen.py`), ver abajo |
-| `/cv/{en,es}/source.yaml`, `/cv/template.yaml`, `/cv/cv.css` | Datos del CV para generadores externos | estático (`tools/gen.py`), ver abajo |
+| `/cv/{en,es}/source.yaml`, `/cv/template.html` | Datos y plantilla del CV para generadores externos | estático (`tools/gen.py`), ver abajo |
 | `/robots.txt` | Crawlers | estático (`public/robots.txt`) |
 
 Todas las páginas comparten el mismo cascarón (diseño "Dark Terminal"): fondo, hoja A4, encabezado con pestañas, ES/EN y claro/oscuro. El idioma y el tema se guardan en `localStorage` y se conservan entre páginas.
@@ -79,8 +79,13 @@ Hasta **dos niveles**: cualquier entrada acepta `children=[…]` (en un empleo d
 Para armar CVs enfocados desde otro proyecto, `python3 tools/gen.py` publica el CV como datos, de los **mismos datos** que el CV, el timeline y About (no editar a mano):
 
 - **`/cv/en/source.yaml`** y **`/cv/es/source.yaml`** — todo en un idioma por archivo: `meta`, `profile` (nombre, roles, resumen, bio), `contact`, `stats`, `skills`, `languages`, `experience`, `education`, `other`, `shipped_titles`, `toolbox` y `labels` (títulos de sección en pantalla y para ATS, meses, "Actualidad"…). Cada entrada del timeline trae todo lo largo (`summary`, `facts`, `highlights`, `sections`, `achievements`, `stack`, `links`, `children`), y los empleos y títulos además un bloque `cv` con exactamente lo que imprime el CV de una hoja.
-- **`/cv/template.yaml`** — el estilo del CV actual para reproducirlo: tokens de color claro/oscuro (leídos del CSS), fuentes, página A4, orden de secciones por columna, reglas de cada componente, modos (pantalla, PDF, PDF ATS, DOCX), íconos y el HTML de cada componente.
-- **`/cv/cv.css`** — la hoja de estilos del CV tal cual; el HTML de `template.yaml` usa sus clases.
+- **`/cv/template.html`** — el CV actual como plantilla [Mustache](https://mustache.github.io): el mismo HTML y CSS (autocontenido), con etiquetas donde va el contenido. Se renderiza con **cualquier** motor Mustache (mustache.js, Stubble en C#, JMustache en Java, chevron en Python) usando un `source.yaml` como vista:
+  1. Convierte cada texto a HTML: escapa `& < > "` y luego `**x**` → `<b>x</b>`, `[x](url)` → `<a href="url">x</a>` (por eso la plantilla usa `{{{triple llave}}}`).
+  2. Para un CV enfocado, recorta los datos antes de renderizar (`experience`, los `cv.highlights` de cada empleo, `skills.technologies`…): cada lista pinta lo que trae, en orden.
+  3. Imprime a PDF desde un navegador (A4, sin márgenes, con fondos; en Chromium `page.pdf` con `preferCSSPageSize` y `printBackground`).
+  - En `<html>`: `data-theme="dark"` para el tema oscuro, `data-print="ats"` para el PDF de una columna para ATS.
+  - Sin lógica a propósito (solo secciones, secciones invertidas, nombres con punto y `{{.}}`): los datos traen ya calculado lo que la página calcula con JS (duración de cada empleo en `dates.elapsed`, la barra ASCII de cada skill en `meter`), y lo que dependía del marcado (íconos de contacto, separadores de roles) va en CSS.
+  - Probado: mustache.js y chevron dan el mismo HTML byte a byte, y el render se ve igual al CV publicado salvo el gris de los "Tech: …" en los puntos de Wizeline (el Markdown del YAML no lleva ese matiz).
 
 Reglas del formato, pensadas para leerlo de forma determinista:
 

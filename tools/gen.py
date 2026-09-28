@@ -20,14 +20,11 @@ def i18n(en, es):
 class T:
     """A bilingual string. .html() renders both languages (CSS shows one); .data() feeds the export JSON."""
     __slots__ = ("en", "es")
-    one_lang = None   # "en" / "es" while rendering markup for a single language (the examples in /cv/template.yaml)
 
     def __init__(self, en, es=None):
         self.en, self.es = en, en if es is None else es
 
     def html(self):
-        if T.one_lang:
-            return getattr(self, T.one_lang)
         return self.en if self.en == self.es else i18n(self.en, self.es)
 
     def data(self):
@@ -2954,14 +2951,15 @@ def finish_body(body, v):
 
 # =================================================================== /cv/: THE CV AS DATA, FOR EXTERNAL GENERATORS
 # public/cv/{en,es}/source.yaml  everything the CV, the timeline and the About page say; one language per file
-# public/cv/template.yaml        how the live CV looks: tokens, A4 layout, section order, components, markup
-# public/cv/cv.css               the live CV's stylesheet, verbatim; the markup in template.yaml uses its classes
+# public/cv/template.html        the live CV as a Mustache template: render it with a source.yaml and print to PDF
 # Same data as the pages, written by this script: never edit them by hand.
 import unicodedata
+import urllib.parse
 
 CV_LANGS = ("en", "es")
 CV_BASE = f"{SITE}/cv"
 CV_SCHEMA, TEMPLATE_SCHEMA = "cv-source/1", "cv-template/1"   # bump when a key is renamed or removed; adding keys is fine
+METER_CELLS = 37   # cells in the CV's ASCII skill bar: what the page's script fits in the 54mm aside (JetBrains Mono 8.6px)
 MONTHS = {"en": _MONTHS, "es": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]}
 CONTACT_TYPES = {"pin": "location", "phone": "phone", "mail": "email", "in": "linkedin", "gh": "github", "tl": "timeline"}
 LIVE_V = VERSIONS[LIVE[0]]
@@ -2988,16 +2986,21 @@ def _en(v):
     return v.en if isinstance(v, T) else v
 
 def _ydates(e, lang):
-    """type 'range' (end null = ongoing), 'point' (one date, e.g. a graduation) or None (undated)."""
+    """type 'range' (end null = ongoing), 'point' (one date, e.g. a graduation) or None (undated).
+    months / elapsed count to today for an ongoing range, so they are as fresh as the last run of this script."""
     frm = e.get("frm")
     if not frm:
         return None
     fmt = lambda ym: f"{MONTHS[lang][int(ym[5:]) - 1]} {ym[:4]}"
     if "to" not in e:
-        return dict(type="point", start=frm, end=frm, ongoing=False, text=fmt(frm))
+        return dict(type="point", start=frm, end=frm, ongoing=False, text=fmt(frm), months=None, elapsed=None)
     to = e["to"]
+    a, b = frm, to or date.today().strftime("%Y-%m")
+    months = (int(b[:4]) - int(a[:4])) * 12 + int(b[5:]) - int(a[5:]) + 1   # counting both ends, like the CV
+    unit = lambda n, one, many: f"{n} {ytext(DOC_LABELS[one if n == 1 else many], lang)}" if n else ""
     return dict(type="range", start=frm, end=to, ongoing=to is None,
-                text=f"{fmt(frm)} - {fmt(to) if to else ytext(DOC_LABELS['present'], lang)}")   # plain hyphen, as on the CV
+                text=f"{fmt(frm)} - {fmt(to) if to else ytext(DOC_LABELS['present'], lang)}",   # plain hyphen, as on the CV
+                months=months, elapsed=" ".join(x for x in (unit(months // 12, "yr", "yrs"), unit(months % 12, "mo", "mos")) if x))
 
 def _yachievement(dv, parent, lang):
     Y = lambda v: ytext(v, lang)
@@ -3038,6 +3041,11 @@ def _yentry(e, lang, parent=None):
         children=[_yentry(c, lang, sid) for c in e.get("children") or []])
     return out
 
+def _meter(lvl):
+    """The level as the CV draws it: [█████░░] over METER_CELLS cells, rounded like the page's Math.round."""
+    filled = int(METER_CELLS * lvl / CORE_MAX + 0.5)
+    return dict(cells=METER_CELLS, filled="█" * filled, empty="░" * (METER_CELLS - filled))
+
 def cv_source(lang):
     """/cv/{lang}/source.yaml: the whole profile in one language."""
     Y = lambda v: ytext(v, lang)
@@ -3050,7 +3058,7 @@ def cv_source(lang):
             schema=CV_SCHEMA, lang=lang, generated=date.today().isoformat(),
             url=f"{CV_BASE}/{lang}/source.yaml",
             sources={l: f"{CV_BASE}/{l}/source.yaml" for l in CV_LANGS},   # every language, this one included
-            template=f"{CV_BASE}/template.yaml", stylesheet=f"{CV_BASE}/cv.css",
+            template=f"{CV_BASE}/template.html",
             pages=dict(cv=f"{SITE}/", timeline=f"{SITE}/timeline/", about=f"{SITE}/about/", llms=f"{SITE}/llms.txt"),
             repository="https://github.com/sergiowero/sergiowero.github.io",
             text_format="markdown-inline",
@@ -3070,8 +3078,8 @@ def cv_source(lang):
             dict(id="max_led", type="number", value=int(STATS[1][0]), suffix=STATS[1][1], label=Y(STATS[1][2])),
             dict(id="best_skills", type="tags", items=list(BEST_SKILLS), label=Y(BEST_LABEL))],
         skills=dict(
-            core=[dict(name=name, level=lvl, max=CORE_MAX, percent=round(100 * lvl / CORE_MAX), word=Y(level(lvl)[0]))
-                  for name, lvl in CORE],
+            core=[dict(name=name, level=lvl, max=CORE_MAX, percent=round(100 * lvl / CORE_MAX), word=Y(level(lvl)[0]),
+                       meter=_meter(lvl)) for name, lvl in CORE],
             best=list(BEST_SKILLS), technologies=Ys(TECH),
             ai_assisted=dict(title=Y(AI_HEAD), text=Y(AI_TEXT), tools=list(AI_CHIPS))),
         languages=[dict(id=code, name=Y(name), level_id=lvl_id, level=Y(lvl)) for code, name, lvl_id, lvl in LANGUAGES],
@@ -3089,189 +3097,122 @@ def cv_source(lang):
             present=Y(DOC_LABELS["present"]), months=MONTHS[lang],
             duration_units={k: Y(DOC_LABELS[k]) for k in ("yr", "yrs", "mo", "mos")}))
 
-def _css_vars(css, selector):
-    """The custom properties of the first `selector{…}` block, nav-bar ones left out: {'body_text': '#3d444d', …}."""
-    block = re.search(re.escape(selector) + r"\{([^}]*)\}", css).group(1)
-    return {k[2:].replace("-", "_"): v.strip() for k, v in re.findall(r"(--[\w-]+):([^;]+);", block) if not k.startswith("--nav")}
+# The live CV's markup with Mustache tags where the content goes. Logic-less on purpose (sections, inverted sections,
+# dotted names and {{.}} only: no lambdas, no helpers), so every Mustache engine renders it the same.
+# $…$ are filled here, once: the section headings, the fonts and the stylesheet.
+CV_TEMPLATE = """<!DOCTYPE html>
+<!--
+  CV template ($SCHEMA$): the look of $SITE$/ with Mustache tags where the content goes.
+  Written by tools/gen.py; do not edit by hand.
 
-def _template_markup():
-    """Real markup for each component, rendered in English by the same functions as the live CV."""
-    T.one_lang = "en"
-    try:
-        body = fill(LIVE_V["body"])
-        first = lambda s: s.split("\n")[0]
-        sec = lambda key, inner: f'<section><h2 class="sh">{sh_label(*SECTION_LABELS[key])}</h2>{inner}</section>'
-        parts = dict(
-            header=re.search(r'<header class="top">.*?</header>', body, re.S).group(0),
-            stats=stats_html(),
-            section=sec("profile", profile_html()),
-            job=_job_html(JOBS[0]),
-            ai_card=ai_html(),
-            skill_meter=first(core_html()),
-            chips=chips_html(TECH[:3]),
-            education_item=first(edu_html()),
-            language_item=first(langs_html()),
-            contact_line=first(contact_html()),
-            footer=re.search(r'<div class="foot">.*?</div>', body, re.S).group(0))
-        # the page fills years and job dates in the browser; a generator writes the final text
-        years = str(date.today().year - START_YEAR)
-        return {k: re.sub(r"<span data-years>\d+</span>", years, v) for k, v in parts.items()}
-    finally:
-        T.one_lang = None
+  Render it with any Mustache engine, the parsed $CV_BASE$/{lang}/source.yaml as the view:
+    1. Make every string in the data HTML first: escape & < > " and then turn **x** into <b>x</b>
+       and [x](url) into <a href="url">x</a>. That is why the tags below use {{{triple braces}}}.
+    2. Focus the CV by trimming the data before rendering (experience, each job's cv.highlights,
+       skills.technologies…): every list renders what it holds, in order.
+    3. Print it to PDF from a browser: A4, no margins, backgrounds on (Chromium: page.pdf with
+       preferCSSPageSize and printBackground).
+  Options on <html>: data-theme="dark" for the dark theme; data-print="ats" for the light,
+  one-column PDF that resume parsers read best.
+-->
+<html lang="{{meta.lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{{profile.name}}} — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?$FONTS$&display=swap" rel="stylesheet">
+<style>
+$CSS$
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="top">
+    <div>
+      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">cv.md</span></div>
+      <div class="name">{{{profile.name}}}<span class="cur"></span></div>
+      <div class="sub mono">{{#profile.roles}}<span class="role">{{{.}}}</span>{{/profile.roles}}</div>
+    </div>
+    <div class="contact">
+      {{#contact}}<div class="cline" data-icon="{{icon}}">{{#url}}<a href="{{{url}}}">{{{label}}}</a>{{/url}}{{^url}}{{{label}}}{{/url}}</div>
+      {{/contact}}
+    </div>
+  </header>
+  <div class="stats">
+    {{#stats}}<div class="stat {{type}}"><div class="n">{{#value}}{{value}}<span class="u">{{suffix}}</span>{{/value}}{{#items}}<span class="bs">{{{.}}}</span>{{/items}}</div><div class="l">{{{label}}}</div></div>
+    {{/stats}}
+  </div>
+  <div class="cols">
+    <main class="main">
+      <section><h2 class="sh">$H:profile$</h2><p class="profile">{{{profile.summary}}}</p></section>
+      <section><h2 class="sh">$H:experience$</h2><div class="tl">
+        {{#experience}}
+        {{#cv}}
+        <div class="job{{#current}} cur{{/current}}">
+          <div class="job-head"><div class="r">{{{title}}} · <span class="c">{{{organization}}}</span></div><div class="p">{{{dates.text}}}{{#dates.elapsed}}<span class="dur"> · {{{dates.elapsed}}}</span>{{/dates.elapsed}}</div></div>
+          <div class="loc">{{{location}}}<span class="inds">{{#industries}}<span class="ind">{{{.}}}</span>{{/industries}}</span></div>
+          <ul class="pts">{{#highlights}}<li>{{{.}}}</li>{{/highlights}}</ul>
+        </div>
+        {{/cv}}
+        {{/experience}}
+      </div></section>
+    </main>
+    <aside class="aside">
+      <section><div class="ai"><div class="h">{{{skills.ai_assisted.title}}}</div><p>{{{skills.ai_assisted.text}}}</p><div class="dchips">{{#skills.ai_assisted.tools}}<span class="dchip">{{{.}}}</span>{{/skills.ai_assisted.tools}}</div></div></section>
+      <section><h2 class="sh">$H:core_skills$</h2>
+        {{#skills.core}}<div class="cskill"><div class="sk-top"><span class="sk-name">{{{name}}}</span><span class="sk-word">{{{word}}}</span><span class="sk-pct">{{percent}}%</span></div><div class="sk-dots ascii"><span class="b">[</span><span class="f">{{meter.filled}}</span><span class="e">{{meter.empty}}</span><span class="b">]</span></div></div>
+        {{/skills.core}}
+      </section>
+      <section><h2 class="sh">$H:technologies$</h2><div class="dchips">{{#skills.technologies}}<span class="dchip">{{{.}}}</span>{{/skills.technologies}}</div></section>
+      <section><h2 class="sh">$H:education$</h2>
+        {{#education}}
+        {{#cv}}
+        <div class="edu"><div class="d">{{{degree}}}</div><div class="m">{{{detail}}}</div></div>
+        {{/cv}}
+        {{/education}}
+      </section>
+      <section><h2 class="sh">$H:languages$</h2>
+        {{#languages}}<div class="spoken"><span class="ln">{{{name}}}</span><span class="sep"> — </span><span class="lv">{{{level}}}</span></div>
+        {{/languages}}
+      </section>
+    </aside>
+  </div>
+  <div class="foot"><span><span class="g">➜</span> exit 0 · {{{profile.name}}}</span><span>sergiowero.github.io</span></div>
+</div>
+</body>
+</html>
+"""
 
-def cv_template():
-    """/cv/template.yaml: the live CV's look, renderer-agnostic. Tokens and fonts are read from the live stylesheet;
-    the component rules below restate it (cv.css stays the authority when they disagree)."""
-    css = LIVE_V["css"]
-    fonts = dict(re.findall(r"family=([^:&]+):wght@([\d;]+)", LIVE_V["fonts"]))
-    weights = lambda fam: [int(w) for w in fonts[fam].split(";")]
-    G, C = "rgba(61,220,132,", "rgba(76,201,240,"   # the green and cyan accents, as the stylesheet tints them
-    skeleton = "\n".join(l for l in LIVE_V["body"].split("\n") if not re.fullmatch(r"\s*\$(NAV|CVDATA|DOWNLOAD)\$", l))
-    return dict(
-        meta=dict(
-            schema=TEMPLATE_SCHEMA, name="Dark Terminal", generated=date.today().isoformat(),
-            url=f"{CV_BASE}/template.yaml", stylesheet=f"{CV_BASE}/cv.css", reference=f"{SITE}/",
-            sources={l: f"{CV_BASE}/{l}/source.yaml" for l in CV_LANGS},
-            units="px are CSS px (1px = 1/96 in = 0.75 pt); mm are mm.",
-            colors="Color values name a token from `tokens`; rgba() values are literal.",
-            data_paths="Dotted paths into source.yaml; [*] means every item.",
-            authority="cv.css is the live stylesheet; if a rule here disagrees with it, cv.css wins."),
-        page=dict(size="A4", width_mm=210, height_mm=297, pages=1,
-                  padding_mm=dict(top=11, right=12, bottom=4, left=12),
-                  text=dict(font="sans", size_px=10, line_height=1.5, color="text"),
-                  background=dict(color="bg", image=f"radial-gradient(500px 260px at 90% -5%, {C}.10), transparent 60%), "
-                                                    f"radial-gradient(420px 220px at 0% 8%, {G}.09), transparent 60%)"),
-                  fit="One A4 page in both languages; Spanish runs about 15% longer than English."),
-        fonts=dict(
-            sans=dict(family="Inter", weights=weights("Inter"), fallback="system-ui, sans-serif"),
-            mono=dict(family="JetBrains Mono", weights=weights("JetBrains+Mono"), fallback="Menlo, Consolas, monospace"),
-            stylesheet=f"https://fonts.googleapis.com/css2?{LIVE_V['fonts']}&display=swap"),
-        tokens=dict(light=_css_vars(css, ":root"), dark=_css_vars(css, ':root[data-theme="dark"]')),
-        themes=dict(default="light", dark="Set data-theme=\"dark\" on <html> with cv.css; the PDF keeps the theme on screen.",
-                    ats="Always light."),
-        color_roles=dict(
-            bg="page background", panel="tiles and chips", line="borders and dashed separators",
-            text="default text, contact links, chip text", fg="strongest text: name, titles, bold, degree and language names",
-            body_text="paragraphs and bullets", muted="secondary text: dates, locations, prompts, labels",
-            green="accent: heading prefix, bullet markers, current job's dates, skill meters, AI card, language levels",
-            cyan="organization names, links, industry tags", amber="role separators and the file name in the prompt",
-            pink="timeline training cards (not on the one-page CV)", empty="unfilled skill-meter cells"),
-        layout=dict(
-            order=["header", "stats", "columns", "footer"],
-            header=dict(direction="row", justify="space-between", align="end", gap_mm=8,
-                        left=["prompt", "name", "roles_line"], right=["contact_line"]),
-            stats=dict(component="stat_tile", tiles=["years", "industries", "max_led", "best_skills"], gap_px=6,
-                       margin_px=dict(top=5, bottom=5), data="stats[*]"),
-            columns=dict(gap_mm=7,
-                         main=dict(width="fill", sections=["profile", "experience"]),
-                         aside=dict(width_mm=54, sections=["ai_assisted", "core_skills", "technologies", "education", "languages"])),
-            footer=dict(component="footer", position="page bottom"),
-            section_gap_px=8),
-        sections=dict(
-            profile=dict(heading="labels.sections.profile", data="profile.summary", component="paragraph"),
-            experience=dict(heading="labels.sections.experience", data="experience[*]", component="job",
-                            uses="title, organization, dates, location, industries and cv.highlights (the one-page bullets); "
-                                 "cv.current marks the current job"),
-            ai_assisted=dict(heading=None, data="skills.ai_assisted", component="ai_card"),
-            core_skills=dict(heading="labels.sections.core_skills", data="skills.core[*]", component="skill_meter"),
-            technologies=dict(heading="labels.sections.technologies", data="skills.technologies", component="chip"),
-            education=dict(heading="labels.sections.education", data="education[*].cv", component="education_item"),
-            languages=dict(heading="labels.sections.languages", data="languages[*]", component="language_item")),
-        components=dict(
-            prompt=dict(font="mono", size_px=8.6, color="muted",
-                        parts=[dict(text="sergio", color="green"), dict(text="@"), dict(text="sergiowero.github.io", color="cyan"),
-                               dict(text=":~$ cat "), dict(text="cv.md", color="amber")],
-                        print="hidden"),
-            name=dict(data="profile.name", font="sans", size_px=29, weight=700, letter_spacing_px=-1, line_height=1,
-                      color="fg", margin_top_px=5,
-                      screen=dict(cursor="a blinking green block after the name (0.45em x 0.9em, 1s steps)",
-                                  typing="the name is typed in by script on load"),
-                      print="the name alone, no cursor"),
-            roles_line=dict(data="profile.roles", font="mono", size_px=9, color="muted", margin_top_px=5,
-                            first=dict(color="green", weight=600, size_px=10, letter_spacing_px=-0.1),
-                            separator=dict(text=" / ", color="amber")),
-            contact_line=dict(data="contact[*]", size_px=8.4, color="muted", link_color="text", row_gap_px=3,
-                              icon=dict(source="icons.<contact.icon>", size_px=11, stroke="green", stroke_width=2,
-                                        fill="none", gap_px=6)),
-            stat_tile=dict(background="panel", border="1px solid line", radius_px=8, padding_px=dict(vertical=6, horizontal=8),
-                           flex=1, flex_tags=1.35, label_above_value=True, gap_px=4,
-                           label=dict(font="mono", size_px=7.6, color="muted", transform="lowercase", prefix="// ",
-                                      print=dict(font="sans", transform="none", prefix=None)),
-                           number=dict(font="mono", size_px=17, weight=700, color="fg", line_height=1, letter_spacing_px=-0.5,
-                                       suffix_color="green"),
-                           tags=dict(font="mono", size_px=7.6, weight=700, color="green", background=f"{G}.10)",
-                                     border=f"1px solid {G}.45)", radius_px=4, padding_px=dict(vertical=1, horizontal=6), gap_px=3)),
-            section_heading=dict(margin_bottom_px=6,
-                                 screen=dict(text="labels.sections.<key>.screen", font="mono", size_px=8.6, weight=500,
-                                             color="muted", prefix=dict(text="➜ ~ ", color="green")),
-                                 print=dict(text="labels.sections.<key>.print", font="sans", size_px=9.4, weight=700, color="fg",
-                                            transform="uppercase", letter_spacing_px=0.7, border_bottom="1px solid line",
-                                            padding_bottom_px=3)),
-            paragraph=dict(size_px=9.5, line_height=1.5, color="body_text", bold=dict(color="fg", weight=600)),
-            job=dict(padding_px=dict(top=6, bottom=4), separator="1px dashed line above every job but the first",
-                     head=dict(direction="row", justify="space-between", align="baseline", gap_px=8),
-                     title=dict(text="{title} · {organization}", size_px=11, weight=600, color="fg", organization_color="cyan"),
-                     dates=dict(text="{dates.text} · {duration}", font="mono", size_px=7.8, color="muted", current_color="green",
-                                wrap=False,
-                                duration="months from start to end (or today), counting both ends, as '6 yrs 7 mos' "
-                                         "with labels.duration_units; weight 400, opacity 0.85"),
-                     location=dict(size_px=8.2, color="muted", then="industry_tag list, margin-left 6px, gap 3px"),
-                     highlights="bullet list of cv.highlights"),
-            industry_tag=dict(font="mono", size_px=7.4, weight=700, color="cyan", background=f"{C}.12)",
-                              border=f"1px solid {C}.45)", radius_px=4, padding_px=dict(vertical=1, horizontal=6), line_height=1.35,
-                              prefix=dict(text="#", color=f"{C}.6)", print=None)),
-            bullet=dict(size_px=9.1, line_height=1.35, color="body_text", indent_px=12, gap_px=2.5, list_margin_top_px=2,
-                        marker=dict(screen=dict(text=">", font="mono", weight=700, color="green"), print=dict(text="•", weight=400)),
-                        bold=dict(color="fg", weight=600), link=dict(color="cyan"),
-                        stack_suffix=dict(match="a trailing 'Tech: …' sentence", color="muted")),
-            ai_card=dict(background=f"linear-gradient(160deg, {G}.10), {C}.07))", border=f"1px solid {G}.35)", radius_px=9,
-                         padding_px=dict(vertical=9, horizontal=10),
-                         title=dict(data="skills.ai_assisted.title", font="mono", size_px=8.4, color="green",
-                                    prefix=dict(text="// ", color="muted"), margin_bottom_px=4),
-                         text=dict(data="skills.ai_assisted.text", size_px=8.8, line_height=1.45, color="body_text",
-                                   margin_bottom_px=6),
-                         tools=dict(data="skills.ai_assisted.tools", component="chip", color="green", border=f"1px solid {G}.4)",
-                                    background="transparent"),
-                         print_ats=dict(background="none", border="1px solid line")),
-            skill_meter=dict(padding_px=dict(top=2, bottom=3),
-                             name=dict(data="name", size_px=9, weight=500, color="text"),
-                             percent=dict(data="percent", text="{percent}%", font="mono", size_px=8.4, color="green",
-                                          align="right"),
-                             meter=dict(font="mono", size_px=8.6, line_height=1.25, margin_top_px=1, cells="max",
-                                        filled=dict(char="█", color="green", count="level"),
-                                        empty=dict(char="░", color="empty"), brackets=dict(text="[]", color="muted")),
-                             print_ats=dict(meter="hidden", word=dict(data="word", color="muted"))),
-            chip=dict(font="mono", size_px=7.6, padding_px=dict(vertical=2, horizontal=6), radius_px=4, background="panel",
-                      border="1px solid line", color="text", wrap=True, gap_px=4),
-            education_item=dict(padding_px=dict(vertical=3), separator="1px dashed line between items",
-                                degree=dict(data="cv.degree", size_px=9.5, weight=600, color="fg"),
-                                detail=dict(data="cv.detail", size_px=8.2, color="muted")),
-            language_item=dict(direction="row", justify="space-between", align="baseline", gap_px=8, padding_px=dict(vertical=3),
-                               separator="1px dashed line between items",
-                               name=dict(data="name", size_px=9.5, weight=600, color="fg"),
-                               level=dict(data="level", font="mono", size_px=8.2, color="green"),
-                               print_ats="one line: '{name} — {level}'"),
-            footer=dict(font="mono", size_px=7.6, color="muted", border_top="1px solid line", padding_top_px=5,
-                        justify="space-between", left=dict(text="➜ exit 0 · {profile.name}", arrow_color="green"),
-                        right=dict(text="sergiowero.github.io"), print="hidden")),
-        modes=dict(
-            screen="The look above; light by default, dark with tokens.dark.",
-            print="PDF: the screen look and theme, minus the prompt, the footer and the name's cursor; headings switch to "
-                  "their print form, bullets to '•', and the '#' of industry tags and '// ' of stat labels are dropped.",
-            print_ats="PDF ATS: print, plus forced light and one column (main, then everything from the aside, full width); "
-                      "skill meters become their word, the AI card loses its tint, languages become one line each. "
-                      "In cv.css: data-print=\"ats\" on <html>.",
-            docx="DOCX ATS: one column, light, the print headings; see public/cv-export.js on the site."),
-        icons={k: ICON[k] for k in CONTACT_TYPES},
-        markup=dict(
-            note="HTML that cv.css styles, as the live CV renders it (English). $…$ in the skeleton are filled with the "
-                 "components below; labels.sections.<key> fill the headings ($L_…$).",
-            skeleton=skeleton,
-            components=_template_markup()))
+# What the page's per-item markup or scripts did, redone in CSS so the template needs no logic
+TEMPLATE_CSS = """
+  /* ---- template.html only ---- */
+  .sub .role:first-child{color:var(--green);font-weight:600;font-size:10px;letter-spacing:-.1px;}   /* the headline role */
+  .sub .role+.role::before{content:" / ";color:var(--amber);}
+  .cline[data-icon]::before{content:"";width:11px;height:11px;flex:none;background:var(--green);   /* the contact icons, by type */
+    -webkit-mask:var(--icon) center/contain no-repeat;mask:var(--icon) center/contain no-repeat;}
+"""
+
+def cv_template_html():
+    """/cv/template.html: CV_TEMPLATE with the live CV's stylesheet (stat tiles keyed by stats[].type) and headings."""
+    svg_uri = lambda svg: "data:image/svg+xml," + urllib.parse.quote(
+        svg.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" stroke="black" ', 1), safe="")
+    icons = "".join(f'  .cline[data-icon="{k}"]{{--icon:url("{svg_uri(ICON[k])}");}}\n' for k in CONTACT_TYPES)
+    css = (BASE_CSS + "\n  :root{" + LIVE_V["nav"] + "}\n" + LIVE_V["css"]).replace(".stat.best", ".stat.tags") + TEMPLATE_CSS + icons
+    out = CV_TEMPLATE
+    for k in SECTION_LABELS:
+        out = out.replace(f"$H:{k}$", '<span class="cmd">{{{labels.sections.' + k + '.screen}}}</span>'
+                                      '<span class="ats">{{{labels.sections.' + k + '.print}}}</span>')
+    out = out.replace("$SCHEMA$", TEMPLATE_SCHEMA).replace("$SITE$", SITE).replace("$CV_BASE$", CV_BASE).replace("$FONTS$", LIVE_V["fonts"])
+    left = re.findall(r"\$[A-Z_]+(?::\w+)?\$", out.replace("$CSS$", ""))
+    if left:
+        raise ValueError(f"unfilled placeholders in CV_TEMPLATE: {left}")
+    return out.replace("$CSS$", css)   # last: the stylesheet is not scanned for placeholders
 
 _YAML_KEY = re.compile(r"[a-z][a-z0-9_]*\Z")
 _YAML_RESERVED = {"y", "n", "yes", "no", "on", "off", "true", "false", "null"}   # YAML 1.1 reads these keys as bool/null
-_YAML_ESCAPE = re.compile("[\x7f-\x9f  ﻿]")   # fine in JSON, but not printable (or a line break) in YAML
+_YAML_ESCAPE = re.compile("[\x7f-\x9f\u2028\u2029\ufeff]")   # fine in JSON, but not printable (or a line break) in YAML
 
 def _yscalar(v):
     """Every string double-quoted — a JSON string is a valid YAML double-quoted scalar — so no parser ever
@@ -3328,12 +3269,6 @@ def to_yaml(doc, header):
         raise AssertionError("YAML round trip changed the data")
     return text
 
-def cv_css():
-    """The live CV's stylesheet, as the page inlines it, with the fonts it needs."""
-    return (f'/* The CV\'s stylesheet — the one {SITE}/ inlines. Written by tools/gen.py; see /cv/template.yaml. */\n'
-            f'@import url("https://fonts.googleapis.com/css2?{LIVE_V["fonts"]}&display=swap");\n'
-            f'{BASE_CSS}\n  :root{{{LIVE_V["nav"]}}}\n{LIVE_V["css"]}')
-
 def write_cv_data():
     def write(rel, text):
         path = os.path.join(PUBLIC, rel)
@@ -3352,10 +3287,7 @@ def write_cv_data():
         write(f"cv/{lang}/source.yaml", to_yaml(doc, [
             f"{NAME} — CV source data ({lang}). Schema {CV_SCHEMA}.",
             f"Written by tools/gen.py from the same data as {SITE}/ and {SITE}/timeline/; do not edit by hand."]))
-    write("cv/template.yaml", to_yaml(cv_template(), [
-        f"The look of {SITE}/ as a spec for CV generators. Schema {TEMPLATE_SCHEMA}.",
-        "Written by tools/gen.py; do not edit by hand. Data: /cv/{lang}/source.yaml. Stylesheet: /cv/cv.css."]))
-    write("cv/cv.css", cv_css())
+    write("cv/template.html", cv_template_html())
 
 # ------------------------------------------------------------------ BUILD
 if __name__ == "__main__":
