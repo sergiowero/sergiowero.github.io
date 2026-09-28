@@ -1,0 +1,1267 @@
+# Sergio de Jesús Sánchez Robles — CV source data (es). Schema cv-source/1.
+# Written by tools/gen.py from the same data as https://sergiowero.github.io/ and https://sergiowero.github.io/timeline/; do not edit by hand.
+meta:
+  schema: "cv-source/1"
+  lang: "es"
+  generated: "2026-09-28"
+  url: "https://sergiowero.github.io/cv/es/source.yaml"
+  sources:
+    en: "https://sergiowero.github.io/cv/en/source.yaml"
+    es: "https://sergiowero.github.io/cv/es/source.yaml"
+  template: "https://sergiowero.github.io/cv/template.yaml"
+  stylesheet: "https://sergiowero.github.io/cv/cv.css"
+  pages:
+    cv: "https://sergiowero.github.io/"
+    timeline: "https://sergiowero.github.io/timeline/"
+    about: "https://sergiowero.github.io/about/"
+    llms: "https://sergiowero.github.io/llms.txt"
+  repository: "https://github.com/sergiowero/sergiowero.github.io"
+  text_format: "markdown-inline"
+  text_rules: "Text values may contain **bold** and [label](url), and nothing else; strip both for plain text."
+  date_format: "YYYY-MM"
+  order: "Entry lists are newest first, as on the timeline."
+  ids: "`id` values are stable keys, identical in every language: use them to pick entries, sections and achievements."
+  null_means: "Unknown or not applicable. dates.end null with ongoing true = present; title null = same role as the parent."
+profile:
+  name: "Sergio de Jesús Sánchez Robles"
+  headline: "Ingeniero de Software Senior"
+  roles:
+    - "Ingeniero de Software Senior"
+    - "Tech Lead"
+    - "Backend y Full-Stack"
+    - "Videojuegos"
+    - "Asistido por IA"
+  title: "Senior Software Engineer · Tech Lead"
+  tagline: "Backend & Full-Stack · Game Development · AI-Assisted Engineering"
+  location: "Zapopan, Jalisco, México"
+  years_of_experience: 16
+  experience_start_year: 2010
+  summary: "Desarrollador de software con **16 años de experiencia** en videojuegos, medios y empresa, con compañías globales de primer nivel. Como **entusiasta de la IA**, uso herramientas asistidas por IA en mi día a día para optimizar el backend y acelerar la entrega de proyectos. Aprendo rápido y me adapto a nuevos stacks tecnológicos. Habiendo **liderado equipos de hasta seis personas**, entrego soluciones escalables y de alta calidad, a tiempo y en presupuesto."
+  bio: "Soy Sergio Sánchez, ingeniero de software con más de 15 años de experiencia en gaming, medios y empresa. Me muevo entre arquitectura backend, sistemas de videojuegos y herramientas de desarrollo — donde una buena idea necesita convertirse en algo que realmente funcione. He liderado equipos de hasta seis ingenieros y, últimamente, dedico buena parte de mi tiempo a integrar agentes de IA en ese proceso sin perder rigor."
+contact:
+  - type: "location"
+    icon: "pin"
+    label: "Zapopan, Jalisco, México"
+    url: null
+  - type: "phone"
+    icon: "phone"
+    label: "+52 1 33 1799 1812"
+    url: "tel:+5213317991812"
+  - type: "email"
+    icon: "mail"
+    label: "sergioj.sanchezr@gmail.com"
+    url: "mailto:sergioj.sanchezr@gmail.com"
+  - type: "linkedin"
+    icon: "in"
+    label: "linkedin.com/in/sergiojsanchez"
+    url: "https://www.linkedin.com/in/sergiojsanchez/"
+  - type: "github"
+    icon: "gh"
+    label: "github.com/sergiowero"
+    url: "https://github.com/sergiowero"
+  - type: "timeline"
+    icon: "tl"
+    label: "Explora toda mi trayectoria →"
+    url: "https://sergiowero.github.io/timeline/"
+stats:
+  - id: "years"
+    type: "number"
+    value: 16
+    suffix: "+"
+    label: "Años de experiencia"
+  - id: "industries"
+    type: "tags"
+    items: ["Videojuegos", "Medios", "Empresa"]
+    label: "Industrias"
+  - id: "max_led"
+    type: "number"
+    value: 6
+    suffix: ""
+    label: "Ingenieros a cargo"
+  - id: "best_skills"
+    type: "tags"
+    items: [".NET", "Spring", "Python", "Node.js"]
+    label: "Fortalezas"
+skills:
+  core:
+    - name: "C# / .NET"
+      level: 10
+      max: 10
+      percent: 100
+      word: "Experto"
+    - name: "Java / Spring"
+      level: 9
+      max: 10
+      percent: 90
+      word: "Experto"
+    - name: "Python / FastAPI"
+      level: 8
+      max: 10
+      percent: 80
+      word: "Avanzado"
+    - name: "JavaScript / Node.js"
+      level: 6
+      max: 10
+      percent: 60
+      word: "Competente"
+    - name: "AWS"
+      level: 7
+      max: 10
+      percent: 70
+      word: "Avanzado"
+    - name: "SQL / Postgres"
+      level: 8
+      max: 10
+      percent: 80
+      word: "Avanzado"
+  best: [".NET", "Spring", "Python", "Node.js"]
+  technologies:
+    - "C#"
+    - ".NET"
+    - "Java"
+    - "Spring"
+    - "Python"
+    - "FastAPI"
+    - "JavaScript"
+    - "Node.js"
+    - "React"
+    - "AWS"
+    - "PostgreSQL"
+    - "Microservicios"
+    - "APIs RESTful"
+    - "Pruebas unitarias"
+    - "POO"
+    - "Unity3D"
+    - "Git"
+    - "Full-Stack"
+    - "Typescript"
+    - "Docker"
+  ai_assisted:
+    title: "Desarrollo asistido por IA"
+    text: "Herramientas asistidas por IA en mi trabajo diario para optimizar el desarrollo backend y acelerar la entrega de proyectos."
+    tools: ["Claude Code", "opencode", "Codex"]
+languages:
+  - id: "es"
+    name: "Español"
+    level_id: "native"
+    level: "Nativo"
+  - id: "en"
+    name: "Inglés"
+    level_id: "advanced"
+    level: "Avanzado"
+experience:
+  - id: "wizeline"
+    kind: "job"
+    kind_label: "empleo"
+    parent: null
+    title: "Ingeniero de Software Senior / Tech Lead"
+    organization: "Wizeline"
+    dates:
+      type: "range"
+      start: "2020-03"
+      end: null
+      ongoing: true
+      text: "Mar 2020 - Actualidad"
+    duration: null
+    location: "Guadalajara, México"
+    industries: ["Noticias", "Medios y Entretenimiento", "Retail", "Ciberseguridad"]
+    cv:
+      current: true
+      stack:
+        - ".NET"
+        - "Java"
+        - "Spring"
+        - "Node.js"
+        - "Python"
+        - "React"
+        - "AWS"
+        - "PostgreSQL"
+        - "MariaDB"
+        - "Claude Code"
+      highlights:
+        - "**Dow Jones:** Desarrollé funcionalidades y resolví incidentes en producción en un entorno de alta velocidad. Usé herramientas de IA para acelerar los ciclos de desarrollo y elevar la calidad del código. Tech: .NET, AWS, PostgreSQL, Claude Code."
+        - "**Fox Corp:** Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos. Tech: Java, Spring, Node.js, AWS, PostgreSQL."
+        - "**Inditex:** Diseñé la arquitectura backend de un sistema de auditoría complejo. Modelé bases de datos relacionales, implementé microservicios y construí servicios de migración para importaciones de larga duración. Tech: Java, Spring, MariaDB."
+        - "**Cerby:** Lideré el desarrollo full-stack de un MVP como ingeniero externo para lanzar con éxito la plataforma inicial. Tech: Python, React."
+    summary: "Wizeline es una **consultora de software** con muchos clientes: sus ingenieros se asignan a proyectos de cliente, y cada entrada de abajo es un cliente para el que he trabajado desde que entré en marzo de 2020: Dow Jones, Fox Corp, Inditex y Cerby. Mi rol es **Ingeniero de Software Senior / Tech Lead**: me integro al equipo del cliente, construyo y opero sus servicios backend, y lidero cuando el proyecto lo requiere. Junto al trabajo con clientes hay **capacitación constante** —incluida en herramientas de IA como **Claude Code** y **Codex**— y ahora mismo está enfocada en convertirme en **AI engineer**: crear agentes, principalmente en **Python** con **LangChain** y el **Claude SDK**."
+    facts:
+      - label: "Empresa"
+        value: "Consultora de software"
+      - label: "Rol"
+        value: "Ingeniero de Software Senior / Tech Lead"
+      - label: "Clientes"
+        value: "Dow Jones · Fox Corp · Inditex · Cerby"
+      - label: "Ahora"
+        value: "Formándome como AI engineer"
+    highlights: []
+    sections:
+      - id: "wizeline/the-role"
+        title: "El rol"
+        highlights:
+          - "Wizeline es una consultora: tiene muchos clientes, y sus ingenieros trabajan integrados en los equipos de esos clientes. Desde marzo de 2020 he pasado por cuatro; cada uno tiene su propia entrada abajo."
+          - "Sobre todo backend: diseñar servicios, modelos de datos e integraciones, y llevar funcionalidades de diseño a producción en el stack que use el cliente: **.NET**, **Java / Spring**, **Node.js** o **Python**, sobre **AWS**, **PostgreSQL** y **MariaDB**."
+          - "**Tech Lead** cuando el proyecto lo requiere: en Fox Corp lideré un equipo de cinco ingenieros durante los tres años del proyecto."
+      - id: "wizeline/working-with-ai"
+        title: "Trabajo con IA"
+        highlights:
+          - "Desde hace un **año** trabajo **100% con herramientas de IA**: **Claude Code**, **Codex**, **OpenCode** y **GitHub Copilot**."
+          - "En **Dow Jones** implementé mis cambios con **Claude Code** durante todo el proyecto; en **Fox Corp** trabajé con **Cursor** en mis últimos dos meses."
+    achievements:
+      - id: "wizeline/mentor-associate-manager"
+        kind: "milestone"
+        kind_label: "Hito"
+        title: "Mentor y Associate Manager"
+        subtitle: "Capacitado para ambos roles · 5 reportes directos · 6 meses como Associate Manager"
+        highlights:
+          - "Completé toda la capacitación de Wizeline para ser **mentor** y **Associate Manager**, y tomé un equipo de **5 reportes directos**."
+          - "Guié a cada uno por el **plan de carrera que la empresa esperaba**, y los ayudé a cambiar a una **mentalidad de consultoría** y a adoptar los valores de la empresa."
+          - "Me aseguré de que se capacitaran correctamente con las **fuentes de aprendizaje** de la empresa."
+          - "Construí una buena relación con cada uno, con **reuniones 1:1 cada 15 días** para ver cómo estaban."
+          - "A los seis meses del programa la empresa descontinuó el rol de Associate Manager; seguí como **mentor de 2 de mis reportes directos**."
+        result_label: "Resultado"
+        result: "Mis reportes directos avanzaron por el plan esperado, y ayudé a uno de ellos a lograr su **promoción**."
+        skills: ["Mentoría", "Gestión de personas", "1:1 quincenales"]
+      - id: "wizeline/constant-training-ai-at-work"
+        kind: "training"
+        kind_label: "Capacitación"
+        title: "Capacitación constante e IA en el trabajo"
+        subtitle: "Continua desde 2020 · en paralelo al trabajo con clientes, no entre proyectos"
+        highlights:
+          - "La capacitación es parte constante del trabajo en Wizeline: siempre hay una ruta corriendo junto al trabajo con clientes."
+          - "**Herramientas de IA**: capacitado para trabajar con agentes de programación como **Claude Code**, **Codex**, **OpenCode** y **GitHub Copilot**, que hoy uso a diario en el trabajo con clientes."
+          - "**AI engineering**: la ruta actual; me están formando para crear agentes, principalmente en **Python** con **LangChain** y el **Claude SDK**."
+        result_label: "Ahora"
+        result: "En formación para ser **AI engineer**: agentes en Python, LangChain y el Claude SDK."
+        skills: ["Claude Code", "Codex", "OpenCode", "GitHub Copilot", "Python", "LangChain", "Claude SDK"]
+    stack:
+      - ".NET"
+      - "Java"
+      - "Spring"
+      - "Node.js"
+      - "Python"
+      - "React"
+      - "AWS"
+      - "PostgreSQL"
+      - "MariaDB"
+      - "Claude Code"
+      - "Codex"
+      - "OpenCode"
+      - "GitHub Copilot"
+      - "Cursor"
+      - "LangChain"
+      - "Claude SDK"
+    links: []
+    timeline_url: "https://sergiowero.github.io/timeline/#h-wizeline"
+    children:
+      - id: "wizeline-global-news"
+        kind: "project"
+        kind_label: "proyecto"
+        parent: "wizeline"
+        title: null
+        organization: "Dow Jones"
+        dates: null
+        duration: null
+        location: "Remoto"
+        industries: ["Noticias"]
+        summary: "El proyecto de Wizeline con Dow Jones, sobre un **SaaS de precios de gasolina**: una plataforma que ayuda a los dueños de gasolineras a llevar un histórico de sus precios, ver los de la competencia y fijar los suyos de forma automática con estrategias que ellos mismos definen. Hecha en **.NET** sobre **PostgreSQL**, diseñada con **Domain-Driven Design** y dividida en muchos servicios que se comunican entre sí por colas de mensajes."
+        facts:
+          - label: "Producto"
+            value: "SaaS de precios de gasolina"
+          - label: "Arquitectura"
+            value: "DDD"
+          - label: "Cloud"
+            value: "AWS"
+          - label: "Datos"
+            value: "PostgreSQL"
+        highlights: []
+        sections:
+          - id: "wizeline-global-news/the-product"
+            title: "El producto"
+            highlights:
+              - "**Histórico de precios:** se guarda cada precio que ha tenido una gasolinera, para que los dueños puedan ver cómo se movieron sus precios y el mercado."
+              - "**Precios de la competencia:** la plataforma muestra lo que cobra la competencia alrededor de cada gasolinera."
+              - "**Precios automáticos:** los dueños definen sus propias estrategias y el sistema fija los precios de la gasolinera siguiéndolas."
+              - "Los clientes usan la herramienta para mantener sus gasolineras al día con el mercado y cuidar los ingresos del negocio."
+          - id: "wizeline-global-news/net-postgresql-and-domain-driven-design"
+            title: ".NET, PostgreSQL y Domain-Driven Design"
+            highlights:
+              - "Servicios escritos en **.NET**, con los datos de la plataforma en **PostgreSQL**."
+              - "El sistema estaba diseñado con **DDD**: las reglas de negocio vivían en un modelo de dominio, y lo que pasaba en él se expresaba como eventos de dominio."
+          - id: "wizeline-global-news/many-services-domain-events-and-the-outbox-pattern"
+            title: "Muchos servicios, eventos de dominio y el patrón Outbox"
+            highlights:
+              - "Había muchos servicios, y se comunicaban entre sí por **colas de mensajes** que llevaban **eventos de dominio**, en vez de llamarse directamente."
+              - "La publicación seguía el **patrón Outbox**: el evento se guardaba en la base de datos en la misma transacción que el cambio que lo produjo, y desde ahí se enviaba a la cola; así ningún cambio salía sin su evento, ni salía un evento de un cambio que se revirtió."
+          - id: "wizeline-global-news/unit-tests-as-part-of-done"
+            title: "Pruebas unitarias como parte de \"terminado\""
+            highlights:
+              - "El proyecto con **más pruebas unitarias** que he visto en mi carrera."
+              - "Un feature no estaba completo hasta que se entregaba con pruebas unitarias extensas que lo cubrieran todo: las pruebas eran parte de la entrega, no algo posterior."
+          - id: "wizeline-global-news/day-to-day"
+            title: "Día a día"
+            highlights:
+              - "Desarrollé nuevas funcionalidades y resolví incidentes en producción en un entorno de alta velocidad."
+              - "Trabajé con **Claude Code** durante todo el proyecto: fue con lo que implementé mis cambios, para acelerar los ciclos de desarrollo y elevar la calidad del código."
+        achievements:
+          - id: "wizeline-global-news/feature-set-delivered-for-costco"
+            kind: "milestone"
+            kind_label: "Hito"
+            title: "Set de funcionalidades entregado para Costco"
+            subtitle: "Un conjunto de funcionalidades hecho para un cliente de la plataforma: Costco"
+            highlights:
+              - "Completé el set completo de funcionalidades que Costco necesitaba, cada una entregada con las pruebas unitarias extensas que el proyecto exigía."
+            result_label: "Resultado"
+            result: "Entregado por completo, logrando la **satisfacción del cliente**."
+            skills: [".NET", "PostgreSQL", "DDD", "Pruebas unitarias"]
+        stack:
+          - ".NET"
+          - "C#"
+          - "PostgreSQL"
+          - "AWS"
+          - "DDD"
+          - "Eventos de dominio"
+          - "Colas de mensajes"
+          - "Patrón Outbox"
+          - "Pruebas unitarias"
+          - "Claude Code"
+        links:
+          - label: "pricepro.opisnet.com"
+            url: "https://pricepro.opisnet.com/"
+        timeline_url: "https://sergiowero.github.io/timeline/#h-wizeline-global-news"
+        children: []
+      - id: "wizeline-media"
+        kind: "project"
+        kind_label: "proyecto"
+        parent: "wizeline"
+        title: "Tech Lead"
+        organization: "Fox Corp"
+        dates: null
+        duration: null
+        location: "Remoto"
+        industries: ["Medios y Entretenimiento"]
+        summary: "El proyecto de Wizeline con Fox Corp, donde fui Tech Lead de un equipo de cinco ingenieros. Dos tipos de servicios compartían una misma capa de mensajería en AWS: workers serverless escritos en JavaScript y aplicaciones Java corriendo en contenedores."
+        facts:
+          - label: "Equipo"
+            value: "5 ingenieros"
+          - label: "Cloud"
+            value: "AWS"
+          - label: "Datos"
+            value: "PostgreSQL"
+        highlights: []
+        sections:
+          - id: "wizeline-media/aws-service-to-service-messaging"
+            title: "AWS y mensajería entre servicios"
+            highlights:
+              - "**SNS** y **SQS** eran el tejido conectivo de la plataforma: los servicios publicaban y consumían mensajes en vez de llamarse directamente entre sí."
+              - "Esa misma capa de mensajería llevaba las integraciones con **sistemas externos**: servicios de clientes y de otras empresas con las que trabajábamos."
+              - "Todo lo que podía procesarse de forma asíncrona se modelaba como una cola, de modo que productores y consumidores avanzaran a su propio ritmo."
+          - id: "wizeline-media/serverless-services-in-javascript"
+            title: "Servicios serverless en JavaScript"
+            highlights:
+              - "**AWS Lambda** corría buena parte de la plataforma: algunos servicios, no todos."
+              - "**JavaScript** era el lenguaje de todas las lambdas, y el que más usé en este proyecto."
+              - "Esas funciones resolvían **tareas basadas en colas**; la principal era lanzar las llamadas que transcodificaban video."
+          - id: "wizeline-media/java-services-on-containers"
+            title: "Servicios Java en contenedores"
+            highlights:
+              - "Todos los servicios basados en Java eran aplicaciones **Spring Boot**."
+              - "Se desplegaban en **Amazon ECS**, el orquestador de contenedores propio de AWS: su contraparte interna de Kubernetes."
+              - "Esos servicios se conectaban a una base de datos **PostgreSQL**, donde vivían los datos de la plataforma."
+              - "Convivían dos runtimes: **Java 8** en algunos servicios y **Java 11** en otros."
+          - id: "wizeline-media/observability-debugging"
+            title: "Observabilidad y depuración"
+            highlights:
+              - "**CloudWatch** era donde leíamos los logs: seguir qué hizo realmente un mensaje entre servicios y depurar los problemas que aparecían."
+          - id: "wizeline-media/ai-tooling"
+            title: "Herramientas de IA"
+            highlights: ["Trabajé con **Cursor** durante mis últimos dos meses en el proyecto."]
+        achievements:
+          - id: "wizeline-media/tech-lead"
+            kind: "milestone"
+            kind_label: "Hito"
+            title: "Tech Lead"
+            subtitle: "Un equipo de cinco ingenieros, durante todo el proyecto"
+            highlights:
+              - "Dirigí un equipo de 5 ingenieros como Tech Lead, diseñando e implementando soluciones escalables y a la medida para stakeholders internos."
+              - "**Revisión de pull requests** de todo lo que entregaba el equipo."
+              - "**Diseño de las soluciones** en conjunto con los integrantes del equipo, no impuesto desde arriba."
+              - "**Refinamiento de requerimientos** directamente con negocio, antes de que el trabajo llegara al equipo."
+            result_label: "Resultado"
+            result: "En **3 meses** cada integrante del equipo podía trabajar de forma independiente, y nuestros resultados nos ganaron la **confianza de los stakeholders**."
+            skills: []
+          - id: "wizeline-media/legacy-media-cloud-video-migration-service"
+            kind: "milestone"
+            kind_label: "Hito"
+            title: "Servicio de migración de video de legacy a Media Cloud"
+            subtitle: "Mío de principio a fin: lo diseñé, lo construí y lo llevé a producción yo solo"
+            highlights:
+              - "Un servicio que sacaba el video del sistema legacy de Fox y lo llevaba a **Media Cloud**, la nueva plataforma sobre la que trabajaba el equipo."
+              - "Hecho en **Java 11** con **Spring Boot**, tomando el trabajo de una cola de **SQS** y guardando su estado en **PostgreSQL**."
+              - "El procesamiento seguía el **patrón Inbox**: cada mensaje entrante se escribía en la base de datos antes de actuar sobre él, de modo que un mensaje reentregado nunca migraba dos veces el mismo video."
+            result_label: "Resultado"
+            result: "Entregado en producción y migró **más de 100,000 videos legacy**, metadatos incluidos, al nuevo sistema de Fox."
+            skills: ["Java 11", "Spring Boot", "Amazon SQS", "PostgreSQL", "Patrón Inbox"]
+        stack:
+          - "Java 8"
+          - "Java 11"
+          - "Spring Boot"
+          - "JavaScript"
+          - "Node.js"
+          - "AWS Lambda"
+          - "Amazon SNS"
+          - "Amazon SQS"
+          - "Amazon ECS"
+          - "CloudWatch"
+          - "PostgreSQL"
+          - "Cursor"
+        links: []
+        timeline_url: "https://sergiowero.github.io/timeline/#h-wizeline-media"
+        children: []
+      - id: "wizeline-retail"
+        kind: "project"
+        kind_label: "proyecto"
+        parent: "wizeline"
+        title: null
+        organization: "Inditex"
+        dates: null
+        duration: null
+        location: "Remoto"
+        industries: ["Retail"]
+        summary: "El proyecto de Wizeline con **Inditex**, el grupo de retail detrás de Zara. El proyecto era un **visualizador de las auditorías de las fábricas de la empresa**: un conjunto de microservicios en **Java 11** hechos con **Clean Architecture** y un flujo de trabajo **API first**, sobre **MariaDB**. Diseñé la arquitectura de los servicios backend, modelé la base de datos relacional y construí el servicio que migró los datos de auditorías desde **Snowflake** con **Spring Batch**."
+        facts:
+          - label: "Producto"
+            value: "Visor de auditorías de fábricas"
+          - label: "Enfoque"
+            value: "Backend"
+          - label: "Arquitectura"
+            value: "Microservicios · Clean Architecture"
+          - label: "Flujo de trabajo"
+            value: "API first · OpenAPI"
+        highlights: []
+        sections:
+          - id: "wizeline-retail/the-product"
+            title: "El producto"
+            highlights:
+              - "Un **visualizador de las auditorías** que Inditex hace a sus **fábricas**: los datos de las auditorías reunidos en un sistema donde se pudieran consultar."
+              - "Diseñé la arquitectura de los **servicios backend** que lo sostenían."
+          - id: "wizeline-retail/api-first-with-openapi"
+            title: "API first, con OpenAPI"
+            highlights:
+              - "Trabajábamos **API first**: antes de empezar cualquier cambio, su API se definía en una especificación **OpenAPI** y se acordaba; solo entonces empezaba la implementación."
+              - "El contrato iba primero y el código lo seguía, de modo que lo que exponía un servicio nunca era una sorpresa."
+          - id: "wizeline-retail/microservices-in-java-11-with-clean-architecture"
+            title: "Microservicios en Java 11, con Clean Architecture"
+            highlights:
+              - "El backend era un conjunto de **microservicios** escritos en **Java 11** con **Spring**."
+              - "Cada uno seguía **Clean Architecture**: el dominio y los casos de uso al centro; framework, base de datos y HTTP en los bordes, dependiendo hacia adentro."
+          - id: "wizeline-retail/data"
+            title: "Datos"
+            highlights:
+              - "Los datos vivían en **MariaDB**; modelé el esquema relacional sobre el que trabajaban los servicios."
+        achievements:
+          - id: "wizeline-retail/snowflake-mariadb-audit-migration-service"
+            kind: "milestone"
+            kind_label: "Hito"
+            title: "Servicio de migración de auditorías de Snowflake a MariaDB"
+            subtitle: "Lo construí: una importación de larga duración sobre Spring Batch"
+            highlights:
+              - "Un servicio que llevaba los datos de auditorías desde **Snowflake**, donde Inditex los guardaba, a la base de datos **MariaDB** del proyecto."
+              - "Hecho sobre **Spring Batch**, pensado justo para este tipo de importaciones largas y por lotes."
+            result_label: "Resultado"
+            result: "Entregado: las auditorías quedaron en **MariaDB** y el visualizador tuvo sus datos."
+            skills: ["Java 11", "Spring Batch", "Snowflake", "MariaDB"]
+        stack:
+          - "Java 11"
+          - "Spring"
+          - "Spring Batch"
+          - "MariaDB"
+          - "OpenAPI"
+          - "Clean Architecture"
+          - "Microservicios"
+          - "Snowflake"
+        links:
+          - label: "inditex.com"
+            url: "https://www.inditex.com/"
+        timeline_url: "https://sergiowero.github.io/timeline/#h-wizeline-retail"
+        children: []
+      - id: "wizeline-cybersecurity"
+        kind: "project"
+        kind_label: "proyecto"
+        parent: "wizeline"
+        title: null
+        organization: "Cerby"
+        dates: null
+        duration: null
+        location: "Remoto"
+        industries: ["Ciberseguridad"]
+        summary: "El proyecto de Wizeline con **Cerby**, una empresa de ciberseguridad cuyo software gestiona las **credenciales de una empresa**: las cuentas y contraseñas que sus equipos comparten para las apps que usan. Fui parte del **equipo inicial del proyecto**, en el backend: lideré la primera versión del backend, modelé la base de datos inicial y construí la primera extensión de Chrome de la empresa."
+        facts:
+          - label: "Producto"
+            value: "Gestión de credenciales"
+          - label: "Equipo"
+            value: "Equipo inicial del proyecto"
+          - label: "Enfoque"
+            value: "Backend"
+          - label: "Arquitectura"
+            value: "Monolito modular · DDD"
+        highlights: []
+        sections:
+          - id: "wizeline-cybersecurity/the-product"
+            title: "El producto"
+            highlights:
+              - "**Cerby** es un software de ciberseguridad para gestionar las credenciales de una empresa: los accesos que su gente comparte para las aplicaciones con las que trabaja, bajo control en vez de en hojas de cálculo y chats."
+              - "Entré como parte del **equipo inicial del proyecto**, antes de que existiera una plataforma sobre la cual construir; mi parte fue el **backend**."
+          - id: "wizeline-cybersecurity/backend-in-python-with-flask-designed-with-ddd"
+            title: "Backend en Python con Flask, diseñado con DDD"
+            highlights:
+              - "Lideré la **primera versión del backend**, escrita en **Python** con **Flask**."
+              - "Fue mi **primera vez trabajando con Domain-Driven Design**: el dominio modelado primero y el framework en los bordes."
+              - "El proyecto fue un **monolito modular**: un solo desplegable, dividido en módulos con fronteras claras, para que pudiera crecer sin enredarse ni forzar microservicios antes de tiempo."
+          - id: "wizeline-cybersecurity/data-model-migrations"
+            title: "Modelo de datos y migraciones"
+            highlights:
+              - "Para el MVP del backend **modelé la base de datos inicial**."
+              - "Los cambios de esquema pasaban por un **sistema de migraciones** hecho sobre **SQLAlchemy** (con Alembic), de modo que cada cambio al modelo quedaba versionado y era repetible entre entornos."
+          - id: "wizeline-cybersecurity/frontend-in-support"
+            title: "Frontend, como apoyo"
+            highlights:
+              - "Trabajé como **apoyo en el frontend**, hecho en **Next.js** con **TypeScript**, cuando el lado web lo necesitaba."
+        achievements:
+          - id: "wizeline-cybersecurity/the-mvp-delivered"
+            kind: "milestone"
+            kind_label: "Hito"
+            title: "El MVP, entregado"
+            subtitle: "La plataforma inicial con la que Cerby se lanzó"
+            highlights:
+              - "El MVP completo, backend, frontend web y extensión de Chrome, entregado como la primera versión del producto."
+            result_label: "Resultado"
+            result: "Un **éxito**: fue lo que permitió que Cerby siguiera adelante; la empresa **sigue viva hasta hoy**, construida sobre lo que ese MVP inició."
+            skills: ["Python", "Flask", "Next.js", "TypeScript", "Extensión de Chrome"]
+          - id: "wizeline-cybersecurity/first-version-of-the-backend"
+            kind: "milestone"
+            kind_label: "Hito"
+            title: "Primera versión del backend"
+            subtitle: "La lideré: Python, Flask, DDD, monolito modular"
+            highlights:
+              - "El backend del MVP, desde el modelo de datos inicial y sus migraciones hasta el servicio con el que se lanzó el producto."
+            result_label: "Resultado"
+            result: "La **plataforma inicial se lanzó** sobre él."
+            skills: ["Python", "Flask", "DDD", "Monolito modular", "SQLAlchemy", "Alembic"]
+          - id: "wizeline-cybersecurity/cerby-s-first-chrome-extension"
+            kind: "release"
+            kind_label: "Lanzamiento"
+            title: "La primera extensión de Chrome de Cerby"
+            subtitle: "Construí la primera versión"
+            highlights:
+              - "La **primera extensión de navegador** de la empresa: la pieza que lleva las credenciales gestionadas al navegador, donde la gente realmente inicia sesión."
+            result_label: "Resultado"
+            result: "Entregada como la primera extensión de Chrome de Cerby."
+            skills: ["Extensión de Chrome"]
+        stack:
+          - "Python"
+          - "Flask"
+          - "DDD"
+          - "Monolito modular"
+          - "SQLAlchemy"
+          - "Alembic"
+          - "Extensión de Chrome"
+          - "Next.js"
+          - "TypeScript"
+          - "React"
+        links:
+          - label: "cerby.com"
+            url: "https://www.cerby.com/"
+        timeline_url: "https://sergiowero.github.io/timeline/#h-wizeline-cybersecurity"
+        children: []
+  - id: "1-simple-idea"
+    kind: "job"
+    kind_label: "empleo"
+    parent: null
+    title: "Ingeniero de Software Líder"
+    organization: "1 Simple Idea"
+    dates:
+      type: "range"
+      start: "2019-07"
+      end: "2020-03"
+      ongoing: false
+      text: "Jul 2019 - Mar 2020"
+    duration: null
+    location: "Guadalajara, México"
+    industries: ["Videojuegos · Móvil"]
+    cv:
+      current: false
+      stack: ["C#", "Unity3D", "iOS", "IoC / DI"]
+      highlights:
+        - "Lideré un equipo pequeño de programación en un juego móvil para iOS, a cargo de la **arquitectura central del juego**."
+        - "Diseñé e implementé Inversión de Control (IoC), Inyección de Dependencias (DI) y un sistema robusto orientado a eventos."
+        - "Aceleré el ciclo de desarrollo y reduje los bugs con un paradigma modular que recortó de forma notable el tiempo de integración de assets para los equipos de arte."
+        - "Publicado en **Apple Arcade** y ahora en Steam: [The Lullaby of Life](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/)."
+    summary: "Nueve meses en 1 Simple Idea trabajando en **The Lullaby of Life**, un juego móvil para iOS hecho en **Unity3D**. El juego se dividió en dos —la parte visual y de gameplay, y una capa de lógica cubierta por pruebas unitarias— y se sostenía sobre dos sistemas escritos específicamente para él: un contenedor de IoC / DI hecho a mano y **Flow**, un sistema de conexión de datos."
+    facts:
+      - label: "Juego"
+        value: "The Lullaby of Life"
+      - label: "Motor"
+        value: "Unity3D"
+      - label: "Plataforma"
+        value: "iOS · Apple Arcade"
+      - label: "Hecho en"
+        value: "9 meses"
+    highlights: []
+    sections:
+      - id: "1-simple-idea/inversion-of-control-dependency-injection"
+        title: "Inversión de Control e Inyección de Dependencias"
+        highlights:
+          - "Un sistema de **IoC / DI** hecho a mano, escrito específicamente para este juego en lugar de tomarlo de una librería."
+          - "Los componentes del juego declaraban lo que necesitaban y el contenedor lo proveía, de modo que ningún componente dependía directamente de otro."
+      - id: "1-simple-idea/two-layers-visual-gameplay-and-logic"
+        title: "Dos capas: visual + gameplay, y lógica"
+        highlights:
+          - "El juego se dividió en dos partes: la capa **visual y de gameplay**, y la capa de **lógica**."
+          - "Separar la lógica de lo visual es lo que la hizo testeable: toda la capa de lógica tenía **pruebas unitarias**."
+      - id: "1-simple-idea/flow-connecting-data-between-components"
+        title: "Flow: conexión de datos entre componentes"
+        highlights:
+          - "**Flow**, un sistema de conexión de datos hecho especialmente para el juego: una variable de un componente se podía conectar a la de otro de forma transparente, sin que los dos componentes se conocieran entre sí."
+          - "Junto con el contenedor de DI, dio al proyecto un paradigma modular que redujo los bugs y el tiempo que los equipos de arte pasaban integrando assets."
+    achievements:
+      - id: "1-simple-idea/lead-programmer"
+        kind: "milestone"
+        kind_label: "Hito"
+        title: "Programador Líder"
+        subtitle: "Lideré el equipo pequeño de programación que construyó el juego"
+        highlights:
+          - "Lideré un equipo pequeño de programación en un juego móvil para iOS, a cargo de la **arquitectura central del juego**."
+        result_label: null
+        result: null
+        skills: []
+      - id: "1-simple-idea/finished-in-nine-months"
+        kind: "pace"
+        kind_label: "Ritmo"
+        title: "Terminado en nueve meses"
+        subtitle: "Rápido y bien organizado, con algo de tiempo extra en el camino"
+        highlights:
+          - "El juego pasó de inicio a fin en **nueve meses**. Todo el equipo trabajó rápido y de forma muy organizada, y eso es lo que hizo posible el plazo."
+          - "Eso sí, no salió gratis: hubo algo de tiempo extra en el día a día, y algunos sábados se fueron en terminar el proyecto."
+        result_label: "Resultado"
+        result: "Salió rápido, pero las horas extra fueron el precio del calendario, no algo que nadie quisiera repetir."
+        skills: []
+      - id: "1-simple-idea/published-on-apple-arcade"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Publicado en Apple Arcade"
+        subtitle: null
+        highlights:
+          - "**The Lullaby of Life** salió en **Apple Arcade**, el servicio de juegos por suscripción de Apple, para iOS y Apple TV."
+        result_label: null
+        result: null
+        skills: ["iOS", "Apple TV", "Apple Arcade"]
+      - id: "1-simple-idea/published-on-steam"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Publicado en Steam"
+        subtitle: null
+        highlights:
+          - "El juego llegó después a Steam: [The Lullaby of Life en Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/)."
+        result_label: null
+        result: null
+        skills: ["Steam"]
+    stack: ["C#", "Unity3D", "iOS", "Apple Arcade", "IoC / DI", "Pruebas unitarias", "Flow"]
+    links:
+      - label: "1simpleidea.mx"
+        url: "https://1simpleidea.mx/"
+      - label: "The Lullaby of Life en Steam"
+        url: "https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/"
+    timeline_url: "https://sergiowero.github.io/timeline/#h-1-simple-idea"
+    children: []
+  - id: "virtually-live"
+    kind: "job"
+    kind_label: "empleo"
+    parent: null
+    title: "Ingeniero de Software Senior"
+    organization: "Virtually Live"
+    dates:
+      type: "range"
+      start: "2017-02"
+      end: "2020-01"
+      ongoing: false
+      text: "Feb 2017 - Ene 2020"
+    duration: null
+    location: "Málaga, España"
+    industries: ["Videojuegos · VR"]
+    cv:
+      current: false
+      stack: ["C#", "Unity3D", "VR", "Python", "Django", "Go", "REST"]
+      highlights:
+        - "Desarrollé **juegos de carreras** para HTC Vive, Oculus y Gear VR."
+        - "Construí una capa de abstracción para los módulos del juego —controles VR, APIs sociales y acceso a datos— con JSON para la gestión de configuración."
+        - "Porté el título de VR a iOS desarrollando las mecánicas principales en C# y diseñando los servicios backend RESTful con Python, Django y Go."
+        - "Contribuí al lanzamiento de la adaptación para iOS ([gameplay](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s))."
+    summary: "Tres años trabajando en remoto para Virtually Live, un estudio de Málaga. Todo se apoyaba en una cosa: los **datos de entrada de las carreras de Fórmula E**, que nos permitían **simular la carrera que estaba en vivo**, en un mundo virtual, con solo unos minutos de retraso. Sobre esa base hicimos dos productos. Primero una **app de Steam**, para que la gente con **VR** pudiera **ver la carrera como si estuviera ahí** —e incluso **subirse con los pilotos**—; los prototipos de **pool** y **trivia (Jeopardy)** se querían usar dentro de ella. Luego el proyecto **descartó el VR** y se convirtió en una **app de móviles** donde la gente veía la carrera y **competía con los corredores**: ahí es donde programamos los **modos de juego**, la **UI** y reglas como el **safety car**. Debajo, un **backend en Python con Django** para cuentas y amigos, después de una primera versión que hice en .NET. Salió **live en iOS**, y durante una carrera los **locutores de la Fórmula E mencionaron a los jugadores que competían en la app**. Aparte, un **showroom de VR** con los componentes de los autos de carreras, usado en los eventos oficiales de Fórmula E."
+    facts:
+      - label: "Datos"
+        value: "Datos en vivo de las carreras de Fórmula E"
+      - label: "Productos"
+        value: "App de VR en Steam → app móvil (iOS)"
+      - label: "Motor"
+        value: "Unity3D (C#)"
+      - label: "Backend"
+        value: "Python · Django (primera versión en .NET)"
+      - label: "Mostrado en"
+        value: "Eventos oficiales de Fórmula E"
+    highlights: []
+    sections:
+      - id: "virtually-live/the-base-formula-e-s-live-race-data-simulated-in-a-virtual-world"
+        title: "La base: los datos en vivo de la Fórmula E, simulados en un mundo virtual"
+        highlights:
+          - "Teníamos los **datos de entrada de las carreras de Fórmula E**."
+          - "Con ellos podíamos **simular la carrera que estaba en vivo** en un **mundo virtual**, con solo **unos minutos de retraso**. Los dos productos de abajo se construyeron sobre esta misma base."
+      - id: "virtually-live/first-product-a-steam-app-to-watch-the-race-in-vr"
+        title: "Primer producto: una app de Steam para ver la carrera en VR"
+        highlights:
+          - "Una app en **Steam** para que la gente con **VR** —**HTC Vive**, **Oculus**, **Gear VR**— pudiera **ver la carrera como si estuviera ahí**, e incluso **subirse con los pilotos**."
+          - "Construí una **capa de abstracción** para los módulos del juego —**controles VR**, **APIs sociales** y **acceso a datos**— con **JSON** para la gestión de configuración."
+          - "Aquí es donde se querían usar los juegos de **pool online** y **trivia (Jeopardy)**: cosas para jugar dentro de la app de VR, alrededor de la carrera. Los dos se quedaron en prototipo y **nunca salieron a la luz**."
+      - id: "virtually-live/the-pivot-vr-dropped-a-mobile-app-to-compete-against-the-drivers"
+        title: "El giro: se descarta el VR, una app móvil para competir con los corredores"
+        highlights:
+          - "Luego el proyecto **descartó el VR** y se convirtió en una **app de móviles** donde la gente podía **ver la carrera** y **competir con los corredores**."
+          - "En esa parte del proyecto es donde programamos los **modos de juego** y la **UI**, y agregamos reglas como el **safety car**, entre otras."
+          - "Las mecánicas principales en **C#**, en **iOS**."
+      - id: "virtually-live/backend-accounts-and-friends-in-python-with-django"
+        title: "Backend: cuentas y amigos, en Python con Django"
+        highlights:
+          - "Implementé el **backend** para que los usuarios pudieran **tener cuenta** y **agregar amigos**."
+          - "Escrito en **Python** con **Django**, como **servicios RESTful**, con **Go** al lado."
+          - "**Un detalle interesante:** implementé una versión inicial del backend en **.NET**. Después la empresa contrató a un nuevo líder y cambió todo a **Python**."
+      - id: "virtually-live/a-vr-showroom-for-formula-e"
+        title: "Un showroom de VR para Fórmula E"
+        highlights:
+          - "Aparte, un **showroom**: una aplicación para mostrar, en **realidad virtual**, los **componentes de los autos de carreras**."
+          - "Este sí salió: **se usó en los eventos oficiales de Fórmula E**."
+    achievements:
+      - id: "virtually-live/online-pool-in-vr"
+        kind: "prototype"
+        kind_label: "Prototipo"
+        title: "Pool online en VR"
+        subtitle: "Minijuego para la app de VR en Steam · prototipo"
+        highlights:
+          - "Un **juego de pool**, **online**, en **realidad virtual**: pensado para jugarse dentro de la app de Steam, alrededor de la carrera en vivo."
+        result_label: "Resultado"
+        result: "Se quedó en prototipo; nunca salió a la luz."
+        skills: ["Unity3D", "C#", "VR", "Online"]
+      - id: "virtually-live/trivia-jeopardy-in-vr"
+        kind: "prototype"
+        kind_label: "Prototipo"
+        title: "Trivia (Jeopardy) en VR"
+        subtitle: "Minijuego para la app de VR en Steam · prototipo"
+        highlights:
+          - "El concurso **Jeopardy** como juego en **realidad virtual**: pensado para la misma app de Steam, junto al juego de pool."
+        result_label: "Resultado"
+        result: "Se quedó en prototipo; nunca salió a la luz."
+        skills: ["Unity3D", "C#", "VR"]
+      - id: "virtually-live/live-on-ios-real-users-racing-during-a-formula-e-race"
+        kind: "milestone"
+        kind_label: "Hito"
+        title: "Live en iOS: usuarios compitiendo durante una carrera de Fórmula E"
+        subtitle: "App móvil · modos de juego, UI, reglas de carrera y backend"
+        highlights:
+          - "El proyecto salió **live solamente en iOS**."
+          - "Se pudo tener una **carrera con usuarios jugando** en la app, compitiendo con los corredores mientras corría la carrera real."
+          - "Los **locutores de la Fórmula E**, en vivo, **mencionaban a los jugadores que estaban compitiendo en la app**."
+          - "Gameplay de la app de iOS: [video](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s)."
+        result_label: "Resultado"
+        result: "Una carrera de Fórmula E en vivo con gente compitiendo en la app, y los locutores de la transmisión mencionándolos."
+        skills: ["Unity3D", "C#", "iOS", "Python", "Django"]
+      - id: "virtually-live/vr-showroom-for-formula-e"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Showroom de VR para Fórmula E"
+        subtitle: "Aplicación de VR · componentes de los autos de carreras"
+        highlights:
+          - "Un **showroom** en **realidad virtual**: una aplicación para mostrar los **componentes de los autos de carreras**."
+        result_label: "Resultado"
+        result: "Usado en los eventos oficiales de Fórmula E."
+        skills: ["Unity3D", "C#", "VR"]
+    stack:
+      - "C#"
+      - "Unity3D"
+      - "VR"
+      - "Steam"
+      - "HTC Vive"
+      - "Oculus"
+      - "Gear VR"
+      - "iOS"
+      - "Python"
+      - "Django"
+      - ".NET"
+      - "Go"
+      - "REST"
+      - "Datos de carrera en vivo"
+      - "Modos de juego"
+      - "Prototipado"
+    links:
+      - label: "App de iOS: gameplay"
+        url: "https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s"
+    timeline_url: "https://sergiowero.github.io/timeline/#h-virtually-live"
+    children: []
+  - id: "intel"
+    kind: "job"
+    kind_label: "empleo"
+    parent: null
+    title: "Ingeniero de Software"
+    organization: "Intel"
+    dates:
+      type: "range"
+      start: "2015-02"
+      end: "2017-02"
+      ongoing: false
+      text: "Feb 2015 - Feb 2017"
+    duration: null
+    location: "Guadalajara, México"
+    industries: ["Semiconductores"]
+    cv:
+      current: false
+      stack: ["Ruby", "XML", "Automation"]
+      highlights:
+        - "Desarrollé **APIs en Ruby** para los equipos de validación de hardware y para agilizar los flujos de pruebas."
+        - "Creé herramientas y scripts de automatización para sincronizar despliegues de APIs con los entornos cliente en varias sedes globales de Intel."
+        - "Usé metaprogramación en Ruby para interpretar documentos de diseño en XML y generar ejecutables de forma dinámica."
+    summary: "Dos años en Intel escribiendo **librerías personalizadas en Ruby** para los equipos de validación de hardware. Las librerías son lo que los equipos usan para **validar todos sus diseños de chip antes de mandarlos a simulación real**: entra un documento de diseño en XML y sale el ejecutable que lo revisa, generado al vuelo con metaprogramación en Ruby. Alrededor de las librerías, la automatización que las mantenía desplegadas y sincronizadas en las sedes de Intel en el mundo."
+    facts:
+      - label: "Área"
+        value: "Validación de hardware"
+      - label: "Lenguaje"
+        value: "Ruby"
+      - label: "Entrada"
+        value: "Documentos de diseño en XML"
+      - label: "Alcance"
+        value: "Sedes de Intel en el mundo"
+    highlights: []
+    sections:
+      - id: "intel/custom-ruby-libraries-for-validation"
+        title: "Librerías personalizadas en Ruby para validación"
+        highlights:
+          - "El centro del trabajo: **librerías escritas específicamente para validación**, en Ruby, hechas para los equipos de validación de hardware y no tomadas de fuera."
+          - "Los equipos usan la librería para **validar todos los diseños de chip** que producen **antes de mandarlos a simulación real**: un diseño no llega al simulador hasta que la librería lo ha revisado."
+          - "Detectar un problema en esta etapa es lo que hace que la librería valga la pena: la simulación real es el paso caro, y un diseño que falla ahí cuesta mucho más que uno que falla una revisión en Ruby."
+          - "Expuestas como **APIs en Ruby** para que cada equipo pudiera integrar la validación en su propio flujo de pruebas."
+      - id: "intel/from-xml-design-documents-to-executables-with-metaprogramming"
+        title: "De documentos de diseño en XML a ejecutables, con metaprogramación"
+        highlights:
+          - "Los diseños de chip llegaban como **documentos de diseño en XML**."
+          - "La librería interpretaba esos documentos y, con **metaprogramación en Ruby**, **generaba los ejecutables de forma dinámica** a partir de lo que describía el documento: el código que validaba un diseño se construía desde el diseño mismo, no se escribía a mano para cada uno."
+      - id: "intel/deployment-automation-across-intel-sites"
+        title: "Automatización de despliegues entre sedes de Intel"
+        highlights:
+          - "Los equipos de validación estaban repartidos en **varias sedes de Intel en el mundo**, cada una con su propio entorno cliente."
+          - "Escribí las **herramientas y scripts de automatización** que sincronizaban los despliegues de las APIs con esos entornos, para que todas las sedes corrieran la misma versión de las librerías."
+    achievements:
+      - id: "intel/moved-the-project-from-svn-to-git"
+        kind: "milestone"
+        kind_label: "Hito"
+        title: "Migración del proyecto de SVN a Git"
+        subtitle: "Iniciativa mía: la propuse y la llevé a cabo"
+        highlights:
+          - "El proyecto vivía en **SVN**. Propuse la iniciativa de pasarlo a **Git** y llevé el cambio."
+          - "Con las ramas de Git, cada persona podía **trabajar en varias funcionalidades al mismo tiempo**, y trabajar en conjunto sobre el mismo código se volvió más fácil."
+          - "El **CI/CD** construido encima quedó **más simple y más moderno** que lo que SVN permitía."
+        result_label: "Resultado"
+        result: "Colaboración más fácil en funcionalidades en paralelo, y un CI/CD simplificado y modernizado."
+        skills: ["SVN", "Git", "CI/CD"]
+    stack:
+      - "Ruby"
+      - "Metaprogramación en Ruby"
+      - "XML"
+      - "Librerías personalizadas"
+      - "Validación de hardware"
+      - "Automatización"
+      - "Git"
+      - "CI/CD"
+    links: []
+    timeline_url: "https://sergiowero.github.io/timeline/#h-intel"
+    children: []
+  - id: "gameloft"
+    kind: "job"
+    kind_label: "empleo"
+    parent: null
+    title: "Programador 3D y Online"
+    organization: "Gameloft"
+    dates:
+      type: "range"
+      start: "2011-05"
+      end: "2015-01"
+      ongoing: false
+      text: "May 2011 - Ene 2015"
+    duration: null
+    location: "Guadalajara, México"
+    industries: ["Videojuegos · Móvil"]
+    cv:
+      current: false
+      stack: ["C++", "JavaScript", "jQuery", "Objective-C", "Android", "iOS"]
+      highlights:
+        - "Programé juegos 3D y herramientas internas con **C++, JavaScript (jQuery) y Objective-C** portables, garantizando compatibilidad entre Android e iOS."
+        - "Integré servicios online propietarios basados en REST en varios títulos de Android."
+        - "Participé en el desarrollo y lanzamiento de títulos móviles importantes, entre ellos **The Oregon Trail: American Settler** y **9mm**."
+    summary: null
+    facts: []
+    highlights:
+      - "Programé juegos 3D y herramientas internas con **C++, JavaScript (jQuery) y Objective-C** portables, garantizando compatibilidad entre Android e iOS."
+      - "Integré servicios online propietarios basados en REST en varios títulos de Android."
+      - "Participé en el desarrollo y lanzamiento de títulos móviles importantes, entre ellos **The Oregon Trail: American Settler** y **9mm**."
+    sections: []
+    achievements:
+      - id: "gameloft/the-oregon-trail-american-settler"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "The Oregon Trail: American Settler"
+        subtitle: "iOS · nuevas funcionalidades, un modo Travel y eventos comunitarios"
+        highlights:
+          - "Publicado en **iOS**. Agregamos nuevas funcionalidades y un **modo Travel**."
+          - "Agregamos **eventos comunitarios**: muchos usuarios participan en una **competencia de cosecha**, con **leaderboard** y premios."
+        result_label: "Resultado"
+        result: "Los eventos comunitarios incrementaron el revenue del juego en los meses siguientes."
+        skills: ["C++", "iOS"]
+      - id: "gameloft/event-configuration-tool-for-the-oregon-trail"
+        kind: "milestone"
+        kind_label: "Hito"
+        title: "Herramienta de configuración de eventos para The Oregon Trail"
+        subtitle: "Herramienta interna, hecha por mí"
+        highlights:
+          - "Creé una **herramienta especializada** para configurar los eventos del juego, en **JavaScript**, **PHP** y **jQuery**."
+        result_label: null
+        result: null
+        skills: ["JavaScript", "PHP", "jQuery"]
+      - id: "gameloft/spider-man-on-the-blackberry-playbook"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Spider-Man en la BlackBerry PlayBook"
+        subtitle: "Port · iOS → Android para la PlayBook"
+        highlights:
+          - "Tomé el juego de **iOS** e hice el port a **Android** para la **PlayBook**, en el código base de **C++ / OpenGL**."
+        result_label: null
+        result: null
+        skills: ["C++", "OpenGL", "Android", "BlackBerry PlayBook"]
+      - id: "gameloft/zombiewood-multiplayer-mode"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Zombiewood: modo multijugador"
+        subtitle: "Servidor de juego · juego cooperativo"
+        highlights:
+          - "Implementé un **game server** para Zombiewood donde los jugadores jugaban de manera **cooperativa** derrotando zombies."
+        result_label: "Resultado"
+        result: "Publicado, y mantuvo el juego vivo un año más."
+        skills: ["Servidor de juego", "Multijugador"]
+      - id: "gameloft/9mm-on-mac-os"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "9mm en Mac OS"
+        subtitle: "Port · iOS → Mac OS"
+        highlights:
+          - "Port en **C++ / OpenGL**; implementé los controles de **mouse y teclado**, **joystick** y un nuevo sistema de **quick-time events**."
+          - "Publicado."
+        result_label: null
+        result: null
+        skills: ["C++", "OpenGL", "Mac OS"]
+      - id: "gameloft/texas-poker-multiplayer-server"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Texas Poker: servidor multijugador"
+        subtitle: "Servidor de juego en C++ · integración con el cliente en Unity"
+        highlights:
+          - "Creé el **servidor multijugador** en **C++**. El juego estaba hecho en **Unity**; de ese lado sólo integré la **comunicación con el servidor** para el multijugador."
+          - "Publicado."
+        result_label: null
+        result: null
+        skills: ["C++", "Unity", "Multijugador"]
+      - id: "gameloft/disney-cars-on-android"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Cars de Disney en Android"
+        subtitle: "Port · iOS → Android"
+        highlights: ["Tomé el juego de Cars de Disney de **iOS** e hice el port a **Android**, en **C++**. Publicado."]
+        result_label: null
+        result: null
+        skills: ["C++", "Android"]
+    stack:
+      - "C++"
+      - "Objective-C"
+      - "OpenGL"
+      - "Android"
+      - "iOS"
+      - "Mac OS"
+      - "BlackBerry PlayBook"
+      - "Unity"
+      - "JavaScript"
+      - "PHP"
+      - "jQuery"
+      - "Servidores de juego"
+    links: []
+    timeline_url: "https://sergiowero.github.io/timeline/#h-gameloft"
+    children: []
+  - id: "kaxan-games"
+    kind: "job"
+    kind_label: "empleo"
+    parent: null
+    title: "Desarrollador de Videojuegos"
+    organization: "Kaxan Games"
+    dates:
+      type: "range"
+      start: "2009-08"
+      end: "2011-05"
+      ongoing: false
+      text: "Ago 2009 - May 2011"
+    duration: null
+    location: "Guadalajara, México"
+    industries: ["Videojuegos · Móvil y Consola"]
+    cv:
+      current: false
+      stack: ["C#", "Unity3D", "iOS", "Nintendo Wii"]
+      highlights:
+        - "Desarrollé y publiqué **más de cinco juegos móviles** para iPhone y iPad con C# y Unity3D."
+        - "Participé como programador adicional en un título lanzado para **Nintendo Wii**."
+        - "Mostré mi trabajo en un demo reel con cinco juegos de iOS publicados ([gameplay](https://www.youtube.com/watch?v=PWaarVatoEU))."
+    summary: "Mi primer trabajo en videojuegos, y mis primeros proyectos publicados. Casi dos años en Kaxan Games programando **juegos móviles en Unity** —**Taco Master**, **Bread Boy**, **Mosca Gogo** y **Armadillo**, todos publicados en **iOS**— con otro programador y un equipo de artistas, en el viejo Unity 3 y C#. En medio, un crédito como programador adicional en un título de **Nintendo Wii** de la franquicia de **El Chavo del 8**, y una primera etapa con el motor **Gamebryo**, programado en Lua, antes de que el estudio pasara a Unity."
+    facts:
+      - label: "Plataformas"
+        value: "iOS · Nintendo Wii"
+      - label: "Motores"
+        value: "Unity 3 (C#) · Gamebryo (Lua)"
+      - label: "Equipo"
+        value: "Dos programadores + un equipo de artistas"
+      - label: "Publicados"
+        value: "4 juegos de iOS · 1 juego de Wii"
+    highlights: []
+    sections:
+      - id: "kaxan-games/mobile-games-in-unity"
+        title: "Juegos móviles en Unity"
+        highlights:
+          - "Programé **juegos móviles en Unity** con **C#**, en las versiones de entonces —**Unity 3**—, mucho antes de que el motor se viera como se ve hoy."
+          - "Cada juego lo hicimos **dos programadores** —yo y otro miembro del equipo— trabajando con un **equipo de artistas**."
+          - "Fueron mis **primeros proyectos**, y se nota: no eran especialmente vistosos. Pero todos llegaron a publicarse en **iOS**, y de eso se trataba."
+          - "Los cinco juegos de iOS están en un demo reel corto ([gameplay](https://www.youtube.com/watch?v=PWaarVatoEU))."
+      - id: "kaxan-games/gamebryo-and-lua-before-unity"
+        title: "Gamebryo y Lua, antes de Unity"
+        highlights:
+          - "El estudio empezó experimentando con **Gamebryo**, un motor que se programaba en **Lua**, y recibimos training para usarlo."
+          - "Eso fue el inicio; después el estudio pasó a **Unity**, y todos los juegos de arriba se hicieron ahí."
+      - id: "kaxan-games/training-from-animation-and-programming-experts"
+        title: "Training con expertos en animación y programación"
+        highlights:
+          - "Durante mi estancia en Kaxan recibimos **training de varios expertos** en **animación** y **programación**: una parte importante de cómo un primer trabajo en videojuegos se volvió una base."
+    achievements:
+      - id: "kaxan-games/taco-master"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Taco Master"
+        subtitle: "Juego móvil · programador, uno de dos"
+        highlights:
+          - "Hecho en **Unity 3** con C# por dos programadores y un equipo de artistas, y publicado en **iOS**."
+        result_label: null
+        result: null
+        skills: ["Unity 3", "C#", "iOS"]
+      - id: "kaxan-games/bread-boy"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Bread Boy"
+        subtitle: "Juego móvil · programador, uno de dos"
+        highlights:
+          - "Hecho en **Unity 3** con C# por dos programadores y un equipo de artistas, y publicado en **iOS**."
+        result_label: null
+        result: null
+        skills: ["Unity 3", "C#", "iOS"]
+      - id: "kaxan-games/mosca-gogo"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Mosca Gogo"
+        subtitle: "Juego móvil · programador, uno de dos"
+        highlights:
+          - "Hecho en **Unity 3** con C# por dos programadores y un equipo de artistas, y publicado en **iOS**."
+        result_label: null
+        result: null
+        skills: ["Unity 3", "C#", "iOS"]
+      - id: "kaxan-games/armadillo"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "Armadillo"
+        subtitle: "Juego móvil · programador, uno de dos"
+        highlights:
+          - "Hecho en **Unity 3** con C# por dos programadores y un equipo de artistas, y publicado en **iOS**."
+        result_label: null
+        result: null
+        skills: ["Unity 3", "C#", "iOS"]
+      - id: "kaxan-games/el-chavo-del-8-for-nintendo-wii"
+        kind: "release"
+        kind_label: "Lanzamiento"
+        title: "El Chavo del 8 para Nintendo Wii"
+        subtitle: "Juego de consola · programador adicional"
+        highlights:
+          - "Un juego de **Nintendo Wii** de la franquicia de **El Chavo del 8**, hecho también en **Unity**. Participé como programador adicional."
+          - "Sí se publicó, y hoy en día se puede jugar si tienes un Wii."
+        result_label: "Resultado"
+        result: "Un título de consola publicado, de una franquicia que todo México conoce."
+        skills: ["Unity", "C#", "Nintendo Wii"]
+    stack: ["C#", "Unity 3", "iOS", "Nintendo Wii", "Gamebryo", "Lua", "Juegos móviles", "Consola"]
+    links:
+      - label: "Demo reel: cinco juegos de iOS"
+        url: "https://www.youtube.com/watch?v=PWaarVatoEU"
+    timeline_url: "https://sergiowero.github.io/timeline/#h-kaxan-games"
+    children: []
+education:
+  - id: "uag-msc"
+    kind: "education"
+    kind_label: "educación"
+    parent: null
+    title: "Maestría en Ciencias Computacionales"
+    organization: "Universidad Autónoma de Guadalajara"
+    dates:
+      type: "point"
+      start: "2018-08"
+      end: "2018-08"
+      ongoing: false
+      text: "Ago 2018"
+    duration: null
+    location: "Guadalajara, México"
+    industries: ["Educación"]
+    cv:
+      degree: "Maestría en Ciencias Computacionales"
+      detail: "Universidad Autónoma de Guadalajara · Ago 2018"
+    summary: "Maestría en Ciencias Computacionales en la Universidad Autónoma de Guadalajara, concluida en agosto de 2018. El programa fue desde el bajo nivel —sistemas embebidos y sistemas operativos— pasando por datos, matemáticas e inteligencia artificial, hasta programación para móviles, diseño de sistemas y gestión de proyectos; los proyectos entregados en el camino se escribieron en **Java**, **C++**, **JavaScript**, **SQL** y **C#**."
+    facts: []
+    highlights: []
+    sections:
+      - id: "uag-msc/coursework"
+        title: "Materias"
+        highlights:
+          - "**Sistemas embebidos**, **sistemas operativos** y programación de sistemas a **bajo nivel**."
+          - "**Bases de datos avanzadas**."
+          - "**Minería de datos**."
+          - "**Matemáticas y estadística**."
+          - "**Inteligencia artificial**."
+          - "**Programación para móviles**."
+          - "**Diseño de sistemas**."
+          - "**Gestión de proyectos**."
+      - id: "uag-msc/course-projects"
+        title: "Proyectos de los cursos"
+        highlights:
+          - "Los proyectos entregados durante los cursos se hicieron en **Java**, **C++**, **JavaScript**, **SQL** y **C#**; el stack de abajo es el de esos proyectos."
+    achievements: []
+    stack: ["Java", "C++", "JavaScript", "SQL", "C#"]
+    links: []
+    timeline_url: "https://sergiowero.github.io/timeline/#h-uag-msc"
+    children: []
+  - id: "udg-cs"
+    kind: "education"
+    kind_label: "educación"
+    parent: null
+    title: "Ciencias Computacionales"
+    organization: "Universidad de Guadalajara"
+    dates:
+      type: "point"
+      start: "2010-12"
+      end: "2010-12"
+      ongoing: false
+      text: "Dic 2010"
+    duration: null
+    location: "Guadalajara, México"
+    industries: ["Educación"]
+    cv:
+      degree: "Ciencias Computacionales"
+      detail: "Universidad de Guadalajara · Dic 2010"
+    summary: "Carrera de Ciencias Computacionales en la Universidad de Guadalajara, concluida en diciembre de 2010. El programa partió desde la base —programación en **C**, estructuras de datos, sistemas operativos y compiladores— y siguió con programación orientada a objetos en **Java**, arquitectura de software en **C#** y gráficos por computadora, de nuevo en **C**."
+    facts: []
+    highlights: []
+    sections:
+      - id: "udg-cs/coursework"
+        title: "Materias"
+        highlights:
+          - "**Introducción a la programación**, en **C**."
+          - "**Programación orientada a objetos**, en **Java**."
+          - "**Arquitectura de software**, en **C#**."
+          - "**Gráficos por computadora**, en **C**."
+          - "**Estructuras de datos**."
+          - "**Sistemas operativos**."
+          - "**Compiladores**."
+          - "Entre otras."
+    achievements: []
+    stack: ["C", "Java", "C#"]
+    links: []
+    timeline_url: "https://sergiowero.github.io/timeline/#h-udg-cs"
+    children: []
+other: []
+shipped_titles:
+  - "**The Lullaby of Life** — Apple Arcade & [Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/)"
+  - "**Juegos de carreras VR** — HTC Vive, Oculus, Gear VR e [iOS](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s)"
+  - "**The Oregon Trail: American Settler**, **9mm** — Gameloft"
+  - "**5+ juegos de iOS** y un título de Nintendo Wii — [demo reel](https://www.youtube.com/watch?v=PWaarVatoEU)"
+toolbox:
+  - name: "VS Code"
+    description: "Editor de uso general para scripts y web."
+  - name: "IntelliJ IDEA"
+    description: "IDE para backends en Java / Spring."
+  - name: "Rider"
+    description: "IDE para .NET y Unity3D."
+  - name: "Unity3D"
+    description: "Motor de juego de los títulos que he lanzado."
+  - name: "PostgreSQL"
+    description: "Base de datos relacional de cabecera."
+  - name: "AWS"
+    description: "Infraestructura cloud para servicios backend."
+  - name: "Git"
+    description: "Control de versiones, todos los días."
+labels:
+  sections:
+    profile:
+      screen: "cat perfil.md"
+      print: "Resumen profesional"
+    experience:
+      screen: "cat experiencia.log"
+      print: "Experiencia laboral"
+    core_skills:
+      screen: "ls habilidades/"
+      print: "Habilidades"
+    technologies:
+      screen: "ls tech/"
+      print: "Habilidades técnicas"
+    education:
+      screen: "cat educacion.txt"
+      print: "Educación"
+    languages:
+      screen: "cat idiomas.txt"
+      print: "Idiomas"
+    about:
+      screen: "cat sobre-mi.md"
+      print: "Sobre mí"
+    toolbox:
+      screen: "ls herramientas/"
+      print: "Herramientas"
+    contact:
+      screen: "cat contacto.md"
+      print: "Contacto"
+  entry_kinds:
+    job: "empleo"
+    project: "proyecto"
+    education: "educación"
+    milestone: "hito"
+    release: "lanzamiento"
+    award: "reconocimiento"
+    talk: "charla"
+  achievement_kinds:
+    milestone: "Hito"
+    release: "Lanzamiento"
+    award: "Reconocimiento"
+    pace: "Ritmo"
+    prototype: "Prototipo"
+    training: "Capacitación"
+  blocks:
+    facts: "datos"
+    summary: "resumen"
+    highlights: "puntos"
+    stack: "stack"
+    links: "enlaces"
+  present: "Actualidad"
+  months: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+  duration_units:
+    yr: "año"
+    yrs: "años"
+    mo: "mes"
+    mos: "meses"

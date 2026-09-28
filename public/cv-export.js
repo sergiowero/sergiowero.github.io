@@ -225,6 +225,11 @@
         run('  ·  ' + textOf(L(e.meta)), { color: MUTED, sz: 17 }), { after: 20 });
     });
 
+    body += heading(label('languages'));
+    (CV.langs || []).forEach(function (l) {
+      body += para(run(textOf(L(l.name)), { b: true, color: INK }) + run('  —  ' + textOf(L(l.level)), { color: MUTED }), { after: 20 });
+    });
+
     body += '<w:p><w:pPr><w:spacing w:before="200"/></w:pPr>' +
       run(CV.site, { color: MUTED, sz: 16 }) + '</w:p>';
 

@@ -9,6 +9,7 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 | `/blog/` | Blog | Astro: índice, páginas por tag (`/blog/tags/<tag>/`) y entradas (`/blog/<en|es>/<slug>/`) |
 | `/about/` | About me | estático (placeholder con el nombre) |
 | `/llms.txt` | Perfil para IA | estático (`tools/gen.py`), ver abajo |
+| `/cv/{en,es}/source.yaml`, `/cv/template.yaml`, `/cv/cv.css` | Datos del CV para generadores externos | estático (`tools/gen.py`), ver abajo |
 | `/robots.txt` | Crawlers | estático (`public/robots.txt`) |
 
 Todas las páginas comparten el mismo cascarón (diseño "Dark Terminal"): fondo, hoja A4, encabezado con pestañas, ES/EN y claro/oscuro. El idioma y el tema se guardan en `localStorage` y se conservan entre páginas.
@@ -72,6 +73,23 @@ Hasta **dos niveles**: cualquier entrada acepta `children=[…]` (en un empleo d
 - Sale de los **mismos datos** que el CV y el timeline: `python3 tools/gen.py` lo escribe en `public/` (no editar a mano), así que basta regenerar como con cualquier cambio del CV.
 - Los años de experiencia (año actual − 2010, igual que el CV) se calculan al correr `gen.py`: regenera una vez al año para que no se queden atrás.
 - `public/robots.txt` deja pasar a todos los crawlers y los aleja de `/Backups/` y `/favicons/`, que repiten el CV en borradores de diseño.
+
+## Datos del CV para generadores externos (`/cv/`)
+
+Para armar CVs enfocados desde otro proyecto, `python3 tools/gen.py` publica el CV como datos, de los **mismos datos** que el CV, el timeline y About (no editar a mano):
+
+- **`/cv/en/source.yaml`** y **`/cv/es/source.yaml`** — todo en un idioma por archivo: `meta`, `profile` (nombre, roles, resumen, bio), `contact`, `stats`, `skills`, `languages`, `experience`, `education`, `other`, `shipped_titles`, `toolbox` y `labels` (títulos de sección en pantalla y para ATS, meses, "Actualidad"…). Cada entrada del timeline trae todo lo largo (`summary`, `facts`, `highlights`, `sections`, `achievements`, `stack`, `links`, `children`), y los empleos y títulos además un bloque `cv` con exactamente lo que imprime el CV de una hoja.
+- **`/cv/template.yaml`** — el estilo del CV actual para reproducirlo: tokens de color claro/oscuro (leídos del CSS), fuentes, página A4, orden de secciones por columna, reglas de cada componente, modos (pantalla, PDF, PDF ATS, DOCX), íconos y el HTML de cada componente.
+- **`/cv/cv.css`** — la hoja de estilos del CV tal cual; el HTML de `template.yaml` usa sus clases.
+
+Reglas del formato, pensadas para leerlo de forma determinista:
+
+- Un solo documento YAML por archivo; los metadatos van en `meta:` (primer bloque), no en un segundo documento.
+- Todo texto va entre comillas dobles, así ningún parser adivina tipos (`"2020-03"` y `"no"` siguen siendo texto). Las fechas son `"YYYY-MM"`; `dates.end: null` con `ongoing: true` = actualidad.
+- El texto solo puede traer `**negritas**` y `[texto](url)`; `gen.py` falla si un texto choca con eso.
+- Los `id` son estables e iguales en los dos idiomas: empleos y títulos usan su `slug` (el mismo ancla de `/timeline/#h-<slug>`); secciones y logros usan `<id-de-la-entrada>/<título en inglés>`. Si renombras el título de un logro o de un grupo, su `id` cambia: fíjalo con `id="…"` en su `dict` si ya lo usa un generador.
+- Si PyYAML está instalado, `gen.py` vuelve a leer cada archivo y verifica que salga igual a los datos; sin PyYAML solo lo escribe.
+- `meta.schema` (`cv-source/1`, `cv-template/1`) sube cuando se renombra o se quita una llave; agregar llaves no lo cambia.
 
 ## Desarrollo local
 

@@ -100,7 +100,8 @@ Rules of thumb:
   - `education` → diamond
   - `milestone` → pin
 - `role` / `co` — the headline is `{role} · {co}`. The industry is **not** part of it (that is what `inds` is for); on a child that keeps its parent's position, set `role=""` and the headline is the company alone.
-- `slug` — used in the panel header: `cat timeline/<slug>.md`
+- `slug` — used in the panel header (`cat timeline/<slug>.md`), the `/timeline/#h-<slug>` anchor and as the entry's `id` in `/cv/{lang}/source.yaml`, which external CV generators select by. Renaming it breaks both.
+- `id` (optional, on a `groups` or `deliverables` item) — pins its `id` in `source.yaml`. Without it the id is `<slug>/<English title as a slug>`, so it changes when the title does.
 - `frm` / `to` — `"YYYY-MM"`. Omit `to` for a one-day event; `to=None` means *present*.
 - `inds`, `tech` — chips; either can be `[]`.
 - `pts` — bullets (HTML allowed); `[]` hides the list.
