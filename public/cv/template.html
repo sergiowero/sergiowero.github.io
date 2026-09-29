@@ -3,17 +3,18 @@
   CV template (cv-template/1): the look of https://sergiowero.github.io/ with Mustache tags where the content goes.
   Written by tools/gen.py; do not edit by hand.
 
-  Render it with any Mustache engine, the parsed https://sergiowero.github.io/cv/{lang}/source.yaml as the view:
-    1. Make every string in the data HTML first: escape & < > " and then turn **x** into <b>x</b>
+  Render it with any Mustache engine; the view is the `resume` object of https://sergiowero.github.io/cv/{lang}/tree.json:
+    1. Make every string in the view HTML first: escape & < > " and then turn **x** into <b>x</b>
        and [x](url) into <a href="url">x</a>. That is why the tags below use {{{triple braces}}}.
-    2. Focus the CV by trimming the data before rendering (experience, each job's cv.highlights,
-       skills.technologies…): every list renders what it holds, in order.
+    2. Focus the CV by editing the view before rendering: keep the jobs you want in `experience`, and
+       set each one's `highlights` to the `text` of the highlight records you picked from `records`
+       (by tags, tech or embeddings). Every list renders what it holds, in order.
     3. Print it to PDF from a browser: A4, no margins, backgrounds on (Chromium: page.pdf with
        preferCSSPageSize and printBackground).
   Options on <html>: data-theme="dark" for the dark theme; data-print="ats" for the light,
   one-column PDF that resume parsers read best.
 -->
-<html lang="{{meta.lang}}">
+<html lang="{{lang}}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -406,13 +407,11 @@
       <section><h2 class="sh"><span class="cmd">{{{labels.sections.profile.screen}}}</span><span class="ats">{{{labels.sections.profile.print}}}</span></h2><p class="profile">{{{profile.summary}}}</p></section>
       <section><h2 class="sh"><span class="cmd">{{{labels.sections.experience.screen}}}</span><span class="ats">{{{labels.sections.experience.print}}}</span></h2><div class="tl">
         {{#experience}}
-        {{#cv}}
         <div class="job{{#current}} cur{{/current}}">
           <div class="job-head"><div class="r">{{{title}}} · <span class="c">{{{organization}}}</span></div><div class="p">{{{dates.text}}}{{#dates.elapsed}}<span class="dur"> · {{{dates.elapsed}}}</span>{{/dates.elapsed}}</div></div>
           <div class="loc">{{{location}}}<span class="inds">{{#industries}}<span class="ind">{{{.}}}</span>{{/industries}}</span></div>
           <ul class="pts">{{#highlights}}<li>{{{.}}}</li>{{/highlights}}</ul>
         </div>
-        {{/cv}}
         {{/experience}}
       </div></section>
     </main>
@@ -425,9 +424,7 @@
       <section><h2 class="sh"><span class="cmd">{{{labels.sections.technologies.screen}}}</span><span class="ats">{{{labels.sections.technologies.print}}}</span></h2><div class="dchips">{{#skills.technologies}}<span class="dchip">{{{.}}}</span>{{/skills.technologies}}</div></section>
       <section><h2 class="sh"><span class="cmd">{{{labels.sections.education.screen}}}</span><span class="ats">{{{labels.sections.education.print}}}</span></h2>
         {{#education}}
-        {{#cv}}
         <div class="edu"><div class="d">{{{degree}}}</div><div class="m">{{{detail}}}</div></div>
-        {{/cv}}
         {{/education}}
       </section>
       <section><h2 class="sh"><span class="cmd">{{{labels.sections.languages.screen}}}</span><span class="ats">{{{labels.sections.languages.print}}}</span></h2>
