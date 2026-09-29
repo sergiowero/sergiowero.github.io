@@ -8,29 +8,32 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>Tailored CVs — Sergio Sánchez</title>
-<meta name="description" content="2 CVs of Sergio Sánchez, each tailored to one job description, with the master CV's design and its PDF and DOCX downloads, in English and Spanish.">
-<link rel="canonical" href="https://sergiowero.github.io/tailor-cv/">
-<meta property="og:type" content="website">
+<title>Sergio Sánchez — Architect - Software Engineering · Slalom | CV</title>
+<meta name="description" content="Software engineer with 16 years of experience across the gaming, media, and enterprise sectors; since 2020, a consultant embedded in the teams of major global companies, working in whatever stack they run: .NET, Java, Node.js or Python, on AWS. As an AI enthusiast, I work with AI coding agents in my daily workflow to accelerate project delivery.">
+<link rel="canonical" href="https://sergiowero.github.io/tailor-cv/slalom-architect-software-engineering-20260929.html">
+<meta property="og:type" content="profile">
 <meta property="og:site_name" content="Sergio Sánchez">
-<meta property="og:url" content="https://sergiowero.github.io/tailor-cv/">
-<meta property="og:title" content="Tailored CVs — Sergio Sánchez">
-<meta property="og:description" content="2 CVs of Sergio Sánchez, each tailored to one job description, with the master CV's design and its PDF and DOCX downloads, in English and Spanish.">
+<meta property="og:url" content="https://sergiowero.github.io/tailor-cv/slalom-architect-software-engineering-20260929.html">
+<meta property="og:title" content="Sergio Sánchez — Architect - Software Engineering · Slalom | CV">
+<meta property="og:description" content="Software engineer with 16 years of experience across the gaming, media, and enterprise sectors; since 2020, a consultant embedded in the teams of major global companies, working in whatever stack they run: .NET, Java, Node.js or Python, on AWS. As an AI enthusiast, I work with AI coding agents in my daily workflow to accelerate project delivery.">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="es_MX">
 <meta property="og:image" content="https://sergiowero.github.io/og/cv.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Sergio de Jesús Sánchez Robles: CVs tailored to job descriptions.">
+<meta property="og:image:alt" content="Sergio de Jesús Sánchez Robles: Senior Software Engineer, Backend &amp; Full-Stack, Tech Lead, AI-Assisted.">
+<meta property="profile:first_name" content="Sergio de Jesús">
+<meta property="profile:last_name" content="Sánchez Robles">
+<meta property="profile:username" content="sergiowero">
 <meta name="author" content="Sergio de Jesús Sánchez Robles">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tailored CVs — Sergio Sánchez">
-<meta name="twitter:description" content="2 CVs of Sergio Sánchez, each tailored to one job description, with the master CV's design and its PDF and DOCX downloads, in English and Spanish.">
+<meta name="twitter:title" content="Sergio Sánchez — Architect - Software Engineering · Slalom | CV">
+<meta name="twitter:description" content="Software engineer with 16 years of experience across the gaming, media, and enterprise sectors; since 2020, a consultant embedded in the teams of major global companies, working in whatever stack they run: .NET, Java, Node.js or Python, on AWS. As an AI enthusiast, I work with AI coding agents in my daily workflow to accelerate project delivery.">
 <meta name="twitter:image" content="https://sergiowero.github.io/og/cv.png">
-<meta name="twitter:image:alt" content="Sergio de Jesús Sánchez Robles: CVs tailored to job descriptions.">
-<meta name="twitter:label1" content="CVs">
-<meta name="twitter:data1" content="2">
+<meta name="twitter:image:alt" content="Sergio de Jesús Sánchez Robles: Senior Software Engineer, Backend &amp; Full-Stack, Tech Lead, AI-Assisted.">
+<meta name="twitter:label1" content="Experience">
+<meta name="twitter:data1" content="16+ years">
 <meta name="twitter:label2" content="Based in">
 <meta name="twitter:data2" content="Zapopan, Jalisco, México">
 <meta name="robots" content="noindex, nofollow">
@@ -386,55 +389,13 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     :root[data-print="ats"] .spoken .sep{display:inline;}
   }
 
-  /* ---- /tailor-cv/: the explorer (tools/tailor.py) — the tailored CVs in a list, the selected one in the panel ---- */
-  .sheet.tx-page{overflow:visible;}   /* as on /timeline/: overflow:hidden on the sheet would defeat the sticky panel */
-  .tx{display:flex;gap:6mm;margin-top:8px;align-items:flex-start;}
-  .tx-col{flex:0 0 72mm;min-width:0;}
-  .tx-col .hq{margin:0 0 6px;padding:6px 0 7px;}   /* the timeline's grep bar, without the offset of its rail */
-  .tx-list{list-style:none;display:grid;gap:5px;padding-bottom:10px;}
-  .tx-row{position:relative;}
-  .tx-row.dim{display:none;}
-  .tx-sel{display:block;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--panel);
-    border:1px solid var(--line);border-radius:8px;padding:6px 26px 7px 10px;transition:border-color .15s,box-shadow .15s;}
-  .tx-sel:hover{border-color:var(--cyan);}
-  .tx-sel:focus-visible{outline:2px solid var(--cyan);outline-offset:1px;}
-  .tx-row.active .tx-sel{border-color:var(--green);box-shadow:0 0 0 3px rgba(61,220,132,.14);}
-  .tx-top{display:flex;align-items:center;gap:6px;font-size:7.6px;color:var(--muted);}
-  .tx-row.active .tx-date{color:var(--green);}
-  .tx-lang{font-size:6.6px;font-weight:700;letter-spacing:1px;line-height:1.5;border:1px solid var(--line);border-radius:3px;padding:0 4px;}
-  .tx-co{display:block;font-size:11px;font-weight:600;color:var(--fg);line-height:1.2;margin-top:3px;}
-  .tx-pos{display:block;font-size:8.8px;color:var(--cyan);line-height:1.3;margin-top:1px;}
-  .tx-req{margin-top:5px;gap:3px;} .tx-req .dchip{font-size:6.8px;padding:1px 5px;}
-  .tx-kids{display:block;font-size:7.2px;color:var(--muted);line-height:1.35;margin-top:4px;}
-  .tx-open{position:absolute;top:5px;right:6px;font-size:11px;line-height:1;color:var(--muted);padding:3px 4px;border-radius:4px;}
-  .tx-open:hover,.tx-open:focus-visible{color:var(--green);}
-  .tx-none{font-size:9px;color:var(--muted);margin-top:6px;}
-  .tx-panel{flex:1 1 auto;min-width:0;position:sticky;top:12px;background:var(--panel);border:1px solid var(--line);
-    border-radius:10px;padding:10px 11px 11px;}
-  .tx-panel.off{display:none;}
-  .tx-p-co{font-size:15px;font-weight:700;color:var(--fg);letter-spacing:-.3px;line-height:1.15;margin-top:7px;}
-  .tx-p-pos{font-size:9.8px;font-weight:500;color:var(--cyan);margin-top:2px;}
-  .tx-p-when{font-size:8px;color:var(--green);margin-top:5px;}
-  .tx-links{display:flex;flex-wrap:wrap;gap:3px 12px;margin-top:6px;font-size:8px;}
-  .tx-links a{color:var(--cyan);} .tx-links a:hover{color:var(--green);} .tx-links a[hidden]{display:none;}
-  /* the preview: the CV page itself in an iframe (the explorer strips its header and fab, see EMBED in the script),
-     A4-shaped until the CV loads and gives its own shape; the script shrinks it when the viewport is too short */
-  .tx-frame{position:relative;width:100%;aspect-ratio:210/297;margin:10px auto 0;overflow:hidden;
-    border:1px solid var(--line);border-radius:6px;background:var(--bg);}
-  .tx-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;opacity:0;transition:opacity .2s;}
-  .tx-frame.ready iframe{opacity:1;}
-  .tx-hit{position:absolute;inset:0;z-index:1;border-radius:inherit;}   /* the preview is a picture: a click opens the CV */
-  .tx-hit:hover{box-shadow:inset 0 0 0 2px var(--green);}
-  .tx-hit:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
-  @media print{.tx-panel,.tx-open{display:none !important;} .tx-row.dim{display:block;}}
-
 </style>
 </head>
 <body>
-<div class="sheet tx-page">
+<div class="sheet">
   <header class="site-nav" aria-label="Site sections">
   <nav class="tabs">
-    <a class="tab" href="/"><span class="i18n-en">Resume</span><span class="i18n-es">Currículum</span></a>
+    <a class="tab active" href="/" aria-current="page"><span class="i18n-en">Resume</span><span class="i18n-es">Currículum</span></a>
     <a class="tab" href="/timeline/"><span class="i18n-en">Timeline</span><span class="i18n-es">Mi línea de tiempo</span></a>
     <a class="tab" href="/blog/"><span class="i18n-en">Blog</span><span class="i18n-es">Blog</span></a>
     <a class="tab" href="/about/"><span class="i18n-en">About me</span><span class="i18n-es">Sobre mí</span></a>
@@ -444,24 +405,74 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
 </header>
   <header class="top">
     <div>
-      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ ls <span class="f">tailor-cv/</span></div>
-      <div class="name"><span id="typed"><span class="i18n-en">Tailored CVs</span><span class="i18n-es">CVs a la medida</span></span><span class="cur"></span></div>
-      <div class="hname">Sergio de Jesús Sánchez Robles</div>
-      <div class="sub mono"><span class="i18n-en">2 CVs, each tailored to one job description, newest first — pick one to preview it, open it to download it.</span><span class="i18n-es">2 CVs, cada uno adaptado a una vacante, del más reciente al más antiguo — elige uno para verlo, ábrelo para descargarlo.</span></div>
+      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">cv.md</span></div>
+      <div class="name"><span id="typed">Sergio de Jesús Sánchez Robles</span><span class="cur"></span></div>
+      <div class="sub mono"><span class="i18n-en"><span class="r0">Senior Software Engineer</span> <span class="hl">/</span> Backend &amp; Full-Stack <span class="hl">/</span> Tech Lead <span class="hl">/</span> AI-Assisted</span><span class="i18n-es"><span class="r0">Ingeniero de Software Senior</span> <span class="hl">/</span> Backend y Full-Stack <span class="hl">/</span> Tech Lead <span class="hl">/</span> Asistido por IA</span></div>
     </div>
+    <div class="contact"><div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Zapopan, Jalisco, México</div>
+<div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><a href="tel:+5213317991812">+52 1 33 1799 1812</a></div>
+<div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><a href="mailto:sergioj.sanchezr@gmail.com">sergioj.sanchezr@gmail.com</a></div>
+<div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4"/></svg><a href="https://www.linkedin.com/in/sergiojsanchez/" target="_blank" rel="noopener noreferrer">linkedin.com/in/sergiojsanchez</a></div>
+<div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 19c-4.5 1.5-4.5-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg><a href="https://github.com/sergiowero" target="_blank" rel="noopener noreferrer">github.com/sergiowero</a></div>
+<div class="cline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="6" cy="19" r="2"/><path d="M6 7v3M6 14v3M11 5h9M11 12h9M11 19h6"/></svg><a href="https://sergiowero.github.io/timeline/" target="_blank" rel="noopener noreferrer"><span class="i18n-en">Explore my full career →</span><span class="i18n-es">Explora toda mi trayectoria →</span></a></div></div>
   </header>
-  <div class="tx">
-    <div class="tx-col">
-      <div class="hq" role="search"><div class="hq-row"><label class="hq-prompt mono" for="tx-q"><span class="g">➜</span> <span class="c">~</span> grep -i</label><span class="hq-field"><input class="hq-in mono" id="tx-q" type="text" inputmode="search" enterkeyhint="search" autocomplete="off" spellcheck="false" placeholder="aws · java · 2026-09 · es…"><button type="button" class="hq-x mono" aria-label="Clear search" hidden>×</button></span><span class="hq-count mono" aria-live="polite"></span></div><div class="hq-empty mono" hidden>// <span class="i18n-en">no matches</span><span class="i18n-es">sin coincidencias</span></div></div>
-      <ol class="tx-list" aria-label="Tailored CVs">
-<li class="tx-row" data-i="0"><button type="button" class="tx-sel" aria-pressed="false" aria-controls="tx-panel"><span class="tx-top mono"><span class="tx-date">2026-09-29</span><span class="tx-lang">EN</span></span><span class="tx-co">LawnStarter</span><span class="tx-pos">Staff Product Engineer</span><span class="dchips tx-req"><span class="dchip">Claude Code</span><span class="dchip">Cursor</span><span class="dchip">Codex</span><span class="dchip">AWS</span></span><span class="tx-kids mono">Wizeline › Dow Jones · Fox Corp · Inditex · Cerby</span></button><a class="tx-open mono" href="/tailor-cv/lawnstarter-staff-product-engineer-20260929.html" title="Open the CV">↗</a></li>
-<li class="tx-row" data-i="1"><button type="button" class="tx-sel" aria-pressed="false" aria-controls="tx-panel"><span class="tx-top mono"><span class="tx-date">2026-09-29</span><span class="tx-lang">EN</span></span><span class="tx-co">Slalom</span><span class="tx-pos">Architect - Software Engineering</span><span class="dchips tx-req"><span class="dchip"><span class="i18n-en">Software architecture</span><span class="i18n-es">Arquitectura de software</span></span><span class="dchip"><span class="i18n-en">Testing</span><span class="i18n-es">Pruebas</span></span></span><span class="tx-kids mono">Wizeline › Dow Jones · Fox Corp · Inditex · Cerby</span></button><a class="tx-open mono" href="/tailor-cv/slalom-architect-software-engineering-20260929.html" title="Open the CV">↗</a></li></ol>
-      
-    </div>
-    <aside class="tx-panel" id="tx-panel" aria-live="polite"><div class="sub-k mono"><span class="g">➜</span> <span class="c">~</span> open tailor-cv/<span class="f" data-tx="file"></span></div><div class="tx-p-co" data-tx="co"></div><div class="tx-p-pos" data-tx="pos"></div><div class="tx-p-when mono" data-tx="when"></div><div class="tx-links mono"><a data-tx="cv" href="#"><span class="i18n-en">open the CV</span><span class="i18n-es">abrir el CV</span> ↗</a><a data-tx="jd" href="#" target="_blank" rel="noopener"><span class="i18n-en">job description (.md)</span><span class="i18n-es">vacante (.md)</span> ↗</a><a data-tx="post" href="#" target="_blank" rel="noopener noreferrer" hidden><span class="i18n-en">original posting</span><span class="i18n-es">publicación original</span> ↗</a></div><div class="tx-frame"><iframe title="Preview of the CV" tabindex="-1" inert></iframe><a class="tx-hit" href="#" aria-label="Open the CV"></a></div></aside>
-  </div>
-  <script type="application/json" id="tx-data">[{"name": "lawnstarter-staff-product-engineer-20260929", "company": "LawnStarter", "position": "Staff Product Engineer", "date": "2026-09-29", "lang": "en", "url": "", "cv": "/tailor-cv/lawnstarter-staff-product-engineer-20260929.html", "jd": "/tailor-cv/lawnstarter-staff-product-engineer-20260929.md", "text": "LawnStarter Staff Product Engineer 2026-09-29 en english inglés lawnstarter-staff-product-engineer-20260929 Wizeline Dow Jones Fox Corp Inditex Cerby Claude Code Cursor Codex AWS"}, {"name": "slalom-architect-software-engineering-20260929", "company": "Slalom", "position": "Architect - Software Engineering", "date": "2026-09-29", "lang": "en", "url": "https://jobs.slalom.com/en_US/careersmarketplace/JobDetail/Architect-Software-Engineering-GUADALAJARA/1814", "cv": "/tailor-cv/slalom-architect-software-engineering-20260929.html", "jd": "/tailor-cv/slalom-architect-software-engineering-20260929.md", "text": "Slalom Architect - Software Engineering 2026-09-29 en english inglés slalom-architect-software-engineering-20260929 Wizeline Dow Jones Fox Corp Inditex Cerby Software architecture Arquitectura de software Testing Pruebas"}]</script>
+  <div class="stats"><div class="stat"><div class="n"><span data-years>15</span><span class="u">+</span></div><div class="l"><span class="i18n-en">Years building software</span><span class="i18n-es">Años de experiencia</span></div></div><div class="stat best"><div class="n"><span class="bs"><span class="i18n-en">Gaming</span><span class="i18n-es">Videojuegos</span></span><span class="bs"><span class="i18n-en">Media</span><span class="i18n-es">Medios</span></span><span class="bs"><span class="i18n-en">Enterprise</span><span class="i18n-es">Empresa</span></span></div><div class="l"><span class="i18n-en">Industries</span><span class="i18n-es">Industrias</span></div></div><div class="stat"><div class="n">6<span class="u"></span></div><div class="l"><span class="i18n-en">Max engineers led</span><span class="i18n-es">Ingenieros a cargo</span></div></div><div class="stat best"><div class="n"><span class="bs">.NET</span><span class="bs">Spring</span><span class="bs">Python</span><span class="bs">Node.js</span></div><div class="l"><span class="i18n-en">Best skills</span><span class="i18n-es">Fortalezas</span></div></div></div>
+  <div class="cols">
+    <main class="main">
+      <section><h2 class="sh"><span class="cmd"><span class="i18n-en">cat profile.md</span><span class="i18n-es">cat perfil.md</span></span><span class="ats"><span class="i18n-en">Professional Summary</span><span class="i18n-es">Resumen profesional</span></span></h2><p class="profile"><span class="i18n-en">Software engineer with <b><span data-years>16</span> years of experience</b> across the gaming, media, and enterprise sectors; since 2020, a consultant embedded in the teams of major global companies, working in whatever stack they run: <b>.NET</b>, <b>Java</b>, <b>Node.js</b> or <b>Python</b>, on <b>AWS</b>. As an <b>AI enthusiast</b>, I work with AI coding agents in my daily workflow to accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously <b>led teams of up to six people</b>, I consistently deliver high-quality, tested, scalable software solutions on time and within budget.</span><span class="i18n-es">Ingeniero de software con <b><span data-years>16</span> años de experiencia</b> en videojuegos, medios y empresa; desde 2020, consultor integrado en los equipos de compañías globales de primer nivel, trabajando en el stack que use cada cliente: <b>.NET</b>, <b>Java</b>, <b>Node.js</b> o <b>Python</b>, sobre <b>AWS</b>. Como <b>entusiasta de la IA</b>, uso agentes de programación en mi día a día para acelerar la entrega de proyectos. Aprendo rápido y me adapto a nuevos stacks tecnológicos. Habiendo <b>liderado equipos de hasta seis personas</b>, entrego soluciones escalables, de alta calidad y cubiertas por pruebas, a tiempo y en presupuesto.</span></p></section>
+      <section><h2 class="sh"><span class="cmd"><span class="i18n-en">cat experience.log</span><span class="i18n-es">cat experiencia.log</span></span><span class="ats"><span class="i18n-en">Work Experience</span><span class="i18n-es">Experiencia laboral</span></span></h2><div class="tl">
+<div class="job cur">
+<div class="job-head"><div class="r"><span class="i18n-en">Senior Software Engineer / Tech Lead</span><span class="i18n-es">Ingeniero de Software Senior / Tech Lead</span> · <span class="c">Wizeline</span></div><div class="p" data-from="2020-03"><span class="i18n-en">Mar 2020 - Present</span><span class="i18n-es">Mar 2020 - Actualidad</span></div></div>
+<div class="loc">Guadalajara, México<span class="inds"><span class="ind"><span class="i18n-en">News</span><span class="i18n-es">Noticias</span></span><span class="ind"><span class="i18n-en">Media &amp; Entertainment</span><span class="i18n-es">Medios y Entretenimiento</span></span><span class="ind">Retail</span><span class="ind"><span class="i18n-en">Cybersecurity</span><span class="i18n-es">Ciberseguridad</span></span></span></div>
+<ul class="pts"><li><span class="i18n-en">Designed services, data models and integrations as a consultant in client teams, taking features from design to production in the client's own stack: <b>.NET</b>, <b>Java / Spring</b>, <b>Node.js</b> or <b>Python</b>, on <b>AWS</b>.</span><span class="i18n-es">Diseñé servicios, modelos de datos e integraciones como consultor en equipos de clientes, llevando funcionalidades a producción en su propio stack: <b>.NET</b>, <b>Java / Spring</b>, <b>Node.js</b> o <b>Python</b>, sobre <b>AWS</b>.</span></li><li><span class="i18n-en"><b>Dow Jones:</b> Built features and resolved production issues at high velocity on a SaaS designed with <b>DDD</b>, its services exchanging domain events over message queues (<b>Outbox pattern</b>); no feature was done without extensive unit tests. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span></span><span class="i18n-es"><b>Dow Jones:</b> Desarrollé funcionalidades y resolví incidentes en producción a alta velocidad en un SaaS diseñado con <b>DDD</b>, cuyos servicios intercambiaban eventos de dominio por colas (<b>patrón Outbox</b>); ningún feature se cerraba sin pruebas unitarias extensas. <span class="stack">Tech: .NET, AWS, PostgreSQL, Claude Code.</span></span></li><li><span class="i18n-en"><b>Fox Corp:</b> Led a squad of <b>5 engineers</b> as Tech Lead: refined requirements with the business, designed solutions with the team and reviewed every pull request it shipped; within <b>3 months</b> all worked independently. <span class="stack">Tech: Java, Spring Boot, Node.js, AWS Lambda, Amazon SQS, PostgreSQL.</span></span><span class="i18n-es"><b>Fox Corp:</b> Lideré un equipo de <b>5 ingenieros</b> como Tech Lead: refiné requerimientos con negocio, diseñé las soluciones con el equipo y revisé cada pull request que entregaba; en <b>3 meses</b> todos eran autónomos. <span class="stack">Tech: Java, Spring Boot, Node.js, AWS Lambda, Amazon SQS, PostgreSQL.</span></span></li><li><span class="i18n-en"><b>Fox Corp:</b> Designed, built and shipped to production on my own a <b>Spring Boot</b> service, fed by an <b>SQS</b> queue, that migrated <b>over 100,000 legacy videos</b> into Fox's new platform; an Inbox pattern ensured a redelivered message never migrated a video twice.</span><span class="i18n-es"><b>Fox Corp:</b> Diseñé, construí y llevé a producción yo solo un servicio en <b>Spring Boot</b>, alimentado por una cola de <b>SQS</b>, que migró <b>más de 100,000 videos legacy</b> a la nueva plataforma de Fox; el patrón Inbox garantizaba que un mensaje reentregado nunca migrara dos veces el mismo video.</span></li><li><span class="i18n-en"><b>Inditex:</b> Architected the backend of a factory-audit viewer (<b>Java 11</b> microservices with <b>Clean Architecture</b>) and modelled its relational schema, working <b>API first</b>: each API was defined in <b>OpenAPI</b> and agreed on before any code. <span class="stack">Tech: Java, Spring, MariaDB, OpenAPI.</span></span><span class="i18n-es"><b>Inditex:</b> Diseñé la arquitectura backend de un visualizador de auditorías de fábricas (microservicios en <b>Java 11</b> con <b>Clean Architecture</b>) y modelé su esquema relacional, con enfoque <b>API first</b>: cada API se definía en <b>OpenAPI</b> y se acordaba antes de programar. <span class="stack">Tech: Java, Spring, MariaDB, OpenAPI.</span></span></li><li><span class="i18n-en"><b>Cerby:</b> Joined the initial team and worked across the MVP's whole stack: led its first backend in <b>Python</b> with <b>Flask</b>, modelled its database with versioned migrations, built its first Chrome extension and helped on the <b>Next.js</b> / <b>TypeScript</b> frontend. <span class="stack">Tech: Python, Flask, TypeScript, Next.js, React.</span></span><span class="i18n-es"><b>Cerby:</b> Entré al equipo inicial y trabajé en todo el stack del MVP: lideré su primer backend en <b>Python</b> con <b>Flask</b>, modelé su base de datos con migraciones versionadas, construí su primera extensión de Chrome y apoyé el frontend en <b>Next.js</b> / <b>TypeScript</b>. <span class="stack">Tech: Python, Flask, TypeScript, Next.js, React.</span></span></li><li><span class="i18n-en">Worked <b>100% with AI coding agents</b> on client work for the past year (<b>Claude Code</b>, <b>Codex</b>, <b>GitHub Copilot</b>) and began training as an <b>AI engineer</b>: agents in <b>Python</b> with <b>LangChain</b>.</span><span class="i18n-es">Trabajé el último año <b>100% con agentes de programación con IA</b> (<b>Claude Code</b>, <b>Codex</b>, <b>GitHub Copilot</b>) en proyectos de clientes, y empecé a formarme como <b>AI engineer</b>: agentes en <b>Python</b> con <b>LangChain</b>.</span></li></ul>
 </div>
+<div class="job">
+<div class="job-head"><div class="r"><span class="i18n-en">Lead Software Engineer</span><span class="i18n-es">Ingeniero de Software Líder</span> · <span class="c">1 Simple Idea</span></div><div class="p" data-from="2019-07" data-to="2020-03">Jul 2019 - Mar 2020</div></div>
+<div class="loc">Guadalajara, México<span class="inds"><span class="ind"><span class="i18n-en">Gaming · Mobile</span><span class="i18n-es">Videojuegos · Móvil</span></span></span></div>
+<ul class="pts"><li><span class="i18n-en">Led a small programming team on <a href="https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/" target="_blank" rel="noopener noreferrer">The Lullaby of Life</a>, an iOS game built in <b>nine months</b> and shipped on <b>Apple Arcade</b>, owning the <b>core game architecture</b>.</span><span class="i18n-es">Lideré un equipo pequeño de programación en <a href="https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/" target="_blank" rel="noopener noreferrer">The Lullaby of Life</a>, un juego para iOS hecho en <b>nueve meses</b> y publicado en <b>Apple Arcade</b>, a cargo de la <b>arquitectura central del juego</b>.</span></li><li><span class="i18n-en">Architected a hand-made <b>IoC / DI</b> container and a logic layer kept apart from the visuals, so the whole logic layer had <b>unit tests</b>; the modular design cut bug rates and the art teams' asset integration time.</span><span class="i18n-es">Diseñé un contenedor de <b>IoC / DI</b> propio y una capa de lógica separada de lo visual, toda con <b>pruebas unitarias</b>; el diseño modular redujo los bugs y el tiempo de integración de assets de arte.</span></li></ul>
+</div>
+<div class="job">
+<div class="job-head"><div class="r"><span class="i18n-en">Senior Software Engineer</span><span class="i18n-es">Ingeniero de Software Senior</span> · <span class="c">Virtually Live</span></div><div class="p" data-from="2017-02" data-to="2020-01"><span class="i18n-en">Feb 2017 - Jan 2020</span><span class="i18n-es">Feb 2017 - Ene 2020</span></div></div>
+<div class="loc"><span class="i18n-en">Málaga, Spain</span><span class="i18n-es">Málaga, España</span><span class="inds"><span class="ind"><span class="i18n-en">Gaming · VR</span><span class="i18n-es">Videojuegos · VR</span></span></span></div>
+<ul class="pts"><li><span class="i18n-en">Ported the VR product to an iOS app, programming its core gameplay in <b>C#</b> and architecting its backend <b>RESTful services</b> for accounts and friends in <b>Python</b>, <b>Django</b> and <b>Go</b>.</span><span class="i18n-es">Porté el producto de VR a una app para iOS, programando sus mecánicas principales en <b>C#</b> y diseñando los <b>servicios RESTful</b> de su backend para cuentas y amigos en <b>Python</b>, <b>Django</b> y <b>Go</b>.</span></li></ul>
+</div>
+<div class="job">
+<div class="job-head"><div class="r"><span class="i18n-en">Software Engineer</span><span class="i18n-es">Ingeniero de Software</span> · <span class="c">Intel</span></div><div class="p" data-from="2015-02" data-to="2017-02">Feb 2015 - Feb 2017</div></div>
+<div class="loc">Guadalajara, México<span class="inds"><span class="ind"><span class="i18n-en">Semiconductors</span><span class="i18n-es">Semiconductores</span></span></span></div>
+<ul class="pts"><li><span class="i18n-en">Built custom <b>Ruby</b> validation libraries, exposed as APIs, that hardware teams plugged into their own testing workflows to catch design problems before the expensive simulation step.</span><span class="i18n-es">Construí librerías de validación en <b>Ruby</b>, expuestas como APIs, que los equipos de hardware integraban en sus propios flujos de pruebas para detectar problemas de diseño antes de la costosa simulación real.</span></li><li><span class="i18n-en">Wrote the automation tools and scripts that synchronized API deployments with the client environments of Intel sites around the world, so every site ran the same version.</span><span class="i18n-es">Escribí las herramientas y scripts de automatización que sincronizaban los despliegues de las APIs con los entornos cliente de las sedes de Intel en el mundo, para que todas corrieran la misma versión.</span></li><li><span class="i18n-en">Proposed and led the move from SVN to <b>Git</b> on my own initiative, making parallel feature work easier and the CI/CD simpler and more modern.</span><span class="i18n-es">Propuse y lideré por iniciativa propia la migración de SVN a <b>Git</b>, que facilitó el trabajo en paralelo y dejó un CI/CD más simple y moderno.</span></li></ul>
+</div>
+<div class="job">
+<div class="job-head"><div class="r"><span class="i18n-en">3D &amp; Online Programmer</span><span class="i18n-es">Programador 3D y Online</span> · <span class="c">Gameloft</span></div><div class="p" data-from="2011-05" data-to="2015-01"><span class="i18n-en">May 2011 - Jan 2015</span><span class="i18n-es">May 2011 - Ene 2015</span></div></div>
+<div class="loc">Guadalajara, México<span class="inds"><span class="ind"><span class="i18n-en">Gaming · Mobile</span><span class="i18n-es">Videojuegos · Móvil</span></span></span></div>
+<ul class="pts"><li><span class="i18n-en">Integrated proprietary <b>REST</b>-based online services into multiple Android titles.</span><span class="i18n-es">Integré servicios online propietarios basados en <b>REST</b> en varios títulos de Android.</span></li><li><span class="i18n-en">Built an internal tool in <b>PHP</b>, <b>JavaScript</b> and <b>jQuery</b> to configure the events of <b>The Oregon Trail: American Settler</b>, whose community events increased the game's revenue.</span><span class="i18n-es">Construí una herramienta interna en <b>PHP</b>, <b>JavaScript</b> y <b>jQuery</b> para configurar los eventos de <b>The Oregon Trail: American Settler</b>, cuyos eventos comunitarios incrementaron el revenue del juego.</span></li></ul>
+</div>
+<div class="job">
+<div class="job-head"><div class="r"><span class="i18n-en">Game Developer</span><span class="i18n-es">Desarrollador de Videojuegos</span> · <span class="c">Kaxan Games</span></div><div class="p" data-from="2009-08" data-to="2011-05"><span class="i18n-en">Aug 2009 - May 2011</span><span class="i18n-es">Ago 2009 - May 2011</span></div></div>
+<div class="loc">Guadalajara, México<span class="inds"><span class="ind"><span class="i18n-en">Gaming · Mobile &amp; Console</span><span class="i18n-es">Videojuegos · Móvil y Consola</span></span></span></div>
+<ul class="pts"><li><span class="i18n-en">Developed and published <b>over five mobile games</b> for iPhone and iPad with <b>C#</b> and <b>Unity3D</b>, as one of two programmers working with a team of artists.</span><span class="i18n-es">Desarrollé y publiqué <b>más de cinco juegos móviles</b> para iPhone y iPad con <b>C#</b> y <b>Unity3D</b>, como uno de dos programadores junto a un equipo de artistas.</span></li></ul>
+</div>
+</div></section>
+    </main>
+    <aside class="aside">
+      <section><div class="ai"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3.5"/></svg><span class="i18n-en">AI-Assisted Dev</span><span class="i18n-es">Desarrollo asistido por IA</span></div><p><span class="i18n-en">AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery.</span><span class="i18n-es">Herramientas asistidas por IA en mi trabajo diario para optimizar el desarrollo backend y acelerar la entrega de proyectos.</span></p><div class="dchips"><span class="dchip">Claude Code</span><span class="dchip">opencode</span><span class="dchip">Codex</span></div></div></section>
+      <section><h2 class="sh"><span class="cmd"><span class="i18n-en">ls core-skills/</span><span class="i18n-es">ls habilidades/</span></span><span class="ats"><span class="i18n-en">Skills</span><span class="i18n-es">Habilidades</span></span></h2><div class="cskill" data-lvl="10" data-max="10"><div class="sk-top"><span class="sk-name">C# / .NET</span><span class="sk-word"><span class="i18n-en">Expert</span><span class="i18n-es">Experto</span></span><span class="sk-pct">100%</span></div><div class="sk-track"><div class="sk-fill" style="width:100%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+<div class="cskill" data-lvl="9" data-max="10"><div class="sk-top"><span class="sk-name">Java / Spring</span><span class="sk-word"><span class="i18n-en">Expert</span><span class="i18n-es">Experto</span></span><span class="sk-pct">90%</span></div><div class="sk-track"><div class="sk-fill" style="width:90%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+<div class="cskill" data-lvl="8" data-max="10"><div class="sk-top"><span class="sk-name">Python / FastAPI</span><span class="sk-word"><span class="i18n-en">Advanced</span><span class="i18n-es">Avanzado</span></span><span class="sk-pct">80%</span></div><div class="sk-track"><div class="sk-fill" style="width:80%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+<div class="cskill" data-lvl="6" data-max="10"><div class="sk-top"><span class="sk-name">JavaScript / Node.js</span><span class="sk-word"><span class="i18n-en">Proficient</span><span class="i18n-es">Competente</span></span><span class="sk-pct">60%</span></div><div class="sk-track"><div class="sk-fill" style="width:60%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div></div>
+<div class="cskill" data-lvl="7" data-max="10"><div class="sk-top"><span class="sk-name">AWS</span><span class="sk-word"><span class="i18n-en">Advanced</span><span class="i18n-es">Avanzado</span></span><span class="sk-pct">70%</span></div><div class="sk-track"><div class="sk-fill" style="width:70%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
+<div class="cskill" data-lvl="8" data-max="10"><div class="sk-top"><span class="sk-name">SQL / Postgres</span><span class="sk-word"><span class="i18n-en">Advanced</span><span class="i18n-es">Avanzado</span></span><span class="sk-pct">80%</span></div><div class="sk-track"><div class="sk-fill" style="width:80%"></div></div><div class="sk-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div></section>
+      <section><h2 class="sh"><span class="cmd">ls tech/</span><span class="ats"><span class="i18n-en">Technical Skills</span><span class="i18n-es">Habilidades técnicas</span></span></h2><div class="dchips"><span class="dchip"><span class="i18n-en">Software architecture</span><span class="i18n-es">Arquitectura de software</span></span><span class="dchip"><span class="i18n-en">Unit Testing</span><span class="i18n-es">Pruebas unitarias</span></span><span class="dchip">C#</span><span class="dchip">.NET</span><span class="dchip">Java</span><span class="dchip">Spring</span><span class="dchip">Python</span><span class="dchip">FastAPI</span><span class="dchip">JavaScript</span><span class="dchip">Node.js</span><span class="dchip">React</span><span class="dchip">AWS</span><span class="dchip">PostgreSQL</span><span class="dchip"><span class="i18n-en">Microservices</span><span class="i18n-es">Microservicios</span></span><span class="dchip"><span class="i18n-en">RESTful APIs</span><span class="i18n-es">APIs RESTful</span></span><span class="dchip"><span class="i18n-en">OOP</span><span class="i18n-es">POO</span></span><span class="dchip">Unity3D</span><span class="dchip">Git</span><span class="dchip">Full-Stack</span><span class="dchip">Typescript</span><span class="dchip">Docker</span></div></section>
+      <section><h2 class="sh"><span class="cmd"><span class="i18n-en">cat education.txt</span><span class="i18n-es">cat educacion.txt</span></span><span class="ats"><span class="i18n-en">Education</span><span class="i18n-es">Educación</span></span></h2><div class="edu"><div class="d"><span class="i18n-en">Master in Computer Science</span><span class="i18n-es">Maestría en Ciencias Computacionales</span></div><div class="m"><span class="i18n-en">Universidad Autónoma de Guadalajara · Aug 2018</span><span class="i18n-es">Universidad Autónoma de Guadalajara · Ago 2018</span></div></div>
+<div class="edu"><div class="d"><span class="i18n-en">Computer Science</span><span class="i18n-es">Ciencias Computacionales</span></div><div class="m"><span class="i18n-en">Universidad de Guadalajara · Dec 2010</span><span class="i18n-es">Universidad de Guadalajara · Dic 2010</span></div></div></section>
+      <section><h2 class="sh"><span class="cmd"><span class="i18n-en">cat languages.txt</span><span class="i18n-es">cat idiomas.txt</span></span><span class="ats"><span class="i18n-en">Languages</span><span class="i18n-es">Idiomas</span></span></h2><div class="spoken"><span class="ln"><span class="i18n-en">Spanish</span><span class="i18n-es">Español</span></span><span class="sep"> — </span><span class="lv"><span class="i18n-en">Native</span><span class="i18n-es">Nativo</span></span></div>
+<div class="spoken"><span class="ln"><span class="i18n-en">English</span><span class="i18n-es">Inglés</span></span><span class="sep"> — </span><span class="lv"><span class="i18n-en">Advanced</span><span class="i18n-es">Avanzado</span></span></div></section>
+    </aside>
+  </div>
+  <div class="foot"><span><span class="g">➜</span> exit 0 · Sergio de Jesús Sánchez Robles</span><span>sergiowero.github.io</span></div>
+  <script type="application/json" id="cv-data">{"name": "Sergio de Jesús Sánchez Robles", "role": {"en": "Senior Software Engineer / Backend &amp; Full-Stack / Tech Lead / AI-Assisted", "es": "Ingeniero de Software Senior / Backend y Full-Stack / Tech Lead / Asistido por IA"}, "site": "sergiowero.github.io", "contact": [{"text": "Zapopan, Jalisco, México", "href": null}, {"text": "+52 1 33 1799 1812", "href": "tel:+5213317991812"}, {"text": "sergioj.sanchezr@gmail.com", "href": "mailto:sergioj.sanchezr@gmail.com"}, {"text": "linkedin.com/in/sergiojsanchez", "href": "https://www.linkedin.com/in/sergiojsanchez/"}, {"text": "github.com/sergiowero", "href": "https://github.com/sergiowero"}, {"text": {"en": "Explore my full career →", "es": "Explora toda mi trayectoria →"}, "href": "https://sergiowero.github.io/timeline/"}], "profile": {"en": "Software engineer with <b><span data-years>16<\/span> years of experience<\/b> across the gaming, media, and enterprise sectors; since 2020, a consultant embedded in the teams of major global companies, working in whatever stack they run: <b>.NET<\/b>, <b>Java<\/b>, <b>Node.js<\/b> or <b>Python<\/b>, on <b>AWS<\/b>. As an <b>AI enthusiast<\/b>, I work with AI coding agents in my daily workflow to accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously <b>led teams of up to six people<\/b>, I consistently deliver high-quality, tested, scalable software solutions on time and within budget.", "es": "Ingeniero de software con <b><span data-years>16<\/span> años de experiencia<\/b> en videojuegos, medios y empresa; desde 2020, consultor integrado en los equipos de compañías globales de primer nivel, trabajando en el stack que use cada cliente: <b>.NET<\/b>, <b>Java<\/b>, <b>Node.js<\/b> o <b>Python<\/b>, sobre <b>AWS<\/b>. Como <b>entusiasta de la IA<\/b>, uso agentes de programación en mi día a día para acelerar la entrega de proyectos. Aprendo rápido y me adapto a nuevos stacks tecnológicos. Habiendo <b>liderado equipos de hasta seis personas<\/b>, entrego soluciones escalables, de alta calidad y cubiertas por pruebas, a tiempo y en presupuesto."}, "jobs": [{"role": {"en": "Senior Software Engineer / Tech Lead", "es": "Ingeniero de Software Senior / Tech Lead"}, "co": "Wizeline", "frm": "2020-03", "to": null, "loc": {"en": "Guadalajara, México", "es": "Guadalajara, México"}, "inds": [{"en": "News", "es": "Noticias"}, {"en": "Media &amp; Entertainment", "es": "Medios y Entretenimiento"}, {"en": "Retail", "es": "Retail"}, {"en": "Cybersecurity", "es": "Ciberseguridad"}], "pts": [{"en": "Designed services, data models and integrations as a consultant in client teams, taking features from design to production in the client's own stack: <b>.NET<\/b>, <b>Java / Spring<\/b>, <b>Node.js<\/b> or <b>Python<\/b>, on <b>AWS<\/b>.", "es": "Diseñé servicios, modelos de datos e integraciones como consultor en equipos de clientes, llevando funcionalidades a producción en su propio stack: <b>.NET<\/b>, <b>Java / Spring<\/b>, <b>Node.js<\/b> o <b>Python<\/b>, sobre <b>AWS<\/b>."}, {"en": "<b>Dow Jones:<\/b> Built features and resolved production issues at high velocity on a SaaS designed with <b>DDD<\/b>, its services exchanging domain events over message queues (<b>Outbox pattern<\/b>); no feature was done without extensive unit tests. <span class=\"stack\">Tech: .NET, AWS, PostgreSQL, Claude Code.<\/span>", "es": "<b>Dow Jones:<\/b> Desarrollé funcionalidades y resolví incidentes en producción a alta velocidad en un SaaS diseñado con <b>DDD<\/b>, cuyos servicios intercambiaban eventos de dominio por colas (<b>patrón Outbox<\/b>); ningún feature se cerraba sin pruebas unitarias extensas. <span class=\"stack\">Tech: .NET, AWS, PostgreSQL, Claude Code.<\/span>"}, {"en": "<b>Fox Corp:<\/b> Led a squad of <b>5 engineers<\/b> as Tech Lead: refined requirements with the business, designed solutions with the team and reviewed every pull request it shipped; within <b>3 months<\/b> all worked independently. <span class=\"stack\">Tech: Java, Spring Boot, Node.js, AWS Lambda, Amazon SQS, PostgreSQL.<\/span>", "es": "<b>Fox Corp:<\/b> Lideré un equipo de <b>5 ingenieros<\/b> como Tech Lead: refiné requerimientos con negocio, diseñé las soluciones con el equipo y revisé cada pull request que entregaba; en <b>3 meses<\/b> todos eran autónomos. <span class=\"stack\">Tech: Java, Spring Boot, Node.js, AWS Lambda, Amazon SQS, PostgreSQL.<\/span>"}, {"en": "<b>Fox Corp:<\/b> Designed, built and shipped to production on my own a <b>Spring Boot<\/b> service, fed by an <b>SQS<\/b> queue, that migrated <b>over 100,000 legacy videos<\/b> into Fox's new platform; an Inbox pattern ensured a redelivered message never migrated a video twice.", "es": "<b>Fox Corp:<\/b> Diseñé, construí y llevé a producción yo solo un servicio en <b>Spring Boot<\/b>, alimentado por una cola de <b>SQS<\/b>, que migró <b>más de 100,000 videos legacy<\/b> a la nueva plataforma de Fox; el patrón Inbox garantizaba que un mensaje reentregado nunca migrara dos veces el mismo video."}, {"en": "<b>Inditex:<\/b> Architected the backend of a factory-audit viewer (<b>Java 11<\/b> microservices with <b>Clean Architecture<\/b>) and modelled its relational schema, working <b>API first<\/b>: each API was defined in <b>OpenAPI<\/b> and agreed on before any code. <span class=\"stack\">Tech: Java, Spring, MariaDB, OpenAPI.<\/span>", "es": "<b>Inditex:<\/b> Diseñé la arquitectura backend de un visualizador de auditorías de fábricas (microservicios en <b>Java 11<\/b> con <b>Clean Architecture<\/b>) y modelé su esquema relacional, con enfoque <b>API first<\/b>: cada API se definía en <b>OpenAPI<\/b> y se acordaba antes de programar. <span class=\"stack\">Tech: Java, Spring, MariaDB, OpenAPI.<\/span>"}, {"en": "<b>Cerby:<\/b> Joined the initial team and worked across the MVP's whole stack: led its first backend in <b>Python<\/b> with <b>Flask<\/b>, modelled its database with versioned migrations, built its first Chrome extension and helped on the <b>Next.js<\/b> / <b>TypeScript<\/b> frontend. <span class=\"stack\">Tech: Python, Flask, TypeScript, Next.js, React.<\/span>", "es": "<b>Cerby:<\/b> Entré al equipo inicial y trabajé en todo el stack del MVP: lideré su primer backend en <b>Python<\/b> con <b>Flask<\/b>, modelé su base de datos con migraciones versionadas, construí su primera extensión de Chrome y apoyé el frontend en <b>Next.js<\/b> / <b>TypeScript<\/b>. <span class=\"stack\">Tech: Python, Flask, TypeScript, Next.js, React.<\/span>"}, {"en": "Worked <b>100% with AI coding agents<\/b> on client work for the past year (<b>Claude Code<\/b>, <b>Codex<\/b>, <b>GitHub Copilot<\/b>) and began training as an <b>AI engineer<\/b>: agents in <b>Python<\/b> with <b>LangChain<\/b>.", "es": "Trabajé el último año <b>100% con agentes de programación con IA<\/b> (<b>Claude Code<\/b>, <b>Codex<\/b>, <b>GitHub Copilot<\/b>) en proyectos de clientes, y empecé a formarme como <b>AI engineer<\/b>: agentes en <b>Python<\/b> con <b>LangChain<\/b>."}]}, {"role": {"en": "Lead Software Engineer", "es": "Ingeniero de Software Líder"}, "co": "1 Simple Idea", "frm": "2019-07", "to": "2020-03", "loc": {"en": "Guadalajara, México", "es": "Guadalajara, México"}, "inds": [{"en": "Gaming · Mobile", "es": "Videojuegos · Móvil"}], "pts": [{"en": "Led a small programming team on <a href=\"https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/\" target=\"_blank\" rel=\"noopener noreferrer\">The Lullaby of Life<\/a>, an iOS game built in <b>nine months<\/b> and shipped on <b>Apple Arcade<\/b>, owning the <b>core game architecture<\/b>.", "es": "Lideré un equipo pequeño de programación en <a href=\"https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/\" target=\"_blank\" rel=\"noopener noreferrer\">The Lullaby of Life<\/a>, un juego para iOS hecho en <b>nueve meses<\/b> y publicado en <b>Apple Arcade<\/b>, a cargo de la <b>arquitectura central del juego<\/b>."}, {"en": "Architected a hand-made <b>IoC / DI<\/b> container and a logic layer kept apart from the visuals, so the whole logic layer had <b>unit tests<\/b>; the modular design cut bug rates and the art teams' asset integration time.", "es": "Diseñé un contenedor de <b>IoC / DI<\/b> propio y una capa de lógica separada de lo visual, toda con <b>pruebas unitarias<\/b>; el diseño modular redujo los bugs y el tiempo de integración de assets de arte."}]}, {"role": {"en": "Senior Software Engineer", "es": "Ingeniero de Software Senior"}, "co": "Virtually Live", "frm": "2017-02", "to": "2020-01", "loc": {"en": "Málaga, Spain", "es": "Málaga, España"}, "inds": [{"en": "Gaming · VR", "es": "Videojuegos · VR"}], "pts": [{"en": "Ported the VR product to an iOS app, programming its core gameplay in <b>C#<\/b> and architecting its backend <b>RESTful services<\/b> for accounts and friends in <b>Python<\/b>, <b>Django<\/b> and <b>Go<\/b>.", "es": "Porté el producto de VR a una app para iOS, programando sus mecánicas principales en <b>C#<\/b> y diseñando los <b>servicios RESTful<\/b> de su backend para cuentas y amigos en <b>Python<\/b>, <b>Django<\/b> y <b>Go<\/b>."}]}, {"role": {"en": "Software Engineer", "es": "Ingeniero de Software"}, "co": "Intel", "frm": "2015-02", "to": "2017-02", "loc": {"en": "Guadalajara, México", "es": "Guadalajara, México"}, "inds": [{"en": "Semiconductors", "es": "Semiconductores"}], "pts": [{"en": "Built custom <b>Ruby<\/b> validation libraries, exposed as APIs, that hardware teams plugged into their own testing workflows to catch design problems before the expensive simulation step.", "es": "Construí librerías de validación en <b>Ruby<\/b>, expuestas como APIs, que los equipos de hardware integraban en sus propios flujos de pruebas para detectar problemas de diseño antes de la costosa simulación real."}, {"en": "Wrote the automation tools and scripts that synchronized API deployments with the client environments of Intel sites around the world, so every site ran the same version.", "es": "Escribí las herramientas y scripts de automatización que sincronizaban los despliegues de las APIs con los entornos cliente de las sedes de Intel en el mundo, para que todas corrieran la misma versión."}, {"en": "Proposed and led the move from SVN to <b>Git<\/b> on my own initiative, making parallel feature work easier and the CI/CD simpler and more modern.", "es": "Propuse y lideré por iniciativa propia la migración de SVN a <b>Git<\/b>, que facilitó el trabajo en paralelo y dejó un CI/CD más simple y moderno."}]}, {"role": {"en": "3D &amp; Online Programmer", "es": "Programador 3D y Online"}, "co": "Gameloft", "frm": "2011-05", "to": "2015-01", "loc": {"en": "Guadalajara, México", "es": "Guadalajara, México"}, "inds": [{"en": "Gaming · Mobile", "es": "Videojuegos · Móvil"}], "pts": [{"en": "Integrated proprietary <b>REST<\/b>-based online services into multiple Android titles.", "es": "Integré servicios online propietarios basados en <b>REST<\/b> en varios títulos de Android."}, {"en": "Built an internal tool in <b>PHP<\/b>, <b>JavaScript<\/b> and <b>jQuery<\/b> to configure the events of <b>The Oregon Trail: American Settler<\/b>, whose community events increased the game's revenue.", "es": "Construí una herramienta interna en <b>PHP<\/b>, <b>JavaScript<\/b> y <b>jQuery<\/b> para configurar los eventos de <b>The Oregon Trail: American Settler<\/b>, cuyos eventos comunitarios incrementaron el revenue del juego."}]}, {"role": {"en": "Game Developer", "es": "Desarrollador de Videojuegos"}, "co": "Kaxan Games", "frm": "2009-08", "to": "2011-05", "loc": {"en": "Guadalajara, México", "es": "Guadalajara, México"}, "inds": [{"en": "Gaming · Mobile &amp; Console", "es": "Videojuegos · Móvil y Consola"}], "pts": [{"en": "Developed and published <b>over five mobile games<\/b> for iPhone and iPad with <b>C#<\/b> and <b>Unity3D<\/b>, as one of two programmers working with a team of artists.", "es": "Desarrollé y publiqué <b>más de cinco juegos móviles<\/b> para iPhone y iPad con <b>C#<\/b> y <b>Unity3D<\/b>, como uno de dos programadores junto a un equipo de artistas."}]}], "core": [{"name": "C# / .NET", "word": {"en": "Expert", "es": "Experto"}, "pct": "100%"}, {"name": "Java / Spring", "word": {"en": "Expert", "es": "Experto"}, "pct": "90%"}, {"name": "Python / FastAPI", "word": {"en": "Advanced", "es": "Avanzado"}, "pct": "80%"}, {"name": "JavaScript / Node.js", "word": {"en": "Proficient", "es": "Competente"}, "pct": "60%"}, {"name": "AWS", "word": {"en": "Advanced", "es": "Avanzado"}, "pct": "70%"}, {"name": "SQL / Postgres", "word": {"en": "Advanced", "es": "Avanzado"}, "pct": "80%"}], "tech": [{"en": "Software architecture", "es": "Arquitectura de software"}, {"en": "Unit Testing", "es": "Pruebas unitarias"}, "C#", ".NET", "Java", "Spring", "Python", "FastAPI", "JavaScript", "Node.js", "React", "AWS", "PostgreSQL", {"en": "Microservices", "es": "Microservicios"}, {"en": "RESTful APIs", "es": "APIs RESTful"}, {"en": "OOP", "es": "POO"}, "Unity3D", "Git", "Full-Stack", "Typescript", "Docker"], "ai": {"head": {"en": "AI-Assisted Dev", "es": "Desarrollo asistido por IA"}, "text": {"en": "AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery.", "es": "Herramientas asistidas por IA en mi trabajo diario para optimizar el desarrollo backend y acelerar la entrega de proyectos."}, "chips": ["Claude Code", "opencode", "Codex"]}, "edu": [{"deg": {"en": "Master in Computer Science", "es": "Maestría en Ciencias Computacionales"}, "meta": {"en": "Universidad Autónoma de Guadalajara · Aug 2018", "es": "Universidad Autónoma de Guadalajara · Ago 2018"}}, {"deg": {"en": "Computer Science", "es": "Ciencias Computacionales"}, "meta": {"en": "Universidad de Guadalajara · Dec 2010", "es": "Universidad de Guadalajara · Dic 2010"}}], "langs": [{"name": {"en": "Spanish", "es": "Español"}, "level": {"en": "Native", "es": "Nativo"}}, {"name": {"en": "English", "es": "Inglés"}, "level": {"en": "Advanced", "es": "Avanzado"}}], "labels": {"profile": {"en": "Professional Summary", "es": "Resumen profesional"}, "experience": {"en": "Work Experience", "es": "Experiencia laboral"}, "core": {"en": "Skills", "es": "Habilidades"}, "tech": {"en": "Technical Skills", "es": "Habilidades técnicas"}, "education": {"en": "Education", "es": "Educación"}, "languages": {"en": "Languages", "es": "Idiomas"}, "present": {"en": "Present", "es": "Actualidad"}, "yr": {"en": " yr", "es": " año"}, "yrs": {"en": " yrs", "es": " años"}, "mo": {"en": " mo", "es": " mes"}, "mos": {"en": " mos", "es": " meses"}}, "months": {"en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], "es": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]}, "file": "Sergio-Sanchez-CV-Slalom-Architect-Software-Engineering"}</script>
+<script src="/cv-export.js" defer></script>
+</div>
+<div class="dl-fab" role="group" aria-label="Download CV / Descargar CV"><span class="dl-k"><span class="i18n-en">download</span><span class="i18n-es">descargar</span></span><button type="button" data-export="docx"><svg viewBox="0 0 24 24"><path d="M12 3v11M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>DOCX ATS</button><button type="button" data-export="pdf-ats"><svg viewBox="0 0 24 24"><path d="M12 3v11M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>PDF ATS</button><button type="button" class="alt" data-export="pdf"><svg viewBox="0 0 24 24"><path d="M12 3v11M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>PDF</button></div>
 <script>
 /* Extended History: the subject panel follows the entry currently in view; the grep bar above the timeline filters it */
 (function(){
@@ -749,151 +760,6 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     /* printing mid-animation would catch half a name: finish it at once */
     window.addEventListener('beforeprint',function(){ i=full.length+1; t.textContent=full; });
   });
-})();
-</script>
-<script>
-/* /tailor-cv/, the explorer: a row shows its CV in the panel — its links and the page itself, scaled to fit.
-   The grep bar filters the list: every word must match (company, position, date, language, required skills, the
-   clients it shows), ignoring case and accents; a word of one or two letters only as a whole word, so `es` is the
-   CVs that open in Spanish, not every "inglés". ?q= keeps the filter and #<name> the CV, so a link can open the explorer on one.
-   ↑/↓ move through the list, Enter on the selected row (or a double click, or a click on the preview) opens it. */
-(function(){
-  var dataEl=document.getElementById('tx-data'), panel=document.getElementById('tx-panel'), box=document.querySelector('.tx-col .hq');
-  if(!dataEl||!panel||!box) return;   // no CVs yet: no bar, nothing to preview
-  var data=JSON.parse(dataEl.textContent), rows=[].slice.call(document.querySelectorAll('.tx-row'));
-  var sheet=document.querySelector('.sheet'), frame=panel.querySelector('.tx-frame'), iframe=frame.querySelector('iframe'), hit=frame.querySelector('.tx-hit');
-  var input=box.querySelector('.hq-in'), clearBtn=box.querySelector('.hq-x'),
-      count=box.querySelector('.hq-count'), empty=box.querySelector('.hq-empty');
-  var W={en:{opens:{en:'opens in English',es:'opens in Spanish'},clear:'Clear search',open:'Open the CV',preview:'Preview of the CV',list:'Tailored CVs'},
-         es:{opens:{en:'abre en inglés',es:'abre en español'},clear:'Limpiar búsqueda',open:'Abrir el CV',preview:'Vista previa del CV',list:'CVs a la medida'}};
-  function w(){return W[window.cvLang()];}
-  function $(k){return panel.querySelector('[data-tx="'+k+'"]');}
-  var current=-1;
-  function fill(){
-    var e=data[current]; if(!e) return;
-    $('file').textContent=e.name+'.html'; $('co').textContent=e.company; $('pos').textContent=e.position;
-    $('when').textContent=e.date+' · '+w().opens[e.lang];
-    $('cv').href=e.cv; $('jd').href=e.jd; hit.href=e.cv;
-    var post=$('post'); post.hidden=!e.url; if(e.url) post.href=e.url;
-    size();
-  }
-  function relabel(){
-    clearBtn.setAttribute('aria-label',w().clear); clearBtn.title=w().clear;
-    hit.setAttribute('aria-label',w().open); iframe.title=w().preview; document.querySelector('.tx-list').setAttribute('aria-label',w().list);
-    rows.forEach(function(r,i){ var a=r.querySelector('.tx-open'); a.title=w().open; a.setAttribute('aria-label',w().open+': '+data[i].company+' · '+data[i].position); });
-  }
-  /* ---- the preview: same-origin, so the explorer takes the site's header and the download fab out of the copy and
-     keeps its language and theme in step with the explorer's (a file:// page can't reach into it: it shows as is) ---- */
-  var EMBED='.site-nav,.dl-fab{display:none !important;} html{overflow:hidden !important;}'+
-            'body{padding:0 !important;display:block !important;min-height:0 !important;background:none !important;}'+
-            '.sheet{margin:0 !important;box-shadow:none !important;border:0 !important;border-radius:0 !important;}';
-  function mirror(){
-    try{
-      var d=iframe.contentDocument; if(!d||!d.documentElement) return;
-      var h=d.documentElement, p=document.documentElement, l=p.getAttribute('data-lang'), t=p.getAttribute('data-theme'), was=h.getAttribute('data-lang');
-      if(l) h.setAttribute('data-lang',l); else h.removeAttribute('data-lang');
-      if(t) h.setAttribute('data-theme',t); else h.removeAttribute('data-theme');
-      if(was!==l) d.dispatchEvent(new iframe.contentWindow.CustomEvent('langchange',{detail:l==='es'?'es':'en'}));   // its dates redraw
-    }catch(err){}
-  }
-  /* the preview's shape: A4 until the CV says otherwise — on screen its sheet also holds the prompt and the footer
-     that printing drops, so it can run a little taller than a page, and the frame follows it to show all of it */
-  var ratio=297/210;
-  function measure(){
-    try{
-      var sh=iframe.contentDocument.querySelector('.sheet'), r=sh&&sh.getBoundingClientRect();
-      if(r&&r.width){ ratio=r.height/r.width; frame.style.aspectRatio=r.width+' / '+r.height; size(); }
-    }catch(err){}
-  }
-  iframe.addEventListener('load',function(){
-    try{
-      var d=iframe.contentDocument;
-      if(d&&d.head&&!d.getElementById('tx-embed')){ var st=d.createElement('style'); st.id='tx-embed'; st.textContent=EMBED; d.head.appendChild(st); }
-      mirror(); iframe.contentWindow.dispatchEvent(new iframe.contentWindow.Event('resize'));   // its sheet refits without the padding
-      measure(); if(d.fonts&&d.fonts.ready) d.fonts.ready.then(measure);
-    }catch(err){}
-    frame.classList.add('ready');
-  });
-  new MutationObserver(mirror).observe(document.documentElement,{attributes:true,attributeFilter:['data-lang','data-theme']});
-  /* The CV's shape at the panel's width; shorter (and narrower) when the viewport cannot show all of it next to the
-     panel's head. Everything is measured on screen (the sheet is CSS-zoomed) and set back in the sheet's own px. */
-  function size(){
-    frame.style.width=''; frame.style.height='';
-    if(window.matchMedia&&window.matchMedia('print').matches) return;
-    var z=parseFloat(sheet.style.zoom)||1, pr=panel.getBoundingClientRect(), fr=frame.getBoundingClientRect(); if(!fr.height) return;
-    var room=window.innerHeight-24*z-(pr.height-fr.height);
-    if(room<fr.height){ var hh=Math.max(fr.height*0.55,room)/z; frame.style.height=hh+'px'; frame.style.width=(hh/ratio)+'px'; }
-  }
-  function select(i,how){   // how: {hash, focus} — only a choice the reader makes goes into the URL
-    if(i<0||i>=rows.length) return;
-    current=i;
-    rows.forEach(function(r,k){ var on=k===i; r.classList.toggle('active',on); r.querySelector('.tx-sel').setAttribute('aria-pressed',on?'true':'false'); });
-    if(iframe.getAttribute('src')!==data[i].cv){ frame.classList.remove('ready'); iframe.setAttribute('src',data[i].cv); }
-    fill();
-    if(how&&how.hash){ var u=new URL(location.href); u.hash=data[i].name; history.replaceState(null,'',u); }
-    if(how&&how.focus) rows[i].querySelector('.tx-sel').focus();
-  }
-  function open(i){ location.href=data[i].cv; }
-  rows.forEach(function(r,i){
-    var b=r.querySelector('.tx-sel');
-    b.addEventListener('click',function(ev){ if(i===current&&ev.detail===0){ open(i); return; } select(i,{hash:true}); });   // detail 0: Enter / Space
-    b.addEventListener('dblclick',function(){ open(i); });
-  });
-  function visible(){ var out=[]; rows.forEach(function(r,i){ if(!r.classList.contains('dim')) out.push(i); }); return out; }
-  document.querySelector('.tx-list').addEventListener('keydown',function(ev){
-    if(ev.key!=='ArrowDown'&&ev.key!=='ArrowUp') return;
-    var vis=visible(), k=vis.indexOf(current); if(!vis.length) return;
-    ev.preventDefault();
-    k=ev.key==='ArrowDown'?Math.min(vis.length-1,k+1):Math.max(0,k-1);
-    select(vis[k],{hash:true,focus:true});
-  });
-  /* ---- the grep bar ---- */
-  var DIA=new RegExp('['+String.fromCharCode(0x300)+'-'+String.fromCharCode(0x36f)+']','g');
-  function fold(s){ return String(s).normalize('NFD').replace(DIA,'').toLowerCase(); }
-  var TOK=/"([^"]*)"|(\S+)/g;
-  function tokens(q){ var out=[], m; TOK.lastIndex=0; while((m=TOK.exec(q))){ var t=fold(m[1]!==undefined?m[1]:m[2]).trim(); if(t) out.push(t); } return out; }
-  var idx=data.map(function(e){ return fold(e.text); }), q='';
-  function has(text,t){   // a short token is a whole word (es, en, ai…); a longer one is found anywhere
-    if(t.length>2) return text.indexOf(t)>=0;
-    return new RegExp('(^|[^a-z0-9])'+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'($|[^a-z0-9])').test(text);
-  }
-  function apply(){
-    var toks=tokens(input.value); q=input.value.trim();
-    rows.forEach(function(r,i){ r.classList.toggle('dim',!toks.every(function(t){ return has(idx[i],t); })); });
-    var vis=visible();
-    clearBtn.hidden=!q;
-    count.textContent=toks.length?vis.length+'/'+rows.length:'';
-    empty.hidden=!(toks.length&&!vis.length);
-    panel.classList.toggle('off',!vis.length);
-    if(vis.length&&vis.indexOf(current)<0) select(vis[0]);
-  }
-  function sync(){ var u=new URL(location.href); if(q) u.searchParams.set('q',q); else u.searchParams.delete('q'); history.replaceState(null,'',u); }
-  var syncT=null;
-  input.addEventListener('input',function(){ apply(); clearTimeout(syncT); syncT=setTimeout(sync,150); });
-  input.addEventListener('keydown',function(ev){
-    if(ev.key==='Escape'){ if(input.value){ input.value=''; apply(); sync(); } else input.blur(); return; }
-    if(ev.key==='ArrowDown'||ev.key==='Enter'){ var vis=visible(); if(vis.length){ ev.preventDefault(); select(vis.indexOf(current)>=0?current:vis[0],{hash:true,focus:true}); } }
-  });
-  clearBtn.addEventListener('click',function(){ input.value=''; apply(); sync(); input.focus(); });
-  document.addEventListener('keydown',function(ev){   // `/` focuses the search, as on /timeline/
-    if(ev.key!=='/'||ev.ctrlKey||ev.metaKey||ev.altKey) return;
-    var a=document.activeElement; if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.isContentEditable)) return;
-    ev.preventDefault(); input.focus(); input.select();
-  });
-  function byHash(){ var want=decodeURIComponent(location.hash.slice(1)), i=-1; data.forEach(function(e,k){ if(e.name===want) i=k; }); return i; }
-  window.addEventListener('hashchange',function(){ var i=byHash(); if(i>=0&&!rows[i].classList.contains('dim')) select(i); });
-  document.addEventListener('langchange',function(){ relabel(); fill(); });
-  window.addEventListener('resize',size); window.addEventListener('load',size);
-  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(size);
-  // after every inline script has run: the sheet's zoom (FIT_JS) is what size() measures against
-  function boot(){
-    var q0=new URL(location.href).searchParams.get('q'); if(q0) input.value=q0;
-    relabel();
-    current=byHash();   // the CV the URL names, if the filter keeps it; apply() falls back to the first row it keeps
-    if(current>=0) select(current); else current=-1;
-    apply();
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 </script>
 <script>

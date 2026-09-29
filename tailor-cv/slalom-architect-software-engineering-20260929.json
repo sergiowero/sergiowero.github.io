@@ -1,0 +1,299 @@
+{
+  "schema": "tailor-cv/1",
+  "name": "slalom-architect-software-engineering-20260929",
+  "jd": {
+    "company": "Slalom",
+    "position": "Architect - Software Engineering",
+    "date": "2026-09-29",
+    "lang": "en",
+    "url": "https://jobs.slalom.com/en_US/careersmarketplace/JobDetail/Architect-Software-Engineering-GUADALAJARA/1814",
+    "terms": [
+      "testing",
+      "code-review",
+      "frontend",
+      "api-design",
+      "databases",
+      "shipped",
+      "ownership",
+      "stakeholder-management",
+      "learning",
+      "scale"
+    ],
+    "required": [
+      {
+        "id": "architecture",
+        "quote": "You will bring your ability to organize your ideas into design, code, and supporting tests that others on your team can use."
+      },
+      {
+        "id": "testing",
+        "quote": "You will bring your ability to organize your ideas into design, code, and supporting tests that others on your team can use."
+      }
+    ],
+    "gaps": [
+      "Angular, Vue (the tree's frontend is React / Next.js, and only in support)",
+      "Azure, GCP (the tree has AWS only)",
+      "Agile / Scrum practices: the tree never names them",
+      "Integration-level testing (the tree has unit tests only)",
+      "Native mobile apps outside games (the tree's iOS / Android work is games in Unity/C#, C++ and Objective-C)",
+      "Owning a CI/CD pipeline hands-on: no pipeline tool in the tree (only the SVN→Git move with a simpler CI/CD, and deployment scripts at Intel)"
+    ]
+  },
+  "profile": {
+    "summary": {
+      "en": "Software engineer with **{years} years of experience** across the gaming, media, and enterprise sectors; since 2020, a consultant embedded in the teams of major global companies, working in whatever stack they run: **.NET**, **Java**, **Node.js** or **Python**, on **AWS**. As an **AI enthusiast**, I work with AI coding agents in my daily workflow to accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously **led teams of up to six people**, I consistently deliver high-quality, tested, scalable software solutions on time and within budget.",
+      "es": "Ingeniero de software con **{years} años de experiencia** en videojuegos, medios y empresa; desde 2020, consultor integrado en los equipos de compañías globales de primer nivel, trabajando en el stack que use cada cliente: **.NET**, **Java**, **Node.js** o **Python**, sobre **AWS**. Como **entusiasta de la IA**, uso agentes de programación en mi día a día para acelerar la entrega de proyectos. Aprendo rápido y me adapto a nuevos stacks tecnológicos. Habiendo **liderado equipos de hasta seis personas**, entrego soluciones escalables, de alta calidad y cubiertas por pruebas, a tiempo y en presupuesto."
+    },
+    "roles": [
+      "Senior Software Engineer",
+      "Backend & Full-Stack",
+      "Tech Lead",
+      "AI-Assisted"
+    ],
+    "sources": [
+      "wizeline",
+      "wizeline/the-role/1",
+      "wizeline/the-role/2",
+      "wizeline/working-with-ai/1"
+    ]
+  },
+  "experience": [
+    {
+      "id": "wizeline",
+      "mode": "tailored",
+      "why": "All four clients show what the JD asks for, so all four stay. Dow Jones: features and production fixes at high velocity with extensive unit tests as part of done (functioning, validated code; supporting tests; operating software in production), on a DDD system of services exchanging domain events. Fox Corp: Tech Lead who reviewed every pull request and refined requirements with the business (reviewing and refining the team's work, collaboration), plus an AWS migration service owned end to end that moved over 100,000 videos (owning larger components, cloud ecosystems, scale). Inditex: backend architecture, relational schema and API-first contracts agreed before any code (aligning data and API components with the product's technical direction; the Architect level). Cerby: an MVP across the whole stack, backend, data model and migrations, Chrome extension and the Next.js/TypeScript frontend (the entire stack of the components you own: data, API, UI). Own content: the role, designing services, data models and integrations in whatever stack the client runs (a consultancy like Slalom, with its examples .NET, Java, Node and AWS), and AI coding agents plus the AI-engineering track (emerging tools, experimenting with new technologies, a desire to learn and grow). Mentoring left out: the JD does not ask for it.",
+      "bullets": [
+        {
+          "en": "Designed services, data models and integrations as a consultant in client teams, taking features from design to production in the client's own stack: **.NET**, **Java / Spring**, **Node.js** or **Python**, on **AWS**.",
+          "es": "Diseñé servicios, modelos de datos e integraciones como consultor en equipos de clientes, llevando funcionalidades a producción en su propio stack: **.NET**, **Java / Spring**, **Node.js** o **Python**, sobre **AWS**.",
+          "sources": [
+            "wizeline/the-role/1",
+            "wizeline/the-role/2"
+          ]
+        },
+        {
+          "child": "wizeline-global-news",
+          "en": "Built features and resolved production issues at high velocity on a SaaS designed with **DDD**, its services exchanging domain events over message queues (**Outbox pattern**); no feature was done without extensive unit tests.",
+          "es": "Desarrollé funcionalidades y resolví incidentes en producción a alta velocidad en un SaaS diseñado con **DDD**, cuyos servicios intercambiaban eventos de dominio por colas (**patrón Outbox**); ningún feature se cerraba sin pruebas unitarias extensas.",
+          "tech": [
+            ".NET",
+            "AWS",
+            "PostgreSQL",
+            "Claude Code"
+          ],
+          "sources": [
+            "wizeline-global-news",
+            "wizeline-global-news/day-to-day/1",
+            "wizeline-global-news/net-postgresql-and-domain-driven-design/2",
+            "wizeline-global-news/many-services-domain-events-and-the-outbox-pattern/1",
+            "wizeline-global-news/many-services-domain-events-and-the-outbox-pattern/2",
+            "wizeline-global-news/unit-tests-as-part-of-done/2"
+          ]
+        },
+        {
+          "child": "wizeline-media",
+          "en": "Led a squad of **5 engineers** as Tech Lead: refined requirements with the business, designed solutions with the team and reviewed every pull request it shipped; within **3 months** all worked independently.",
+          "es": "Lideré un equipo de **5 ingenieros** como Tech Lead: refiné requerimientos con negocio, diseñé las soluciones con el equipo y revisé cada pull request que entregaba; en **3 meses** todos eran autónomos.",
+          "tech": [
+            "Java",
+            "Spring Boot",
+            "Node.js",
+            "AWS Lambda",
+            "Amazon SQS",
+            "PostgreSQL"
+          ],
+          "sources": [
+            "wizeline-media/tech-lead",
+            "wizeline-media/tech-lead/1",
+            "wizeline-media/tech-lead/2",
+            "wizeline-media/tech-lead/3",
+            "wizeline-media/tech-lead/4"
+          ]
+        },
+        {
+          "child": "wizeline-media",
+          "en": "Designed, built and shipped to production on my own a **Spring Boot** service, fed by an **SQS** queue, that migrated **over 100,000 legacy videos** into Fox's new platform; an Inbox pattern ensured a redelivered message never migrated a video twice.",
+          "es": "Diseñé, construí y llevé a producción yo solo un servicio en **Spring Boot**, alimentado por una cola de **SQS**, que migró **más de 100,000 videos legacy** a la nueva plataforma de Fox; el patrón Inbox garantizaba que un mensaje reentregado nunca migrara dos veces el mismo video.",
+          "sources": [
+            "wizeline-media/legacy-media-cloud-video-migration-service",
+            "wizeline-media/legacy-media-cloud-video-migration-service/1",
+            "wizeline-media/legacy-media-cloud-video-migration-service/2",
+            "wizeline-media/legacy-media-cloud-video-migration-service/3"
+          ]
+        },
+        {
+          "child": "wizeline-retail",
+          "en": "Architected the backend of a factory-audit viewer (**Java 11** microservices with **Clean Architecture**) and modelled its relational schema, working **API first**: each API was defined in **OpenAPI** and agreed on before any code.",
+          "es": "Diseñé la arquitectura backend de un visualizador de auditorías de fábricas (microservicios en **Java 11** con **Clean Architecture**) y modelé su esquema relacional, con enfoque **API first**: cada API se definía en **OpenAPI** y se acordaba antes de programar.",
+          "tech": [
+            "Java",
+            "Spring",
+            "MariaDB",
+            "OpenAPI"
+          ],
+          "sources": [
+            "wizeline-retail/the-product/1",
+            "wizeline-retail/the-product/2",
+            "wizeline-retail/microservices-in-java-11-with-clean-architecture/1",
+            "wizeline-retail/microservices-in-java-11-with-clean-architecture/2",
+            "wizeline-retail/data/1",
+            "wizeline-retail/api-first-with-openapi/1"
+          ]
+        },
+        {
+          "child": "wizeline-cybersecurity",
+          "en": "Joined the initial team and worked across the MVP's whole stack: led its first backend in **Python** with **Flask**, modelled its database with versioned migrations, built its first Chrome extension and helped on the **Next.js** / **TypeScript** frontend.",
+          "es": "Entré al equipo inicial y trabajé en todo el stack del MVP: lideré su primer backend en **Python** con **Flask**, modelé su base de datos con migraciones versionadas, construí su primera extensión de Chrome y apoyé el frontend en **Next.js** / **TypeScript**.",
+          "tech": [
+            "Python",
+            "Flask",
+            "TypeScript",
+            "Next.js",
+            "React"
+          ],
+          "sources": [
+            "wizeline-cybersecurity/the-product/2",
+            "wizeline-cybersecurity/backend-in-python-with-flask-designed-with-ddd/1",
+            "wizeline-cybersecurity/data-model-migrations/1",
+            "wizeline-cybersecurity/data-model-migrations/2",
+            "wizeline-cybersecurity/cerby-s-first-chrome-extension",
+            "wizeline-cybersecurity/frontend-in-support/1",
+            "wizeline-cybersecurity/the-mvp-delivered/1"
+          ]
+        },
+        {
+          "en": "Worked **100% with AI coding agents** on client work for the past year (**Claude Code**, **Codex**, **GitHub Copilot**) and began training as an **AI engineer**: agents in **Python** with **LangChain**.",
+          "es": "Trabajé el último año **100% con agentes de programación con IA** (**Claude Code**, **Codex**, **GitHub Copilot**) en proyectos de clientes, y empecé a formarme como **AI engineer**: agentes en **Python** con **LangChain**.",
+          "sources": [
+            "wizeline/working-with-ai/1",
+            "wizeline/constant-training-ai-at-work/2",
+            "wizeline/constant-training-ai-at-work/3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1-simple-idea",
+      "mode": "tailored",
+      "why": "Relevant to design, code and supporting tests others can use, and to owning larger components: I owned the core architecture of an iOS game built in nine months and shipped on Apple Arcade, with a hand-made IoC/DI container and a logic layer kept apart from the visuals so all of it had unit tests; the modular design cut bug rates and the art teams' integration time. Flow's internals and the Steam release are left out.",
+      "bullets": [
+        {
+          "en": "Led a small programming team on [The Lullaby of Life](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/), an iOS game built in **nine months** and shipped on **Apple Arcade**, owning the **core game architecture**.",
+          "es": "Lideré un equipo pequeño de programación en [The Lullaby of Life](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/), un juego para iOS hecho en **nueve meses** y publicado en **Apple Arcade**, a cargo de la **arquitectura central del juego**.",
+          "sources": [
+            "1-simple-idea/cv1",
+            "1-simple-idea/cv4",
+            "1-simple-idea/finished-in-nine-months/1",
+            "1-simple-idea/published-on-apple-arcade/1"
+          ]
+        },
+        {
+          "en": "Architected a hand-made **IoC / DI** container and a logic layer kept apart from the visuals, so the whole logic layer had **unit tests**; the modular design cut bug rates and the art teams' asset integration time.",
+          "es": "Diseñé un contenedor de **IoC / DI** propio y una capa de lógica separada de lo visual, toda con **pruebas unitarias**; el diseño modular redujo los bugs y el tiempo de integración de assets de arte.",
+          "sources": [
+            "1-simple-idea/cv2",
+            "1-simple-idea/cv3",
+            "1-simple-idea/inversion-of-control-dependency-injection/1",
+            "1-simple-idea/two-layers-visual-gameplay-and-logic/1",
+            "1-simple-idea/two-layers-visual-gameplay-and-logic/2",
+            "1-simple-idea/flow-connecting-data-between-components/2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "virtually-live",
+      "mode": "tailored",
+      "why": "Relevant: a mobile front end plus the APIs behind it, the JD's full-stack shape: I ported the product to iOS (core gameplay in C#) and architected its backend RESTful services in Python, Django and Go. Left out: the VR products, the prototypes and the VR abstraction layer, and, for the one-sheet limit, the live Formula E release (the least tied to what the JD asks).",
+      "bullets": [
+        {
+          "en": "Ported the VR product to an iOS app, programming its core gameplay in **C#** and architecting its backend **RESTful services** for accounts and friends in **Python**, **Django** and **Go**.",
+          "es": "Porté el producto de VR a una app para iOS, programando sus mecánicas principales en **C#** y diseñando los **servicios RESTful** de su backend para cuentas y amigos en **Python**, **Django** y **Go**.",
+          "sources": [
+            "virtually-live/cv3",
+            "virtually-live/backend-accounts-and-friends-in-python-with-django/1",
+            "virtually-live/backend-accounts-and-friends-in-python-with-django/2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intel",
+      "mode": "tailored",
+      "why": "The closest match to the JD's operational asks. Deployment automation: I wrote the tools and scripts that kept API deployments in sync across Intel sites (JD: 'Develop supporting scripts and routines that automate procedures and help maintain components in production environments'). The SVN-to-Git move I proposed and led, with a simpler, more modern CI/CD (maintaining the pipeline). The validation libraries, exposed as APIs that other teams plugged into their own testing workflows (validation techniques, tools others use). The XML metaprogramming internals are left out.",
+      "bullets": [
+        {
+          "en": "Built custom **Ruby** validation libraries, exposed as APIs, that hardware teams plugged into their own testing workflows to catch design problems before the expensive simulation step.",
+          "es": "Construí librerías de validación en **Ruby**, expuestas como APIs, que los equipos de hardware integraban en sus propios flujos de pruebas para detectar problemas de diseño antes de la costosa simulación real.",
+          "sources": [
+            "intel/cv1",
+            "intel/custom-ruby-libraries-for-validation/1",
+            "intel/custom-ruby-libraries-for-validation/3",
+            "intel/custom-ruby-libraries-for-validation/4"
+          ]
+        },
+        {
+          "en": "Wrote the automation tools and scripts that synchronized API deployments with the client environments of Intel sites around the world, so every site ran the same version.",
+          "es": "Escribí las herramientas y scripts de automatización que sincronizaban los despliegues de las APIs con los entornos cliente de las sedes de Intel en el mundo, para que todas corrieran la misma versión.",
+          "sources": [
+            "intel/cv2",
+            "intel/deployment-automation-across-intel-sites/1",
+            "intel/deployment-automation-across-intel-sites/2"
+          ]
+        },
+        {
+          "en": "Proposed and led the move from SVN to **Git** on my own initiative, making parallel feature work easier and the CI/CD simpler and more modern.",
+          "es": "Propuse y lideré por iniciativa propia la migración de SVN a **Git**, que facilitó el trabajo en paralelo y dejó un CI/CD más simple y moderno.",
+          "sources": [
+            "intel/moved-the-project-from-svn-to-git",
+            "intel/moved-the-project-from-svn-to-git/1",
+            "intel/moved-the-project-from-svn-to-git/2",
+            "intel/moved-the-project-from-svn-to-git/3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gameloft",
+      "mode": "tailored",
+      "why": "Relevant: REST-based online services integrated into Android titles (APIs, mobile), and an internal tool in PHP, JavaScript and jQuery that configured a live game's events, whose community events increased its revenue (tooling that supports a product in production). The ports and 3D work are left out.",
+      "bullets": [
+        {
+          "en": "Integrated proprietary **REST**-based online services into multiple Android titles.",
+          "es": "Integré servicios online propietarios basados en **REST** en varios títulos de Android.",
+          "sources": [
+            "gameloft/2"
+          ]
+        },
+        {
+          "en": "Built an internal tool in **PHP**, **JavaScript** and **jQuery** to configure the events of **The Oregon Trail: American Settler**, whose community events increased the game's revenue.",
+          "es": "Construí una herramienta interna en **PHP**, **JavaScript** y **jQuery** para configurar los eventos de **The Oregon Trail: American Settler**, cuyos eventos comunitarios incrementaron el revenue del juego.",
+          "sources": [
+            "gameloft/event-configuration-tool-for-the-oregon-trail",
+            "gameloft/event-configuration-tool-for-the-oregon-trail/1",
+            "gameloft/the-oregon-trail-american-settler",
+            "gameloft/the-oregon-trail-american-settler/2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kaxan-games",
+      "mode": "tailored",
+      "why": "Only the shipping record is relevant: mobile apps for iPhone and iPad taken to publication by two programmers working with a team of artists (the JD's native-mobile front ends, production software, collaboration across disciplines). The Nintendo Wii credit and the demo reel are left out.",
+      "bullets": [
+        {
+          "en": "Developed and published **over five mobile games** for iPhone and iPad with **C#** and **Unity3D**, as one of two programmers working with a team of artists.",
+          "es": "Desarrollé y publiqué **más de cinco juegos móviles** para iPhone y iPad con **C#** y **Unity3D**, como uno de dos programadores junto a un equipo de artistas.",
+          "sources": [
+            "kaxan-games/cv1",
+            "kaxan-games/mobile-games-in-unity/2"
+          ]
+        }
+      ]
+    }
+  ],
+  "skills": {
+    "drop": []
+  },
+  "notes": "Position: the pasted JD has no title line. Its text (hybrid in Mexico; open to hiring at the Engineer, Senior Engineer, Architect or Senior Architect level) matches Slalom's public posting 'Architect - Software Engineering (GUADALAJARA)', job 1814, found by web search; Sergio lives in Zapopan (Guadalajara). Slalom uses the same body for other levels and cities (Monterrey; Senior Architect): if the application is for another one, start the spec over with that position. jd.required: every technology in the JD is an 'Examples include', not a requirement, so no technology is required and the core skills stay the master's; 'What You'll Bring' requires 'design, code, and supporting tests', which the tree backs (architecture, testing): those two move to the front of the chips."
+}
