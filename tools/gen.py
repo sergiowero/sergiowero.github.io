@@ -1040,6 +1040,15 @@ def history_entries():
         e["children"] = _sorted(e.get("children", []))
     return _sorted(entries)
 
+def history_flat():
+    """Depth-first list of the entries: (index, level, parent_index, entry). The link cards read it (page_cards)."""
+    flat = []
+    for e in history_entries():
+        pi = len(flat); flat.append((pi, 0, None, e))
+        for c in e["children"]:
+            flat.append((len(flat), 1, pi, c))
+    return flat
+
 EXTRA_HISTORY = [
     # dict(kind="milestone", slug="my-talk", role="Speaker at …", co="Conference", frm="2023-05", loc="…", inds=["Community"], tech=[], pts=["…"],
     #      children=[dict(kind="project", slug="my-talk-demo", role="Live demo", co="…", loc="…", inds=[], tech=["Unity"], pts=["…"])]),
