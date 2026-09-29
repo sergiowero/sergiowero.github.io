@@ -1,0 +1,300 @@
+{
+  "schema": "tailor-cv/1",
+  "name": "lawnstarter-staff-product-engineer-20260929",
+  "jd": {
+    "company": "LawnStarter",
+    "position": "Staff Product Engineer",
+    "date": "2026-09-29",
+    "lang": "en",
+    "url": null,
+    "terms": [
+      "testing",
+      "code-review",
+      "business-impact",
+      "devops",
+      "stakeholder-management"
+    ],
+    "required": [
+      {
+        "id": "claude-code",
+        "quote": "Claude Code, Cursor, Codex, or equivalent are how you ship today — daily, on production work."
+      },
+      {
+        "id": "cursor",
+        "quote": "Claude Code, Cursor, Codex, or equivalent are how you ship today — daily, on production work."
+      },
+      {
+        "id": "codex",
+        "quote": "Claude Code, Cursor, Codex, or equivalent are how you ship today — daily, on production work."
+      },
+      {
+        "id": "aws",
+        "quote": "Infra — AWS, Datadog, Sentry, GitHub Actions"
+      }
+    ],
+    "gaps": [
+      "PHP / Laravel as a backend stack (the tree has PHP only in one internal tool at Gameloft; no Laravel)",
+      "TypeScript / React in depth (only auxiliary frontend work in Next.js at Cerby); React Native",
+      "Data stack: Redshift, dbt, Segment, Airflow",
+      "Datadog, Sentry (the tree has CloudWatch logs only)",
+      "GitHub Actions",
+      "MCP servers, evals and evals tooling for agent-authored code",
+      "Staged rollouts, rollback strategy and post-launch metric reviews",
+      "Working day to day with a PM and a designer (the tree has requirements refinement with the business side)",
+      "Jira, Confluence"
+    ]
+  },
+  "profile": {
+    "summary": {
+      "en": "Software developer with **{years} years of experience** across the gaming, media, and enterprise sectors, collaborating with major global companies. **AI-native**: coding agents such as Claude Code and Codex are how I ship production client work, day to day. I am a rapid learner, highly adaptable to new technology stacks. Having previously **led teams of up to six people**, I own my work end to end and consistently deliver high-quality, scalable software solutions on time and within budget.",
+      "es": "Desarrollador de software con **{years} años de experiencia** en videojuegos, medios y empresa, con compañías globales de primer nivel. **AI-native**: entrego el trabajo de cliente en producción con agentes de programación como Claude Code y Codex, todos los días. Aprendo rápido y me adapto a nuevos stacks tecnológicos. Habiendo **liderado equipos de hasta seis personas**, me hago cargo de mi trabajo de principio a fin y entrego soluciones escalables y de alta calidad, a tiempo y en presupuesto."
+    },
+    "roles": [
+      "Senior Software Engineer",
+      "Tech Lead",
+      "AI-Assisted",
+      "Backend & Full-Stack"
+    ],
+    "sources": [
+      "wizeline/working-with-ai/1",
+      "wizeline/constant-training-ai-at-work/2",
+      "wizeline-global-news/day-to-day/2",
+      "wizeline-media/legacy-media-cloud-video-migration-service"
+    ]
+  },
+  "experience": [
+    {
+      "id": "wizeline",
+      "mode": "tailored",
+      "why": "The JD's must-haves are production work with AI coding agents, lead-level ownership (make the call, ship the hard thing, own the outcome), documented architecture and data-model calls, and deep skill in one of its stacks (AWS is ours). Every child shows one of them: Dow Jones — Claude Code for the whole engagement on a production SaaS, with tests as part of done; Fox Corp — Tech Lead of 5 with PR reviews and requirements refined with the business, plus an SQS/AWS migration service shipped end to end (100,000+ videos, Inbox pattern: no side effects on redelivery); Inditex — backend architecture and relational schema, API first with every contract agreed before code (decisive and documented); Cerby — an MVP from zero, with the Next.js/TypeScript frontend in support, that the company still runs on (outcome). Own content: working 100% with AI coding agents for the past year, and the current AI-engineering track (building agents), which speaks to the JD's internal agent stack. Mentoring left out: the role is IC and people management sits with the EM.",
+      "bullets": [
+        {
+          "en": "Worked **100% with AI coding agents** for the past year — **Claude Code**, **Codex**, **OpenCode** and **GitHub Copilot** — day to day on client work, after Wizeline trained me to work with them.",
+          "es": "Trabajé el último año **100% con agentes de programación con IA** —**Claude Code**, **Codex**, **OpenCode** y **GitHub Copilot**— en mi día a día con clientes, tras capacitarme con Wizeline para usarlos.",
+          "sources": [
+            "wizeline/working-with-ai/1",
+            "wizeline/constant-training-ai-at-work/2"
+          ]
+        },
+        {
+          "child": "wizeline-global-news",
+          "en": "Implemented my changes with **Claude Code** for the whole engagement on a gas-price SaaS, shipping features and production fixes at high velocity; no feature was done without extensive unit tests.",
+          "es": "Implementé mis cambios con **Claude Code** durante todo el proyecto en un SaaS de precios de gasolina, entregando funcionalidades y correcciones en producción a alta velocidad; ninguna funcionalidad se cerraba sin pruebas unitarias extensas.",
+          "tech": [
+            ".NET",
+            "AWS",
+            "PostgreSQL",
+            "Claude Code"
+          ],
+          "sources": [
+            "wizeline-global-news",
+            "wizeline-global-news/day-to-day/1",
+            "wizeline-global-news/day-to-day/2",
+            "wizeline-global-news/unit-tests-as-part-of-done/2"
+          ]
+        },
+        {
+          "child": "wizeline-media",
+          "en": "Led a squad of **5 engineers** as Tech Lead: refined requirements directly with the business, designed solutions together with the team and reviewed every pull request it shipped — within **3 months** everyone worked independently.",
+          "es": "Lideré un equipo de **5 ingenieros** como Tech Lead: refiné requerimientos directamente con negocio, diseñé las soluciones junto con el equipo y revisé cada pull request que entregaba; en **3 meses** todos trabajaban de forma independiente.",
+          "sources": [
+            "wizeline-media/tech-lead",
+            "wizeline-media/tech-lead/1",
+            "wizeline-media/tech-lead/2",
+            "wizeline-media/tech-lead/3",
+            "wizeline-media/tech-lead/4"
+          ],
+          "tech": [
+            "Java",
+            "Spring Boot",
+            "AWS Lambda",
+            "Amazon SQS",
+            "Amazon SNS",
+            "CloudWatch",
+            "PostgreSQL",
+            "Cursor"
+          ]
+        },
+        {
+          "child": "wizeline-media",
+          "en": "Designed, built and shipped to production on my own the service that migrated **over 100,000 legacy videos** into Fox's new platform, with an Inbox pattern so a redelivered message never migrated a video twice.",
+          "es": "Diseñé, construí y llevé a producción yo solo el servicio que migró **más de 100,000 videos legacy** a la nueva plataforma de Fox, con el patrón Inbox para que un mensaje reentregado nunca migrara dos veces el mismo video.",
+          "sources": [
+            "wizeline-media/legacy-media-cloud-video-migration-service",
+            "wizeline-media/legacy-media-cloud-video-migration-service/1",
+            "wizeline-media/legacy-media-cloud-video-migration-service/2",
+            "wizeline-media/legacy-media-cloud-video-migration-service/3"
+          ]
+        },
+        {
+          "child": "wizeline-retail",
+          "en": "Architected the backend services and modelled the relational schema of a factory-audit viewer, working **API first**: every change's API was defined in **OpenAPI** and agreed on before implementation began.",
+          "es": "Diseñé la arquitectura de los servicios backend y modelé el esquema relacional de un visualizador de auditorías de fábricas, trabajando **API first**: la API de cada cambio se definía en **OpenAPI** y se acordaba antes de implementarla.",
+          "tech": [
+            "Java",
+            "Spring",
+            "MariaDB",
+            "OpenAPI"
+          ],
+          "sources": [
+            "wizeline-retail/the-product/1",
+            "wizeline-retail/the-product/2",
+            "wizeline-retail/data/1",
+            "wizeline-retail/api-first-with-openapi/1"
+          ]
+        },
+        {
+          "child": "wizeline-cybersecurity",
+          "en": "Led the MVP's first backend in **Python** with **Flask**, modelled its initial database, built its first Chrome extension and helped on the **Next.js** / **TypeScript** frontend — the launch that let the company keep going to this day.",
+          "es": "Lideré el primer backend del MVP en **Python** con **Flask**, modelé su base de datos inicial, construí su primera extensión de Chrome y apoyé el frontend en **Next.js** / **TypeScript**: el lanzamiento que permitió que la empresa siga viva hasta hoy.",
+          "tech": [
+            "Python",
+            "Flask",
+            "TypeScript",
+            "Next.js",
+            "React"
+          ],
+          "sources": [
+            "wizeline-cybersecurity/first-version-of-the-backend",
+            "wizeline-cybersecurity/backend-in-python-with-flask-designed-with-ddd/1",
+            "wizeline-cybersecurity/data-model-migrations/1",
+            "wizeline-cybersecurity/cerby-s-first-chrome-extension",
+            "wizeline-cybersecurity/frontend-in-support/1",
+            "wizeline-cybersecurity/the-mvp-delivered"
+          ]
+        },
+        {
+          "en": "Began training as an **AI engineer**: agents in **Python** with **LangChain** and the **Claude SDK**.",
+          "es": "Inicié mi formación como **AI engineer**: agentes en **Python** con **LangChain** y el **Claude SDK**.",
+          "sources": [
+            "wizeline/constant-training-ai-at-work",
+            "wizeline/constant-training-ai-at-work/3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1-simple-idea",
+      "mode": "tailored",
+      "why": "Relevant to 'operating at a lead level' and the quality bar: I led the programming team and owned the core architecture of a game built in nine months and shipped on Apple Arcade, and the modular paradigm I built cut bug rates and the art teams' integration time. The IoC/DI and Flow internals on their own are game-specific and left out.",
+      "bullets": [
+        {
+          "en": "Led a small programming team on [The Lullaby of Life](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/), a mobile iOS game, owning the **core game architecture**; built in **nine months**, it shipped on **Apple Arcade**.",
+          "es": "Lideré un equipo pequeño de programación en [The Lullaby of Life](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/), un juego móvil para iOS, a cargo de la **arquitectura central del juego**; hecho en **nueve meses**, salió en **Apple Arcade**.",
+          "sources": [
+            "1-simple-idea/cv1",
+            "1-simple-idea/cv4",
+            "1-simple-idea/finished-in-nine-months/1",
+            "1-simple-idea/published-on-apple-arcade/1"
+          ]
+        },
+        {
+          "en": "Accelerated the development cycle and reduced bug rates with a modular paradigm built on a hand-made DI container, which significantly cut asset integration time for the art teams.",
+          "es": "Aceleré el desarrollo y reduje los bugs con un paradigma modular basado en un contenedor de DI hecho a mano, que recortó de forma notable el tiempo de integración de assets de los equipos de arte.",
+          "sources": [
+            "1-simple-idea/cv3",
+            "1-simple-idea/inversion-of-control-dependency-injection/1",
+            "1-simple-idea/flow-connecting-data-between-components/2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "virtually-live",
+      "mode": "tailored",
+      "why": "Relevant: backend RESTful services behind a consumer mobile app, and a live release used by real users during a Formula E race (customer-minded, shipped). The VR-only products and prototypes are left out.",
+      "bullets": [
+        {
+          "en": "Ported the VR product to a mobile iOS app, building its core gameplay in **C#** and architecting the backend **RESTful services** for accounts and friends in **Python**, **Django** and **Go**.",
+          "es": "Porté el producto de VR a una app móvil para iOS, programando sus mecánicas principales en **C#** y diseñando los **servicios RESTful** del backend para cuentas y amigos en **Python**, **Django** y **Go**.",
+          "sources": [
+            "virtually-live/cv3",
+            "virtually-live/backend-accounts-and-friends-in-python-with-django/1",
+            "virtually-live/backend-accounts-and-friends-in-python-with-django/2"
+          ]
+        },
+        {
+          "en": "Contributed to the live iOS release: during a Formula E race, real users competed against the drivers in the app and the broadcast commentators mentioned them on air ([gameplay](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s)).",
+          "es": "Contribuí al lanzamiento en vivo en iOS: durante una carrera de Fórmula E, usuarios reales compitieron con los pilotos en la app y los locutores de la transmisión los mencionaron al aire ([gameplay](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s)).",
+          "sources": [
+            "virtually-live/cv4",
+            "virtually-live/live-on-ios-real-users-racing-during-a-formula-e-race",
+            "virtually-live/live-on-ios-real-users-racing-during-a-formula-e-race/2",
+            "virtually-live/live-on-ios-real-users-racing-during-a-formula-e-race/3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intel",
+      "mode": "tailored",
+      "why": "Relevant: APIs that other teams plugged into their testing workflows to catch problems before the expensive step (a quality gate other teams reused), and an SVN-to-Git move I proposed and led (ownership, simpler CI/CD). Left out: the XML/metaprogramming internals, and the deployment-sync scripts (the least relevant, dropped for the one-sheet limit).",
+      "bullets": [
+        {
+          "en": "Built custom **Ruby** validation libraries, exposed as APIs, that hardware teams plugged into their own testing workflows to catch design problems before the expensive simulation step.",
+          "es": "Construí librerías de validación en **Ruby**, expuestas como APIs, que los equipos de hardware integraban en sus propios flujos de pruebas para detectar problemas de diseño antes de la costosa simulación real.",
+          "sources": [
+            "intel/cv1",
+            "intel/custom-ruby-libraries-for-validation/1",
+            "intel/custom-ruby-libraries-for-validation/3",
+            "intel/custom-ruby-libraries-for-validation/4"
+          ]
+        },
+        {
+          "en": "Proposed and led the move from SVN to **Git** on my own initiative, making parallel feature work easier and the CI/CD simpler and more modern.",
+          "es": "Propuse y lideré por iniciativa propia la migración de SVN a **Git**, que facilitó el trabajo en paralelo y dejó un CI/CD más simple y moderno.",
+          "sources": [
+            "intel/moved-the-project-from-svn-to-git",
+            "intel/moved-the-project-from-svn-to-git/1",
+            "intel/moved-the-project-from-svn-to-git/2",
+            "intel/moved-the-project-from-svn-to-git/3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gameloft",
+      "mode": "tailored",
+      "why": "Relevant: the only PHP in the tree (an internal tool, JD backend is PHP) behind community events that moved the game's revenue, and a multiplayer server that kept a game alive one more year — two shipped outcomes. The ports and 3D work are left out.",
+      "bullets": [
+        {
+          "en": "Built an internal tool in **PHP**, **JavaScript** and **jQuery** to configure the events of **The Oregon Trail: American Settler**, whose community events increased the game's revenue.",
+          "es": "Construí una herramienta interna en **PHP**, **JavaScript** y **jQuery** para configurar los eventos de **The Oregon Trail: American Settler**, cuyos eventos comunitarios incrementaron el revenue del juego.",
+          "sources": [
+            "gameloft/event-configuration-tool-for-the-oregon-trail",
+            "gameloft/event-configuration-tool-for-the-oregon-trail/1",
+            "gameloft/the-oregon-trail-american-settler",
+            "gameloft/the-oregon-trail-american-settler/2"
+          ]
+        },
+        {
+          "en": "Implemented the game server behind Zombiewood's cooperative multiplayer mode, which, once published, kept the game alive for one more year.",
+          "es": "Implementé el game server del modo multijugador cooperativo de Zombiewood, que una vez publicado mantuvo el juego vivo un año más.",
+          "sources": [
+            "gameloft/zombiewood-multiplayer-mode",
+            "gameloft/zombiewood-multiplayer-mode/1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kaxan-games",
+      "mode": "tailored",
+      "why": "Only the shipping record is relevant: consumer mobile apps taken to publication by a two-programmer team. The Nintendo Wii credit and the demo reel are game-specific and left out.",
+      "bullets": [
+        {
+          "en": "Developed and published **over five mobile games** for iPhone and iPad with C# and Unity3D, as one of two programmers working with a team of artists.",
+          "es": "Desarrollé y publiqué **más de cinco juegos móviles** para iPhone y iPad con C# y Unity3D, como uno de dos programadores junto a un equipo de artistas.",
+          "sources": [
+            "kaxan-games/cv1",
+            "kaxan-games/mobile-games-in-unity/2"
+          ]
+        }
+      ]
+    }
+  ],
+  "skills": {
+    "drop": []
+  },
+  "notes": "Position: the pasted JD has no title line; its body says 'Product Engineer' at a 'staff bar', and the public listings of this role are titled 'Staff Product Engineer'. jd.required: the JD asks for 'deep skill in at least one of our stacks plus credible production experience with AI coding agents'; the AI agents it names (Claude Code, Cursor, Codex) are all in the tree, and of its stacks only AWS is a deep skill of ours (core level 7), so AWS is the stack we claim. PHP, TypeScript and React are in the tree but not deep, and the JD does not require them all: they stay out of jd.required."
+}
