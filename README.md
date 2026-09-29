@@ -10,6 +10,7 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 | `/about/` | About me | estático (placeholder con el nombre) |
 | `/llms.txt` | Perfil para IA | estático (`tools/gen.py`), ver abajo |
 | `/cv/{en,es}/tree.json`, `/cv/tree.schema.json`, `/cv/template.html` | El timeline como árbol de records, su esquema y la plantilla del CV | estático (`tools/gen.py`), ver abajo |
+| `/tailor-cv/` | Explorador de los CVs adaptados: la lista, un buscador y la vista previa del elegido | estático (`tools/tailor.py`), ver abajo |
 | `/tailor-cv/<empresa>-<puesto>-<aaaammdd>.html` (y `.md`) | El CV adaptado a una vacante, y la vacante junto a él | estático (`tools/tailor.py`, skill `/tailor-cv`), ver abajo |
 | `/robots.txt` | Crawlers | estático (`public/robots.txt`) |
 | `/og/<página>.png` | Imagen de la link card de cada página | Astro, en el build (`src/pages/og/[...card].png.ts`), ver abajo |
@@ -148,12 +149,18 @@ Con Claude Code, **`/tailor-cv`** seguido de la vacante (el texto, un archivo o 
 - **Sin mentir**: cada bullet cita sus `sources`, y `build` rechaza cualquier tecnología o número que esas fuentes no respalden. También rechaza las tecnologías que no están en ninguna parte del árbol (`UNBACKED` en `tools/tailor.py`: Kubernetes, Kafka…), que van a `jd.gaps` para que sepas qué pide la vacante que tu historia no muestra. Si sí lo tienes, agrégalo al timeline en `gen.py`.
 - **Una hoja**: `build` imprime el CV a PDF con Chrome/Chromium/Edge en modo headless (`TAILOR_CHROME=<ruta>` si no lo encuentra) y exige 1 página en EN y en ES, con las fuentes reales. Dice cuánto espacio le queda a la columna de experiencia (~12 px por renglón). `python3 tools/tailor.py check public/index.html` mide el maestro.
 - `python3 tools/gen.py` vuelve a dibujar todos los CVs adaptados al final de cada corrida, así que siempre siguen el diseño, el contacto y las fechas del maestro.
+- **Explorador en [`/tailor-cv/`](https://sergiowero.github.io/tailor-cv/)** (`public/tailor-cv/index.html`): todos los CVs adaptados en una lista, del más reciente al más antiguo, con el mismo cascarón que el resto del sitio. Cada fila trae fecha, idioma de la vacante, empresa, puesto, lo que la vacante exige (`jd.required`) y los clientes de Wizeline que muestra. Al elegir una, el panel de la derecha enseña sus links (el CV, la vacante `.md` y la publicación original si hay `jd.url`) y **el CV mismo en vista previa**, escalado para que quepa completo en pantalla y en el idioma y tema que tengas; un clic en la vista previa lo abre.
+  - La barra `grep -i` filtra la lista: cada palabra tiene que aparecer (empresa, puesto, fecha, idioma, skills exigidos, clientes), sin distinguir mayúsculas ni acentos. Una palabra de una o dos letras solo cuenta completa, así que `es` deja los CVs que abren en español. `/` enfoca la barra; ↑/↓ recorren la lista y Enter (o doble clic) abre el CV elegido.
+  - El filtro viaja en la URL (`?q=`) y el CV elegido en el fragmento (`#<nombre>`): `/tailor-cv/?q=aws#lawnstarter-staff-product-engineer-20260929`.
+  - Lo escriben `tailor.py build` (cada CV nuevo aparece solo), `tailor.py index` y `render-all` (y por lo tanto `gen.py`). Lleva `noindex` como los CVs y no está en las pestañas del sitio, pero cualquiera que abra `/tailor-cv/` ve la lista (empresas, puestos y vacantes; no los `gaps` ni las notas de los specs).
+  - La vista previa entra al iframe para ocultar el encabezado y los botones de descarga del CV, y eso requiere el mismo origen: desde `file://` se ve la página tal cual.
 
 ```bash
 python3 tools/tailor.py new vacante.md --company "Acme" --position "Senior Backend Engineer" --lang en   # o `new -` desde stdin
 python3 tools/tailor.py analyze <nombre>          # qué pide la vacante, qué tiene el árbol y qué es relevante en cada empleo
 python3 tools/tailor.py show <id> [<id>…]         # records en los dos idiomas, para escribir desde ahí
-python3 tools/tailor.py build <nombre>            # valida el spec, escribe el HTML y revisa que quepa en una hoja
+python3 tools/tailor.py build <nombre>            # valida el spec, escribe el HTML (y el explorador) y revisa que quepa en una hoja
+python3 tools/tailor.py index                     # solo el explorador, /tailor-cv/, desde todos los specs
 ```
 
 ## Desarrollo local

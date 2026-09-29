@@ -10,13 +10,15 @@ looks exactly like the master CV and keeps its three downloads (DOCX ATS, PDF AT
   tailor-cv/<name>.json          the spec (not published)
   public/tailor-cv/<name>.html   the CV                    → /tailor-cv/<name>.html
   public/tailor-cv/<name>.md     the job description it answers, next to it (same name)
+  public/tailor-cv/index.html    the explorer: every CV in one list, with a live preview → /tailor-cv/
 
   python3 tools/tailor.py new <jd.md | -> --company "Acme" --position "Backend Engineer" [--lang es] [--url …]
   python3 tools/tailor.py analyze <name>     what the JD asks for and what the tree has, job by job
   python3 tools/tailor.py show <id> [<id>…]  records in both languages, to write from
-  python3 tools/tailor.py build <name>       validate + write public/tailor-cv/<name>.html + one-page check
+  python3 tools/tailor.py build <name>       validate + write public/tailor-cv/<name>.html (and the explorer) + one-page check
   python3 tools/tailor.py check <page.html>  one-page check of any CV page (public/index.html is the baseline)
-  python3 tools/tailor.py render-all         re-render every spec with the current design (gen.py runs it)
+  python3 tools/tailor.py index              write the explorer, public/tailor-cv/index.html, from every spec
+  python3 tools/tailor.py render-all         re-render every spec and the explorer with the current design (gen.py runs it)
 
 The rules `build` enforces (the spec format is in the skill):
   - The 6 jobs of the master CV, in its order, each with at least one bullet. Contact, stats, the AI box, education
@@ -680,10 +682,11 @@ def render(spec, m):
 
 
 def render_all(quiet=False):
-    """Every spec in tailor-cv/, with this run's design and master data (contact, dates, levels). No validation:
-    a spec is checked when it is built; a later change to the timeline must not break an old CV's page."""
+    """Every spec in tailor-cv/, with this run's design and master data (contact, dates, levels), and the explorer
+    that lists them. No validation: a spec is checked when it is built; a later change to the timeline must not break
+    an old CV's page."""
     specs = sorted(glob.glob(os.path.join(SPECS, "*.json")))
-    if not specs:
+    if not specs and not os.path.isdir(OUT):
         return
     m = Master()
     for p in specs:
@@ -695,6 +698,350 @@ def render_all(quiet=False):
                 print(f"wrote {os.path.relpath(out, gen.PUBLIC)}")
         except Exception as ex:   # an old spec the master no longer matches: keep its page, say so
             print(f"skipped tailor-cv/{name}.json: {type(ex).__name__}: {ex}")
+    out, n = render_explorer(m)
+    if not quiet:
+        print(f"wrote {os.path.relpath(out, gen.PUBLIC)} (the explorer: {n} CV{'s' if n != 1 else ''})")
+
+
+# ------------------------------------------------------------------ the explorer: /tailor-cv/, every tailored CV
+# public/tailor-cv/index.html, written from the specs by `build`, `index` and `render-all` (so by gen.py too): one row
+# per CV, newest first, filtered by the timeline's `grep -i` bar, and a panel with the selected CV — its links and a
+# live copy of the page, scaled to fit. Same shell as every page of the site; noindex, like the CVs it lists.
+EXPLORER = os.path.join(OUT, "index.html")
+
+EXPLORER_TPL = """<div class="sheet tx-page">
+  $NAV$
+  <header class="top">
+    <div>
+      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ ls <span class="f">tailor-cv/</span></div>
+      <div class="name"><span id="typed">$TX_TITLE$</span><span class="cur"></span></div>
+      <div class="hname">$NAME$</div>
+      <div class="sub mono">$TX_SUB$</div>
+    </div>
+  </header>
+  <div class="tx">
+    <div class="tx-col">
+      $TX_SEARCH$
+      <ol class="tx-list" aria-label="Tailored CVs">$TX_ROWS$</ol>
+      $TX_NONE$
+    </div>
+    $TX_PANEL$
+  </div>
+  <script type="application/json" id="tx-data">$TX_DATA$</script>
+</div>"""
+
+EXPLORER_CSS = """
+  /* ---- /tailor-cv/: the explorer (tools/tailor.py) — the tailored CVs in a list, the selected one in the panel ---- */
+  .sheet.tx-page{overflow:visible;}   /* as on /timeline/: overflow:hidden on the sheet would defeat the sticky panel */
+  .tx{display:flex;gap:6mm;margin-top:8px;align-items:flex-start;}
+  .tx-col{flex:0 0 72mm;min-width:0;}
+  .tx-col .hq{margin:0 0 6px;padding:6px 0 7px;}   /* the timeline's grep bar, without the offset of its rail */
+  .tx-list{list-style:none;display:grid;gap:5px;padding-bottom:10px;}
+  .tx-row{position:relative;}
+  .tx-row.dim{display:none;}
+  .tx-sel{display:block;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--panel);
+    border:1px solid var(--line);border-radius:8px;padding:6px 26px 7px 10px;transition:border-color .15s,box-shadow .15s;}
+  .tx-sel:hover{border-color:var(--cyan);}
+  .tx-sel:focus-visible{outline:2px solid var(--cyan);outline-offset:1px;}
+  .tx-row.active .tx-sel{border-color:var(--green);box-shadow:0 0 0 3px rgba(61,220,132,.14);}
+  .tx-top{display:flex;align-items:center;gap:6px;font-size:7.6px;color:var(--muted);}
+  .tx-row.active .tx-date{color:var(--green);}
+  .tx-lang{font-size:6.6px;font-weight:700;letter-spacing:1px;line-height:1.5;border:1px solid var(--line);border-radius:3px;padding:0 4px;}
+  .tx-co{display:block;font-size:11px;font-weight:600;color:var(--fg);line-height:1.2;margin-top:3px;}
+  .tx-pos{display:block;font-size:8.8px;color:var(--cyan);line-height:1.3;margin-top:1px;}
+  .tx-req{margin-top:5px;gap:3px;} .tx-req .dchip{font-size:6.8px;padding:1px 5px;}
+  .tx-kids{display:block;font-size:7.2px;color:var(--muted);line-height:1.35;margin-top:4px;}
+  .tx-open{position:absolute;top:5px;right:6px;font-size:11px;line-height:1;color:var(--muted);padding:3px 4px;border-radius:4px;}
+  .tx-open:hover,.tx-open:focus-visible{color:var(--green);}
+  .tx-none{font-size:9px;color:var(--muted);margin-top:6px;}
+  .tx-panel{flex:1 1 auto;min-width:0;position:sticky;top:12px;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:10px 11px 11px;}
+  .tx-panel.off{display:none;}
+  .tx-p-co{font-size:15px;font-weight:700;color:var(--fg);letter-spacing:-.3px;line-height:1.15;margin-top:7px;}
+  .tx-p-pos{font-size:9.8px;font-weight:500;color:var(--cyan);margin-top:2px;}
+  .tx-p-when{font-size:8px;color:var(--green);margin-top:5px;}
+  .tx-links{display:flex;flex-wrap:wrap;gap:3px 12px;margin-top:6px;font-size:8px;}
+  .tx-links a{color:var(--cyan);} .tx-links a:hover{color:var(--green);} .tx-links a[hidden]{display:none;}
+  /* the preview: the CV page itself in an iframe (the explorer strips its header and fab, see EMBED in the script),
+     A4-shaped until the CV loads and gives its own shape; the script shrinks it when the viewport is too short */
+  .tx-frame{position:relative;width:100%;aspect-ratio:210/297;margin:10px auto 0;overflow:hidden;
+    border:1px solid var(--line);border-radius:6px;background:var(--bg);}
+  .tx-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;opacity:0;transition:opacity .2s;}
+  .tx-frame.ready iframe{opacity:1;}
+  .tx-hit{position:absolute;inset:0;z-index:1;border-radius:inherit;}   /* the preview is a picture: a click opens the CV */
+  .tx-hit:hover{box-shadow:inset 0 0 0 2px var(--green);}
+  .tx-hit:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+  @media print{.tx-panel,.tx-open{display:none !important;} .tx-row.dim{display:block;}}
+"""
+
+EXPLORER_JS = r"""<script>
+/* /tailor-cv/, the explorer: a row shows its CV in the panel — its links and the page itself, scaled to fit.
+   The grep bar filters the list: every word must match (company, position, date, language, required skills, the
+   clients it shows), ignoring case and accents; a word of one or two letters only as a whole word, so `es` is the
+   CVs that open in Spanish, not every "inglés". ?q= keeps the filter and #<name> the CV, so a link can open the explorer on one.
+   ↑/↓ move through the list, Enter on the selected row (or a double click, or a click on the preview) opens it. */
+(function(){
+  var dataEl=document.getElementById('tx-data'), panel=document.getElementById('tx-panel'), box=document.querySelector('.tx-col .hq');
+  if(!dataEl||!panel||!box) return;   // no CVs yet: no bar, nothing to preview
+  var data=JSON.parse(dataEl.textContent), rows=[].slice.call(document.querySelectorAll('.tx-row'));
+  var sheet=document.querySelector('.sheet'), frame=panel.querySelector('.tx-frame'), iframe=frame.querySelector('iframe'), hit=frame.querySelector('.tx-hit');
+  var input=box.querySelector('.hq-in'), clearBtn=box.querySelector('.hq-x'),
+      count=box.querySelector('.hq-count'), empty=box.querySelector('.hq-empty');
+  var W={en:{opens:{en:'opens in English',es:'opens in Spanish'},clear:'Clear search',open:'Open the CV',preview:'Preview of the CV',list:'Tailored CVs'},
+         es:{opens:{en:'abre en inglés',es:'abre en español'},clear:'Limpiar búsqueda',open:'Abrir el CV',preview:'Vista previa del CV',list:'CVs a la medida'}};
+  function w(){return W[window.cvLang()];}
+  function $(k){return panel.querySelector('[data-tx="'+k+'"]');}
+  var current=-1;
+  function fill(){
+    var e=data[current]; if(!e) return;
+    $('file').textContent=e.name+'.html'; $('co').textContent=e.company; $('pos').textContent=e.position;
+    $('when').textContent=e.date+' · '+w().opens[e.lang];
+    $('cv').href=e.cv; $('jd').href=e.jd; hit.href=e.cv;
+    var post=$('post'); post.hidden=!e.url; if(e.url) post.href=e.url;
+    size();
+  }
+  function relabel(){
+    clearBtn.setAttribute('aria-label',w().clear); clearBtn.title=w().clear;
+    hit.setAttribute('aria-label',w().open); iframe.title=w().preview; document.querySelector('.tx-list').setAttribute('aria-label',w().list);
+    rows.forEach(function(r,i){ var a=r.querySelector('.tx-open'); a.title=w().open; a.setAttribute('aria-label',w().open+': '+data[i].company+' · '+data[i].position); });
+  }
+  /* ---- the preview: same-origin, so the explorer takes the site's header and the download fab out of the copy and
+     keeps its language and theme in step with the explorer's (a file:// page can't reach into it: it shows as is) ---- */
+  var EMBED='.site-nav,.dl-fab{display:none !important;} html{overflow:hidden !important;}'+
+            'body{padding:0 !important;display:block !important;min-height:0 !important;background:none !important;}'+
+            '.sheet{margin:0 !important;box-shadow:none !important;border:0 !important;border-radius:0 !important;}';
+  function mirror(){
+    try{
+      var d=iframe.contentDocument; if(!d||!d.documentElement) return;
+      var h=d.documentElement, p=document.documentElement, l=p.getAttribute('data-lang'), t=p.getAttribute('data-theme'), was=h.getAttribute('data-lang');
+      if(l) h.setAttribute('data-lang',l); else h.removeAttribute('data-lang');
+      if(t) h.setAttribute('data-theme',t); else h.removeAttribute('data-theme');
+      if(was!==l) d.dispatchEvent(new iframe.contentWindow.CustomEvent('langchange',{detail:l==='es'?'es':'en'}));   // its dates redraw
+    }catch(err){}
+  }
+  /* the preview's shape: A4 until the CV says otherwise — on screen its sheet also holds the prompt and the footer
+     that printing drops, so it can run a little taller than a page, and the frame follows it to show all of it */
+  var ratio=297/210;
+  function measure(){
+    try{
+      var sh=iframe.contentDocument.querySelector('.sheet'), r=sh&&sh.getBoundingClientRect();
+      if(r&&r.width){ ratio=r.height/r.width; frame.style.aspectRatio=r.width+' / '+r.height; size(); }
+    }catch(err){}
+  }
+  iframe.addEventListener('load',function(){
+    try{
+      var d=iframe.contentDocument;
+      if(d&&d.head&&!d.getElementById('tx-embed')){ var st=d.createElement('style'); st.id='tx-embed'; st.textContent=EMBED; d.head.appendChild(st); }
+      mirror(); iframe.contentWindow.dispatchEvent(new iframe.contentWindow.Event('resize'));   // its sheet refits without the padding
+      measure(); if(d.fonts&&d.fonts.ready) d.fonts.ready.then(measure);
+    }catch(err){}
+    frame.classList.add('ready');
+  });
+  new MutationObserver(mirror).observe(document.documentElement,{attributes:true,attributeFilter:['data-lang','data-theme']});
+  /* The CV's shape at the panel's width; shorter (and narrower) when the viewport cannot show all of it next to the
+     panel's head. Everything is measured on screen (the sheet is CSS-zoomed) and set back in the sheet's own px. */
+  function size(){
+    frame.style.width=''; frame.style.height='';
+    if(window.matchMedia&&window.matchMedia('print').matches) return;
+    var z=parseFloat(sheet.style.zoom)||1, pr=panel.getBoundingClientRect(), fr=frame.getBoundingClientRect(); if(!fr.height) return;
+    var room=window.innerHeight-24*z-(pr.height-fr.height);
+    if(room<fr.height){ var hh=Math.max(fr.height*0.55,room)/z; frame.style.height=hh+'px'; frame.style.width=(hh/ratio)+'px'; }
+  }
+  function select(i,how){   // how: {hash, focus} — only a choice the reader makes goes into the URL
+    if(i<0||i>=rows.length) return;
+    current=i;
+    rows.forEach(function(r,k){ var on=k===i; r.classList.toggle('active',on); r.querySelector('.tx-sel').setAttribute('aria-pressed',on?'true':'false'); });
+    if(iframe.getAttribute('src')!==data[i].cv){ frame.classList.remove('ready'); iframe.setAttribute('src',data[i].cv); }
+    fill();
+    if(how&&how.hash){ var u=new URL(location.href); u.hash=data[i].name; history.replaceState(null,'',u); }
+    if(how&&how.focus) rows[i].querySelector('.tx-sel').focus();
+  }
+  function open(i){ location.href=data[i].cv; }
+  rows.forEach(function(r,i){
+    var b=r.querySelector('.tx-sel');
+    b.addEventListener('click',function(ev){ if(i===current&&ev.detail===0){ open(i); return; } select(i,{hash:true}); });   // detail 0: Enter / Space
+    b.addEventListener('dblclick',function(){ open(i); });
+  });
+  function visible(){ var out=[]; rows.forEach(function(r,i){ if(!r.classList.contains('dim')) out.push(i); }); return out; }
+  document.querySelector('.tx-list').addEventListener('keydown',function(ev){
+    if(ev.key!=='ArrowDown'&&ev.key!=='ArrowUp') return;
+    var vis=visible(), k=vis.indexOf(current); if(!vis.length) return;
+    ev.preventDefault();
+    k=ev.key==='ArrowDown'?Math.min(vis.length-1,k+1):Math.max(0,k-1);
+    select(vis[k],{hash:true,focus:true});
+  });
+  /* ---- the grep bar ---- */
+  var DIA=new RegExp('['+String.fromCharCode(0x300)+'-'+String.fromCharCode(0x36f)+']','g');
+  function fold(s){ return String(s).normalize('NFD').replace(DIA,'').toLowerCase(); }
+  var TOK=/"([^"]*)"|(\S+)/g;
+  function tokens(q){ var out=[], m; TOK.lastIndex=0; while((m=TOK.exec(q))){ var t=fold(m[1]!==undefined?m[1]:m[2]).trim(); if(t) out.push(t); } return out; }
+  var idx=data.map(function(e){ return fold(e.text); }), q='';
+  function has(text,t){   // a short token is a whole word (es, en, ai…); a longer one is found anywhere
+    if(t.length>2) return text.indexOf(t)>=0;
+    return new RegExp('(^|[^a-z0-9])'+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'($|[^a-z0-9])').test(text);
+  }
+  function apply(){
+    var toks=tokens(input.value); q=input.value.trim();
+    rows.forEach(function(r,i){ r.classList.toggle('dim',!toks.every(function(t){ return has(idx[i],t); })); });
+    var vis=visible();
+    clearBtn.hidden=!q;
+    count.textContent=toks.length?vis.length+'/'+rows.length:'';
+    empty.hidden=!(toks.length&&!vis.length);
+    panel.classList.toggle('off',!vis.length);
+    if(vis.length&&vis.indexOf(current)<0) select(vis[0]);
+  }
+  function sync(){ var u=new URL(location.href); if(q) u.searchParams.set('q',q); else u.searchParams.delete('q'); history.replaceState(null,'',u); }
+  var syncT=null;
+  input.addEventListener('input',function(){ apply(); clearTimeout(syncT); syncT=setTimeout(sync,150); });
+  input.addEventListener('keydown',function(ev){
+    if(ev.key==='Escape'){ if(input.value){ input.value=''; apply(); sync(); } else input.blur(); return; }
+    if(ev.key==='ArrowDown'||ev.key==='Enter'){ var vis=visible(); if(vis.length){ ev.preventDefault(); select(vis.indexOf(current)>=0?current:vis[0],{hash:true,focus:true}); } }
+  });
+  clearBtn.addEventListener('click',function(){ input.value=''; apply(); sync(); input.focus(); });
+  document.addEventListener('keydown',function(ev){   // `/` focuses the search, as on /timeline/
+    if(ev.key!=='/'||ev.ctrlKey||ev.metaKey||ev.altKey) return;
+    var a=document.activeElement; if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.isContentEditable)) return;
+    ev.preventDefault(); input.focus(); input.select();
+  });
+  function byHash(){ var want=decodeURIComponent(location.hash.slice(1)), i=-1; data.forEach(function(e,k){ if(e.name===want) i=k; }); return i; }
+  window.addEventListener('hashchange',function(){ var i=byHash(); if(i>=0&&!rows[i].classList.contains('dim')) select(i); });
+  document.addEventListener('langchange',function(){ relabel(); fill(); });
+  window.addEventListener('resize',size); window.addEventListener('load',size);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(size);
+  // after every inline script has run: the sheet's zoom (FIT_JS) is what size() measures against
+  function boot(){
+    var q0=new URL(location.href).searchParams.get('q'); if(q0) input.value=q0;
+    relabel();
+    current=byHash();   // the CV the URL names, if the filter keeps it; apply() falls back to the first row it keeps
+    if(current>=0) select(current); else current=-1;
+    apply();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+</script>"""
+
+
+def _names(ids):
+    """Vocabulary ids → what the page shows: a technology's name, or a tag's label in both languages."""
+    out = []
+    for rid in ids:
+        if rid in gen.TECH_CATALOG:
+            out.append(gen.TECH_CATALOG[rid][0])
+        elif rid in gen.TAGS:
+            lab = gen.TAGS[rid][1]
+            out.append(T(gen.plain(lab, "en"), gen.plain(lab, "es")) if isinstance(lab, T) else gen.plain(lab))
+    return out
+
+
+def explorer_entry(spec, m):
+    """One tailored CV as the explorer lists it: from the spec, plus the master for its client names."""
+    j, name = spec["jd"], spec["name"]
+    required = _names([r["id"] for r in j.get("required") or [] if isinstance(r, dict) and "id" in r])
+    clients = []   # per job with client projects, the ones the CV shows: all in fallback, those with bullets when tailored
+    for e in spec["experience"]:
+        kids = m.children.get(e["id"], [])
+        shown = kids if e["mode"] == "fallback" else [c for c in kids if any(b.get("child") == c for b in e["bullets"])]
+        if shown:
+            clients.append(dict(job=m.r(e["id"])["organization"], kids=[m.r(c)["organization"] for c in shown]))
+    lang = j["lang"]
+    # what the grep bar searches; not the roles, which nearly every CV shares ("lead" would keep them all)
+    url = j.get("url") or ""
+    words = ([j["company"], j["position"], j["date"], lang, {"en": "english inglés", "es": "spanish español"}[lang], name]
+             + [x for c in clients for x in [c["job"]] + c["kids"]]
+             + [x for r in required for x in ((r.en, r.es) if isinstance(r, T) else (r,))])
+    return dict(name=name, company=j["company"], position=j["position"], date=j["date"], lang=lang,
+                url=url if re.match(r"https?://", url) else "", cv=f"/tailor-cv/{name}.html", jd=f"/tailor-cv/{name}.md",
+                required=[gen.d(r) for r in required], clients=clients, text=" ".join(words))
+
+
+EXPLORER_KEYS = ("name", "company", "position", "date", "lang", "url", "cv", "jd", "text")   # what the script reads
+
+
+def _explorer_row(i, e):
+    a = lambda s: _html.escape(str(s), quote=True)
+    chip = lambda x: ('<span class="dchip">' + (a(x) if not isinstance(x, dict) else a(x["en"]) if x["en"] == x["es"]
+                                                else gen.i18n(a(x["en"]), a(x["es"]))) + '</span>')
+    req = "".join(chip(x) for x in e["required"])
+    return (f'\n<li class="tx-row" data-i="{i}"><button type="button" class="tx-sel" aria-pressed="false" aria-controls="tx-panel">'
+            f'<span class="tx-top mono"><span class="tx-date">{a(e["date"])}</span><span class="tx-lang">{a(e["lang"].upper())}</span></span>'
+            f'<span class="tx-co">{a(e["company"])}</span><span class="tx-pos">{a(e["position"])}</span>'
+            + (f'<span class="dchips tx-req">{req}</span>' if req else "")
+            + "".join(f'<span class="tx-kids mono">{a(c["job"])} › {" · ".join(a(k) for k in c["kids"])}</span>' for c in e["clients"]) +
+            f'</button><a class="tx-open mono" href="{a(e["cv"])}" title="Open the CV">↗</a></li>')
+
+
+def _explorer_search():
+    return ('<div class="hq" role="search"><div class="hq-row">'
+            '<label class="hq-prompt mono" for="tx-q"><span class="g">➜</span> <span class="c">~</span> grep -i</label>'
+            '<span class="hq-field"><input class="hq-in mono" id="tx-q" type="text" inputmode="search" enterkeyhint="search" '
+            'autocomplete="off" spellcheck="false" placeholder="aws · java · 2026-09 · es…">'
+            '<button type="button" class="hq-x mono" aria-label="Clear search" hidden>×</button></span>'
+            '<span class="hq-count mono" aria-live="polite"></span></div>'
+            f'<div class="hq-empty mono" hidden>// {gen.i18n("no matches", "sin coincidencias")}</div></div>')
+
+
+def _explorer_panel(off):
+    I = gen.i18n
+    return (f'<aside class="tx-panel{" off" if off else ""}" id="tx-panel" aria-live="polite">'
+            '<div class="sub-k mono"><span class="g">➜</span> <span class="c">~</span> open tailor-cv/<span class="f" data-tx="file"></span></div>'
+            '<div class="tx-p-co" data-tx="co"></div><div class="tx-p-pos" data-tx="pos"></div>'
+            '<div class="tx-p-when mono" data-tx="when"></div>'
+            f'<div class="tx-links mono"><a data-tx="cv" href="#">{I("open the CV", "abrir el CV")} ↗</a>'
+            f'<a data-tx="jd" href="#" target="_blank" rel="noopener">{I("job description (.md)", "vacante (.md)")} ↗</a>'
+            f'<a data-tx="post" href="#" target="_blank" rel="noopener noreferrer" hidden>{I("original posting", "publicación original")} ↗</a></div>'
+            '<div class="tx-frame"><iframe title="Preview of the CV" tabindex="-1" inert></iframe>'
+            '<a class="tx-hit" href="#" aria-label="Open the CV"></a></div>'
+            '</aside>')
+
+
+def explorer_meta(n):
+    m = dict(path="/tailor-cv/", type="website", title=f"Tailored CVs — {gen.SHORT_NAME}",
+             description=(f"{n} CV{'s' if n != 1 else ''} of {gen.SHORT_NAME}, each tailored to one job description, "
+                          "with the master CV's design and its PDF and DOCX downloads, in English and Spanish."),
+             labels=[("CVs", str(n)), ("Based in", gen.CONTACT[0][1])],
+             image_alt=f"{gen.NAME}: CVs tailored to job descriptions.")
+    return gen.meta_html("cv", m) + '\n<meta name="robots" content="noindex, nofollow">'
+
+
+def render_explorer(m, specs=None):
+    """public/tailor-cv/index.html from every spec in tailor-cv/ (or `specs`); returns (path, number of CVs)."""
+    if specs is None:
+        specs = []
+        for p in sorted(glob.glob(os.path.join(SPECS, "*.json"))):
+            try:
+                with open(p, encoding="utf-8") as f:
+                    specs.append(json.load(f))
+            except Exception as ex:
+                print(f"explorer: skipped {os.path.relpath(p, gen.ROOT)}: {type(ex).__name__}: {ex}")
+    entries = []
+    for s in specs:
+        if not os.path.exists(paths(s.get("name", ""))[3]):
+            print(f"explorer: skipped {s.get('name', '?')}: no page yet (tailor.py build writes it)")
+            continue
+        try:
+            entries.append(explorer_entry(s, m))
+        except Exception as ex:   # a spec the master no longer matches still has its page; it just is not listed
+            print(f"explorer: skipped {s.get('name', '?')}: {type(ex).__name__}: {ex}")
+    entries.sort(key=lambda e: e["company"].lower())
+    entries.sort(key=lambda e: e["date"], reverse=True)   # newest first; same day: by company
+    n = len(entries)
+    cvs = f"{n} CV" + ("" if n == 1 else "s")
+    body = (EXPLORER_TPL.replace("$NAV$", gen.nav_html("tailor-cv")).replace("$NAME$", gen.NAME)
+            .replace("$TX_TITLE$", gen.i18n("Tailored CVs", "CVs a la medida"))
+            .replace("$TX_SUB$", gen.i18n(f"{cvs}, each tailored to one job description, newest first — pick one to preview it, open it to download it.",
+                                          f"{cvs}, cada uno adaptado a una vacante, del más reciente al más antiguo — elige uno para verlo, ábrelo para descargarlo."))
+            .replace("$TX_SEARCH$", _explorer_search() if n else "")
+            .replace("$TX_ROWS$", "".join(_explorer_row(i, e) for i, e in enumerate(entries)))
+            .replace("$TX_NONE$", "" if n else f'<p class="tx-none mono">// {gen.i18n("no tailored CVs yet: /tailor-cv with a job description makes the first one", "aún no hay CVs a la medida: /tailor-cv con una vacante hace el primero")}</p>')
+            .replace("$TX_PANEL$", _explorer_panel(off=not n))
+            .replace("$TX_DATA$", json.dumps([{k: e[k] for k in EXPLORER_KEYS} for e in entries], ensure_ascii=False).replace("</", "<\\/")))
+    v = gen.VERSIONS[gen.LIVE[0]]
+    body = gen.finish_body(body, v) + "\n" + v.get("extra_js", "") + "\n" + EXPLORER_JS
+    html = gen.page(v["title"], v["fonts"], gen.version_css(v) + EXPLORER_CSS, body, explorer_meta(n))
+    os.makedirs(OUT, exist_ok=True)
+    with open(EXPLORER, "w", encoding="utf-8", newline="\n") as f:
+        f.write(html)
+    return EXPLORER, n
 
 
 # ------------------------------------------------------------------ one-page check (headless Chromium)
@@ -1009,6 +1356,8 @@ def cmd_build(a):
     print("  tech chips    " + (" · ".join(gen.plain(x) for x in view["tech"]) if changed(view["tech"], gen.TECH) else "the master's"))
     if spec["jd"].get("gaps"):
         print("  gaps (asked by the JD, not in the tree): " + ", ".join(spec["jd"]["gaps"]))
+    idx, n = render_explorer(m)
+    print(f"wrote {os.path.relpath(idx, gen.ROOT)}  →  {gen.SITE}/tailor-cv/  (the explorer: {n} CV{'s' if n != 1 else ''})")
     if a.no_check:
         return
     print()
@@ -1023,6 +1372,11 @@ def cmd_check(a):
 
 def cmd_render_all(_):
     render_all()
+
+
+def cmd_index(_):
+    out, n = render_explorer(Master())
+    print(f"wrote {os.path.relpath(out, gen.ROOT)}  →  {gen.SITE}/tailor-cv/  ({n} CV{'s' if n != 1 else ''})")
 
 
 def main(argv=None):
@@ -1057,8 +1411,10 @@ def main(argv=None):
     c = sub.add_parser("check", help="one-page check of a CV page")
     c.add_argument("page")
     c.set_defaults(fn=cmd_check)
-    r = sub.add_parser("render-all", help="re-render every spec with the current design")
+    r = sub.add_parser("render-all", help="re-render every spec with the current design, and the explorer")
     r.set_defaults(fn=cmd_render_all)
+    x = sub.add_parser("index", help="write the explorer, /tailor-cv/: every tailored CV in one list")
+    x.set_defaults(fn=cmd_index)
     args = p.parse_args(argv)
     args.fn(args)
 
