@@ -5,3 +5,6 @@ Allow: /
 # Design drafts that repeat the CV: keep crawlers on the live pages.
 Disallow: /Backups/
 Disallow: /favicons/
+# The job descriptions next to the tailored CVs are other people's text. The CVs themselves stay crawlable, so a
+# shared link still gets its card, and carry <meta name="robots" content="noindex">.
+Disallow: /tailor-cv/*.md$

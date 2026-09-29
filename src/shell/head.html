@@ -1,4 +1,4 @@
-<script>(function(){try{var d=document.documentElement;if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');if(localStorage.getItem('cv-lang')==='es')d.setAttribute('data-lang','es');}catch(e){}})();
+<script>(function(){var d=document.documentElement,l=d.getAttribute('data-default-lang');try{if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');l=localStorage.getItem('cv-lang')||l;}catch(e){}if(l==='es')d.setAttribute('data-lang','es');})();
 window.cvLang=function(){return document.documentElement.getAttribute('data-lang')==='es'?'es':'en';};</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
