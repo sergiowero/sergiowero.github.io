@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){try{var d=document.documentElement;if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');if(localStorage.getItem('cv-lang')==='es')d.setAttribute('data-lang','es');}catch(e){}})();
+<script>(function(){var d=document.documentElement,l=d.getAttribute('data-default-lang');try{if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');l=localStorage.getItem('cv-lang')||l;}catch(e){}if(l==='es')d.setAttribute('data-lang','es');})();
 window.cvLang=function(){return document.documentElement.getAttribute('data-lang')==='es'?'es':'en';};</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -270,7 +270,8 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
   document.addEventListener('langchange',draw);
 })();
 /* Language switch (ES/EN): remembered across pages; header labels swap via html[data-lang];
-   on a page that has a translation (body[data-alt-es|en]) it navigates to it */
+   on a page that has a translation (body[data-alt-es|en]) it navigates to it.
+   A page may pick the language of a first visit with html[data-default-lang] (the CVs in /tailor-cv/ do) */
 (function(){
   var KEY='cv-lang';
   function apply(l){
@@ -278,7 +279,7 @@ window.cvLang=function(){return document.documentElement.getAttribute('data-lang
     document.querySelectorAll('.tab[data-lang]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-lang')===l);});
     document.dispatchEvent(new CustomEvent('langchange',{detail:l}));
   }
-  var saved='en'; try{saved=localStorage.getItem(KEY)||'en';}catch(e){}
+  var saved=document.documentElement.getAttribute('data-default-lang')||'en'; try{saved=localStorage.getItem(KEY)||saved;}catch(e){}
   apply(saved);
   document.querySelectorAll('.tab[data-lang]').forEach(function(el){
     el.addEventListener('click',function(){

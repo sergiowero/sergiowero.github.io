@@ -903,6 +903,10 @@ JOBS = [
 # Core skills on a 1–10 scale: the number drives the bar/percent, the word comes from the band it falls in.
 CORE = [("C# / .NET", 10), ("Java / Spring", 9), ("Python / FastAPI", 8), ("JavaScript / Node.js", 6),
         ("AWS", 7), ("SQL / Postgres", 8)]
+# Self-assessed levels for skills the master CV does not show among its core skills, same scale. A CV tailored to a
+# job description (tools/tailor.py) may promote one of them into its core skills when the JD strictly requires it.
+# Only you fill this in — never a level you would not defend in an interview. e.g. ("Unity3D", 9)
+CORE_EXTRA = []
 CORE_MAX = 10
 LEVEL_WORDS = [(9, T("Expert", "Experto")), (7, T("Advanced", "Avanzado")), (0, T("Proficient", "Competente"))]
 def level(lvl):
@@ -1040,6 +1044,15 @@ def history_entries():
         e["children"] = _sorted(e.get("children", []))
     return _sorted(entries)
 
+def history_flat():
+    """Depth-first list of the entries: (index, level, parent_index, entry). The link cards read it (page_cards)."""
+    flat = []
+    for e in history_entries():
+        pi = len(flat); flat.append((pi, 0, None, e))
+        for c in e["children"]:
+            flat.append((len(flat), 1, pi, c))
+    return flat
+
 EXTRA_HISTORY = [
     # dict(kind="milestone", slug="my-talk", role="Speaker at …", co="Conference", frm="2023-05", loc="…", inds=["Community"], tech=[], pts=["…"],
     #      children=[dict(kind="project", slug="my-talk-demo", role="Live demo", co="…", loc="…", inds=[], tech=["Unity"], pts=["…"])]),
@@ -1063,6 +1076,13 @@ CONTACT = [
     ("tl", T("Explore my full career →", "Explora toda mi trayectoria →"), "https://sergiowero.github.io/timeline/"),
 ]
 
+# The one-page CV as a view: the parts of the page a CV tailored to a job description may change. The blocks below
+# draw the master CV (the data above) unless they get a view; tools/tailor.py builds one per job description and
+# renders it through the same fill() and page() as public/index.html, so /tailor-cv/ pages look exactly like it.
+# Contact, stats, AI box, education and languages are never part of a view: they stay the master's.
+def master_view():
+    return dict(roles=ROLES, profile=PROFILE, jobs=JOBS, core=CORE, tech=TECH, best=BEST_SKILLS, file="Sergio-Sanchez-CV")
+
 # ------------------------------------------------------------------ BLOCKS
 def contact_html():
     out = []
@@ -1071,10 +1091,10 @@ def contact_html():
         out.append(f'<div class="cline">{ICON[ic]}{inner}</div>')
     return "\n".join(out)
 
-def core_html():
+def core_html(view=None):
     # one markup, many looks: each version shows the bar (.sk-track), the dots (.sk-dots), the word or the percent
     out = []
-    for name, lvl in CORE:
+    for name, lvl in (view or master_view())["core"]:
         word, pct = level(lvl)
         dots = "".join('<i class="on"></i>' if i < lvl else '<i></i>' for i in range(CORE_MAX))
         out.append(f'<div class="cskill" data-lvl="{lvl}" data-max="{CORE_MAX}"><div class="sk-top"><span class="sk-name">{name}</span>'
@@ -1110,13 +1130,13 @@ def _tags_stat(items, label):
     return ('<div class="stat best"><div class="n">' + "".join(f'<span class="bs">{h(b)}</span>' for b in items)
             + f'</div><div class="l">{h(label)}</div></div>')
 
-def stats_html():
+def stats_html(view=None):
     stat = lambda n, u, l: f'<div class="stat"><div class="n">{n}<span class="u">{u}</span></div><div class="l">{h(l)}</div></div>'
     return ('<div class="stats">' + stat(*STATS[0]) + _tags_stat(INDUSTRIES, INDUSTRIES_LABEL) + stat(*STATS[1])
-            + _tags_stat(BEST_SKILLS, BEST_LABEL) + '</div>')
+            + _tags_stat((view or master_view())["best"], BEST_LABEL) + '</div>')
 
-def profile_html():
-    return f'<p class="profile">{h(PROFILE)}</p>'
+def profile_html(view=None):
+    return f'<p class="profile">{h((view or master_view())["profile"])}</p>'
 
 def _job_html(j):
     inds = "".join(f'<span class="ind">{h(i)}</span>' for i in j["inds"])
@@ -1127,8 +1147,8 @@ def _job_html(j):
         '<ul class="pts">' + "".join(f'<li>{h(p)}</li>' for p in j["pts"]) + '</ul>',
         '</div>'])
 
-def experience_html():
-    return "\n".join(['<div class="tl">'] + [_job_html(j) for j in JOBS] + ['</div>'])
+def experience_html(view=None):
+    return "\n".join(['<div class="tl">'] + [_job_html(j) for j in (view or master_view())["jobs"]] + ['</div>'])
 
 import json
 
@@ -1211,8 +1231,14 @@ def history_search_html():
             f'<div class="hq-empty mono" hidden>// {L["empty"]}</div>'
             f'</div>')
 
-ROLE_PLAIN = T("Senior Software Engineer / Tech Lead / Backend &amp; Full-Stack / Game Dev / AI-Assisted",
-               "Ingeniero de Software Senior / Tech Lead / Backend y Full-Stack / Videojuegos / Asistido por IA")
+# The headline roles, the one that leads first: the CV's subtitle (roles_sub) and ROLE_PLAIN, "A / B / C".
+ROLES = [T("Senior Software Engineer", "Ingeniero de Software Senior"), T("Tech Lead"),
+         T("Backend &amp; Full-Stack", "Backend y Full-Stack"), T("Game Dev", "Videojuegos"), T("AI-Assisted", "Asistido por IA")]
+
+def roles_plain(roles):
+    return T(" / ".join(r.en for r in roles), " / ".join(r.es for r in roles))
+
+ROLE_PLAIN = roles_plain(ROLES)
 # The headings the DOCX uses and that @media print swaps in for the shell commands (see sh_label).
 # Wording is deliberately the canonical one resume parsers look for — "Professional Summary",
 # "Work Experience", "Skills", "Projects", "Education" — not the site's own section names.
@@ -1227,26 +1253,29 @@ DOC_LABELS = {
     "yr": T(" yr", " año"), "yrs": T(" yrs", " años"), "mo": T(" mo", " mes"), "mos": T(" mos", " meses"),
 }
 
-def cv_data_json():
-    """Everything the in-browser DOCX writer needs, in both languages. Same source as the page itself."""
+def cv_data_json(view=None):
+    """Everything the in-browser DOCX writer needs, in both languages. Same source as the page itself.
+    `file`: the downloads' file name, before the language (Sergio-Sanchez-CV-EN.pdf)."""
+    cv = view or master_view()
     data = dict(
-        name=NAME, role=d(ROLE_PLAIN), site="sergiowero.github.io",
+        name=NAME, role=d(roles_plain(cv["roles"])), site="sergiowero.github.io",
         contact=[dict(text=d(text), href=href) for _, text, href in CONTACT],
-        profile=d(PROFILE),
+        profile=d(cv["profile"]),
         jobs=[dict(role=d(j["role"]), co=j["co"], frm=j["frm"], to=j["to"],
-                   loc=d(j["loc"]), inds=d(j["inds"]), pts=d(j["pts"])) for j in JOBS],
-        core=[dict(name=name, word=d(level(lvl)[0]), pct=level(lvl)[1]) for name, lvl in CORE],
-        tech=d(TECH),
+                   loc=d(j["loc"]), inds=d(j["inds"]), pts=d(j["pts"])) for j in cv["jobs"]],
+        core=[dict(name=name, word=d(level(lvl)[0]), pct=level(lvl)[1]) for name, lvl in cv["core"]],
+        tech=d(cv["tech"]),
         ai=dict(head=d(AI_HEAD), text=d(AI_TEXT), chips=AI_CHIPS),
         edu=[dict(deg=d(deg), meta=d(meta)) for deg, meta in EDU],
         langs=[dict(name=d(name), level=d(level)) for _, name, _, level in LANGUAGES],
         labels={k: d(v) for k, v in DOC_LABELS.items()},
         months=dict(en=_MONTHS, es=["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]),
+        file=cv["file"],
     )
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
-def cv_data_html():
-    return (f'<script type="application/json" id="cv-data">{cv_data_json()}</script>\n'
+def cv_data_html(view=None):
+    return (f'<script type="application/json" id="cv-data">{cv_data_json(view)}</script>\n'
             '<script src="/cv-export.js" defer></script>')
 
 # ---- /llms.txt (https://llmstxt.org): the profile as plain Markdown for LLMs and AI crawlers.
@@ -1400,7 +1429,8 @@ FIT_JS = """<script>
   document.addEventListener('langchange',draw);
 })();
 /* Language switch (ES/EN): remembered across pages; header labels swap via html[data-lang];
-   on a page that has a translation (body[data-alt-es|en]) it navigates to it */
+   on a page that has a translation (body[data-alt-es|en]) it navigates to it.
+   A page may pick the language of a first visit with html[data-default-lang] (the CVs in /tailor-cv/ do) */
 (function(){
   var KEY='cv-lang';
   function apply(l){
@@ -1408,7 +1438,7 @@ FIT_JS = """<script>
     document.querySelectorAll('.tab[data-lang]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-lang')===l);});
     document.dispatchEvent(new CustomEvent('langchange',{detail:l}));
   }
-  var saved='en'; try{saved=localStorage.getItem(KEY)||'en';}catch(e){}
+  var saved=document.documentElement.getAttribute('data-default-lang')||'en'; try{saved=localStorage.getItem(KEY)||saved;}catch(e){}
   apply(saved);
   document.querySelectorAll('.tab[data-lang]').forEach(function(el){
     el.addEventListener('click',function(){
@@ -1509,6 +1539,11 @@ SECTIONS = [("cv", "/", "Resume", "Currículum"), ("history", "/timeline/", "Tim
 
 HL = '<span class="hl">/</span>'
 
+def roles_sub(roles):
+    """The CV's subtitle: the roles split by a slash, the first one (the headline) in green."""
+    sub = lambda lang: f" {HL} ".join([f'<span class="r0">{getattr(roles[0], lang)}</span>'] + [getattr(r, lang) for r in roles[1:]])
+    return T(sub("en"), sub("es"))
+
 def sh_label(cmd, ats):
     """A section heading in two skins: the shell command on screen, a plain heading when printing.
        CSS swaps them in @media print, so a PDF (and any ATS reading it) never sees `cat profile.md`."""
@@ -1530,8 +1565,7 @@ SECTION_LABELS = {
 
 LABELS = {
     # the first role is the headline one: it gets the green, the rest stay muted
-    "$L_SUB$": T(f'<span class="r0">Senior Software Engineer</span> {HL} Tech Lead {HL} Backend &amp; Full-Stack {HL} Game Dev {HL} AI-Assisted',
-                 f'<span class="r0">Ingeniero de Software Senior</span> {HL} Tech Lead {HL} Backend y Full-Stack {HL} Videojuegos {HL} Asistido por IA'),
+    "$L_SUB$": roles_sub(ROLES),
     "$L_PROFILE$": sh_label(*SECTION_LABELS["profile"]),
     "$L_EXP$": sh_label(*SECTION_LABELS["experience"]),
     "$L_CORE$": sh_label(*SECTION_LABELS["core_skills"]),
@@ -1665,16 +1699,18 @@ def cards_json(pages):
     site = dict(name=SHORT_NAME, full_name=NAME, url=SITE, locales=dict(en=OG_LOCALES[0], es=OG_LOCALES[1]))
     return json.dumps(dict(site=site, cards=cards), ensure_ascii=False, indent=2) + "\n"
 
-def page(title, fonts, css, body, meta=None):
-    """meta: the page's <title> + card tags (meta_html); the design drafts in Backups/ go without."""
+def page(title, fonts, css, body, meta=None, lang="en"):
+    """meta: the page's <title> + card tags (meta_html); the design drafts in Backups/ go without.
+    lang: the language a first visit sees (html[data-default-lang]); a language the visitor picked still wins."""
     head = meta or (f"<title>{title}</title>\n"
                     '<meta name="description" content="Sergio de Jesús Sánchez Robles — Senior Software Engineer / Tech Lead. 15 years across gaming, media and enterprise.">')
+    html_attrs = f'lang="{lang}"' + (f' data-default-lang="{lang}"' if lang != "en" else "")
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html {html_attrs}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){{try{{var d=document.documentElement;if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');if(localStorage.getItem('cv-lang')==='es')d.setAttribute('data-lang','es');}}catch(e){{}}}})();
+<script>(function(){{var d=document.documentElement,l=d.getAttribute('data-default-lang');try{{if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');l=localStorage.getItem('cv-lang')||l;}}catch(e){{}}if(l==='es')d.setAttribute('data-lang','es');}})();
 window.cvLang=function(){{return document.documentElement.getAttribute('data-lang')==='es'?'es':'en';}};</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -1695,16 +1731,18 @@ window.cvLang=function(){{return document.documentElement.getAttribute('data-lan
 </html>
 """
 
-def fill(tpl, active="cv"):
-    for key, label in LABELS.items():
+def fill(tpl, active="cv", view=None):
+    """view: the CV's content (master_view() when None); a tailored CV passes its own."""
+    labels = dict(LABELS, **{"$L_SUB$": roles_sub((view or master_view())["roles"])})
+    for key, label in labels.items():
         tpl = tpl.replace(key, h(label))
-    return (tpl.replace("$NAV$", nav_html(active)).replace("$CVDATA$", cv_data_html())
+    return (tpl.replace("$NAV$", nav_html(active)).replace("$CVDATA$", cv_data_html(view))
             .replace("$DOWNLOAD$", DOWNLOAD_TPL if active == "cv" else "").replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html()).replace("$HSEARCH$", history_search_html())
             .replace("$I18N_HISTORY_TITLE$", i18n("Timeline", "Mi línea de tiempo"))
-            .replace("$I18N_HISTORY_SUB$", i18n("All the projects I have worked on so far, newest first — scroll and the panel on the right follows.", "Todos los proyectos en los que he trabajado hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html())
-            .replace("$TECH$", chips_html(TECH)).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
-            .replace("$TITLES$", titles_html()).replace("$EDU$", edu_html()).replace("$LANGS$", langs_html()).replace("$STATS$", stats_html())
-            .replace("$PROFILE$", profile_html()).replace("$EXP$", experience_html())
+            .replace("$I18N_HISTORY_SUB$", i18n("All the projects I have worked on so far, newest first — scroll and the panel on the right follows.", "Todos los proyectos en los que he trabajado hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html(view))
+            .replace("$TECH$", chips_html((view or master_view())["tech"])).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
+            .replace("$TITLES$", titles_html()).replace("$EDU$", edu_html()).replace("$LANGS$", langs_html()).replace("$STATS$", stats_html(view))
+            .replace("$PROFILE$", profile_html(view)).replace("$EXP$", experience_html(view))
             .replace("$ABOUT_BIO$", i18n(ABOUT_BIO_EN, ABOUT_BIO_ES)).replace("$TOOLBOX$", toolbox_html())
             .replace("$NAME$", NAME).replace("$ROLE$", ROLE).replace("$TAG$", TAG))
 
@@ -2956,6 +2994,15 @@ def finish_body(body, v):
     flags = v.get("flags", False)
     return body.replace("$FLAG_ES$", FLAG_MX if flags else "").replace("$FLAG_EN$", FLAG_US if flags else "")
 
+def version_css(v):
+    return "  :root{" + v["nav"] + "}\n" + v["css"]
+
+def cv_page(v, meta=None, view=None, lang="en"):
+    """The CV sheet in design `v` (a VERSIONS entry): the master CV, or a tailored one when `view` is given
+    (tools/tailor.py). One function for both, so a /tailor-cv/ page can never drift from public/index.html."""
+    body = fill(v["body"], view=view).replace("$AI_TEXT$", h(AI_TEXT)).replace("$AI_CHIPS$", chips_html(AI_CHIPS))
+    return page(v["title"], v["fonts"], version_css(v), finish_body(body, v) + "\n" + v.get("extra_js", ""), meta, lang)
+
 # =================================================================== THE TIMELINE AS A TREE OF RECORDS
 # Every piece of the timeline is a record: jobs, client projects, degrees, achievements (milestone, release, prototype,
 # pace, training, award), the titled topics inside an entry and each bullet. Records carry a stable id, their
@@ -3387,7 +3434,7 @@ def _build_tree(lang):
 
     # technologies: what each one is, how well I know it (the CV's core skills) and where and when I used it
     prof = {}
-    for name, lvl in CORE:
+    for name, lvl in CORE + CORE_EXTRA:
         for tid in _resolve(name)[0]:
             prof[tid] = dict(level=lvl, max=CORE_MAX, word=ytext(level(lvl)[0], lang))
     ym = lambda s: int(s[:4]) * 12 + int(s[5:]) - 1
@@ -3831,10 +3878,8 @@ if __name__ == "__main__":
     cards = page_cards()
     meta = {rel: meta_html(name, cards[name]) for rel, name in PAGE_FILES.items()}
     for fname, v in VERSIONS.items():
-        body = fill(v["body"]).replace("$AI_TEXT$", h(AI_TEXT)).replace("$AI_CHIPS$", chips_html(AI_CHIPS))
-        body = finish_body(body, v)
-        css = "  :root{" + v["nav"] + "}\n" + v["css"]
-        html = page(v["title"], v["fonts"], css, body + "\n" + v.get("extra_js", ""))
+        css = version_css(v)
+        html = cv_page(v)
         path = os.path.join(OUT, fname)
         with open(path, "w", encoding="utf-8") as f:
             f.write(html)
@@ -3842,7 +3887,7 @@ if __name__ == "__main__":
         if fname == LIVE[0]:
             os.makedirs(os.path.dirname(LIVE[1]), exist_ok=True)
             with open(LIVE[1], "w", encoding="utf-8") as f:
-                f.write(page(v["title"], v["fonts"], css, body + "\n" + v.get("extra_js", ""), meta["index.html"]))
+                f.write(cv_page(v, meta["index.html"]))
             print(f"wrote index.html (from {fname})")
             # shell pieces for the Astro blog pages (same look, same header, same scripts)
             os.makedirs(SHELL_DIR, exist_ok=True)
@@ -3875,3 +3920,7 @@ if __name__ == "__main__":
         f.write(llms_md())
     print("wrote llms.txt")
     write_cv_data()
+    # /tailor-cv/: the CVs tailored to a job description keep the master's design, contact and dates (tools/tailor.py)
+    sys.modules.setdefault("gen", sys.modules[__name__])   # so tailor's `import gen` is this run, not a second copy
+    import tailor
+    tailor.render_all()

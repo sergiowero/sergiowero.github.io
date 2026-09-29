@@ -1,5 +1,8 @@
-.claude/
+# local Claude Code settings stay local; the project's skills are shared
+.claude/*
+!.claude/skills/
 .DS_Store
 node_modules/
 dist/
 .astro/
+__pycache__/

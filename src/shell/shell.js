@@ -33,7 +33,8 @@
   document.addEventListener('langchange',draw);
 })();
 /* Language switch (ES/EN): remembered across pages; header labels swap via html[data-lang];
-   on a page that has a translation (body[data-alt-es|en]) it navigates to it */
+   on a page that has a translation (body[data-alt-es|en]) it navigates to it.
+   A page may pick the language of a first visit with html[data-default-lang] (the CVs in /tailor-cv/ do) */
 (function(){
   var KEY='cv-lang';
   function apply(l){
@@ -41,7 +42,7 @@
     document.querySelectorAll('.tab[data-lang]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-lang')===l);});
     document.dispatchEvent(new CustomEvent('langchange',{detail:l}));
   }
-  var saved='en'; try{saved=localStorage.getItem(KEY)||'en';}catch(e){}
+  var saved=document.documentElement.getAttribute('data-default-lang')||'en'; try{saved=localStorage.getItem(KEY)||saved;}catch(e){}
   apply(saved);
   document.querySelectorAll('.tab[data-lang]').forEach(function(el){
     el.addEventListener('click',function(){

@@ -10,6 +10,7 @@ Sitio personal de Sergio de Jesús Sánchez Robles. Se construye con [Astro](htt
 | `/about/` | About me | estático (placeholder con el nombre) |
 | `/llms.txt` | Perfil para IA | estático (`tools/gen.py`), ver abajo |
 | `/cv/{en,es}/tree.json`, `/cv/tree.schema.json`, `/cv/template.html` | El timeline como árbol de records, su esquema y la plantilla del CV | estático (`tools/gen.py`), ver abajo |
+| `/tailor-cv/<empresa>-<puesto>-<aaaammdd>.html` (y `.md`) | El CV adaptado a una vacante, y la vacante junto a él | estático (`tools/tailor.py`, skill `/tailor-cv`), ver abajo |
 | `/robots.txt` | Crawlers | estático (`public/robots.txt`) |
 | `/og/<página>.png` | Imagen de la link card de cada página | Astro, en el build (`src/pages/og/[...card].png.ts`), ver abajo |
 
@@ -127,13 +128,41 @@ Reglas que un programa puede dar por hechas (`gen.py` se detiene si alguna falla
 - El texto solo trae `**negritas**` y `[texto](url)`. Las fechas son `"YYYY-MM"`; `dates.end: null` con `ongoing: true` es actualidad.
 - `meta.schema` (`cv-tree/1`) sube cuando se renombra o se quita una llave; agregar llaves no lo cambia.
 
+## CVs adaptados a una vacante (`/tailor-cv/`)
+
+Con Claude Code, **`/tailor-cv`** seguido de la vacante (el texto, un archivo o un link) arma un CV adaptado a ella y lo deja en el repo. La skill vive en [`.claude/skills/tailor-cv/SKILL.md`](.claude/skills/tailor-cv/SKILL.md) y usa [`tools/tailor.py`](tools/tailor.py) para todo lo mecánico. Cada CV son tres archivos con el mismo nombre, `<empresa>-<puesto>-<aaaammdd>` (p. ej. `acme-senior-backend-engineer-20260929`):
+
+| Archivo | Qué es |
+|---|---|
+| `tailor-cv/<nombre>.json` | el **spec**: qué muestra este CV en lugar del maestro y de qué records de `tree.json` sale cada bullet (no se publica) |
+| `public/tailor-cv/<nombre>.html` | el **CV**, en `/tailor-cv/<nombre>.html` |
+| `public/tailor-cv/<nombre>.md` | la **vacante** a la que responde, tal como llegó, con un front matter (empresa, puesto, fecha, idioma, link) |
+
+- **Mismo diseño que el CV maestro**, porque lo dibuja el mismo código: `gen.cv_page()` arma `public/index.html` y cada CV adaptado, con el spec como vista (`gen.master_view()` es la del maestro). Trae el cambio ES/EN, el tema y las tres descargas (DOCX ATS, PDF ATS y PDF), con archivos que llevan la vacante en el nombre (`Sergio-Sanchez-CV-Acme-Senior-Backend-Engineer-EN.pdf`). Abre en el idioma de la vacante (`<html data-default-lang>`; si el visitante ya eligió uno, gana el suyo) y lleva `noindex` para que no aparezca en buscadores.
+- **Qué cambia y qué no** (`tailor.py build` rechaza un spec que rompa una regla):
+  - Siempre los **6 empleos** del maestro, en su orden; puesto, empresa, fechas, lugar e industrias son los del maestro. Contacto, stats, IA, educación e idiomas no se tocan.
+  - Un empleo **con hijos** (Wizeline y sus clientes) muestra solo los clientes relevantes para la vacante (`tailored`). Si ninguno lo es (`fallback`), muestra el bullet de cada uno reescrito hacia la vacante. En los dos casos puede sumar bullets del propio empleo (rol, IA, mentoría) si son relevantes.
+  - Un empleo **sin hijos** muestra solo los bullets relevantes (`tailored`). Si nada lo es (`fallback`), muestra sus bullets de siempre, uno por uno, reescritos para encajar lo mejor posible.
+  - El número de bullets por empleo es libre. El **perfil** cambia un poco. Los **roles** pueden reordenarse o ser menos, pero nunca nuevos.
+  - **Core skills**, chips de tecnologías y "Fortalezas" solo cambian por lo que la vacante **exige** (`jd.required`, cada uno con la frase de la vacante que lo pide) y el árbol respalda. Los niveles salen de `CORE` o de **`CORE_EXTRA`** en `tools/gen.py`, nunca del spec. `CORE_EXTRA` son niveles que tú das (1–10) a skills que el maestro no muestra como core (Unity3D, por ejemplo) para que una vacante que los exige pueda subirlos.
+- **Sin mentir**: cada bullet cita sus `sources`, y `build` rechaza cualquier tecnología o número que esas fuentes no respalden. También rechaza las tecnologías que no están en ninguna parte del árbol (`UNBACKED` en `tools/tailor.py`: Kubernetes, Kafka…), que van a `jd.gaps` para que sepas qué pide la vacante que tu historia no muestra. Si sí lo tienes, agrégalo al timeline en `gen.py`.
+- **Una hoja**: `build` imprime el CV a PDF con Chrome/Chromium/Edge en modo headless (`TAILOR_CHROME=<ruta>` si no lo encuentra) y exige 1 página en EN y en ES, con las fuentes reales. Dice cuánto espacio le queda a la columna de experiencia (~12 px por renglón). `python3 tools/tailor.py check public/index.html` mide el maestro.
+- `python3 tools/gen.py` vuelve a dibujar todos los CVs adaptados al final de cada corrida, así que siempre siguen el diseño, el contacto y las fechas del maestro.
+
+```bash
+python3 tools/tailor.py new vacante.md --company "Acme" --position "Senior Backend Engineer" --lang en   # o `new -` desde stdin
+python3 tools/tailor.py analyze <nombre>          # qué pide la vacante, qué tiene el árbol y qué es relevante en cada empleo
+python3 tools/tailor.py show <id> [<id>…]         # records en los dos idiomas, para escribir desde ahí
+python3 tools/tailor.py build <nombre>            # valida el spec, escribe el HTML y revisa que quepa en una hoja
+```
+
 ## Desarrollo local
 
 ```bash
 npm install
 npm run dev        # http://localhost:4321
 npm run build      # genera dist/
-python3 tools/gen.py   # regenera las páginas estáticas (CV, About, Timeline, Backups), src/shell/ y llms.txt (requiere Python 3.12+)
+python3 tools/gen.py   # regenera las páginas estáticas (CV, About, Timeline, Backups, /tailor-cv/), src/shell/ y llms.txt (requiere Python 3.12+)
 ```
 
 - `public/Backups/` — las 9 variantes de diseño evaluadas (`public/Backups/index.html` es el selector).
