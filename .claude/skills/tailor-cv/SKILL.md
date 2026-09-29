@@ -15,6 +15,9 @@ One run produces three files that share one name, `<company>-<position>-<yyyymmd
 | `public/tailor-cv/<name>.html` | the **CV**, drawn by `tools/gen.py`'s own renderer: the master's exact design, EN/ES switch, DOCX ATS · PDF ATS · PDF | `/tailor-cv/<name>.html` |
 | `public/tailor-cv/<name>.md` | the **job description** it answers, as given, with a small front matter | `/tailor-cv/<name>.md` |
 
+`build` also rewrites `public/tailor-cv/index.html`, the **explorer** at `/tailor-cv/`: every tailored CV in one list,
+newest first, filtered by a `grep -i` bar, with a live preview of the selected one (`tailor.py index` rewrites it alone).
+
 `tools/tailor.py` does everything mechanical and **refuses a spec that breaks the rules** below. Your job is the
 judgment (what is relevant) and the writing (EN and ES). Run it with Python 3.12+, like `gen.py`: if
 `python3 --version` is older, use `python3.12` / `python3.13` (Windows: `py -3.12`).
@@ -191,13 +194,14 @@ enter the core skills.
 ### 9. Commit and report
 
 ```bash
-git add tailor-cv/<name>.json public/tailor-cv/<name>.html public/tailor-cv/<name>.md
+git add tailor-cv/<name>.json public/tailor-cv/<name>.html public/tailor-cv/<name>.md public/tailor-cv/index.html
 git commit -m "tailor-cv: <Company> — <Position>"
 ```
 
 Push per the session's git instructions (in Claude Code on the web, its branch); locally, push only if asked.
-Then tell the user: the URL (`https://sergiowero.github.io/tailor-cv/<name>.html`, live once merged to `main`), job by
-job what the CV shows and why, what changed in the skills, the **gaps**, and any level you need from them.
+Then tell the user: the URL (`https://sergiowero.github.io/tailor-cv/<name>.html`, live once merged to `main`; the
+explorer at `https://sergiowero.github.io/tailor-cv/` lists it with the others), job by job what the CV shows and why,
+what changed in the skills, the **gaps**, and any level you need from them.
 
 `python3 tools/gen.py` re-renders every tailored CV with the current design and master data (contact, dates, levels),
 so they never drift from the master CV's look.
