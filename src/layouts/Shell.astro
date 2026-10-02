@@ -34,6 +34,7 @@ const alternates = (article ? Object.keys(alt) : ['en', 'es'].filter((l) => l !=
 <html lang={lang}>
 <head>
 <meta charset="utf-8">
+<script is:inline>/* temp A/B: ?q=1|2|3 */var q=new URLSearchParams(location.search).get("q");document.documentElement.dataset.q=q||"1";</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <Fragment set:html={headHtml} />
 <title>{title}</title>
