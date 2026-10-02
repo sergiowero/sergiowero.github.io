@@ -1,3 +1,28 @@
+<!DOCTYPE html>
+<!--
+  CV template (cv-template/1): the look of https://sergiowero.github.io/ with Mustache tags where the content goes.
+  Written by tools/gen.py; do not edit by hand.
+
+  Render it with any Mustache engine; the view is the `resume` object of https://sergiowero.github.io/cv/{lang}/tree.json:
+    1. Make every string in the view HTML first: escape & < > " and then turn **x** into <b>x</b>
+       and [x](url) into <a href="url">x</a>. That is why the tags below use {{{triple braces}}}.
+    2. Focus the CV by editing the view before rendering: keep the jobs you want in `experience`, and
+       set each one's `highlights` to the `text` of the highlight records you picked from `records`
+       (by tags, tech or embeddings). Every list renders what it holds, in order.
+    3. Print it to PDF from a browser: A4, no margins, backgrounds on (Chromium: page.pdf with
+       preferCSSPageSize and printBackground).
+  Options on <html>: data-theme="dark" for the dark theme; data-print="ats" for the light,
+  one-column PDF that resume parsers read best.
+-->
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{{profile.name}}} — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
 *{margin:0;padding:0;box-sizing:border-box;}
   html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   @page{size:A4;margin:0;}
@@ -6,9 +31,9 @@
   .cline svg,.ai .h svg{width:13px;height:13px;flex:none;}
   .p .dur{font-weight:400;opacity:.85;}
   .sk-top{display:flex;justify-content:space-between;align-items:baseline;gap:6px;}
-  .stat.best{flex:1.35;}
-  .stat.best .n{font-size:10.5px;line-height:1.25;letter-spacing:0;}
-  .stat.best .bs+.bs::before{content:" · ";}
+  .stat.tags{flex:1.35;}
+  .stat.tags .n{font-size:10.5px;line-height:1.25;letter-spacing:0;}
+  .stat.tags .bs+.bs::before{content:" · ";}
   .inds{display:inline-flex;flex-wrap:wrap;gap:3px;margin-left:6px;vertical-align:middle;}
   .ind{display:inline-block;font-size:7.3px;line-height:1.35;padding:1px 6px;border-radius:3px;font-weight:600;white-space:nowrap;}
   .sk-pct,.sk-dots{display:none;}
@@ -237,9 +262,9 @@
   .stat .l::before{content:"// ";}
   .stat .n{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--fg);line-height:1;letter-spacing:-.5px;}
   .stat .n .u{color:var(--green);}
-  .stat.best .n{display:flex;flex-wrap:wrap;gap:3px;}
-  .stat.best .bs{font-family:'JetBrains Mono',monospace;font-size:7.6px;font-weight:700;color:var(--green);background:rgba(61,220,132,.10);border:1px solid rgba(61,220,132,.45);border-radius:4px;padding:1px 6px;line-height:1.5;}
-  .stat.best .bs+.bs::before{content:none;}
+  .stat.tags .n{display:flex;flex-wrap:wrap;gap:3px;}
+  .stat.tags .bs{font-family:'JetBrains Mono',monospace;font-size:7.6px;font-weight:700;color:var(--green);background:rgba(61,220,132,.10);border:1px solid rgba(61,220,132,.45);border-radius:4px;padding:1px 6px;line-height:1.5;}
+  .stat.tags .bs+.bs::before{content:none;}
 
   .cols{display:flex;gap:7mm;flex:1;}
   .main{flex:1 1 auto;min-width:0;}
@@ -345,3 +370,70 @@
     :root[data-print="ats"] .spoken{display:block;}   /* one line of text a parser reads as "Spanish — Native" */
     :root[data-print="ats"] .spoken .sep{display:inline;}
   }
+
+  /* ---- template.html only ---- */
+  .sub .role:first-child{color:var(--green);font-weight:600;font-size:10px;letter-spacing:-.1px;}   /* the headline role */
+  .sub .role+.role::before{content:" / ";color:var(--amber);}
+  .cline[data-icon]::before{content:"";width:11px;height:11px;flex:none;background:var(--green);   /* the contact icons, by type */
+    -webkit-mask:var(--icon) center/contain no-repeat;mask:var(--icon) center/contain no-repeat;}
+  .cline[data-icon="pin"]{--icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20stroke%3D%22black%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22M12%2021s7-6.3%207-11a7%207%200%201%200-14%200c0%204.7%207%2011%207%2011z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2210%22%20r%3D%222.5%22%2F%3E%3C%2Fsvg%3E");}
+  .cline[data-icon="phone"]{--icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20stroke%3D%22black%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22M5%204h4l2%205-2.5%201.5a11%2011%200%200%200%205%205L15%2013l5%202v4a2%202%200%200%201-2%202A16%2016%200%200%201%203%206a2%202%200%200%201%202-2z%22%2F%3E%3C%2Fsvg%3E");}
+  .cline[data-icon="mail"]{--icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20stroke%3D%22black%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%222%22%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%2218%22%20height%3D%2214%22%20rx%3D%222%22%2F%3E%3Cpath%20d%3D%22M3%207l9%206%209-6%22%2F%3E%3C%2Fsvg%3E");}
+  .cline[data-icon="in"]{--icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20stroke%3D%22black%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%222%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2218%22%20height%3D%2218%22%20rx%3D%222%22%2F%3E%3Cpath%20d%3D%22M7%2010v7M7%207v.01M11%2017v-4a2%202%200%200%201%204%200v4%22%2F%3E%3C%2Fsvg%3E");}
+  .cline[data-icon="gh"]{--icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20stroke%3D%22black%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22M9%2019c-4.5%201.5-4.5-2.5-6-3m12%205v-3.5c0-1%20.1-1.4-.5-2%202.8-.3%205.5-1.4%205.5-6a4.6%204.6%200%200%200-1.3-3.2%204.2%204.2%200%200%200-.1-3.2s-1.1-.3-3.5%201.3a12.3%2012.3%200%200%200-6.2%200C6.5%202.8%205.4%203.1%205.4%203.1a4.2%204.2%200%200%200-.1%203.2A4.6%204.6%200%200%200%204%209.5c0%204.6%202.7%205.7%205.5%206-.6.6-.6%201.2-.5%202V21%22%2F%3E%3C%2Fsvg%3E");}
+  .cline[data-icon="tl"]{--icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20stroke%3D%22black%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke-width%3D%222%22%3E%3Ccircle%20cx%3D%226%22%20cy%3D%225%22%20r%3D%222%22%2F%3E%3Ccircle%20cx%3D%226%22%20cy%3D%2212%22%20r%3D%222%22%2F%3E%3Ccircle%20cx%3D%226%22%20cy%3D%2219%22%20r%3D%222%22%2F%3E%3Cpath%20d%3D%22M6%207v3M6%2014v3M11%205h9M11%2012h9M11%2019h6%22%2F%3E%3C%2Fsvg%3E");}
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="top">
+    <div>
+      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">cv.md</span></div>
+      <div class="name">{{{profile.name}}}<span class="cur"></span></div>
+      <div class="sub mono">{{#profile.roles}}<span class="role">{{{.}}}</span>{{/profile.roles}}</div>
+    </div>
+    <div class="contact">
+      {{#contact}}<div class="cline" data-icon="{{icon}}">{{#url}}<a href="{{{url}}}">{{{label}}}</a>{{/url}}{{^url}}{{{label}}}{{/url}}</div>
+      {{/contact}}
+    </div>
+  </header>
+  <div class="stats">
+    {{#stats}}<div class="stat {{type}}"><div class="n">{{#value}}{{value}}<span class="u">{{suffix}}</span>{{/value}}{{#items}}<span class="bs">{{{.}}}</span>{{/items}}</div><div class="l">{{{label}}}</div></div>
+    {{/stats}}
+  </div>
+  <div class="cols">
+    <main class="main">
+      <section><h2 class="sh"><span class="cmd">{{{labels.sections.profile.screen}}}</span><span class="ats">{{{labels.sections.profile.print}}}</span></h2><p class="profile">{{{profile.summary}}}</p></section>
+      <section><h2 class="sh"><span class="cmd">{{{labels.sections.experience.screen}}}</span><span class="ats">{{{labels.sections.experience.print}}}</span></h2><div class="tl">
+        {{#experience}}
+        <div class="job{{#current}} cur{{/current}}">
+          <div class="job-head"><div class="r">{{{title}}} · <span class="c">{{{organization}}}</span></div><div class="p">{{{dates.text}}}{{#dates.elapsed}}<span class="dur"> · {{{dates.elapsed}}}</span>{{/dates.elapsed}}</div></div>
+          <div class="loc">{{{location}}}<span class="inds">{{#industries}}<span class="ind">{{{.}}}</span>{{/industries}}</span></div>
+          <ul class="pts">{{#highlights}}<li>{{{.}}}</li>{{/highlights}}</ul>
+        </div>
+        {{/experience}}
+      </div></section>
+    </main>
+    <aside class="aside">
+      <section><div class="ai"><div class="h">{{{skills.ai_assisted.title}}}</div><p>{{{skills.ai_assisted.text}}}</p><div class="dchips">{{#skills.ai_assisted.tools}}<span class="dchip">{{{.}}}</span>{{/skills.ai_assisted.tools}}</div></div></section>
+      <section><h2 class="sh"><span class="cmd">{{{labels.sections.core_skills.screen}}}</span><span class="ats">{{{labels.sections.core_skills.print}}}</span></h2>
+        {{#skills.core}}<div class="cskill"><div class="sk-top"><span class="sk-name">{{{name}}}</span><span class="sk-word">{{{word}}}</span><span class="sk-pct">{{percent}}%</span></div><div class="sk-dots ascii"><span class="b">[</span><span class="f">{{meter.filled}}</span><span class="e">{{meter.empty}}</span><span class="b">]</span></div></div>
+        {{/skills.core}}
+      </section>
+      <section><h2 class="sh"><span class="cmd">{{{labels.sections.technologies.screen}}}</span><span class="ats">{{{labels.sections.technologies.print}}}</span></h2><div class="dchips">{{#skills.technologies}}<span class="dchip">{{{.}}}</span>{{/skills.technologies}}</div></section>
+      <section><h2 class="sh"><span class="cmd">{{{labels.sections.education.screen}}}</span><span class="ats">{{{labels.sections.education.print}}}</span></h2>
+        {{#education}}
+        <div class="edu"><div class="d">{{{degree}}}</div><div class="m">{{{detail}}}</div></div>
+        {{/education}}
+      </section>
+      <section><h2 class="sh"><span class="cmd">{{{labels.sections.languages.screen}}}</span><span class="ats">{{{labels.sections.languages.print}}}</span></h2>
+        {{#languages}}<div class="spoken"><span class="ln">{{{name}}}</span><span class="sep"> — </span><span class="lv">{{{level}}}</span></div>
+        {{/languages}}
+      </section>
+    </aside>
+  </div>
+  <div class="foot"><span><span class="g">➜</span> exit 0 · {{{profile.name}}}</span><span>sergiowero.github.io</span></div>
+</div>
+</body>
+</html>

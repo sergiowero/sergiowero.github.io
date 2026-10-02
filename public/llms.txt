@@ -22,6 +22,7 @@ Software developer with **16 years of experience** across the gaming, media, and
 - **Technologies:** C#, .NET, Java, Spring, Python, FastAPI, JavaScript, Node.js, React, AWS, PostgreSQL, Microservices, RESTful APIs, Unit Testing, OOP, Unity3D, Git, Full-Stack, Typescript, Docker
 - **AI-Assisted Dev:** AI-assisted tools in my daily workflow to optimize backend development and accelerate project delivery. Tools: Claude Code, opencode, Codex.
 - **Education:** Master in Computer Science — Universidad Autónoma de Guadalajara · Aug 2018; Computer Science — Universidad de Guadalajara · Dec 2010
+- **Languages:** Spanish (Native), English (Advanced)
 - **Shipped titles:** **The Lullaby of Life** — Apple Arcade & [Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/); **VR racing games** — HTC Vive, Oculus, Gear VR & [iOS](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s); **The Oregon Trail: American Settler**, **9mm** — Gameloft; **5+ iOS games** & a Nintendo Wii title — [demo reel](https://www.youtube.com/watch?v=PWaarVatoEU)
 
 ## Work experience
@@ -659,3 +660,4 @@ My first job in games, and my first shipped projects. Almost two years at Kaxan 
 - [The Lullaby of Life on Steam](https://store.steampowered.com/app/2493180/The_Lullaby_of_Life/): the Unity3D game shipped on Apple Arcade and Steam
 - [VR racing game — iOS gameplay](https://www.youtube.com/watch?v=dyOfO0sYyp8&t=446s): Virtually Live, Formula E
 - [Demo reel](https://www.youtube.com/watch?v=PWaarVatoEU): five iOS games from Kaxan Games
+- [Timeline as a tree of records](https://sergiowero.github.io/cv/en/tree.json): everything above as JSON records with tech and tags, for programs ([Spanish](https://sergiowero.github.io/cv/es/tree.json), [schema](https://sergiowero.github.io/cv/tree.schema.json))

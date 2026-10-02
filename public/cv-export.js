@@ -19,7 +19,8 @@
   function L(v) { return (v && typeof v === 'object' && !Array.isArray(v)) ? (v[lang()] || v.en) : v; }
   function label(k) { return textOf(L(CV.labels[k])); }
   function years() { return new Date().getFullYear() - START_YEAR; }
-  function fileBase() { return 'Sergio-Sanchez-CV-' + lang().toUpperCase(); }
+  // the CVs in /tailor-cv/ name theirs after the job (CV.file: "Sergio-Sanchez-CV-Acme-Backend-Engineer")
+  function fileBase() { return (CV.file || 'Sergio-Sanchez-CV') + '-' + lang().toUpperCase(); }
 
   // ---------------------------------------------------------------- PDF (print dialog)
   /* Plain: prints exactly what is on screen — current theme and language. The page sets
@@ -223,6 +224,11 @@
     CV.edu.forEach(function (e) {
       body += para(run(textOf(L(e.deg)), { b: true, color: INK }) +
         run('  ·  ' + textOf(L(e.meta)), { color: MUTED, sz: 17 }), { after: 20 });
+    });
+
+    body += heading(label('languages'));
+    (CV.langs || []).forEach(function (l) {
+      body += para(run(textOf(L(l.name)), { b: true, color: INK }) + run('  —  ' + textOf(L(l.level)), { color: MUTED }), { after: 20 });
     });
 
     body += '<w:p><w:pPr><w:spacing w:before="200"/></w:pPr>' +

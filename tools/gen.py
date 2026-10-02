@@ -903,6 +903,10 @@ JOBS = [
 # Core skills on a 1–10 scale: the number drives the bar/percent, the word comes from the band it falls in.
 CORE = [("C# / .NET", 10), ("Java / Spring", 9), ("Python / FastAPI", 8), ("JavaScript / Node.js", 6),
         ("AWS", 7), ("SQL / Postgres", 8)]
+# Self-assessed levels for skills the master CV does not show among its core skills, same scale. A CV tailored to a
+# job description (tools/tailor.py) may promote one of them into its core skills when the JD strictly requires it.
+# Only you fill this in — never a level you would not defend in an interview. e.g. ("Unity3D", 9)
+CORE_EXTRA = []
 CORE_MAX = 10
 LEVEL_WORDS = [(9, T("Expert", "Experto")), (7, T("Advanced", "Avanzado")), (0, T("Proficient", "Competente"))]
 def level(lvl):
@@ -926,6 +930,9 @@ TITLES = [
 ]
 EDU = [(T("Master in Computer Science", "Maestría en Ciencias Computacionales"), T("Universidad Autónoma de Guadalajara · Aug 2018", "Universidad Autónoma de Guadalajara · Ago 2018")),
        (T("Computer Science", "Ciencias Computacionales"), T("Universidad de Guadalajara · Dec 2010", "Universidad de Guadalajara · Dic 2010"))]
+# Spoken languages: (ISO code, name, stable level id, level as shown)
+LANGUAGES = [("es", T("Spanish", "Español"), "native", T("Native", "Nativo")),
+             ("en", T("English", "Inglés"), "advanced", T("Advanced", "Avanzado"))]
 STATS = [('<span data-years>15</span>', "+", T("Years building software", "Años de experiencia")),
          ("6", "", T("Max engineers led", "Ingenieros a cargo"))]
 
@@ -1038,7 +1045,7 @@ def history_entries():
     return _sorted(entries)
 
 def history_flat():
-    """Depth-first list used by the page: (index, level, parent_index, entry)."""
+    """Depth-first list of the entries: (index, level, parent_index, entry). The link cards read it (page_cards)."""
     flat = []
     for e in history_entries():
         pi = len(flat); flat.append((pi, 0, None, e))
@@ -1069,6 +1076,13 @@ CONTACT = [
     ("tl", T("Explore my full career →", "Explora toda mi trayectoria →"), "https://sergiowero.github.io/timeline/"),
 ]
 
+# The one-page CV as a view: the parts of the page a CV tailored to a job description may change. The blocks below
+# draw the master CV (the data above) unless they get a view; tools/tailor.py builds one per job description and
+# renders it through the same fill() and page() as public/index.html, so /tailor-cv/ pages look exactly like it.
+# Contact, stats, AI box, education and languages are never part of a view: they stay the master's.
+def master_view():
+    return dict(roles=ROLES, profile=PROFILE, jobs=JOBS, core=CORE, tech=TECH, best=BEST_SKILLS, file="Sergio-Sanchez-CV")
+
 # ------------------------------------------------------------------ BLOCKS
 def contact_html():
     out = []
@@ -1077,10 +1091,10 @@ def contact_html():
         out.append(f'<div class="cline">{ICON[ic]}{inner}</div>')
     return "\n".join(out)
 
-def core_html():
+def core_html(view=None):
     # one markup, many looks: each version shows the bar (.sk-track), the dots (.sk-dots), the word or the percent
     out = []
-    for name, lvl in CORE:
+    for name, lvl in (view or master_view())["core"]:
         word, pct = level(lvl)
         dots = "".join('<i class="on"></i>' if i < lvl else '<i></i>' for i in range(CORE_MAX))
         out.append(f'<div class="cskill" data-lvl="{lvl}" data-max="{CORE_MAX}"><div class="sk-top"><span class="sk-name">{name}</span>'
@@ -1101,34 +1115,40 @@ def titles_html():
 def edu_html():
     return "\n".join(f'<div class="edu"><div class="d">{h(deg)}</div><div class="m">{h(meta)}</div></div>' for deg, meta in EDU)
 
+def langs_html():
+    # name left, level right; the " — " only shows in the ATS print, where the row is linearised into one line of text
+    return "\n".join(f'<div class="spoken"><span class="ln">{h(name)}</span><span class="sep"> — </span><span class="lv">{h(level)}</span></div>'
+                     for _, name, _, level in LANGUAGES)
+
 BEST_SKILLS = [".NET", "Spring", "Python", "Node.js"]
 BEST_LABEL = T("Best skills", "Fortalezas")
-BEST_STAT = ('<div class="stat best"><div class="n">' + "".join(f'<span class="bs">{b}</span>' for b in BEST_SKILLS)
-             + f'</div><div class="l">{h(BEST_LABEL)}</div></div>')
 
 INDUSTRIES = [T("Gaming", "Videojuegos"), T("Media", "Medios"), T("Enterprise", "Empresa")]
 INDUSTRIES_LABEL = T("Industries", "Industrias")
-INDUSTRIES_STAT = ('<div class="stat best"><div class="n">' + "".join(f'<span class="bs">{h(b)}</span>' for b in INDUSTRIES)
-             + f'</div><div class="l">{h(INDUSTRIES_LABEL)}</div></div>')
 
-def stats_html():
+def _tags_stat(items, label):
+    return ('<div class="stat best"><div class="n">' + "".join(f'<span class="bs">{h(b)}</span>' for b in items)
+            + f'</div><div class="l">{h(label)}</div></div>')
+
+def stats_html(view=None):
     stat = lambda n, u, l: f'<div class="stat"><div class="n">{n}<span class="u">{u}</span></div><div class="l">{h(l)}</div></div>'
-    return '<div class="stats">' + stat(*STATS[0]) + INDUSTRIES_STAT + stat(*STATS[1]) + BEST_STAT + '</div>'
+    return ('<div class="stats">' + stat(*STATS[0]) + _tags_stat(INDUSTRIES, INDUSTRIES_LABEL) + stat(*STATS[1])
+            + _tags_stat((view or master_view())["best"], BEST_LABEL) + '</div>')
 
-def profile_html():
-    return f'<p class="profile">{h(PROFILE)}</p>'
+def profile_html(view=None):
+    return f'<p class="profile">{h((view or master_view())["profile"])}</p>'
 
-def experience_html():
-    out = ['<div class="tl">']
-    for j in JOBS:
-        out.append(f'<div class="job{" cur" if j["cur"] else ""}">')
-        out.append(f'<div class="job-head"><div class="r">{h(j["role"])} · <span class="c">{j["co"]}</span></div><div class="p" data-from="{j["frm"]}"{f' data-to="{j["to"]}"' if j["to"] else ""}>{h(j["period"])}</div></div>')
-        inds = "".join(f'<span class="ind">{h(i)}</span>' for i in j["inds"])
-        out.append(f'<div class="loc">{h(j["loc"])}<span class="inds">{inds}</span></div>')
-        out.append('<ul class="pts">' + "".join(f'<li>{h(p)}</li>' for p in j["pts"]) + '</ul>')
-        out.append('</div>')
-    out.append('</div>')
-    return "\n".join(out)
+def _job_html(j):
+    inds = "".join(f'<span class="ind">{h(i)}</span>' for i in j["inds"])
+    return "\n".join([
+        f'<div class="job{" cur" if j["cur"] else ""}">',
+        f'<div class="job-head"><div class="r">{h(j["role"])} · <span class="c">{j["co"]}</span></div><div class="p" data-from="{j["frm"]}"{f' data-to="{j["to"]}"' if j["to"] else ""}>{h(j["period"])}</div></div>',
+        f'<div class="loc">{h(j["loc"])}<span class="inds">{inds}</span></div>',
+        '<ul class="pts">' + "".join(f'<li>{h(p)}</li>' for p in j["pts"]) + '</ul>',
+        '</div>'])
+
+def experience_html(view=None):
+    return "\n".join(['<div class="tl">'] + [_job_html(j) for j in (view or master_view())["jobs"]] + ['</div>'])
 
 import json
 
@@ -1152,82 +1172,11 @@ def _blk(label):
     attr = lambda s: re.sub(r"<[^>]+>", "", s).replace('"', "&quot;")   # plain text, safe inside the quotes
     return f' data-label-en="{attr(label.en)}" data-label-es="{attr(label.es)}"'
 
-def _hfacts(e):
-    """Spec row under the title: key/value pairs, e.g. Team 5 engineers · Cloud AWS."""
-    facts = e.get("facts") or []
-    return (f'<div class="hfacts mono hblock"{_blk(BLOCK_LABELS["facts"])}>'
-            + "".join(f'<span class="hfact"><b>{h(k)}</b>{h(v)}</span>' for k, v in facts)
-            + "</div>") if facts else ""
-
-def _hgroups(e):
-    """Bullets split into titled sections, so a long entry stays readable."""
-    out = [f'<section class="hgroup hblock"{_blk(g["h"])}><h4 class="hg-h mono">{h(g["h"])}</h4>{_bullets(g["pts"])}</section>'
-           for g in (e.get("groups") or [])]
-    return f'<div class="hgroups">{"".join(out)}</div>' if out else ""
-
 DELIV_BADGE = {"milestone": T("Milestone", "Hito"), "release": T("Release", "Lanzamiento"),
                "award": T("Award", "Reconocimiento"), "pace": T("Pace", "Ritmo"), "prototype": T("Prototype", "Prototipo"),
                "training": T("Training", "Capacitación")}
 DELIV_RESULT = T("Result", "Resultado")
 DELIV_FOOT = {"training": T("Now", "Ahora")}   # footer label per kind; the rest say Result
-
-def _hdelivs(e):
-    """Highlighted cards for the things worth pulling out of an entry: a shipped deliverable, a release, an award —
-    or `pace`, the yellow one: how fast it got done and what that cost (overtime), a fact worth showing but not bragging about —
-    or `prototype`, the grey dashed one: something built that never shipped —
-    or `training`, the pink one: learning that runs alongside the work (its footer says Now instead of Result)."""
-    out = []
-    for dv in e.get("deliverables") or []:
-        kind = dv.get("kind", "milestone")
-        role = f'<div class="hd-role">{h(dv["role"])}</div>' if dv.get("role") else ""
-        result = (f'<div class="hd-result"><b class="mono">{h(DELIV_FOOT.get(kind, DELIV_RESULT))}</b> {h(dv["result"])}</div>'
-                  if dv.get("result") else "")
-        chips = ("".join(f'<span class="dchip">{h(t)}</span>' for t in dv.get("tech", [])))
-        chips = f'<div class="dchips">{chips}</div>' if chips else ""
-        out.append(f'<section class="hdeliv {kind} hblock"{_blk(dv["title"])}><div class="hd-badge mono">{h(DELIV_BADGE[kind])}</div>'
-                   f'<h4 class="hd-t">{h(dv["title"])}</h4>{role}{_bullets(dv["pts"])}{result}{chips}</section>')
-    return "".join(out)
-
-def _hstack(e):
-    """The entry's own tech chips, inline on the timeline (the sticky panel shows them too)."""
-    tech = e.get("tech") or []
-    return (f'<div class="hstack hblock"{_blk(BLOCK_LABELS["stack"])}><span class="hs-h mono">stack</span><div class="dchips">'
-            + "".join(f'<span class="dchip">{h(t)}</span>' for t in tech) + "</div></div>") if tech else ""
-
-def _hlinks(e):
-    links = e.get("links") or []
-    return (f'<div class="hlinks mono hblock"{_blk(BLOCK_LABELS["links"])}>' + "".join(ext(href, h(label)) for label, href in links) + "</div>") if links else ""
-
-def _hentry_html(i, level, e):
-    frm = e.get("frm")
-    if not frm:
-        when = f'<div class="hdate mono">{h(e["dur"])}</div>' if e.get("dur") else ""
-    elif "to" not in e:
-        y, m = frm.split("-"); when = f'<div class="hdate mono">{_MONTHS[int(m)-1]} {y}</div>'
-    else:
-        dur = f'<span class="hdur">{h(e["dur"])}</span>' if e.get("dur") else ""
-        when = f'<div class="hdate mono" data-from="{frm}"{f" data-to=\"{e["to"]}\"" if e["to"] else ""}>{frm}</div>{dur}'
-    inds = "".join(f'<span class="ind">{h(x)}</span>' for x in e.get("inds", []))
-    lede = f'<p class="hlede hblock"{_blk(BLOCK_LABELS["lede"])}>{h(e["lede"])}</p>' if e.get("lede") else ""
-    pts = _bullets(e["pts"], "pts hblock", _blk(BLOCK_LABELS["pts"])) if e.get("pts") else ""
-    children = ""
-    if level == 0 and e.get("children"):
-        # indices of children follow the parent in history_flat()
-        kids = "".join(_hentry_html(i + 1 + k, 1, c) for k, c in enumerate(e["children"]))
-        children = f'<div class="hchildren">{kids}</div>'
-    # .hhead is all that stays when the search dims an entry; .hbody holds the foldable blocks; children sit outside both
-    return (f'<section class="hentry {e["kind"]}{" child" if level else ""}" id="h-{e["slug"]}" data-i="{i}" data-kind="{e["kind"]}">'
-            f'<div class="hhead">{when}<h3>{_htitle(e)}</h3>'
-            f'<div class="loc">{h(e.get("loc", ""))}<span class="inds">{inds}</span></div></div>'
-            f'<div class="hbody">{_hfacts(e)}{lede}{pts}{_hgroups(e)}{_hdelivs(e)}{_hstack(e)}{_hlinks(e)}</div>{children}</section>')
-
-def _htitle(e):
-    """Entry headline: `{role} · {company}`, or the company alone when the role is the parent's (role="")."""
-    co = f'<span class="c">{e["co"]}</span>'
-    return f'{h(e["role"])} · {co}' if e.get("role") else co
-
-def history_html():
-    return "\n".join(_hentry_html(i, 0, e) for i, lvl, parent, e in history_flat() if lvl == 0)
 
 # ---- /timeline/ search: a sticky `grep -i` bar over the timeline column, plus optional facet chips.
 # A facet chip only adds its word to the query (or removes it) — the query is the only state, so a link is just ?q=…
@@ -1249,26 +1198,24 @@ def _facet_chips(items, folded=()):
     return "".join(chip(t, False) for t in items) + "".join(chip(t, True) for t in folded)
 
 def history_search_html():
-    flat = history_flat()
-    key = lambda t: t.en if isinstance(t, T) else t
-    # tech: how many entries carry each chip; the common ones up front, the long tail folded
+    rows = [_both(rid) for _, _, _, rid in timeline_flat()]   # the timeline's rows, from the tree
+    # tech: how many rows carry each chip; the common ones up front, the long tail folded
     seen, count = {}, {}
-    for _, _, _, e in flat:
-        for t in e.get("tech") or []:
-            seen.setdefault(key(t), t); count[key(t)] = count.get(key(t), 0) + 1
+    for en, es in rows:
+        for a, b in zip(en["stack"], es["stack"]):
+            seen.setdefault(a, _bh(a, b)); count[a] = count.get(a, 0) + 1
     order = sorted(seen, key=lambda k: (-count[k], k.lower()))
     top = [seen[k] for k in order if count[k] >= FACET_MIN]
     rest = [seen[k] for k in order if count[k] < FACET_MIN]
     # industry: "Gaming · Mobile" is two atoms, each searchable on its own
     inds = {}
-    for _, _, _, e in flat:
-        for t in e.get("inds") or []:
-            t = t if isinstance(t, T) else T(t)
-            for en, es in zip(t.en.split(" · "), t.es.split(" · ")):
-                inds.setdefault(en, T(en, es))
+    for en, es in rows:
+        for a, b in zip(en["industries"], es["industries"]):
+            for x, y in zip(a.split(" · "), b.split(" · ")):
+                inds.setdefault(x, _bh(x, y))
     kinds = []
-    for _, _, _, e in flat:
-        if KIND_LABELS[e["kind"]] not in kinds: kinds.append(KIND_LABELS[e["kind"]])
+    for en, _ in rows:
+        if KIND_LABELS[en["type"]] not in kinds: kinds.append(KIND_LABELS[en["type"]])
     L = {k: h(v) for k, v in SEARCH_LABELS.items()}
     more = f'<button type="button" class="hq-morechips mono">+{len(rest)} {L["more"]}</button>' if rest else ""
     facet = lambda name, chips: f'<div class="hq-facet"><span class="hq-fh mono">// {L[name]}</span><div class="dchips">{chips}</div></div>'
@@ -1284,8 +1231,14 @@ def history_search_html():
             f'<div class="hq-empty mono" hidden>// {L["empty"]}</div>'
             f'</div>')
 
-ROLE_PLAIN = T("Senior Software Engineer / Tech Lead / Backend &amp; Full-Stack / Game Dev / AI-Assisted",
-               "Ingeniero de Software Senior / Tech Lead / Backend y Full-Stack / Videojuegos / Asistido por IA")
+# The headline roles, the one that leads first: the CV's subtitle (roles_sub) and ROLE_PLAIN, "A / B / C".
+ROLES = [T("Senior Software Engineer", "Ingeniero de Software Senior"), T("Tech Lead"),
+         T("Backend &amp; Full-Stack", "Backend y Full-Stack"), T("Game Dev", "Videojuegos"), T("AI-Assisted", "Asistido por IA")]
+
+def roles_plain(roles):
+    return T(" / ".join(r.en for r in roles), " / ".join(r.es for r in roles))
+
+ROLE_PLAIN = roles_plain(ROLES)
 # The headings the DOCX uses and that @media print swaps in for the shell commands (see sh_label).
 # Wording is deliberately the canonical one resume parsers look for — "Professional Summary",
 # "Work Experience", "Skills", "Projects", "Education" — not the site's own section names.
@@ -1295,36 +1248,35 @@ DOC_LABELS = {
     "core": T("Skills", "Habilidades"),
     "tech": T("Technical Skills", "Habilidades técnicas"),
     "education": T("Education", "Educación"),
+    "languages": T("Languages", "Idiomas"),
     "present": T("Present", "Actualidad"),
     "yr": T(" yr", " año"), "yrs": T(" yrs", " años"), "mo": T(" mo", " mes"), "mos": T(" mos", " meses"),
 }
 
-def cv_data_json():
-    """Everything the in-browser DOCX writer needs, in both languages. Same source as the page itself."""
+def cv_data_json(view=None):
+    """Everything the in-browser DOCX writer needs, in both languages. Same source as the page itself.
+    `file`: the downloads' file name, before the language (Sergio-Sanchez-CV-EN.pdf)."""
+    cv = view or master_view()
     data = dict(
-        name=NAME, role=d(ROLE_PLAIN), site="sergiowero.github.io",
+        name=NAME, role=d(roles_plain(cv["roles"])), site="sergiowero.github.io",
         contact=[dict(text=d(text), href=href) for _, text, href in CONTACT],
-        profile=d(PROFILE),
+        profile=d(cv["profile"]),
         jobs=[dict(role=d(j["role"]), co=j["co"], frm=j["frm"], to=j["to"],
-                   loc=d(j["loc"]), inds=d(j["inds"]), pts=d(j["pts"])) for j in JOBS],
-        core=[dict(name=name, word=d(level(lvl)[0]), pct=level(lvl)[1]) for name, lvl in CORE],
-        tech=d(TECH),
+                   loc=d(j["loc"]), inds=d(j["inds"]), pts=d(j["pts"])) for j in cv["jobs"]],
+        core=[dict(name=name, word=d(level(lvl)[0]), pct=level(lvl)[1]) for name, lvl in cv["core"]],
+        tech=d(cv["tech"]),
         ai=dict(head=d(AI_HEAD), text=d(AI_TEXT), chips=AI_CHIPS),
         edu=[dict(deg=d(deg), meta=d(meta)) for deg, meta in EDU],
+        langs=[dict(name=d(name), level=d(level)) for _, name, _, level in LANGUAGES],
         labels={k: d(v) for k, v in DOC_LABELS.items()},
         months=dict(en=_MONTHS, es=["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]),
+        file=cv["file"],
     )
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
-def cv_data_html():
-    return (f'<script type="application/json" id="cv-data">{cv_data_json()}</script>\n'
+def cv_data_html(view=None):
+    return (f'<script type="application/json" id="cv-data">{cv_data_json(view)}</script>\n'
             '<script src="/cv-export.js" defer></script>')
-
-def history_json():
-    data = [dict(kind=e["kind"], kind_label=d(KIND_LABELS[e["kind"]]), slug=e["slug"], role=d(e["role"]), co=e["co"], frm=e.get("frm"), dur=d(e.get("dur")),
-                 to=("single" if "to" not in e else e["to"]), loc=d(e.get("loc", "")), inds=d(e.get("inds", [])), tech=d(e.get("tech", [])),
-                 level=lvl, parent=parent) for i, lvl, parent, e in history_flat()]
-    return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
 # ---- /llms.txt (https://llmstxt.org): the profile as plain Markdown for LLMs and AI crawlers.
 # English only, from the same data as the CV and the timeline; written to public/ like the pages.
@@ -1416,6 +1368,7 @@ def _llms_skills():
             f"- **Technologies:** {_md_list(TECH)}",
             f"- **{md(AI_HEAD)}:** {md(AI_TEXT)} Tools: {', '.join(AI_CHIPS)}.",
             f"- **Education:** " + "; ".join(f"{md(deg)} — {md(meta)}" for deg, meta in EDU),
+            f"- **Languages:** " + ", ".join(f"{md(name)} ({md(level)})" for _, name, _, level in LANGUAGES),
             f"- **Shipped titles:** " + "; ".join(md(t) for t in TITLES)]
 
 def llms_md():
@@ -1438,6 +1391,7 @@ def llms_md():
         f"- [The Lullaby of Life on Steam]({STEAM}): the Unity3D game shipped on Apple Arcade and Steam",
         f"- [VR racing game — iOS gameplay]({_unescape(YT_VR)}): Virtually Live, Formula E",
         f"- [Demo reel]({YT_REEL}): five iOS games from Kaxan Games",
+        f"- [Timeline as a tree of records]({SITE}/cv/en/tree.json): everything above as JSON records with tech and tags, for programs ([Spanish]({SITE}/cv/es/tree.json), [schema]({SITE}/cv/tree.schema.json))",
         ""])
 
 FIT_JS = """<script>
@@ -1475,7 +1429,8 @@ FIT_JS = """<script>
   document.addEventListener('langchange',draw);
 })();
 /* Language switch (ES/EN): remembered across pages; header labels swap via html[data-lang];
-   on a page that has a translation (body[data-alt-es|en]) it navigates to it */
+   on a page that has a translation (body[data-alt-es|en]) it navigates to it.
+   A page may pick the language of a first visit with html[data-default-lang] (the CVs in /tailor-cv/ do) */
 (function(){
   var KEY='cv-lang';
   function apply(l){
@@ -1483,7 +1438,7 @@ FIT_JS = """<script>
     document.querySelectorAll('.tab[data-lang]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-lang')===l);});
     document.dispatchEvent(new CustomEvent('langchange',{detail:l}));
   }
-  var saved='en'; try{saved=localStorage.getItem(KEY)||'en';}catch(e){}
+  var saved=document.documentElement.getAttribute('data-default-lang')||'en'; try{saved=localStorage.getItem(KEY)||saved;}catch(e){}
   apply(saved);
   document.querySelectorAll('.tab[data-lang]').forEach(function(el){
     el.addEventListener('click',function(){
@@ -1584,23 +1539,42 @@ SECTIONS = [("cv", "/", "Resume", "Currículum"), ("history", "/timeline/", "Tim
 
 HL = '<span class="hl">/</span>'
 
+def roles_sub(roles):
+    """The CV's subtitle: the roles split by a slash, the first one (the headline) in green."""
+    sub = lambda lang: f" {HL} ".join([f'<span class="r0">{getattr(roles[0], lang)}</span>'] + [getattr(r, lang) for r in roles[1:]])
+    return T(sub("en"), sub("es"))
+
 def sh_label(cmd, ats):
     """A section heading in two skins: the shell command on screen, a plain heading when printing.
        CSS swaps them in @media print, so a PDF (and any ATS reading it) never sees `cat profile.md`."""
     return f'<span class="cmd">{h(cmd)}</span><span class="ats">{h(ats)}</span>'
 
+# Section headings: (the shell command shown on screen, the plain heading used in print / ATS).
+# Also exported to /cv/{lang}/tree.json as resume.labels.sections, so external generators use the same wording.
+SECTION_LABELS = {
+    "profile": (T("cat profile.md", "cat perfil.md"), DOC_LABELS["profile"]),
+    "experience": (T("cat experience.log", "cat experiencia.log"), DOC_LABELS["experience"]),
+    "core_skills": (T("ls core-skills/", "ls habilidades/"), DOC_LABELS["core"]),
+    "technologies": (T("ls tech/"), DOC_LABELS["tech"]),
+    "education": (T("cat education.txt", "cat educacion.txt"), DOC_LABELS["education"]),
+    "languages": (T("cat languages.txt", "cat idiomas.txt"), DOC_LABELS["languages"]),
+    "about": (T("cat about.md", "cat sobre-mi.md"), T("About", "Sobre mí")),
+    "toolbox": (T("ls toolbox/", "ls herramientas/"), T("Toolbox", "Herramientas")),
+    "contact": (T("cat contact.md", "cat contacto.md"), T("Contact", "Contacto")),
+}
+
 LABELS = {
     # the first role is the headline one: it gets the green, the rest stay muted
-    "$L_SUB$": T(f'<span class="r0">Senior Software Engineer</span> {HL} Tech Lead {HL} Backend &amp; Full-Stack {HL} Game Dev {HL} AI-Assisted',
-                 f'<span class="r0">Ingeniero de Software Senior</span> {HL} Tech Lead {HL} Backend y Full-Stack {HL} Videojuegos {HL} Asistido por IA'),
-    "$L_PROFILE$": sh_label(T("cat profile.md", "cat perfil.md"), DOC_LABELS["profile"]),
-    "$L_EXP$": sh_label(T("cat experience.log", "cat experiencia.log"), DOC_LABELS["experience"]),
-    "$L_CORE$": sh_label(T("ls core-skills/", "ls habilidades/"), DOC_LABELS["core"]),
-    "$L_TECH$": sh_label(T("ls tech/"), DOC_LABELS["tech"]),
-    "$L_EDU$": sh_label(T("cat education.txt", "cat educacion.txt"), DOC_LABELS["education"]),
-    "$L_ABOUT$": sh_label(T("cat about.md", "cat sobre-mi.md"), T("About", "Sobre mí")),
-    "$L_TOOLBOX$": sh_label(T("ls toolbox/", "ls herramientas/"), T("Toolbox", "Herramientas")),
-    "$L_CONTACT$": sh_label(T("cat contact.md", "cat contacto.md"), T("Contact", "Contacto")),
+    "$L_SUB$": roles_sub(ROLES),
+    "$L_PROFILE$": sh_label(*SECTION_LABELS["profile"]),
+    "$L_EXP$": sh_label(*SECTION_LABELS["experience"]),
+    "$L_CORE$": sh_label(*SECTION_LABELS["core_skills"]),
+    "$L_TECH$": sh_label(*SECTION_LABELS["technologies"]),
+    "$L_EDU$": sh_label(*SECTION_LABELS["education"]),
+    "$L_LANG$": sh_label(*SECTION_LABELS["languages"]),
+    "$L_ABOUT$": sh_label(*SECTION_LABELS["about"]),
+    "$L_TOOLBOX$": sh_label(*SECTION_LABELS["toolbox"]),
+    "$L_CONTACT$": sh_label(*SECTION_LABELS["contact"]),
     "$L_CVFILE$": T("cv.md"),
     "$L_HISTFILE$": T("timeline.md"),
 }
@@ -1632,19 +1606,116 @@ NAV_TPL = """<header class="site-nav" aria-label="Site sections">
   <div class="grp theme" aria-label="Theme"><button class="tab" type="button" data-toggle-theme title="Toggle theme" aria-label="Toggle theme"><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></div>
 </header>"""
 
-def page(title, fonts, css, body):
+# ---- Link cards: what WhatsApp, LinkedIn, Slack, X, Discord or Teams show for a shared link (Open Graph + Twitter tags).
+# Each page below gets its own <title>, description, canonical URL and card tags (meta_html). The 1200×630 image is
+# drawn at build time by src/pages/og/[...card].png.ts from src/shell/cards.json, written by this script from the
+# same data; the blog pages (Astro) build theirs from each post's front matter with the same template.
+# In English, like the page a crawler reads (ES is a client-side switch); og:locale:alternate says Spanish is there too.
+import html as _html
+SHORT_NAME = "Sergio Sánchez"
+OG_LOCALES = ("en_US", "es_MX")
+YEARS = date.today().year - START_YEAR   # like /llms.txt: counted when this script runs, so regenerate once a year
+
+def plain(v, lang="en"):
+    """A data string (T or plain, HTML allowed) as plain text in one language."""
+    s = getattr(v, lang) if isinstance(v, T) else str(v or "")
+    s = re.sub(r"<span data-years>\d+</span>", str(YEARS), s)
+    return _unescape(re.sub(r"<[^>]+>", "", s)).strip()
+
+def _sentences(s, n):
+    return " ".join(re.split(r"(?<=\.) ", s)[:n])
+
+def page_cards():
+    """Per page: its link-card meta, and `card`, what the image shows (src/lib/og.ts, `Card`)."""
+    flat = [e for _, _, _, e in history_flat()]
+    jobs = [e for e in history_entries() if e["kind"] == "job"]
+    clients = [c["co"] for j in jobs for c in j["children"] if c["kind"] == "project"]
+    since = min(e["frm"] for e in flat if e.get("frm"))[:4]
+    where = CONTACT[0][1]
+    roles = [r.strip() for r in plain(LABELS["$L_SUB$"]).split(" / ")]
+    industries = " · ".join(plain(x) for x in INDUSTRIES)
+    inds = [plain(x).lower() for x in INDUSTRIES]
+    skills = list(dict.fromkeys(BEST_SKILLS + [plain(t) for t in TECH]))
+    worked = ", ".join(j["co"] + (f" ({', '.join(c['co'] for c in j['children'] if c['kind'] == 'project')})"
+                                  if any(c["kind"] == "project" for c in j["children"]) else "") for j in jobs)
+    return {
+        "cv": dict(
+            path="/", type="profile", title=f"{SHORT_NAME} — {plain(ROLE)} | CV",
+            description=(f"{plain(ROLE)} based in {where}, with {YEARS}+ years across {', '.join(inds[:-1])} and {inds[-1]}. "
+                         f"{', '.join(BEST_SKILLS)}, AWS. One-page CV in English and Spanish, with PDF and DOCX downloads."),
+            labels=[("Experience", f"{YEARS}+ years"), ("Based in", where)],
+            image_alt=f"{NAME}: {', '.join(roles)}. {YEARS}+ years across {industries}; {', '.join(BEST_SKILLS)}.",
+            card=dict(prompt="cat cv.md", title=NAME, roles=roles,
+                      stats=[dict(n=f"{YEARS}+", l="yrs experience"), dict(n=STATS[1][0], l="engineers led"), dict(n=industries, l="industries")],
+                      chips=skills, photo=True, section="Resume / CV", lang="EN · ES")),
+        "timeline": dict(
+            path="/timeline/", type="website", title=f"Career timeline — {SHORT_NAME}",
+            description=(f"Every job, client project and degree of {SHORT_NAME} since {since}: {worked}. "
+                         "Role, stack and results of each one, searchable, in English and Spanish."),
+            labels=[("Since", since), ("Companies", ", ".join(j["co"] for j in jobs))],
+            image_alt=f"Career timeline of {NAME} since {since}: {worked}.",
+            card=dict(prompt="cat timeline.md", title="Timeline", subtitle=NAME,
+                      text="All the projects I have worked on so far, newest first: role, stack and results of each one.",
+                      stats=[dict(n=f"{since} – today", l="span"), dict(n=str(len(jobs)), l="companies"),
+                             dict(n=str(len(clients)), l="client projects")],
+                      chips=[e["co"] for e in flat if e["kind"] in ("job", "project")], chipRows=2, section="Timeline", lang="EN · ES")),
+        "about": dict(
+            path="/about/", type="profile", title=f"About me — {SHORT_NAME}",
+            description=_sentences(ABOUT_BIO_EN, 2),
+            labels=[("Based in", where), ("Experience", f"{YEARS}+ years")],
+            image_alt=f"{SHORT_NAME} at the Golden Gate Bridge — {plain(ROLE)}, {where}.",
+            card=dict(prompt="whoami", title=NAME, subtitle=plain(ROLE),
+                      text=_sentences(ABOUT_BIO_EN, 1), chips=[name for name, _, _ in TOOLBOX] + AI_CHIPS,
+                      photo=True, section="About me", lang="EN · ES")),
+    }
+
+# page in public/ → its card; the redirects share their target's
+PAGE_FILES = {"index.html": "cv", "timeline/index.html": "timeline", "about/index.html": "about",
+              "cv/index.html": "cv", "history/index.html": "timeline"}
+
+def meta_html(name, m):
+    """<title>, description, canonical and the Open Graph / Twitter card tags of one page."""
+    a = lambda s: _html.escape(s, quote=False).replace('"', "&quot;")   # attribute values, always double-quoted
+    url, img = SITE + m["path"], f"{SITE}/og/{name}.png"
+    props = [("og:type", m["type"]), ("og:site_name", SHORT_NAME), ("og:url", url), ("og:title", m["title"]),
+             ("og:description", m["description"]), ("og:locale", OG_LOCALES[0]), ("og:locale:alternate", OG_LOCALES[1]),
+             ("og:image", img), ("og:image:type", "image/png"), ("og:image:width", "1200"), ("og:image:height", "630"),
+             ("og:image:alt", m["image_alt"])]
+    if m["type"] == "profile":
+        first, *last = NAME.rsplit(" ", 2)   # given names, then both surnames
+        props += [("profile:first_name", first), ("profile:last_name", " ".join(last)), ("profile:username", "sergiowero")]
+    names = [("author", NAME), ("twitter:card", "summary_large_image"), ("twitter:title", m["title"]),
+             ("twitter:description", m["description"]), ("twitter:image", img), ("twitter:image:alt", m["image_alt"])]
+    for i, (label, data) in enumerate(m.get("labels", []), 1):   # Slack shows these two pairs under the card
+        names += [(f"twitter:label{i}", label), (f"twitter:data{i}", data)]
+    return "\n".join([f"<title>{a(m['title'])}</title>", f'<meta name="description" content="{a(m["description"])}">',
+                      f'<link rel="canonical" href="{url}">']
+                     + [f'<meta property="{k}" content="{a(v)}">' for k, v in props]
+                     + [f'<meta name="{k}" content="{a(v)}">' for k, v in names])
+
+def cards_json(pages):
+    """src/shell/cards.json: the images of the pages above (page_cards) plus what the blog's cards need from here."""
+    cards = {name: dict(path=m["path"], **m["card"]) for name, m in pages.items()}
+    site = dict(name=SHORT_NAME, full_name=NAME, url=SITE, locales=dict(en=OG_LOCALES[0], es=OG_LOCALES[1]))
+    return json.dumps(dict(site=site, cards=cards), ensure_ascii=False, indent=2) + "\n"
+
+def page(title, fonts, css, body, meta=None, lang="en"):
+    """meta: the page's <title> + card tags (meta_html); the design drafts in Backups/ go without.
+    lang: the language a first visit sees (html[data-default-lang]); a language the visitor picked still wins."""
+    head = meta or (f"<title>{title}</title>\n"
+                    '<meta name="description" content="Sergio de Jesús Sánchez Robles — Senior Software Engineer / Tech Lead. 15 years across gaming, media and enterprise.">')
+    html_attrs = f'lang="{lang}"' + (f' data-default-lang="{lang}"' if lang != "en" else "")
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html {html_attrs}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){{try{{var d=document.documentElement;if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');if(localStorage.getItem('cv-lang')==='es')d.setAttribute('data-lang','es');}}catch(e){{}}}})();
+<script>(function(){{var d=document.documentElement,l=d.getAttribute('data-default-lang');try{{if(localStorage.getItem('cv-theme')==='dark')d.setAttribute('data-theme','dark');l=localStorage.getItem('cv-lang')||l;}}catch(e){{}}if(l==='es')d.setAttribute('data-lang','es');}})();
 window.cvLang=function(){{return document.documentElement.getAttribute('data-lang')==='es'?'es':'en';}};</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>{title}</title>
-<meta name="description" content="Sergio de Jesús Sánchez Robles — Senior Software Engineer / Tech Lead. 15 years across gaming, media and enterprise.">
+{head}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{fonts}&display=swap" rel="stylesheet">
@@ -1660,16 +1731,18 @@ window.cvLang=function(){{return document.documentElement.getAttribute('data-lan
 </html>
 """
 
-def fill(tpl, active="cv"):
-    for key, label in LABELS.items():
+def fill(tpl, active="cv", view=None):
+    """view: the CV's content (master_view() when None); a tailored CV passes its own."""
+    labels = dict(LABELS, **{"$L_SUB$": roles_sub((view or master_view())["roles"])})
+    for key, label in labels.items():
         tpl = tpl.replace(key, h(label))
-    return (tpl.replace("$NAV$", nav_html(active)).replace("$CVDATA$", cv_data_html())
+    return (tpl.replace("$NAV$", nav_html(active)).replace("$CVDATA$", cv_data_html(view))
             .replace("$DOWNLOAD$", DOWNLOAD_TPL if active == "cv" else "").replace("$HISTORY_JSON$", history_json()).replace("$HISTORY$", history_html()).replace("$HSEARCH$", history_search_html())
             .replace("$I18N_HISTORY_TITLE$", i18n("Timeline", "Mi línea de tiempo"))
-            .replace("$I18N_HISTORY_SUB$", i18n("All the projects I have worked on so far, newest first — scroll and the panel on the right follows.", "Todos los proyectos en los que he trabajado hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html())
-            .replace("$TECH$", chips_html(TECH)).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
-            .replace("$TITLES$", titles_html()).replace("$EDU$", edu_html()).replace("$STATS$", stats_html())
-            .replace("$PROFILE$", profile_html()).replace("$EXP$", experience_html())
+            .replace("$I18N_HISTORY_SUB$", i18n("All the projects I have worked on so far, newest first — scroll and the panel on the right follows.", "Todos los proyectos en los que he trabajado hasta ahora, de lo más reciente a lo más antiguo — al hacer scroll, el panel derecho te sigue.")).replace("$CONTACT$", contact_html()).replace("$CORE$", core_html(view))
+            .replace("$TECH$", chips_html((view or master_view())["tech"])).replace("$AI$", ai_html()).replace("$AI_NOICON$", ai_html(False))
+            .replace("$TITLES$", titles_html()).replace("$EDU$", edu_html()).replace("$LANGS$", langs_html()).replace("$STATS$", stats_html(view))
+            .replace("$PROFILE$", profile_html(view)).replace("$EXP$", experience_html(view))
             .replace("$ABOUT_BIO$", i18n(ABOUT_BIO_EN, ABOUT_BIO_ES)).replace("$TOOLBOX$", toolbox_html())
             .replace("$NAME$", NAME).replace("$ROLE$", ROLE).replace("$TAG$", TAG))
 
@@ -2313,6 +2386,11 @@ VERSIONS["v3-dark-terminal.html"] = dict(
   .edu:last-child{border-bottom:0;}
   .edu .d{font-size:9.5px;font-weight:600;color:var(--fg);}
   .edu .m{font-size:8.2px;color:var(--muted);}
+  .spoken{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 0;border-bottom:1px dashed var(--line);}
+  .spoken:last-child{border-bottom:0;}
+  .spoken .ln{font-size:9.5px;font-weight:600;color:var(--fg);}
+  .spoken .lv{font-family:'JetBrains Mono',monospace;font-size:8.2px;color:var(--green);}
+  .spoken .sep{display:none;}
   .foot{margin-top:auto;padding-top:5px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:7.6px;color:var(--muted);display:flex;justify-content:space-between;}
   .foot .g{color:var(--green);}
 
@@ -2356,6 +2434,8 @@ VERSIONS["v3-dark-terminal.html"] = dict(
     :root[data-print="ats"] .sk-dots{display:none !important;}
     :root[data-print="ats"] .sk-word{display:inline;color:var(--muted);}
     :root[data-print="ats"] .ai{background:none;border-color:var(--line);}
+    :root[data-print="ats"] .spoken{display:block;}   /* one line of text a parser reads as "Spanish — Native" */
+    :root[data-print="ats"] .spoken .sep{display:inline;}
   }
 """,
     body="""<div class="sheet">
@@ -2379,6 +2459,7 @@ VERSIONS["v3-dark-terminal.html"] = dict(
       <section><h2 class="sh">$L_CORE$</h2>$CORE$</section>
       <section><h2 class="sh">$L_TECH$</h2>$TECH$</section>
       <section><h2 class="sh">$L_EDU$</h2>$EDU$</section>
+      <section><h2 class="sh">$L_LANG$</h2>$LANGS$</section>
     </aside>
   </div>
   <div class="foot"><span><span class="g">➜</span> exit 0 · $NAME$</span><span>sergiowero.github.io</span></div>
@@ -2913,16 +2994,892 @@ def finish_body(body, v):
     flags = v.get("flags", False)
     return body.replace("$FLAG_ES$", FLAG_MX if flags else "").replace("$FLAG_EN$", FLAG_US if flags else "")
 
+def version_css(v):
+    return "  :root{" + v["nav"] + "}\n" + v["css"]
+
+def cv_page(v, meta=None, view=None, lang="en"):
+    """The CV sheet in design `v` (a VERSIONS entry): the master CV, or a tailored one when `view` is given
+    (tools/tailor.py). One function for both, so a /tailor-cv/ page can never drift from public/index.html."""
+    body = fill(v["body"], view=view).replace("$AI_TEXT$", h(AI_TEXT)).replace("$AI_CHIPS$", chips_html(AI_CHIPS))
+    return page(v["title"], v["fonts"], version_css(v), finish_body(body, v) + "\n" + v.get("extra_js", ""), meta, lang)
+
+# =================================================================== THE TIMELINE AS A TREE OF RECORDS
+# Every piece of the timeline is a record: jobs, client projects, degrees, achievements (milestone, release, prototype,
+# pace, training, award), the titled topics inside an entry and each bullet. Records carry a stable id, their
+# technologies (ids from TECH_CATALOG) and semantic tags (ids from TAGS), and hang from one root in a single tree.
+# /timeline/ is drawn from this tree, and gen.py publishes it for programs (one file per language, same ids):
+#   public/cv/{en,es}/tree.json    vocabulary + tree + records + `resume` (the one-page CV as a view)
+#   public/cv/tree.schema.json     the JSON Schema of tree.json: every record type and field
+#   public/cv/template.html        the CV as a Mustache template, filled with tree.json's `resume`
+# Written by this script from the data above: never edit them by hand.
+import unicodedata
+import urllib.parse
+
+CV_LANGS = ("en", "es")
+CV_BASE = f"{SITE}/cv"
+TREE_SCHEMA, TEMPLATE_SCHEMA = "cv-tree/1", "cv-template/1"   # bump when a key is renamed or removed; adding keys is fine
+METER_CELLS = 37   # cells in the CV's ASCII skill bar: what the page's script fits in the 54mm aside (JetBrains Mono 8.6px)
+MONTHS = {"en": _MONTHS, "es": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]}
+CONTACT_TYPES = {"pin": "location", "phone": "phone", "mail": "email", "in": "linkedin", "gh": "github", "tl": "timeline"}
+LIVE_V = VERSIONS[LIVE[0]]
+
+# Record types: type → (category, label). Categories group the types a program usually treats alike.
+RECORD_TYPES = {
+    "person": ("person", T("person", "persona")),
+    "job": ("position", KIND_LABELS["job"]),
+    "project": ("work", KIND_LABELS["project"]),
+    "education": ("education", KIND_LABELS["education"]),
+    "talk": ("activity", KIND_LABELS["talk"]),
+    "milestone": ("achievement", DELIV_BADGE["milestone"]),
+    "release": ("achievement", DELIV_BADGE["release"]),
+    "prototype": ("achievement", DELIV_BADGE["prototype"]),
+    "award": ("achievement", DELIV_BADGE["award"]),
+    "pace": ("achievement", DELIV_BADGE["pace"]),
+    "training": ("achievement", DELIV_BADGE["training"]),
+    "topic": ("content", T("topic", "tema")),
+    "highlight": ("content", T("highlight", "punto")),
+}
+TYPE_TAGS = {"release": ["shipped"], "prototype": ["prototyping"], "training": ["learning"], "pace": ["delivery-speed"]}
+
+# Technologies: id → (name, category, parent, aliases as the data writes them, pattern that finds it in text, implied tags).
+# Every string in a `tech=[…]` list must resolve here or in TAGS (gen.py stops otherwise). Patterns are case-sensitive.
+TECH_CATALOG = {
+    "csharp": ("C#", "language", None, ["C#"], r"C#", []),
+    "java": ("Java", "language", None, ["Java", "Java 8", "Java 11"], r"\bJava\b(?!Script)", ["backend"]),
+    "python": ("Python", "language", None, ["Python"], r"\bPython\b", []),
+    "javascript": ("JavaScript", "language", None, ["JavaScript"], r"\bJavaScript\b", []),
+    "typescript": ("TypeScript", "language", None, ["TypeScript", "Typescript"], r"\bTypeScript\b", []),
+    "go": ("Go", "language", None, ["Go"], r"\bGo\b", ["backend"]),
+    "ruby": ("Ruby", "language", None, ["Ruby"], r"\bRuby\b", []),
+    "php": ("PHP", "language", None, ["PHP"], r"\bPHP\b", ["backend"]),
+    "cpp": ("C++", "language", None, ["C++"], r"C\+\+", []),
+    "c": ("C", "language", None, ["C"], r"(?<![\w#+])C(?![\w#+])", []),
+    "objective-c": ("Objective-C", "language", None, ["Objective-C"], r"\bObjective-C\b", ["mobile"]),
+    "lua": ("Lua", "language", None, ["Lua"], r"\bLua\b", ["game-dev"]),
+    "sql": ("SQL", "language", None, ["SQL"], r"\bSQL\b", ["databases"]),
+    "xml": ("XML", "format", None, ["XML"], r"\bXML\b", []),
+    "dotnet": (".NET", "framework", None, [".NET"], r"\.NET\b", ["backend"]),
+    "nodejs": ("Node.js", "runtime", None, ["Node.js"], r"\bNode\.js\b", ["backend"]),
+    "spring": ("Spring", "framework", None, ["Spring"], r"\bSpring\b(?! Boot| Batch)", ["backend"]),
+    "spring-boot": ("Spring Boot", "framework", "spring", ["Spring Boot"], r"\bSpring Boot\b", ["backend"]),
+    "spring-batch": ("Spring Batch", "framework", "spring", ["Spring Batch"], r"\bSpring Batch\b", ["backend", "batch-processing"]),
+    "fastapi": ("FastAPI", "framework", None, ["FastAPI"], r"\bFastAPI\b", ["backend"]),
+    "django": ("Django", "framework", None, ["Django"], r"\bDjango\b", ["backend"]),
+    "flask": ("Flask", "framework", None, ["Flask"], r"\bFlask\b", ["backend"]),
+    "sqlalchemy": ("SQLAlchemy", "library", None, ["SQLAlchemy"], r"\bSQLAlchemy\b", ["databases"]),
+    "alembic": ("Alembic", "library", "sqlalchemy", ["Alembic"], r"\bAlembic\b", ["databases"]),
+    "react": ("React", "library", None, ["React"], r"\bReact\b", ["frontend"]),
+    "nextjs": ("Next.js", "framework", None, ["Next.js"], r"\bNext\.js\b", ["frontend"]),
+    "jquery": ("jQuery", "library", None, ["jQuery"], r"\bjQuery\b", ["frontend"]),
+    "opengl": ("OpenGL", "library", None, ["OpenGL"], r"\bOpenGL\b", ["graphics"]),
+    "langchain": ("LangChain", "library", None, ["LangChain"], r"\bLangChain\b", ["ai"]),
+    "claude-sdk": ("Claude SDK", "library", None, ["Claude SDK"], r"\bClaude SDK\b", ["ai"]),
+    "flow": ("Flow", "library", None, ["Flow"], r"\bFlow\b", ["game-dev"]),   # in-house, built for The Lullaby of Life
+    "openapi": ("OpenAPI", "specification", None, ["OpenAPI"], r"\bOpenAPI\b", ["api-design"]),
+    "postgresql": ("PostgreSQL", "database", None, ["PostgreSQL", "Postgres"], r"\bPostgreSQL\b|\bPostgres\b", ["databases"]),
+    "mariadb": ("MariaDB", "database", None, ["MariaDB"], r"\bMariaDB\b", ["databases"]),
+    "snowflake": ("Snowflake", "database", None, ["Snowflake"], r"\bSnowflake\b", ["databases"]),
+    "aws": ("AWS", "cloud", None, ["AWS"], r"\bAWS\b", ["cloud"]),
+    "aws-lambda": ("AWS Lambda", "cloud", "aws", ["AWS Lambda"], r"\bLambdas?\b", ["cloud", "serverless"]),
+    "aws-sns": ("Amazon SNS", "cloud", "aws", ["Amazon SNS"], r"\bSNS\b", ["cloud", "event-driven"]),
+    "aws-sqs": ("Amazon SQS", "cloud", "aws", ["Amazon SQS"], r"\bSQS\b", ["cloud", "event-driven"]),
+    "aws-ecs": ("Amazon ECS", "cloud", "aws", ["Amazon ECS"], r"\bECS\b", ["cloud", "containers"]),
+    "aws-cloudwatch": ("CloudWatch", "cloud", "aws", ["CloudWatch"], r"\bCloudWatch\b", ["cloud", "observability"]),
+    "docker": ("Docker", "tool", None, ["Docker"], r"\bDocker\b", ["containers", "devops"]),
+    "git": ("Git", "tool", None, ["Git"], r"\bGit\b(?!Hub)", ["devops"]),
+    "svn": ("SVN", "tool", None, ["SVN"], r"\bSVN\b", ["devops"]),
+    "vscode": ("VS Code", "tool", None, ["VS Code"], r"\bVS Code\b", []),
+    "intellij": ("IntelliJ IDEA", "tool", None, ["IntelliJ IDEA"], r"\bIntelliJ\b", []),
+    "rider": ("Rider", "tool", None, ["Rider"], r"\bRider\b", []),
+    "claude-code": ("Claude Code", "ai-tool", None, ["Claude Code"], r"\bClaude Code\b", ["ai-assisted-dev"]),
+    "codex": ("Codex", "ai-tool", None, ["Codex"], r"\bCodex\b", ["ai-assisted-dev"]),
+    "opencode": ("OpenCode", "ai-tool", None, ["OpenCode", "opencode"], r"\b[Oo]pen[Cc]ode\b", ["ai-assisted-dev"]),
+    "cursor": ("Cursor", "ai-tool", None, ["Cursor"], r"\bCursor\b", ["ai-assisted-dev"]),
+    "github-copilot": ("GitHub Copilot", "ai-tool", None, ["GitHub Copilot"], r"\bGitHub Copilot\b", ["ai-assisted-dev"]),
+    "unity": ("Unity3D", "engine", None, ["Unity3D", "Unity", "Unity 3"], r"\bUnity(?:3D| 3)?\b", ["game-dev"]),
+    "gamebryo": ("Gamebryo", "engine", None, ["Gamebryo"], r"\bGamebryo\b", ["game-dev"]),
+    "ios": ("iOS", "platform", None, ["iOS"], r"\biOS\b", ["mobile"]),
+    "android": ("Android", "platform", None, ["Android"], r"\bAndroid\b", ["mobile"]),
+    "macos": ("Mac OS", "platform", None, ["Mac OS"], r"\bMac OS\b", []),
+    "apple-arcade": ("Apple Arcade", "platform", None, ["Apple Arcade"], r"\bApple Arcade\b", ["game-dev"]),
+    "apple-tv": ("Apple TV", "platform", None, ["Apple TV"], r"\bApple TV\b", []),
+    "steam": ("Steam", "platform", None, ["Steam"], r"\bSteam\b", ["game-dev"]),
+    "nintendo-wii": ("Nintendo Wii", "platform", None, ["Nintendo Wii"], r"\bWii\b", ["game-dev"]),
+    "blackberry-playbook": ("BlackBerry PlayBook", "platform", None, ["BlackBerry PlayBook"], r"\bPlayBook\b", ["mobile"]),
+    "chrome-extension": ("Chrome extension", "platform", None, ["Chrome extension"], r"\bChrome extension\b", ["browser-extension", "frontend"]),
+    "htc-vive": ("HTC Vive", "device", None, ["HTC Vive"], r"\bHTC Vive\b", ["vr"]),
+    "oculus": ("Oculus", "device", None, ["Oculus"], r"\bOculus\b", ["vr"]),
+    "gear-vr": ("Gear VR", "device", None, ["Gear VR"], r"\bGear VR\b", ["vr", "mobile"]),
+}
+
+# Semantic tags: id → (facet, label, pattern over the record's English text (case-insensitive), aliases in `tech=[…]` lists).
+# Facets: domain (what area), practice (how), competency (what I did as a person), outcome (what came of it), industry.
+TAGS = {
+    # domain
+    "backend": ("domain", T("Backend"), r"\bback-?end\b|\bserver-side\b|\bAPIs?\b|\bRESTful services\b", []),
+    "frontend": ("domain", T("Frontend"), r"\bfront-?end\b|\bweb side\b", []),
+    "full-stack": ("domain", T("Full-stack"), r"\bfull-?stack\b", ["Full-Stack"]),
+    "mobile": ("domain", T("Mobile", "Móvil"), r"\bmobile\b|\biPhone\b|\biPad\b", ["Mobile", "Mobile games", "Mobile & Console"]),
+    "game-dev": ("domain", T("Game development", "Desarrollo de videojuegos"), r"\bgames?\b|\bgameplay\b",
+                 ["Mobile games", "Mobile & Console", "Console", "Game modes"]),
+    "vr": ("domain", T("Virtual reality", "Realidad virtual"), r"\bVR\b|\bvirtual reality\b", ["VR"]),
+    "multiplayer": ("domain", T("Multiplayer & online", "Multijugador y online"), r"\bmultiplayer\b|\bgame servers?\b|\bco-?operative\w*",
+                    ["Multiplayer", "Game server", "Game servers", "Online"]),
+    "graphics": ("domain", T("3D graphics", "Gráficos 3D"), r"\b3D\b|\bcomputer graphics\b", []),
+    "live-data": ("domain", T("Live data", "Datos en vivo"), r"\blive race\b|\breal[- ]time\b|\brace that was\b", ["Live race data"]),
+    "cloud": ("domain", T("Cloud"), r"\bAWS\b|\bcloud\b", []),
+    "serverless": ("domain", T("Serverless"), r"\bserverless\b", []),
+    "containers": ("domain", T("Containers", "Contenedores"), r"\bcontainers?\b|\bKubernetes\b", []),
+    "event-driven": ("domain", T("Messaging & events", "Mensajería y eventos"),
+                     r"\bqueues?\b|\bmessag(?:e|es|ing)\b|\bdomain events?\b|\basynchronous\w*|\bevent-driven\b",
+                     ["Domain events", "Message queues"]),
+    "reliable-messaging": ("domain", T("Reliable messaging (outbox/inbox)", "Mensajería confiable (outbox/inbox)"),
+                           r"\b(?:outbox|inbox) pattern\b|\bredelivered\b", ["Outbox pattern", "Inbox pattern"]),
+    "databases": ("domain", T("Databases", "Bases de datos"), r"\bdatabases?\b|\bdata models?\b|\bschema\b|\brelational\b", []),
+    "migration": ("domain", T("Migrations", "Migraciones"), r"\bmigrat\w*|\bdata imports?\b", []),
+    "batch-processing": ("domain", T("Batch processing", "Procesamiento por lotes"), r"\bbatch\b|\bchunked\b", []),
+    "observability": ("domain", T("Observability", "Observabilidad"), r"\blogs\b|\bdebugg\w+", []),
+    "testing": ("domain", T("Testing", "Pruebas"), r"\bunit tests?\b|\btestable\b|\btesting\b", ["Unit tests", "Unit Testing"]),
+    "devops": ("domain", T("DevOps & CI/CD"), r"\bCI/CD\b|\bdeploy\w*", ["CI/CD"]),
+    "automation": ("domain", T("Automation", "Automatización"), r"\bautomat\w+|\bscripts\b", ["Automation"]),
+    "tooling": ("domain", T("Developer tooling", "Herramientas de desarrollo"),
+                r"\b(?:internal|development|specialised|specialized) tools?\b|\blibrar(?:y|ies)\b", ["Custom libraries"]),
+    "hardware-validation": ("domain", T("Hardware validation", "Validación de hardware"),
+                            r"\bhardware validation\b|\bchip designs?\b|\bsimulation\b", ["Hardware validation"]),
+    "metaprogramming": ("domain", T("Metaprogramming", "Metaprogramación"), r"\bmetaprogramming\b", ["Ruby metaprogramming"]),
+    "security": ("domain", T("Security", "Seguridad"), r"\bcredentials?\b|\bcybersecurity\b|\bpasswords\b", []),
+    "browser-extension": ("domain", T("Browser extensions", "Extensiones de navegador"), r"\bbrowser extension\b|\bChrome extension\b", []),
+    "systems-programming": ("domain", T("Systems programming", "Programación de sistemas"),
+                            r"\bembedded\b|\blow[- ]level\b|\boperating systems?\b|\bcompilers?\b", []),
+    "data-analysis": ("domain", T("Data analysis", "Análisis de datos"), r"\bdata mining\b|\bstatistics\b", []),
+    "ai": ("domain", T("AI engineering", "Ingeniería de IA"), r"\bartificial intelligence\b|\bAI engineer\w*|\bagents\b", []),
+    "ai-assisted-dev": ("domain", T("AI-assisted development", "Desarrollo asistido por IA"),
+                        r"\bAI(?:-assisted)? tool\w*|\bcoding agents?\b|\bAI tooling\b", []),
+    "saas": ("domain", T("SaaS"), r"\bSaaS\b", []),
+    # practice
+    "architecture": ("practice", T("Software architecture", "Arquitectura de software"),
+                     r"\barchitect\w*|\bsolution design\b|\bdesign(?:ed|ing)\b|\bsystems design\b", []),
+    "ddd": ("practice", T("Domain-Driven Design"), r"\bDDD\b|\bDomain-Driven\b", ["DDD"]),
+    "microservices": ("practice", T("Microservices", "Microservicios"), r"\bmicroservices?\b|\bmany services\b", ["Microservices"]),
+    "clean-architecture": ("practice", T("Clean Architecture"), r"\bClean Architecture\b", ["Clean Architecture"]),
+    "modular-monolith": ("practice", T("Modular monolith", "Monolito modular"), r"\bmodular monolith\b", ["Modular monolith"]),
+    "api-design": ("practice", T("API design", "Diseño de APIs"), r"\bAPI[- ]first\b|\bRESTful\b|\bREST-based\b|\bREST\b",
+                   ["REST", "RESTful APIs"]),
+    "dependency-injection": ("practice", T("Dependency injection", "Inyección de dependencias"),
+                             r"\bIoC\b|\bDependency Injection\b|\bDI container\b", ["IoC / DI"]),
+    "oop": ("practice", T("Object-oriented programming", "Programación orientada a objetos"), r"\bobject-oriented\b|\bOOP\b", ["OOP"]),
+    "code-review": ("practice", T("Code review", "Revisión de código"), r"\bpull request reviews?\b|\bcode reviews?\b", []),
+    "prototyping": ("practice", T("Prototyping", "Prototipado"), r"\bprototypes?\b", ["Prototyping"]),
+    # competency
+    "leadership": ("competency", T("Technical leadership", "Liderazgo técnico"),
+                   r"\bled\b|\blead\b|\bleading\b|\bdirected\b|\bspearheaded\b", []),
+    "mentoring": ("competency", T("Mentoring", "Mentoría"), r"\bmentor\w*|\b1:1s?\b", ["Mentorship", "Biweekly 1:1s"]),
+    "people-management": ("competency", T("People management", "Gestión de personas"),
+                          r"\bAssociate Manager\b|\bdirect reports?\b|\bcareer path\b", ["People management", "Biweekly 1:1s"]),
+    "ownership": ("competency", T("End-to-end ownership", "Responsabilidad de punta a punta"),
+                  r"\bend to end\b|\bon my own\b|\bmy own initiative\b|\bownership\b", []),
+    "stakeholder-management": ("competency", T("Stakeholder management", "Gestión de stakeholders"),
+                               r"\bstakeholders?\b|\bbusiness side\b|\brequirements refinement\b", []),
+    "mvp": ("competency", T("MVPs & new products", "MVPs y productos nuevos"),
+            r"\bMVP\b|\bfirst version\b|\binitial (?:platform|project team)\b", []),
+    "learning": ("competency", T("Continuous learning", "Aprendizaje continuo"), r"\btraining\b|\btrained\b|\bcoursework\b|\bcourses?\b", []),
+    "remote": ("competency", T("Remote work", "Trabajo remoto"), None, []),
+    # outcome
+    "shipped": ("outcome", T("Shipped to production / stores", "Publicado en producción o tiendas"),
+                r"\bshipped\b|\bpublished\b|\breleased?\b|\blaunch\w*|\bwent live\b|\bdelivered\b", []),
+    "scale": ("outcome", T("Scale", "Escala"), r"\b\d{1,3}(?:,\d{3})+\b", []),
+    "business-impact": ("outcome", T("Business impact", "Impacto de negocio"),
+                        r"\brevenue\b|\bsatisfaction\b|\btrust of the stakeholders\b|\bstill alive\b", []),
+    "delivery-speed": ("outcome", T("Delivery speed", "Velocidad de entrega"), r"\bhigh-velocity\b|\baccelerat\w+|\bnine months\b", []),
+    # industry (the atoms of an entry's `inds`)
+    "gaming": ("industry", T("Gaming", "Videojuegos"), None, ["Gaming"]),
+    "news": ("industry", T("News", "Noticias"), None, ["News"]),
+    "media-entertainment": ("industry", T("Media & Entertainment", "Medios y Entretenimiento"), None, ["Media & Entertainment"]),
+    "retail": ("industry", T("Retail"), None, ["Retail"]),
+    "cybersecurity": ("industry", T("Cybersecurity", "Ciberseguridad"), None, ["Cybersecurity"]),
+    "semiconductors": ("industry", T("Semiconductors", "Semiconductores"), None, ["Semiconductors"]),
+    "education": ("industry", T("Education", "Educación"), None, ["Education"]),
+}
+TAG_SOURCES = ("manual", "type", "stack", "tech", "text", "industry", "location")   # the order sources are listed in
+
+_TECH_ALIAS = {a: tid for tid, spec in TECH_CATALOG.items() for a in spec[3]}
+_TAG_ALIAS = {}
+for _gid, _spec in TAGS.items():
+    for _a in _spec[3]:
+        _TAG_ALIAS.setdefault(_a, []).append(_gid)
+_TECH_RX = [(tid, re.compile(spec[4])) for tid, spec in TECH_CATALOG.items() if spec[4]]
+_TAG_RX = [(gid, re.compile(spec[2], re.I)) for gid, spec in TAGS.items() if spec[2]]
+
+def ytext(v, lang):
+    """A data string (T or plain, HTML allowed) as one language's text, in the tree's Markdown subset:
+    **bold** and [label](url), nothing else. Any other tag keeps its text and loses the markup."""
+    s = getattr(v, lang) if isinstance(v, T) else str(v or "")
+    s = re.sub(r"<span data-years>\d+</span>", str(date.today().year - START_YEAR), s)
+    plain = _unescape(re.sub(r"<[^>]+>", "", s))
+    if "**" in plain or "](" in plain:   # literal text a consumer would misread as markup
+        raise ValueError(f"text collides with the Markdown subset of tree.json: {plain!r}")
+    s = re.sub(r'<a href="([^"]*)"[^>]*>(.*?)</a>', r"[\2](\1)", s)
+    s = re.sub(r"</?b>", "**", s)
+    s = re.sub(r"<[^>]+>", "", s)
+    return _unescape(s).strip()
+
+def _plain(md):
+    """Markdown subset → plain text."""
+    return re.sub(r"\[([^\]]+)\]\([^)\s]+\)", r"\1", (md or "").replace("**", ""))
+
+def _slug(s):
+    """Stable id part from an English title: 'Legacy → Media Cloud video migration' → 'legacy-media-cloud-video-migration'."""
+    s = unicodedata.normalize("NFKD", _unescape(re.sub(r"<[^>]+>", "", s))).encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
+
+def _en(v):
+    return v.en if isinstance(v, T) else v
+
+def _dates(e, lang):
+    """type 'range' (end null = ongoing), 'point' (one date, e.g. a graduation) or None (undated).
+    months / elapsed count to today for an ongoing range, so they are as fresh as the last run of this script."""
+    frm = e.get("frm")
+    if not frm:
+        return None
+    fmt = lambda ym: f"{MONTHS[lang][int(ym[5:]) - 1]} {ym[:4]}"
+    if "to" not in e:
+        return dict(type="point", start=frm, end=frm, ongoing=False, text=fmt(frm), months=None, elapsed=None)
+    to = e["to"]
+    a, b = frm, to or date.today().strftime("%Y-%m")
+    months = (int(b[:4]) - int(a[:4])) * 12 + int(b[5:]) - int(a[5:]) + 1   # counting both ends, like the CV
+    unit = lambda n, one, many: f"{n} {ytext(DOC_LABELS[one if n == 1 else many], lang)}" if n else ""
+    return dict(type="range", start=frm, end=to, ongoing=to is None,
+                text=f"{fmt(frm)} - {fmt(to) if to else ytext(DOC_LABELS['present'], lang)}",   # plain hyphen, as on the CV
+                months=months, elapsed=" ".join(x for x in (unit(months // 12, "yr", "yrs"), unit(months % 12, "mo", "mos")) if x))
+
+def _meter(lvl):
+    """The level as the CV draws it: [█████░░] over METER_CELLS cells, rounded like the page's Math.round."""
+    filled = int(METER_CELLS * lvl / CORE_MAX + 0.5)
+    return dict(cells=METER_CELLS, filled="█" * filled, empty="░" * (METER_CELLS - filled))
+
+def _resolve(s):
+    """A stack string as the data writes it ('Java 11', 'Outbox pattern', 'C# / .NET') → (tech ids, tag ids)."""
+    s = _unescape(re.sub(r"<[^>]+>", "", _en(s))).strip()
+    if s in _TECH_ALIAS:
+        return [_TECH_ALIAS[s]], []
+    if s in _TAG_ALIAS:
+        return [], list(_TAG_ALIAS[s])
+    if " / " in s:
+        parts = [_resolve(p) for p in s.split(" / ")]
+        return [t for p in parts for t in p[0]], [g for p in parts for g in p[1]]
+    raise ValueError(f"{s!r} is neither a TECH_CATALOG alias nor a TAGS alias: add it to one of them")
+
+def _nodes():
+    """The tree without language: one node per record, parents before children, children in page order.
+    A node keeps its source dict (`src`) and where it shows (`surfaces`: the one-page CV, the timeline)."""
+    nodes, cv_ids = [], {}
+    add = lambda nid, typ, parent, src, surfaces, entry=False: nodes.append(
+        dict(id=nid, type=typ, parent=parent, src=src, surfaces=surfaces, entry=entry)) or nid
+    jobs = {_job_entry(j)["slug"]: j for j in JOBS}
+    edus = {id(deg) for deg, _ in EDU}
+
+    def bullets(parent, pts, surfaces=("timeline",), cv=()):
+        cv_text = {_en(p) for p in cv}
+        for n, p in enumerate(pts or [], 1):
+            add(f"{parent}/{n}", "highlight", parent, dict(text=p), ["cv", "timeline"] if _en(p) in cv_text else list(surfaces))
+
+    def entry(e, parent):
+        nid, job = e["slug"], jobs.get(e["slug"]) if e["kind"] == "job" and parent == "profile" else None
+        on_cv = bool(job) or (e["kind"] == "education" and id(e.get("role")) in edus)
+        add(nid, e["kind"], parent, e, ["cv", "timeline"] if on_cv else ["timeline"], entry=True)
+        if job:   # the one-page CV's bullets hang from their job; one the timeline also shows is a single record
+            tl = {_en(p) for p in e.get("pts") or []}
+            for n, p in enumerate([p for p in job["pts"] if _en(p) not in tl], 1):
+                add(f"{nid}/cv{n}", "highlight", nid, dict(text=p), ["cv"])
+        bullets(nid, e.get("pts"), cv=job["pts"] if job else ())
+        if job:
+            ids = {_en(n["src"]["text"]): n["id"] for n in nodes if n["parent"] == nid and n["type"] == "highlight"}
+            cv_ids[nid] = [ids[_en(p)] for p in job["pts"]]
+        for g in e.get("groups") or []:
+            tid = add(f"{nid}/{g.get('id') or _slug(_en(g['h']))}", "topic", nid, g, ["timeline"])
+            bullets(tid, g["pts"])
+        for dv in e.get("deliverables") or []:
+            aid = add(f"{nid}/{dv.get('id') or _slug(_en(dv['title']))}", dv.get("kind", "milestone"), nid, dv, ["timeline"])
+            bullets(aid, dv["pts"])
+        for c in e.get("children") or []:
+            entry(c, nid)
+
+    add("profile", "person", None, dict(text=PROFILE, tech=TECH + AI_CHIPS + [t[0] for t in TOOLBOX], core=[n for n, _ in CORE]),
+        ["cv", "timeline"])
+    for e in history_entries():
+        entry(e, "profile")
+    return nodes, cv_ids
+
+def _semantics(node):
+    """tech ids and tags (with where each tag came from) for one node, read from its English source:
+    the explicit stack, technologies named in its own text, keyword rules, its type, industry and place."""
+    src, typ = node["src"], node["type"]
+    own = [src.get(k) for k in ("role", "co", "title", "h", "lede", "text", "result")]
+    own += [x for kv in src.get("facts") or [] for x in kv]
+    if typ in ("milestone", "release", "prototype", "award", "pace", "training") and not node["entry"]:
+        own.append(src.get("role"))   # a card's subtitle
+    text = " ".join(_plain(ytext(x, "en")) for x in own if x)
+    tech, tags = [], {}
+    tag = lambda gid, why: tags.setdefault(gid, set()).add(why)
+    for s in src.get("core") or []:   # the person's core skills ("C# / .NET"): technologies only
+        tech += [t for t in _resolve(s)[0] if t not in tech]
+    for s in src.get("tech") or []:
+        t_ids, g_ids = _resolve(s)
+        tech += [t for t in t_ids if t not in tech]
+        for g in g_ids:
+            tag(g, "stack")
+    tech += [tid for tid, rx in _TECH_RX if rx.search(text) and tid not in tech]
+    for tid in tech:
+        for g in TECH_CATALOG[tid][5]:
+            tag(g, "tech")
+    for gid, rx in _TAG_RX:
+        if rx.search(text):
+            tag(gid, "text")
+    for g in TYPE_TAGS.get(typ, []):
+        tag(g, "type")
+    for ind in src.get("inds") or []:
+        for atom in _unescape(_en(ind)).split(" · "):
+            for g in _TAG_ALIAS.get(atom, []):
+                tag(g, "industry")
+    if node["entry"] and _en(src.get("loc")) == _en(REMOTE):
+        tag("remote", "location")
+    for g in src.get("tags") or []:   # manual tags on an entry, a group or a deliverable
+        if g not in TAGS:
+            raise ValueError(f"unknown tag {g!r} on {node['id']}: add it to TAGS")
+        tag(g, "manual")
+    order = list(TAGS)
+    tags = {g: sorted(tags[g], key=TAG_SOURCES.index) for g in sorted(tags, key=order.index)}
+    return tech, tags
+
+def _build_tree(lang):
+    """tree.json for one language."""
+    Y = lambda v: ytext(v, lang) if v not in (None, "") else None
+    Ys = lambda xs: [ytext(x, lang) for x in xs or []]
+    nodes, cv_ids = _nodes()
+    by = {n["id"]: n for n in nodes}
+    kids = {n["id"]: [] for n in nodes}
+    for n in nodes:
+        if n["parent"]:
+            kids[n["parent"]].append(n["id"])
+    sem = {n["id"]: _semantics(n) for n in nodes}
+    years = date.today().year - START_YEAR
+
+    def path(nid):
+        p = []
+        while nid:
+            p.insert(0, nid); nid = by[nid]["parent"]
+        return p
+
+    recs = {}
+    for n in nodes:
+        src, typ, nid = n["src"], n["type"], n["id"]
+        tech, tags = sem[nid]
+        is_card = typ in ("milestone", "release", "prototype", "award", "pace", "training") and not n["entry"]
+        rec = dict(id=nid, type=typ, category=RECORD_TYPES[typ][0], entry=n["entry"], parent=n["parent"], depth=len(path(nid)) - 1,
+                   path=path(nid), children=kids[nid],
+                   title=None, subtitle=None, text=None, result=None, result_label=None,
+                   role=None, organization=None, dates=None, duration=None, location=None, industries=[], facts=[], links=[],
+                   stack=Ys(src.get("tech")), tech=tech, tags=list(tags), tag_sources=tags, surfaces=n["surfaces"])
+        if typ == "person":
+            rec.update(title=NAME, subtitle=Y(ROLE_PLAIN), text=Y(PROFILE), location=CONTACT[0][1])
+        elif n["entry"]:
+            role, co = Y(src.get("role")), Y(src["co"])
+            rec.update(title=f"{role} · {co}" if role else co, role=role, organization=co, text=Y(src.get("lede")),
+                       dates=_dates(src, lang), duration=Y(src.get("dur")), location=Y(src.get("loc")), industries=Ys(src.get("inds")),
+                       facts=[dict(label=ytext(k, lang), value=ytext(v, lang)) for k, v in src.get("facts") or []],
+                       links=[dict(label=ytext(lb, lang), url=_unescape(href)) for lb, href in src.get("links") or []])
+        elif typ == "topic":
+            rec.update(title=Y(src["h"]))
+        elif is_card:
+            rec.update(title=Y(src["title"]), subtitle=Y(src.get("role")), result=Y(src.get("result")),
+                       result_label=Y(DELIV_FOOT.get(typ, DELIV_RESULT)) if src.get("result") else None)
+        elif typ == "highlight":
+            rec.update(text=Y(src["text"]))
+        recs[nid] = rec
+
+    # context: where a record sits, resolved from its ancestors, so every record reads on its own
+    holder = {}   # the timeline entry each record belongs to
+    for rec in recs.values():
+        chain = [recs[a] for a in reversed(rec["path"])]   # self first, then up to the root
+        near = lambda f: next((r[f] for r in chain if r[f]), None)
+        job = next((r for r in chain if r["type"] == "job"), None)
+        proj = next((r for r in chain if r["type"] == "project"), None)
+        top = next((r for r in chain if r["entry"] and r["depth"] == 1), None)
+        dated = next((r for r in chain if r["dates"]), None)
+        rec["context"] = dict(
+            job=job and job["id"], project=proj and proj["id"],
+            organization=top and top["organization"], client=proj and proj["organization"],
+            role=near("role"), period=dated and {k: dated["dates"][k] for k in ("start", "end", "ongoing", "text")},
+            location=near("location"), industries=next((r["industries"] for r in chain if r["industries"]), []))
+        entry = next((r for r in chain if r["entry"]), None)
+        rec["url"] = f"{SITE}/timeline/#h-{entry['id']}" if entry else f"{SITE}/"
+        holder[rec["id"]] = entry
+
+    # a self-contained chunk per record, for embeddings and LLM prompts
+    word = lambda en, es: es if lang == "es" else en
+    tag_label = {g: ytext(spec[1], lang) for g, spec in TAGS.items()}
+    for rec in recs.values():
+        ctx, own = rec["context"], [rec["title"], rec["subtitle"], rec["text"]]
+        if rec["result"]:
+            own.append(f"{rec['result_label']}: {rec['result']}")
+        where = [_plain(recs[a]["title"]) for a in rec["path"][1:-1] if recs[a]["title"]]
+        lines = [" — ".join(_plain(x) for x in own if x),
+                 ytext(RECORD_TYPES[rec["type"]][1], lang).capitalize() + (f" {word('in', 'en')} " + " › ".join(where) if where else ""),
+                 " · ".join(x for x in [ctx["period"] and ctx["period"]["text"], ctx["location"], ", ".join(ctx["industries"])] if x)]
+        if rec["tech"]:
+            lines.append(f"{word('Tech', 'Tecnologías')}: " + ", ".join(TECH_CATALOG[t][0] for t in rec["tech"]))
+        if rec["tags"]:
+            lines.append(f"{word('Tags', 'Etiquetas')}: " + ", ".join(tag_label[g] for g in rec["tags"]))
+        rec["embedding_text"] = "\n".join(x for x in lines if x)
+
+    # technologies: what each one is, how well I know it (the CV's core skills) and where and when I used it
+    prof = {}
+    for name, lvl in CORE + CORE_EXTRA:
+        for tid in _resolve(name)[0]:
+            prof[tid] = dict(level=lvl, max=CORE_MAX, word=ytext(level(lvl)[0], lang))
+    ym = lambda s: int(s[:4]) * 12 + int(s[5:]) - 1
+    now = ym(date.today().strftime("%Y-%m"))
+    tech_vocab = {}
+    for tid, (name, cat, parent, aliases, _, implied) in TECH_CATALOG.items():
+        using = [r for r in recs.values() if tid in r["tech"]]
+        months = set()
+        for r in using:
+            p = r["context"]["period"]
+            if p:
+                months.update(range(ym(p["start"]), (ym(p["end"]) if p["end"] else now) + 1))
+        fmt = lambda m: f"{m // 12}-{m % 12 + 1:02d}"
+        ongoing = any(r["context"]["period"] and r["context"]["period"]["ongoing"] for r in using)
+        entries = list(dict.fromkeys(holder[r["id"]]["id"] for r in using if holder[r["id"]]))
+        exact = all(holder[r["id"]]["dates"] for r in using if holder[r["id"]] and r["context"]["period"])
+        tech_vocab[tid] = dict(name=name, category=cat, parent=parent, aliases=aliases, tags=implied, proficiency=prof.get(tid),
+                               usage=dict(records=len(using), entries=entries, first=fmt(min(months)) if months else None,
+                                          last=None if ongoing or not months else fmt(max(months)), ongoing=ongoing,
+                                          months=len(months), years=round(len(months) / 12, 1), exact=exact))
+    tag_vocab = {g: dict(facet=f, label=tag_label[g], records=sum(g in r["tags"] for r in recs.values()))
+                 for g, (f, *_rest) in TAGS.items()}
+
+    def tree(nid):
+        return dict(id=nid, type=recs[nid]["type"], children=[tree(c) for c in recs[nid]["children"]])
+
+    ordered = [recs[n["id"]] for n in nodes]
+    counts = {}
+    for r in ordered:
+        counts[r["type"]] = counts.get(r["type"], 0) + 1
+    roles = Y(ROLE_PLAIN).split(" / ")
+    contact = [dict(type=CONTACT_TYPES[ic], icon=ic, label=ytext(text, lang), url=href) for ic, text, href in CONTACT]
+    languages = [dict(id=code, name=ytext(name, lang), level_id=lvl_id, level=ytext(lvl, lang)) for code, name, lvl_id, lvl in LANGUAGES]
+    return dict(
+        meta=dict(
+            schema=TREE_SCHEMA, lang=lang, generated=date.today().isoformat(),
+            url=f"{CV_BASE}/{lang}/tree.json", sources={l: f"{CV_BASE}/{l}/tree.json" for l in CV_LANGS},
+            schema_url=f"{CV_BASE}/tree.schema.json", template=f"{CV_BASE}/template.html",
+            pages=dict(cv=f"{SITE}/", timeline=f"{SITE}/timeline/", about=f"{SITE}/about/", llms=f"{SITE}/llms.txt"),
+            repository="https://github.com/sergiowero/sergiowero.github.io",
+            counts=dict(records=len(ordered), by_type=counts, tech=len(tech_vocab), tags=len(tag_vocab)),
+            how_to_read=[
+                "records: every node of the tree, depth-first in page order; each has the same keys (null or [] when they do not apply).",
+                "tree: the same structure as nested ids, for a quick walk; records[].parent / children / path say the same.",
+                "tech: ids of vocabulary.tech; tags: ids of vocabulary.tags; tag_sources says where each tag came from.",
+                "context: the job, client, role, period, place and industries a record inherits from its ancestors.",
+                "embedding_text: one self-contained plain-text chunk per record, ready to embed or to put in a prompt.",
+                "surfaces: where the record shows on the site: 'cv' (the one-page CV) and/or 'timeline'.",
+                "resume: the one-page CV as a view for template.html; swap its highlights for any highlight records to focus it.",
+                "Text may contain **bold** and [label](url), nothing else. Ids are the same in every language; highlight ids are positional."]),
+        profile=dict(name=NAME, headline=roles[0], roles=roles, title=Y(ROLE), tagline=Y(TAG), location=CONTACT[0][1],
+                     years_of_experience=years, experience_start_year=START_YEAR, summary=Y(PROFILE),
+                     bio=Y(ABOUT_BIO_EN if lang == "en" else ABOUT_BIO_ES), contact=contact, languages=languages),
+        vocabulary=dict(
+            types={t: dict(category=c, label=ytext(lb, lang)) for t, (c, lb) in RECORD_TYPES.items()},
+            tags=tag_vocab, tech=tech_vocab),
+        tree=tree("profile"),
+        records=ordered,
+        resume=dict(
+            lang=lang,
+            profile=dict(name=NAME, roles=roles, summary=Y(PROFILE)),
+            contact=contact,
+            stats=[
+                dict(id="years", type="number", value=years, suffix=STATS[0][1], label=Y(STATS[0][2])),
+                dict(id="industries", type="tags", items=Ys(INDUSTRIES), label=Y(INDUSTRIES_LABEL)),
+                dict(id="max_led", type="number", value=int(STATS[1][0]), suffix=STATS[1][1], label=Y(STATS[1][2])),
+                dict(id="best_skills", type="tags", items=list(BEST_SKILLS), label=Y(BEST_LABEL))],
+            skills=dict(
+                core=[dict(name=name, level=lvl, max=CORE_MAX, percent=round(100 * lvl / CORE_MAX), word=ytext(level(lvl)[0], lang),
+                           meter=_meter(lvl)) for name, lvl in CORE],
+                technologies=Ys(TECH), ai_assisted=dict(title=Y(AI_HEAD), text=Y(AI_TEXT), tools=list(AI_CHIPS))),
+            languages=languages,
+            experience=[dict(id=jid, title=recs[jid]["role"], organization=recs[jid]["organization"],
+                             dates={k: recs[jid]["dates"][k] for k in ("text", "elapsed")}, location=recs[jid]["location"],
+                             industries=recs[jid]["industries"], current=j["cur"],
+                             highlights=[recs[h_]["text"] for h_ in cv_ids[jid]], highlight_ids=cv_ids[jid])
+                        for j in JOBS for jid in [_job_entry(j)["slug"]]],
+            education=[dict(id=r["id"], degree=r["role"], detail=ytext(meta, lang))
+                       for deg, meta in EDU for r in ordered if r["type"] == "education" and by[r["id"]]["src"].get("role") is deg],
+            labels=dict(sections={k: dict(screen=ytext(cmd, lang), print=ytext(ats, lang)) for k, (cmd, ats) in SECTION_LABELS.items()})))
+
+_TREES = {}
+def cv_tree(lang):
+    if lang not in _TREES:
+        _TREES[lang] = _build_tree(lang)
+    return _TREES[lang]
+
+def _index(lang):
+    return {r["id"]: r for r in cv_tree(lang)["records"]}
+
+def check_trees():
+    """Invariants a program can rely on; gen.py stops if one breaks."""
+    en, es = cv_tree("en"), cv_tree("es")
+    for doc in (en, es):
+        ids = [r["id"] for r in doc["records"]]
+        dupes = sorted({i for i in ids if ids.count(i) > 1})
+        if dupes:
+            raise ValueError(f"duplicate ids: {dupes} — give a group or deliverable an explicit id=")
+        idx, keys = _index(doc["meta"]["lang"]), set(doc["records"][0])
+        for r in doc["records"]:
+            if set(r) != keys:
+                raise ValueError(f"{r['id']}: keys differ from the other records")
+            if r["parent"] and r["id"] not in idx[r["parent"]]["children"]:
+                raise ValueError(f"{r['id']}: not among its parent's children")
+            if not set(r["tags"]) <= set(TAGS) or not set(r["tech"]) <= set(TECH_CATALOG):
+                raise ValueError(f"{r['id']}: tag or tech outside the vocabulary")
+    strip = lambda doc: [(r["id"], r["type"], r["parent"], r["children"], r["tech"], r["tags"]) for r in doc["records"]]
+    if strip(en) != strip(es):
+        raise ValueError("the English and Spanish trees differ in structure, tech or tags")
+
+# ---- /timeline/, drawn from the tree: both languages side by side (CSS shows one), as the page always was
+def _md_html(s):
+    """The tree's Markdown subset back to the page's HTML."""
+    s = (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    s = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", s)
+    return re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", lambda m: ext(m.group(2), m.group(1)), s)
+
+def _bh(en, es):
+    """One field of a record in both languages, as page HTML."""
+    return T(_md_html(en), _md_html(es))
+
+def _both(rid):
+    return _index("en")[rid], _index("es")[rid]
+
+def _kids(rid, keep):
+    return [c for c in _index("en")[rid]["children"] if keep(_index("en")[c])]
+
+def _tl_bullets(rid, cls="pts", attrs=""):
+    return _bullets([_bh(*(r["text"] for r in _both(c))) for c in _kids(rid, lambda r: r["type"] == "highlight" and "timeline" in r["surfaces"])],
+                    cls, attrs)
+
+def _tl_entry(i, level, rid, index_of):
+    en, es = _both(rid)
+    dt = en["dates"]
+    if not dt:
+        when = f'<div class="hdate mono">{h(_bh(en["duration"], es["duration"]))}</div>' if en["duration"] else ""
+    elif dt["type"] == "point":
+        when = f'<div class="hdate mono">{h(T(dt["text"], es["dates"]["text"]))}</div>'
+    else:
+        dur = f'<span class="hdur">{h(_bh(en["duration"], es["duration"]))}</span>' if en["duration"] else ""
+        when = f'<div class="hdate mono" data-from="{dt["start"]}"{f" data-to=\"{dt["end"]}\"" if dt["end"] else ""}>{dt["start"]}</div>{dur}'
+    co = f'<span class="c">{_md_html(en["organization"])}</span>'
+    title = f'{h(_bh(en["role"], es["role"]))} · {co}' if en["role"] else co
+    inds = "".join(f'<span class="ind">{h(_bh(a, b))}</span>' for a, b in zip(en["industries"], es["industries"]))
+    facts = "".join(f'<span class="hfact"><b>{h(_bh(a["label"], b["label"]))}</b>{h(_bh(a["value"], b["value"]))}</span>'
+                    for a, b in zip(en["facts"], es["facts"]))
+    facts = f'<div class="hfacts mono hblock"{_blk(BLOCK_LABELS["facts"])}>{facts}</div>' if facts else ""
+    lede = f'<p class="hlede hblock"{_blk(BLOCK_LABELS["lede"])}>{h(_bh(en["text"], es["text"]))}</p>' if en["text"] else ""
+    pts = _tl_bullets(rid, "pts hblock", _blk(BLOCK_LABELS["pts"])) if _kids(rid, lambda r: r["type"] == "highlight" and "timeline" in r["surfaces"]) else ""
+    groups = []
+    for t in _kids(rid, lambda r: r["type"] == "topic"):
+        th = _bh(*(r["title"] for r in _both(t)))
+        groups.append(f'<section class="hgroup hblock"{_blk(th)}><h4 class="hg-h mono">{h(th)}</h4>{_tl_bullets(t)}</section>')
+    groups = f'<div class="hgroups">{"".join(groups)}</div>' if groups else ""
+    cards = []
+    for a in _kids(rid, lambda r: r["category"] == "achievement" and not r["entry"]):
+        ae, as_ = _both(a)
+        kind, at = ae["type"], _bh(ae["title"], as_["title"])
+        role = f'<div class="hd-role">{h(_bh(ae["subtitle"], as_["subtitle"]))}</div>' if ae["subtitle"] else ""
+        result = (f'<div class="hd-result"><b class="mono">{h(_bh(ae["result_label"], as_["result_label"]))}</b> {h(_bh(ae["result"], as_["result"]))}</div>'
+                  if ae["result"] else "")
+        chips = "".join(f'<span class="dchip">{h(_bh(x, y))}</span>' for x, y in zip(ae["stack"], as_["stack"]))
+        chips = f'<div class="dchips">{chips}</div>' if chips else ""
+        cards.append(f'<section class="hdeliv {kind} hblock"{_blk(at)}><div class="hd-badge mono">{h(DELIV_BADGE[kind])}</div>'
+                     f'<h4 class="hd-t">{h(at)}</h4>{role}{_tl_bullets(a)}{result}{chips}</section>')
+    stack = (f'<div class="hstack hblock"{_blk(BLOCK_LABELS["stack"])}><span class="hs-h mono">stack</span><div class="dchips">'
+             + "".join(f'<span class="dchip">{h(_bh(x, y))}</span>' for x, y in zip(en["stack"], es["stack"])) + "</div></div>") if en["stack"] else ""
+    links = (f'<div class="hlinks mono hblock"{_blk(BLOCK_LABELS["links"])}>'
+             + "".join(ext(a["url"].replace("&", "&amp;"), h(_bh(a["label"], b["label"]))) for a, b in zip(en["links"], es["links"]))
+             + "</div>") if en["links"] else ""
+    children = ""
+    if level == 0:
+        kids = _kids(rid, lambda r: r["entry"])
+        if kids:
+            children = f'<div class="hchildren">{"".join(_tl_entry(index_of[c], 1, c, index_of) for c in kids)}</div>'
+    # .hhead is all that stays when the search dims an entry; .hbody holds the foldable blocks; children sit outside both
+    return (f'<section class="hentry {en["type"]}{" child" if level else ""}" id="h-{rid}" data-i="{i}" data-kind="{en["type"]}">'
+            f'<div class="hhead">{when}<h3>{title}</h3>'
+            f'<div class="loc">{h(_bh(en["location"], es["location"]))}<span class="inds">{inds}</span></div></div>'
+            f'<div class="hbody">{facts}{lede}{pts}{groups}{"".join(cards)}{stack}{links}</div>{children}</section>')
+
+def timeline_flat():
+    """The timeline's rows, depth-first: (index, level, parent index, record id)."""
+    flat = []
+    for top in _kids("profile", lambda r: r["entry"]):
+        pi = len(flat); flat.append((pi, 0, None, top))
+        for c in _kids(top, lambda r: r["entry"]):
+            flat.append((len(flat), 1, pi, c))
+    return flat
+
+def history_html():
+    flat = timeline_flat()
+    index_of = {rid: i for i, _, _, rid in flat}
+    return "\n".join(_tl_entry(i, 0, rid, index_of) for i, lvl, _, rid in flat if lvl == 0)
+
+def history_json():
+    """What the sticky panel shows for each row (bilingual values arrive as {en, es})."""
+    pair = lambda a, b: {"en": _md_html(a), "es": _md_html(b)} if a else ""
+    rows = []
+    for i, lvl, parent, rid in timeline_flat():
+        en, es = _both(rid)
+        dt = en["dates"]
+        rows.append(dict(kind=en["type"], kind_label=d(KIND_LABELS[en["type"]]), slug=rid, role=pair(en["role"], es["role"]),
+                         co=_plain(en["organization"]), frm=dt and dt["start"], dur=pair(en["duration"], es["duration"]) or None,
+                         to="single" if not dt or dt["type"] == "point" else dt["end"], loc=pair(en["location"], es["location"]),
+                         inds=[pair(a, b) for a, b in zip(en["industries"], es["industries"])],
+                         tech=[pair(a, b) for a, b in zip(en["stack"], es["stack"])], level=lvl, parent=parent))
+    return json.dumps(rows, ensure_ascii=False).replace("</", "<\\/")
+
+# The live CV's markup with Mustache tags where the content goes. Logic-less on purpose (sections, inverted sections,
+# dotted names and {{.}} only: no lambdas, no helpers), so every Mustache engine renders it the same.
+# $…$ are filled here, once: the section headings, the fonts and the stylesheet.
+CV_TEMPLATE = """<!DOCTYPE html>
+<!--
+  CV template ($SCHEMA$): the look of $SITE$/ with Mustache tags where the content goes.
+  Written by tools/gen.py; do not edit by hand.
+
+  Render it with any Mustache engine; the view is the `resume` object of $CV_BASE$/{lang}/tree.json:
+    1. Make every string in the view HTML first: escape & < > " and then turn **x** into <b>x</b>
+       and [x](url) into <a href="url">x</a>. That is why the tags below use {{{triple braces}}}.
+    2. Focus the CV by editing the view before rendering: keep the jobs you want in `experience`, and
+       set each one's `highlights` to the `text` of the highlight records you picked from `records`
+       (by tags, tech or embeddings). Every list renders what it holds, in order.
+    3. Print it to PDF from a browser: A4, no margins, backgrounds on (Chromium: page.pdf with
+       preferCSSPageSize and printBackground).
+  Options on <html>: data-theme="dark" for the dark theme; data-print="ats" for the light,
+  one-column PDF that resume parsers read best.
+-->
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{{profile.name}}} — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?$FONTS$&display=swap" rel="stylesheet">
+<style>
+$CSS$
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="top">
+    <div>
+      <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">cv.md</span></div>
+      <div class="name">{{{profile.name}}}<span class="cur"></span></div>
+      <div class="sub mono">{{#profile.roles}}<span class="role">{{{.}}}</span>{{/profile.roles}}</div>
+    </div>
+    <div class="contact">
+      {{#contact}}<div class="cline" data-icon="{{icon}}">{{#url}}<a href="{{{url}}}">{{{label}}}</a>{{/url}}{{^url}}{{{label}}}{{/url}}</div>
+      {{/contact}}
+    </div>
+  </header>
+  <div class="stats">
+    {{#stats}}<div class="stat {{type}}"><div class="n">{{#value}}{{value}}<span class="u">{{suffix}}</span>{{/value}}{{#items}}<span class="bs">{{{.}}}</span>{{/items}}</div><div class="l">{{{label}}}</div></div>
+    {{/stats}}
+  </div>
+  <div class="cols">
+    <main class="main">
+      <section><h2 class="sh">$H:profile$</h2><p class="profile">{{{profile.summary}}}</p></section>
+      <section><h2 class="sh">$H:experience$</h2><div class="tl">
+        {{#experience}}
+        <div class="job{{#current}} cur{{/current}}">
+          <div class="job-head"><div class="r">{{{title}}} · <span class="c">{{{organization}}}</span></div><div class="p">{{{dates.text}}}{{#dates.elapsed}}<span class="dur"> · {{{dates.elapsed}}}</span>{{/dates.elapsed}}</div></div>
+          <div class="loc">{{{location}}}<span class="inds">{{#industries}}<span class="ind">{{{.}}}</span>{{/industries}}</span></div>
+          <ul class="pts">{{#highlights}}<li>{{{.}}}</li>{{/highlights}}</ul>
+        </div>
+        {{/experience}}
+      </div></section>
+    </main>
+    <aside class="aside">
+      <section><div class="ai"><div class="h">{{{skills.ai_assisted.title}}}</div><p>{{{skills.ai_assisted.text}}}</p><div class="dchips">{{#skills.ai_assisted.tools}}<span class="dchip">{{{.}}}</span>{{/skills.ai_assisted.tools}}</div></div></section>
+      <section><h2 class="sh">$H:core_skills$</h2>
+        {{#skills.core}}<div class="cskill"><div class="sk-top"><span class="sk-name">{{{name}}}</span><span class="sk-word">{{{word}}}</span><span class="sk-pct">{{percent}}%</span></div><div class="sk-dots ascii"><span class="b">[</span><span class="f">{{meter.filled}}</span><span class="e">{{meter.empty}}</span><span class="b">]</span></div></div>
+        {{/skills.core}}
+      </section>
+      <section><h2 class="sh">$H:technologies$</h2><div class="dchips">{{#skills.technologies}}<span class="dchip">{{{.}}}</span>{{/skills.technologies}}</div></section>
+      <section><h2 class="sh">$H:education$</h2>
+        {{#education}}
+        <div class="edu"><div class="d">{{{degree}}}</div><div class="m">{{{detail}}}</div></div>
+        {{/education}}
+      </section>
+      <section><h2 class="sh">$H:languages$</h2>
+        {{#languages}}<div class="spoken"><span class="ln">{{{name}}}</span><span class="sep"> — </span><span class="lv">{{{level}}}</span></div>
+        {{/languages}}
+      </section>
+    </aside>
+  </div>
+  <div class="foot"><span><span class="g">➜</span> exit 0 · {{{profile.name}}}</span><span>sergiowero.github.io</span></div>
+</div>
+</body>
+</html>
+"""
+
+# What the page's per-item markup or scripts did, redone in CSS so the template needs no logic
+TEMPLATE_CSS = """
+  /* ---- template.html only ---- */
+  .sub .role:first-child{color:var(--green);font-weight:600;font-size:10px;letter-spacing:-.1px;}   /* the headline role */
+  .sub .role+.role::before{content:" / ";color:var(--amber);}
+  .cline[data-icon]::before{content:"";width:11px;height:11px;flex:none;background:var(--green);   /* the contact icons, by type */
+    -webkit-mask:var(--icon) center/contain no-repeat;mask:var(--icon) center/contain no-repeat;}
+"""
+
+def cv_template_html():
+    """/cv/template.html: CV_TEMPLATE with the live CV's stylesheet (stat tiles keyed by stats[].type) and headings."""
+    svg_uri = lambda svg: "data:image/svg+xml," + urllib.parse.quote(
+        svg.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" stroke="black" ', 1), safe="")
+    icons = "".join(f'  .cline[data-icon="{k}"]{{--icon:url("{svg_uri(ICON[k])}");}}\n' for k in CONTACT_TYPES)
+    css = (BASE_CSS + "\n  :root{" + LIVE_V["nav"] + "}\n" + LIVE_V["css"]).replace(".stat.best", ".stat.tags") + TEMPLATE_CSS + icons
+    out = CV_TEMPLATE
+    for k in SECTION_LABELS:
+        out = out.replace(f"$H:{k}$", '<span class="cmd">{{{labels.sections.' + k + '.screen}}}</span>'
+                                      '<span class="ats">{{{labels.sections.' + k + '.print}}}</span>')
+    out = out.replace("$SCHEMA$", TEMPLATE_SCHEMA).replace("$SITE$", SITE).replace("$CV_BASE$", CV_BASE).replace("$FONTS$", LIVE_V["fonts"])
+    left = re.findall(r"\$[A-Z_]+(?::\w+)?\$", out.replace("$CSS$", ""))
+    if left:
+        raise ValueError(f"unfilled placeholders in CV_TEMPLATE: {left}")
+    return out.replace("$CSS$", css)   # last: the stylesheet is not scanned for placeholders
+
+def tree_schema():
+    """/cv/tree.schema.json: the spec of tree.json (JSON Schema 2020-12). Every record has every key; the enums are
+    the vocabulary itself, so a validator catches a tag or technology that is not in it."""
+    S, N, B, I = {"type": "string"}, {"type": ["string", "null"]}, {"type": "boolean"}, {"type": "integer", "minimum": 0}
+    arr = lambda item, **kw: {"type": "array", "items": item, **kw}
+    obj = lambda props, **kw: {"type": "object", "properties": props, "required": list(props), "additionalProperties": False, **kw}
+    ref = lambda name: {"$ref": f"#/$defs/{name}"}
+    dsc = lambda sch, text: {**sch, "description": text}
+    md = dsc(N, "Markdown subset: **bold** and [label](url), nothing else. null when it does not apply.")
+    ym = {"type": "string", "pattern": r"^\d{4}-(0[1-9]|1[0-2])$"}
+    period = obj(dict(start=ym, end={"anyOf": [ym, {"type": "null"}]}, ongoing=B, text=S))
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": f"{CV_BASE}/tree.schema.json",
+        "title": f"CV tree ({TREE_SCHEMA})",
+        "description": "A career timeline as a tree of typed records, each linked to technologies and semantic tags. "
+                       "One file per language, same ids and structure: " + ", ".join(f"{CV_BASE}/{l}/tree.json" for l in CV_LANGS) + ".",
+        "type": "object",
+        "required": ["meta", "profile", "vocabulary", "tree", "records", "resume"],
+        "additionalProperties": False,
+        "properties": {
+            "meta": {"type": "object", "required": ["schema", "lang", "generated", "url", "sources", "counts", "how_to_read"],
+                     "properties": {"schema": {"const": TREE_SCHEMA}, "lang": {"enum": list(CV_LANGS)},
+                                    "generated": {"type": "string", "format": "date"}}},
+            "profile": dsc({"type": "object", "required": ["name", "headline", "roles", "summary", "contact", "languages"]},
+                           "The person: name, roles, summary, bio, contact and spoken languages."),
+            "vocabulary": obj(dict(
+                types=dsc({"type": "object", "propertyNames": ref("type"), "additionalProperties": obj(dict(category=ref("category"), label=S))},
+                          "Every record type, its category and its label in this language."),
+                tags=dsc({"type": "object", "propertyNames": ref("tag"),
+                          "additionalProperties": obj(dict(facet={"enum": ["domain", "practice", "competency", "outcome", "industry"]},
+                                                           label=S, records=I))},
+                         "Semantic tags. facet: domain (what area), practice (how), competency (what I did as a person), "
+                         "outcome (what came of it), industry. records: how many records carry it."),
+                tech=dsc({"type": "object", "propertyNames": ref("tech"),
+                          "additionalProperties": obj(dict(
+                              name=S, category=S, parent={"anyOf": [ref("tech"), {"type": "null"}]}, aliases=arr(S), tags=arr(ref("tag")),
+                              proficiency={"anyOf": [{"type": "null"}, obj(dict(level=I, max=I, word=S))]},
+                              usage=obj(dict(records=I, entries=arr(S), first={"anyOf": [ym, {"type": "null"}]},
+                                             last={"anyOf": [ym, {"type": "null"}]}, ongoing=B, months=I, years={"type": "number"},
+                                             exact=B))))},
+                         "Technologies. aliases: how the data writes them. tags: tags a record using it inherits. proficiency: "
+                         "self-assessed, 1-10. usage: the timeline entries it shows up in and the months their periods cover; a job's "
+                         "stack counts for the whole job, and exact is false when some of that time comes from an undated "
+                         "project that inherits its job's dates."))),
+            "tree": dsc(ref("node"), "The structure as nested ids, rooted at the person."),
+            "records": dsc(arr(ref("record")), "Every node of the tree, depth-first in page order."),
+            "resume": dsc({"type": "object", "required": ["lang", "profile", "contact", "stats", "skills", "languages", "experience",
+                                                          "education", "labels"]},
+                          "The one-page CV as a view for template.html. experience[].highlight_ids point at highlight records."),
+        },
+        "$defs": {
+            "type": dsc({"enum": list(RECORD_TYPES)}, "person: the root. job: employment. project: client work inside a job. "
+                        "education: a degree. talk: a talk. milestone, release, prototype, award, pace, training: achievements "
+                        "(a card inside an entry, or an entry of its own). topic: a titled area of work inside an entry. "
+                        "highlight: one bullet."),
+            "category": {"enum": sorted({c for c, _ in RECORD_TYPES.values()})},
+            "tag": {"enum": list(TAGS)},
+            "tech": {"enum": list(TECH_CATALOG)},
+            "node": obj(dict(id=S, type=ref("type"), children=arr(ref("node")))),
+            "record": obj({
+                "id": dsc(S, "Stable key, the same in every language. Entries: their slug. Topics and achievements: "
+                             "<entry>/<slug of the English title>. Highlights: <parent>/<n> (positional), or <job>/cv<n> for a "
+                             "bullet only the one-page CV shows."),
+                "type": ref("type"),
+                "category": ref("category"),
+                "entry": dsc(B, "True for a row of /timeline/: it has its own organization, place and (usually) dates."),
+                "parent": dsc(N, "The parent record's id; null for the root."),
+                "depth": dsc(I, "0 for the root."),
+                "path": dsc(arr(S), "Ids from the root to this record."),
+                "children": dsc(arr(S), "Child ids in page order: highlights, topics, achievements, then nested entries."),
+                "title": dsc(md, "Headline: '{role} · {organization}' on an entry, the title of a topic or achievement, the name on the person."),
+                "subtitle": dsc(md, "The line under an achievement's title; the roles on the person."),
+                "text": dsc(md, "The prose: an entry's summary, a highlight's bullet, the person's summary."),
+                "result": md, "result_label": md,
+                "role": md, "organization": md,
+                "dates": {"anyOf": [{"type": "null"}, obj(dict(
+                    type={"enum": ["range", "point"]}, start=ym, end={"anyOf": [ym, {"type": "null"}]}, ongoing=B, text=S,
+                    months={"anyOf": [I, {"type": "null"}]}, elapsed=N))],
+                    "description": "Own dates, or null (then see context.period). range: end null + ongoing = present; "
+                                   "months / elapsed count both ends. point: one date."},
+                "duration": dsc(md, "A free-form length when there are no dates."),
+                "location": md,
+                "industries": dsc(arr(S), "As shown on the timeline, e.g. 'Gaming · Mobile'."),
+                "facts": arr(obj(dict(label=S, value=S))),
+                "links": arr(obj(dict(label=S, url=S))),
+                "stack": dsc(arr(S), "The stack as the timeline shows it, in this language."),
+                "tech": dsc(arr(ref("tech"), uniqueItems=True), "Technologies: the explicit stack plus those named in the record's own text."),
+                "tags": dsc(arr(ref("tag"), uniqueItems=True), "Semantic tags, in vocabulary order."),
+                "tag_sources": dsc({"type": "object", "propertyNames": ref("tag"),
+                                    "additionalProperties": arr({"enum": list(TAG_SOURCES)}, minItems=1)},
+                                   "Why each tag is there: manual, type, stack, tech (implied by a technology), text (a keyword "
+                                   "rule), industry, location."),
+                "surfaces": dsc(arr({"enum": ["cv", "timeline"]}), "Where the record shows on the site."),
+                "context": dsc(obj(dict(job=N, project=N, organization=N, client=N, role=N,
+                                        period={"anyOf": [{"type": "null"}, period]}, location=N, industries=arr(S))),
+                               "Inherited from the ancestors: the job and project ids, employer, client, role, period, place, industries."),
+                "url": dsc(S, "Where it shows on the site: the timeline entry's anchor."),
+                "embedding_text": dsc(S, "A self-contained plain-text chunk: what it says, where it sits, when, tech and tags."),
+            }),
+        },
+    }
+
+def write_cv_data():
+    def write(rel, text):
+        path = os.path.join(PUBLIC, rel)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+        print(f"wrote {rel}")
+    for lang in CV_LANGS:
+        write(f"cv/{lang}/tree.json", json.dumps(cv_tree(lang), ensure_ascii=False, indent=2) + "\n")
+    write("cv/tree.schema.json", json.dumps(tree_schema(), ensure_ascii=False, indent=2) + "\n")
+    write("cv/template.html", cv_template_html())
+
 # ------------------------------------------------------------------ BUILD
 if __name__ == "__main__":
+    check_trees()   # before any page: /timeline/ is drawn from these trees
     # the log prints "→"; a Windows console defaults to cp1252 and can't encode it (macOS/Linux are already UTF-8)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
+    cards = page_cards()
+    meta = {rel: meta_html(name, cards[name]) for rel, name in PAGE_FILES.items()}
     for fname, v in VERSIONS.items():
-        body = fill(v["body"]).replace("$AI_TEXT$", h(AI_TEXT)).replace("$AI_CHIPS$", chips_html(AI_CHIPS))
-        body = finish_body(body, v)
-        css = "  :root{" + v["nav"] + "}\n" + v["css"]
-        html = page(v["title"], v["fonts"], css, body + "\n" + v.get("extra_js", ""))
+        css = version_css(v)
+        html = cv_page(v)
         path = os.path.join(OUT, fname)
         with open(path, "w", encoding="utf-8") as f:
             f.write(html)
@@ -2930,7 +3887,7 @@ if __name__ == "__main__":
         if fname == LIVE[0]:
             os.makedirs(os.path.dirname(LIVE[1]), exist_ok=True)
             with open(LIVE[1], "w", encoding="utf-8") as f:
-                f.write(html)
+                f.write(cv_page(v, meta["index.html"]))
             print(f"wrote index.html (from {fname})")
             # shell pieces for the Astro blog pages (same look, same header, same scripts)
             os.makedirs(SHELL_DIR, exist_ok=True)
@@ -2941,11 +3898,13 @@ if __name__ == "__main__":
             for name, content in {"shell.css": BASE_CSS + "\n" + css, "head.html": head, "header.html": finish_body(nav_html("blog"), v), "shell.js": scripts}.items():
                 with open(os.path.join(SHELL_DIR, name), "w", encoding="utf-8") as f:
                     f.write(content)
-            print("wrote src/shell/{shell.css,head.html,header.html,shell.js}")
+            with open(os.path.join(SHELL_DIR, "cards.json"), "w", encoding="utf-8", newline="\n") as f:
+                f.write(cards_json(cards))
+            print("wrote src/shell/{shell.css,head.html,header.html,shell.js,cards.json}")
             # the other sections, same shell
             for rel, (active, tpl) in SITE_PAGES.items():
                 body = finish_body(fill(tpl, active=active), v) + "\n" + v.get("extra_js", "")
-                page_html = page(v["title"], v["fonts"], css, body)
+                page_html = page(v["title"], v["fonts"], css, body, meta[rel])
                 path = os.path.join(PUBLIC, rel)
                 os.makedirs(os.path.dirname(path), exist_ok=True)
                 with open(path, "w", encoding="utf-8") as f:
@@ -2954,8 +3913,14 @@ if __name__ == "__main__":
             for rel, target in REDIRECTS.items():
                 path = os.path.join(PUBLIC, rel); os.makedirs(os.path.dirname(path), exist_ok=True)
                 with open(path, "w", encoding="utf-8") as f:
-                    f.write(f'<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url={target}"><link rel="canonical" href="https://sergiowero.github.io{target}"><title>Redirecting…</title><a href="{target}">{target}</a>')
+                    # the target's title, canonical and card: a shared old link still previews as the page it lands on
+                    f.write(f'<!DOCTYPE html>\n<meta charset="utf-8">\n<meta http-equiv="refresh" content="0; url={target}">\n{meta[rel]}\n<a href="{target}">{target}</a>\n')
                 print(f"wrote {rel} → {target}")
     with open(os.path.join(PUBLIC, "llms.txt"), "w", encoding="utf-8") as f:
         f.write(llms_md())
     print("wrote llms.txt")
+    write_cv_data()
+    # /tailor-cv/: the CVs tailored to a job description keep the master's design, contact and dates (tools/tailor.py)
+    sys.modules.setdefault("gen", sys.modules[__name__])   # so tailor's `import gen` is this run, not a second copy
+    import tailor
+    tailor.render_all()

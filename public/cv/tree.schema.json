@@ -1,0 +1,893 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sergiowero.github.io/cv/tree.schema.json",
+  "title": "CV tree (cv-tree/1)",
+  "description": "A career timeline as a tree of typed records, each linked to technologies and semantic tags. One file per language, same ids and structure: https://sergiowero.github.io/cv/en/tree.json, https://sergiowero.github.io/cv/es/tree.json.",
+  "type": "object",
+  "required": [
+    "meta",
+    "profile",
+    "vocabulary",
+    "tree",
+    "records",
+    "resume"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "schema",
+        "lang",
+        "generated",
+        "url",
+        "sources",
+        "counts",
+        "how_to_read"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cv-tree/1"
+        },
+        "lang": {
+          "enum": [
+            "en",
+            "es"
+          ]
+        },
+        "generated": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "required": [
+        "name",
+        "headline",
+        "roles",
+        "summary",
+        "contact",
+        "languages"
+      ],
+      "description": "The person: name, roles, summary, bio, contact and spoken languages."
+    },
+    "vocabulary": {
+      "type": "object",
+      "properties": {
+        "types": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/type"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "$ref": "#/$defs/category"
+              },
+              "label": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "category",
+              "label"
+            ],
+            "additionalProperties": false
+          },
+          "description": "Every record type, its category and its label in this language."
+        },
+        "tags": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/tag"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "facet": {
+                "enum": [
+                  "domain",
+                  "practice",
+                  "competency",
+                  "outcome",
+                  "industry"
+                ]
+              },
+              "label": {
+                "type": "string"
+              },
+              "records": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "facet",
+              "label",
+              "records"
+            ],
+            "additionalProperties": false
+          },
+          "description": "Semantic tags. facet: domain (what area), practice (how), competency (what I did as a person), outcome (what came of it), industry. records: how many records carry it."
+        },
+        "tech": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/tech"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "parent": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/tech"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "aliases": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/tag"
+                }
+              },
+              "proficiency": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "level": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "max": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "word": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "level",
+                      "max",
+                      "word"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "records": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "entries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "first": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "last": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "ongoing": {
+                    "type": "boolean"
+                  },
+                  "months": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "years": {
+                    "type": "number"
+                  },
+                  "exact": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "records",
+                  "entries",
+                  "first",
+                  "last",
+                  "ongoing",
+                  "months",
+                  "years",
+                  "exact"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "name",
+              "category",
+              "parent",
+              "aliases",
+              "tags",
+              "proficiency",
+              "usage"
+            ],
+            "additionalProperties": false
+          },
+          "description": "Technologies. aliases: how the data writes them. tags: tags a record using it inherits. proficiency: self-assessed, 1-10. usage: the timeline entries it shows up in and the months their periods cover; a job's stack counts for the whole job, and exact is false when some of that time comes from an undated project that inherits its job's dates."
+        }
+      },
+      "required": [
+        "types",
+        "tags",
+        "tech"
+      ],
+      "additionalProperties": false
+    },
+    "tree": {
+      "$ref": "#/$defs/node",
+      "description": "The structure as nested ids, rooted at the person."
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/record"
+      },
+      "description": "Every node of the tree, depth-first in page order."
+    },
+    "resume": {
+      "type": "object",
+      "required": [
+        "lang",
+        "profile",
+        "contact",
+        "stats",
+        "skills",
+        "languages",
+        "experience",
+        "education",
+        "labels"
+      ],
+      "description": "The one-page CV as a view for template.html. experience[].highlight_ids point at highlight records."
+    }
+  },
+  "$defs": {
+    "type": {
+      "enum": [
+        "person",
+        "job",
+        "project",
+        "education",
+        "talk",
+        "milestone",
+        "release",
+        "prototype",
+        "award",
+        "pace",
+        "training",
+        "topic",
+        "highlight"
+      ],
+      "description": "person: the root. job: employment. project: client work inside a job. education: a degree. talk: a talk. milestone, release, prototype, award, pace, training: achievements (a card inside an entry, or an entry of its own). topic: a titled area of work inside an entry. highlight: one bullet."
+    },
+    "category": {
+      "enum": [
+        "achievement",
+        "activity",
+        "content",
+        "education",
+        "person",
+        "position",
+        "work"
+      ]
+    },
+    "tag": {
+      "enum": [
+        "backend",
+        "frontend",
+        "full-stack",
+        "mobile",
+        "game-dev",
+        "vr",
+        "multiplayer",
+        "graphics",
+        "live-data",
+        "cloud",
+        "serverless",
+        "containers",
+        "event-driven",
+        "reliable-messaging",
+        "databases",
+        "migration",
+        "batch-processing",
+        "observability",
+        "testing",
+        "devops",
+        "automation",
+        "tooling",
+        "hardware-validation",
+        "metaprogramming",
+        "security",
+        "browser-extension",
+        "systems-programming",
+        "data-analysis",
+        "ai",
+        "ai-assisted-dev",
+        "saas",
+        "architecture",
+        "ddd",
+        "microservices",
+        "clean-architecture",
+        "modular-monolith",
+        "api-design",
+        "dependency-injection",
+        "oop",
+        "code-review",
+        "prototyping",
+        "leadership",
+        "mentoring",
+        "people-management",
+        "ownership",
+        "stakeholder-management",
+        "mvp",
+        "learning",
+        "remote",
+        "shipped",
+        "scale",
+        "business-impact",
+        "delivery-speed",
+        "gaming",
+        "news",
+        "media-entertainment",
+        "retail",
+        "cybersecurity",
+        "semiconductors",
+        "education"
+      ]
+    },
+    "tech": {
+      "enum": [
+        "csharp",
+        "java",
+        "python",
+        "javascript",
+        "typescript",
+        "go",
+        "ruby",
+        "php",
+        "cpp",
+        "c",
+        "objective-c",
+        "lua",
+        "sql",
+        "xml",
+        "dotnet",
+        "nodejs",
+        "spring",
+        "spring-boot",
+        "spring-batch",
+        "fastapi",
+        "django",
+        "flask",
+        "sqlalchemy",
+        "alembic",
+        "react",
+        "nextjs",
+        "jquery",
+        "opengl",
+        "langchain",
+        "claude-sdk",
+        "flow",
+        "openapi",
+        "postgresql",
+        "mariadb",
+        "snowflake",
+        "aws",
+        "aws-lambda",
+        "aws-sns",
+        "aws-sqs",
+        "aws-ecs",
+        "aws-cloudwatch",
+        "docker",
+        "git",
+        "svn",
+        "vscode",
+        "intellij",
+        "rider",
+        "claude-code",
+        "codex",
+        "opencode",
+        "cursor",
+        "github-copilot",
+        "unity",
+        "gamebryo",
+        "ios",
+        "android",
+        "macos",
+        "apple-arcade",
+        "apple-tv",
+        "steam",
+        "nintendo-wii",
+        "blackberry-playbook",
+        "chrome-extension",
+        "htc-vive",
+        "oculus",
+        "gear-vr"
+      ]
+    },
+    "node": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/type"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "children"
+      ],
+      "additionalProperties": false
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable key, the same in every language. Entries: their slug. Topics and achievements: <entry>/<slug of the English title>. Highlights: <parent>/<n> (positional), or <job>/cv<n> for a bullet only the one-page CV shows."
+        },
+        "type": {
+          "$ref": "#/$defs/type"
+        },
+        "category": {
+          "$ref": "#/$defs/category"
+        },
+        "entry": {
+          "type": "boolean",
+          "description": "True for a row of /timeline/: it has its own organization, place and (usually) dates."
+        },
+        "parent": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The parent record's id; null for the root."
+        },
+        "depth": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "0 for the root."
+        },
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Ids from the root to this record."
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Child ids in page order: highlights, topics, achievements, then nested entries."
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Headline: '{role} · {organization}' on an entry, the title of a topic or achievement, the name on the person."
+        },
+        "subtitle": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The line under an achievement's title; the roles on the person."
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The prose: an entry's summary, a highlight's bullet, the person's summary."
+        },
+        "result": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Markdown subset: **bold** and [label](url), nothing else. null when it does not apply."
+        },
+        "result_label": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Markdown subset: **bold** and [label](url), nothing else. null when it does not apply."
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Markdown subset: **bold** and [label](url), nothing else. null when it does not apply."
+        },
+        "organization": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Markdown subset: **bold** and [label](url), nothing else. null when it does not apply."
+        },
+        "dates": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "range",
+                    "point"
+                  ]
+                },
+                "start": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+                },
+                "end": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "ongoing": {
+                  "type": "boolean"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "months": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "elapsed": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "start",
+                "end",
+                "ongoing",
+                "text",
+                "months",
+                "elapsed"
+              ],
+              "additionalProperties": false
+            }
+          ],
+          "description": "Own dates, or null (then see context.period). range: end null + ongoing = present; months / elapsed count both ends. point: one date."
+        },
+        "duration": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "A free-form length when there are no dates."
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Markdown subset: **bold** and [label](url), nothing else. null when it does not apply."
+        },
+        "industries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "As shown on the timeline, e.g. 'Gaming · Mobile'."
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "url"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "stack": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The stack as the timeline shows it, in this language."
+        },
+        "tech": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/tech"
+          },
+          "uniqueItems": true,
+          "description": "Technologies: the explicit stack plus those named in the record's own text."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/tag"
+          },
+          "uniqueItems": true,
+          "description": "Semantic tags, in vocabulary order."
+        },
+        "tag_sources": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/tag"
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "manual",
+                "type",
+                "stack",
+                "tech",
+                "text",
+                "industry",
+                "location"
+              ]
+            },
+            "minItems": 1
+          },
+          "description": "Why each tag is there: manual, type, stack, tech (implied by a technology), text (a keyword rule), industry, location."
+        },
+        "surfaces": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "cv",
+              "timeline"
+            ]
+          },
+          "description": "Where the record shows on the site."
+        },
+        "context": {
+          "type": "object",
+          "properties": {
+            "job": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "project": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "organization": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "client": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "role": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "start": {
+                      "type": "string",
+                      "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+                    },
+                    "end": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "ongoing": {
+                      "type": "boolean"
+                    },
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "start",
+                    "end",
+                    "ongoing",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "location": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "industries": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "job",
+            "project",
+            "organization",
+            "client",
+            "role",
+            "period",
+            "location",
+            "industries"
+          ],
+          "additionalProperties": false,
+          "description": "Inherited from the ancestors: the job and project ids, employer, client, role, period, place, industries."
+        },
+        "url": {
+          "type": "string",
+          "description": "Where it shows on the site: the timeline entry's anchor."
+        },
+        "embedding_text": {
+          "type": "string",
+          "description": "A self-contained plain-text chunk: what it says, where it sits, when, tech and tags."
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "category",
+        "entry",
+        "parent",
+        "depth",
+        "path",
+        "children",
+        "title",
+        "subtitle",
+        "text",
+        "result",
+        "result_label",
+        "role",
+        "organization",
+        "dates",
+        "duration",
+        "location",
+        "industries",
+        "facts",
+        "links",
+        "stack",
+        "tech",
+        "tags",
+        "tag_sources",
+        "surfaces",
+        "context",
+        "url",
+        "embedding_text"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

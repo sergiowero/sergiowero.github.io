@@ -1,8 +1,8 @@
 ---
 import { render } from 'astro:content';
 import Shell from '../../../layouts/Shell.astro';
-import AiNote from '../../../components/AiNote.astro';
-import { formatDate, getPosts, langOf, readingTime, slugOf, tagSlug, translationOf, urlOf } from '../../../lib/blog';
+import { excerpt, formatDate, getPosts, langOf, readingTime, slugOf, tagSlug, translationOf, urlOf } from '../../../lib/blog';
+import { postCard, SITE_NAME } from '../../../lib/cards';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -16,8 +16,15 @@ const lang = langOf(post);
 const { Content } = await render(post);
 const altUrls = alt ? { [langOf(alt)]: urlOf(alt) } : {};
 const minutes = readingTime(post.body);
+const description = post.data.description || excerpt(post.body);
+const tags = post.data.tags.join(', ');
+const labels: [string, string][] = lang === 'es'
+  ? [['Lectura', `${minutes} min`], ...(tags ? [['Etiquetas', tags] as [string, string]] : [])]
+  : [['Reading time', `${minutes} min`], ...(tags ? [['Tags', tags] as [string, string]] : [])];
 ---
-<Shell title={`${post.data.title} — Blog`} description={post.data.description} alt={altUrls} lang={lang}>
+<Shell title={`${post.data.title} — ${SITE_NAME}`} description={description} alt={altUrls} lang={lang}
+  card={postCard(post)} imageAlt={`${post.data.title}${description ? `: ${description}` : ''}`}
+  article={{ published: post.data.pubDate, modified: post.data.updatedDate, tags: post.data.tags }} labels={labels}>
   <article class="blog">
     <div class="prompt mono"><span class="g">sergio</span>@<span class="c">sergiowero.github.io</span>:~$ cat <span class="f">blog/{lang}/{slugOf(post)}.md</span></div>
     <h1 class="name"><span id="typed">{post.data.title}</span><span class="cur"></span></h1>

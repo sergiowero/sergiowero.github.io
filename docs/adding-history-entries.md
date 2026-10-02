@@ -100,7 +100,10 @@ Rules of thumb:
   - `education` → diamond
   - `milestone` → pin
 - `role` / `co` — the headline is `{role} · {co}`. The industry is **not** part of it (that is what `inds` is for); on a child that keeps its parent's position, set `role=""` and the headline is the company alone.
-- `slug` — used in the panel header: `cat timeline/<slug>.md`
+- `slug` — used in the panel header (`cat timeline/<slug>.md`), the `/timeline/#h-<slug>` anchor and as the record `id` in `/cv/{lang}/tree.json`, which external CV generators select by. Renaming it breaks both.
+- `id` (optional, on a `groups` or `deliverables` item) — pins its record `id` in `tree.json`. Without it the id is `<slug>/<English title as a slug>`, so it changes when the title does.
+- `tags` (optional, on an entry, a group or a deliverable) — semantic tags added by hand, ids from `TAGS` in `tools/gen.py`. Most tags come from rules (the stack, technologies named in the text, keywords, the kind, the industry); add one here when a rule misses it.
+- Every string in a `tech` list must be a technology in `TECH_CATALOG` or an alias in `TAGS` (for practices and skills such as `"DDD"` or `"Mentorship"`); `gen.py` stops and names any new one so you can add it.
 - `frm` / `to` — `"YYYY-MM"`. Omit `to` for a one-day event; `to=None` means *present*.
 - `inds`, `tech` — chips; either can be `[]`.
 - `pts` — bullets (HTML allowed); `[]` hides the list.
