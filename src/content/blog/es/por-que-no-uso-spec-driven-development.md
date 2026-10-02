@@ -1,114 +1,116 @@
 ---
 title: "Por qué no uso Spec-Driven Development y tú tampoco deberías"
-description: "SDD promete poner orden en la programación con agentes de IA. Por qué, en la práctica, prefiero iterar sobre código y tests."
+description: "SDD promete poner orden en la programación con agentes de IA. En la práctica, prefiero iterar sobre código y tests."
 pubDate: 2026-09-27
 tags: ["ia", "spec-driven-development", "ingeniería de software", "opinión"]
-draft: true   # esqueleto: cambia a false cuando esté escrita
+draft: false
 ---
 
 ## TL;DR
 
-Usar Spec driven development o SDD, es la opcion mas popular  que puedes ver en redes, cuando explore facebook, encuentro publicidad de cursos que te dicen que no te quedes atras aprende SDD, tratando de meter miedo y FOMO para vender, pero eso es otra historia, aqui lo que me llama la atencion es como las redes se han inundado de una metodologia que a mi parecer no esta lo suficientemente probada, simplemente aparece como una opcion popular .
+Usar Spec-Driven Development, o SDD, es probablemente la opción más popular que puedes ver en redes. Cuando exploré Facebook, me encontré con publicidad de cursos que te dicen que no te quedes atrás, que aprendas SDD, tratando de meter miedo y FOMO para venderte la idea. Eso es otra historia. Lo que más me llama la atención es cómo las redes se han inundado de una metodología que, a mi parecer, no está suficientemente probada y que simplemente aparece como una opción “popular”.
 
-Yo en lo personal, prefiero crear prompts lo mejor definido sposibles, con metas claras y ejecutar un plan mode o refinar el primot inicial usando un chat. Esto me ha funcionado mejor, avanzo mas rapido. al final mientras el codigo funcione y este bien estructurado los modelos actuales (de forntera y no frontera) pueden leer el codigo y entenderlo. El proceso de hacer el spec y que el spec viva en el code base, es similar a la idea de tener todo el codigo extensamente comentado antes d ela era de la IA, al final el codigo cambia y dejamos los comentarios olvidados, si quieres tener los comentarios actualizados, tienes que hacer mas trabajo adicional para manterner las dos piezas distintas. tal vez por eso en ningun empresa a lo que he trabajado, se oblig aa documentar todo el codigo, al final hacia mas lento el proceso, y creo que es lo mismo para el SDD.
+Yo, en lo personal, prefiero crear prompts lo más bien definidos posible, con metas claras, y ejecutar un plan mode o refinar el prompt inicial usando un chat. Eso me ha funcionado mejor y me permite avanzar más rápido. Al final, mientras el código funcione y esté bien estructurado, los modelos actuales —de frontera y no frontera— pueden leer el código y entenderlo. El proceso de crear un spec y hacer que ese spec viva en el codebase es similar a la idea de tener todo el código extensamente comentado antes de la era de la IA: al final, el código cambia y dejamos los comentarios olvidados. Si quieres mantenerlos actualizados, tienes que hacer trabajo adicional para mantener dos piezas distintas sincronizadas. Tal vez por eso, en ninguna empresa en la que he trabajado, se ha obligado a documentar todo el código. Al final, eso hace más lento el proceso, y creo que pasa lo mismo con SDD.
 
-Pero para contrastar un poco, creo que en proyectos de alta complejidad donde hay mucha interdependencia entre servicios, y esta bien tomarse su tiempo para crear el spec al inicio y tratar de cubir todos los edge cases que se puedan desde el inicio.
+Eso sí, para contrastar un poco, creo que en proyectos de alta complejidad, con mucha interdependencia entre servicios, sí puede valer la pena tomarse su tiempo para crear el spec al inicio y tratar de cubrir todos los edge cases posibles desde el principio.
 
 ## Mi experiencia
 
-En las ultimas empresas en las que he trabajado este año, en ninguna se hacia SDD, en ellas, cada quien hacia como pudiera usando claude code, no training no best practices, por lo menos tengo la suerte que estoy recibiendo training de mi empleador mas el timepo que le dedico de mi tiempo persoanl, se un poco como va la cosa en como usar de manera correcta el harness.
+En las últimas empresas en las que he trabajado este año, ninguna usaba SDD. En ellas, cada quien hacía como podía usando Claude Code, sin entrenamiento ni best practices claros. Por lo menos tengo la suerte de que mi empleador me da training para aprender a menajr estos harnesses.
 
-En cambio en proyectos personales, u nvideo jeugo y mi proyecto de codigo abierto "Agent Q", lo implemente, en el videojeugo me rendí rapidamente, ya que el videojuego lo estoy vibe codeando, en realidad no tengo claro los specs , pero en mi proyecto Agent Q al ser un proyecto mas pequeño y menos ambicioso, parecia buena idea usar SDD ya que el hype estaba por los cielos en internet. Empece con OpenSpec, fue la primera herramienta que encontre y aparte en mi empresa habian dado una charla sobre él. Al inicio me parecio mu bueno, sentia que todos mis specs estaban quedando implementados a la primera oportunidad con muy poco retrabajo. Pero note un detalle que me dejo helado, empece a acumular una candidad que me parecia absurda de spec files, eran alreadedor de 200 archivos en tan solo 2 dias de trabajo.
+En cambio, en proyectos personales —un videojuego y mi proyecto de código abierto Agent Q— lo implementé. En el videojuego me rendí rápido, porque lo estoy haciendo con vibe coding y, en realidad, no tengo claro los specs. Pero en Agent Q, al ser un proyecto más pequeño y menos ambicioso, parecía buena idea usar SDD, ya que el hype estaba por los cielos en internet. Empecé con OpenSpec; fue la primera herramienta que encontré y además, en mi empresa, habían dado una charla sobre ella. Al inicio me pareció muy bueno: sentía que todos mis specs estaban quedando implementados a la primera con muy poco retrabajo.
 
-Mis compañeros que dieron una platica sobre eso en el trabajo, mencionaron que era una forma de evitar alucinaciones, pero creo que estaban equivocados en su declaracion, ya que las alucionaciones seguian apareciendo normalmente, el modelo me agregaba u omitia cosas , sin distincion de si utilizba o no SDD.
+Pero noté un detalle que me dejó helado: empecé a acumular una cantidad que me parecía absurda de spec files. Eran alrededor de 200 archivos en solo 2 días de trabajo.
 
-Por eso queria escribir esto, queria exponer lo spuntos malos que exiten en esta metodologia, y especialmente poder quejarme un poco del hype y fomo el cual venden los vende humo de internet con sus cursos de SDD.
+Mis compañeros que dieron una charla sobre eso en el trabajo mencionaron que era una forma de evitar alucinaciones, pero creo que estaban equivocados. Las alucinaciones seguían apareciendo normalmente: el modelo me agregaba o omitía cosas, sin distinción de si usaba o no SDD.
 
-## Que es SDD entonces?
+Por eso quería escribir esto: quería exponer los puntos malos que existen en esta metodología, y sobre todo quejarme un poco del hype y del FOMO que venden los “vendedores de humo” de internet con sus cursos de SDD.
 
-No soy el mejor para decir que es SDD y acer la mejor definicion del mudno, dejara que cada quienb lo investigue, esta no es la finalidad de este post, pero hare un mini resumen.
+## ¿Qué es SDD entonces?
 
-SDD implica antes de escribir codigo, primero tienes que definir el spec, luego ese spec se utiliza como fuente de para la implementacion del codigo, esto es para que lo agentes de IA puedan codificar de manera mas certera, y evitar implementaciones flojas que despues necesiten refactorizacion.
+No soy el mejor para decir qué es SDD ni para dar la mejor definición del mundo, así que dejaré que cada quien lo investigue; esa no es la finalidad de este post. Pero haré un mini resumen.
 
-La idea es hacer un plan -> tareas -> codificar.
+SDD implica que, antes de escribir código, primero debes definir el spec. Luego, ese spec se usa como fuente para la implementación del código con la idea de que los agentes de IA puedan codificar de manera más certera y evitar implementaciones flojas que después necesiten refactorización.
 
-Openspec te ayuda redactando lso specs, lo cual puede ser malo o bueno porque a veces lo hace muy bien y a veces inventa cosas, lo mejor es pasarle el mayor contexto y requerimientos por tu cuenta para que openspec lo mejore y lo convierta en un plan.
+La idea es: plan -> tareas -> codificar.
 
+OpenSpec te ayuda a redactar los specs, lo cual puede ser bueno o malo. A veces lo hace muy bien y a veces inventa cosas. Lo mejor es pasarle el mayor contexto y los requisitos por tu cuenta para que OpenSpec lo mejore y lo convierta en un plan.
 
-## Desmintiendo lo designios de SDD
+## Desmintiendo los designios de SDD
 
-De los features de SDD podemos sacar unos designios, estos nso dicen las ventajsa de SDD y por que es bueno, para mi es una espada de doble file, ahora explico por que cada designio.
+De las promesas de SDD se pueden sacar varios designios: son los argumentos que normalmente dicen por qué SDD es bueno. Para mí, es una espada de doble filo, y ahora explico por qué cada uno.
 
 | Designio | Mi punto de vista |
 |---|---|
-| Ayuda a generar mejores requerimientos y encontrar edge cases desde antes de implementar | Esto es parte verdad, pero al final, si dejas que la IA genere lso requerimientos, estas generando requerimientos incompletos y que no necesitabas |
-| Los specs quedan por escrito en archivos dentro del proyecto, lo que le ayuda a los agentes para tener mejor contexto | Los specs no son la fuente de la verdad, al final siempre el codigo gana en esa carrera, depender de specs desactualizados, puede darte mas problemas a largo plazo |
-| Los specs permiten trazabilidad de las decisiones | ¡en realidad necesitas trazabilidad para cambios?, para eso esta git |
-| Deja un rastro que se puede revisar y auditar | Git!! | 
-| Otros agentes o humanos pueden retomar la tarea sin acoplarse a un modelo en especifico | De nuevo, depender de unos specs que son generados por IA puede generar codigo que no necesitas. Otro detalle, esto tambien lo puedes hacer si por ejemplo tienes el requerimiento en un ticket de jira, no necesitas en un spec en el codigo para poder continuar una tarea. |
- 
+| Ayuda a generar mejores requerimientos y encontrar edge cases antes de implementar | Esto tiene parte de verdad, pero al final, si dejas que la IA genere los requisitos, estás generando requerimientos incompletos y que no necesitabas |
+| Los specs quedan por escrito en archivos dentro del proyecto, lo que ayuda a los agentes a tener mejor contexto | Los specs no son la fuente de la verdad; al final, siempre el código gana esa carrera. Depender de specs desactualizados puede darte más problemas a largo plazo |
+| Los specs permiten trazabilidad de las decisiones | ¿En realidad necesitas trazabilidad para cambios? Para eso está Git |
+| Dejan un rastro que se puede revisar y auditar | Git, otra vez |
+| Otros agentes o humanos pueden retomar la tarea sin acoplarse a un modelo en específico | De nuevo, depender de specs generados por IA puede producir código que no necesitas. Además, esto también puedes hacerlo con un ticket de Jira o un issue bien escrito. No necesitas un spec en el código para continuar una tarea |
 
-## Por qué deje de usarlo en proyectos personales
+## Por qué dejé de usarlo en proyectos personales
 
-Para mis proyectos personales, en definitiva, elimine todo los specs que se habian acumulado y continue trabajando de manera directa con claude, codex y opencode. Usando plan mode y goal cada ve que se necesitara y con mis skill spersonalizados de cada proeycto, avanzo mucho mas rápido.
+En mis proyectos personales, eliminé casi todos los specs que se habían acumulado y continué trabajando directamente con Claude, Codex y OpenCode. Usando plan mode y goal mode cada vez que hacía falta, y con mis skills personalizados por proyecto, avanzo mucho más rápido.
 
-Si tengo que enumerar las razanoes, seria algo asi:
-- Me hace ir mas lento, plan mode y direct mode funcionan perfeco.
-- Genera muchos Markdown files que en subsecuentes sessiones no se usan, el modelo prefiere ir al codigo (yo tambien)
-- Las alucinaciones siguen apareciendo con la misma frecuancia
-- Git es mi herramienta de hacer tracking de cambios, no necesito specs.
+Si tengo que enumerar las razones, sería algo así:
+
+- Me hace ir más lento; plan mode y direct mode funcionan mejor.
+- Genera muchos archivos Markdown que, en sesiones posteriores, no se usan. El modelo prefiere ir directamente al código, y yo también.
+- Las alucinaciones siguen apareciendo con la misma frecuencia.
+- Git es mi herramienta de tracking de cambios; no necesito specs.
 
 ### Spec drift
 
-Buscando en intenet pude encontrar el termino "Spec drift", este es el nombr eusado para cuando el spec queda desfasado o desactualizado cuando hay cambios en el codigo sin actualizacion del spec. 
+Buscando en internet pude encontrar el término “spec drift”. Es el nombre que se usa cuando el spec queda desfasado o desactualizado porque el código cambia sin que el spec se actualice.
 
-Esto pasa incluso cuando intentas seguir el flujo correcto de SDD, aun asi hay fixes pequeños o cambios desde otras sesiones que no son detectados en su sesion y por tanto no quedan registrados en el spec. Incluso en OpenSpec, te dicen que si el cambio es trivial, no crees un spec para ello, ¿en serio? ellos mismso estan fomentando el spec drift, si el spec no puede ser la fuente de la verdad, ¿para que lo quieres en tu proyecto?.
+Esto pasa incluso cuando intentas seguir el flujo correcto de SDD. Aun así, hay fixes pequeños o cambios desde otras sesiones que no son detectados en la sesión actual y, por tanto, no quedan registrados en el spec. Incluso en OpenSpec te dicen que, si el cambio es trivial, no crees un spec para ello. ¿En serio? Ellos mismos están fomentando el spec drift. Si el spec no puede ser la fuente de la verdad, ¿para qué lo quieres en tu proyecto?
 
-
-
-A mi punto de vista, el código siempre será la verdadera fuente de verdad. Los modelos en la actualidad (al momento en que escribo esto) pueden leer el codigo y entender el intent facilmente. ¿Que pasara si el agente lee el spec ve una cosa y luego encuentra en el codigo una contradiccion? en realidad un modelo no sabe distinguir entre una cosa y la otra y simplemente elegira una "verdad" al azar, pasa algo parecido si en un archivo AGENTS.md pones instrucciones contradictorias, el modelo elege cuando seguir cada una.
+A mi punto de vista, el código siempre será la verdadera fuente de verdad. Los modelos actuales pueden leer el código y entender muy bien la intención. ¿Qué pasa si el agente lee el spec, ve una cosa, y luego encuentra en el código una contradicción? En realidad, un modelo no sabe distinguir entre una cosa y la otra y simplemente elegirá una “verdad” al azar. Pasa algo parecido si en un archivo AGENTS.md pones instrucciones contradictorias: el modelo elige qué seguir.
 
 > *Spec Drift*: el código cambia, el markdown no.
 
-### 3. El spec no genera codigo determinista
+### El spec no genera código determinista
 
-El modelo nunca generara el mismo codigo si como entrada tiene un spec, creo que es algoq ue se esta tratando de ahcer pero no es posible ahora mismo.
+El modelo nunca generará el mismo código si como entrada tiene un spec. Creo que es algo que se está intentando hacer, pero no es posible ahora mismo.
 
-### 4. Revisar markdown no es revisar software
+### Revisar markdown no es revisar software
 
-Que pasa si necesito revisar un bug?
+¿Qué pasa si necesito revisar un bug?
 
-Poniendo un ejemplo, quiero resolver un bug, que hago? Lo primero es entender que esta fallando, hay muchos tipos de bugs , pero se me vienen 2 ejemplos a la cabeza de un mal funcinamiento, una excepción no capturada y un funcionamiento incorrecto.
+Pongamos un ejemplo: quiero resolver un bug. ¿Qué hago? Lo primero es entender qué está fallando. Hay muchos tipos de bugs, pero se me vienen dos ejemplos a la cabeza: una excepción no capturada y un mal funcionamiento.
 
-Mal funcionamiento
-para el funcionamiento incorrecto, el mismo bug report ya te dice que esta ocurriendo mal. Por ejemplo, “el calculo del total es incorrecto”, “no aparece el nuevo item en la lista” o “el item aparece dos veces”. En estos casos veo muy improbable que el bug se arregle agregandole una cláusula al spec, “lso items deben aparecer una sola vez” o en el caso del item que no es visible , probablemente el spec ya tiene una cláusula “nuevos items deben aparecer en la lista”. Aquí el spec no nos sirve de mucho para encontrar el error, lo mejor es ir directo al código , encontrar el código relacionado y arreglarlo. Revisar el spec es inecesario, al final se tiene que ir al código de todo modos para buscar el error.
+#### Mal funcionamiento
 
-Excepciones/Crashes
-Aqui en definitiva , creo un spec no es de utilidad al buscar una excepción o un crash, aquí es ir directo al código encontrar la error y aplicar el fix, ya sea que el fix sea solo un pequeño cambio o un refactor completo, el spec no ayuda a el mantenimiento de productos en producción.
+En el caso de un funcionamiento incorrecto, el mismo bug report ya te dice qué está ocurriendo mal. Por ejemplo: “el cálculo del total es incorrecto”, “no aparece el nuevo item en la lista” o “el item aparece dos veces”. En estos casos, veo muy improbable que el bug se arregle agregándole una cláusula al spec: “los items deben aparecer una sola vez”, o en el caso del item que no es visible, probablemente el spec ya tiene una cláusula que dice “los nuevos items deben aparecer en la lista”. Aquí el spec no nos sirve de mucho para encontrar el error. Lo mejor es ir directo al código, localizar la parte relacionada y arreglarla. Revisar el spec es innecesario; al final, de todos modos hay que ir al código para buscar la causa.
+
+#### Excepciones / crashes
+
+Aquí, en definitiva, un spec no sirve para nada a la hora de buscar una excepción o un crash. Lo correcto es ir directo al código, encontrar el error y aplicar el fix, ya sea un pequeño cambio o un refactor completo. El spec no ayuda al mantenimiento de productos en producción.
 
 ## Mi propia forma de trabajar
 
-al final cada proyecto es diferente, pero en general lo que yo hago y me funciona bien, es simple, le doy a mmi agente un objetivo y e indicaciones de como actuar, le digo como verificar que la tarea ha sido terminada, y si l atarea lo amerita, hago plan mod eprimero para verificar que si se v a a hace rlo que quiero. 
+Al final, cada proyecto es diferente, pero en general lo que yo hago y me funciona bien es simple: le doy a mi agente un objetivo claro y unas indicaciones de cómo actuar. Le digo cómo verificar que la tarea ha sido terminada, y si la tarea lo amerita, hago plan mode primero para confirmar que realmente va a hacer lo que quiero.
 
-Todo esto es lo normal, lo que te dicen todo el mundo al iniciar a programar con estas herramientas, pero poco a poco uno va encontrando la forma de refinar los prompts y sacarles mejor probecho.
+Todo esto es lo normal, lo que te dicen todos al empezar a programar con estas herramientas. Pero poco a poco uno va encontrando la forma de refinar los prompts y sacarles mejor provecho.
 
-Lo resumire el promt en las siguientes secciones
-- Objetivo claro y bien definido
-- Criterio de aceptacion/validacion (que debe pasar para considerar terminada la tarea)
-- Steering, cualquier instruccion adicional para ayudar al modelo a ir el camino que yo quiero.
-- Guadrails, restricciones, cosas que no debe tocar, o comandso que no quiero que ejecute.
+Para resumir, mis prompts tienen lo siguiente:
 
-Con este esquema sencillo logro trabar rapido , los modelos entienden la tarea y la implementan, si hay un error sensillo se corrige en esa misma sesion, si hay un problema mas gordo, abro nueva session y paso un promt completo igual al mencionado arriba.
+- Objetivo claro y bien definido.
+- Criterios de aceptación / validación: qué debe pasar para considerar la tarea terminada.
+- Steering: cualquier instrucción adicional que ayude al modelo a ir por el camino deseado.
+- Guardrails: restricciones, cosas que no debe tocar y comandos que no quiero que ejecute.
 
-Tambien me he ayudado de abrir sesione ssolamente para refinar mi prompt, si lo haces dentro del mismo proyecto con claude code o codex, los modelos ex´plorarn el proeyecto para definir un mejor prompt. En post posterior explicare mas a fondo este formato preferido que tengo un skill par refinar prompts, no tiene nada de extraordinario, simplemente me ahorro unas cuantas teclas para refinar mi prompt.
+Con este esquema sencillo logro trabajar rápido. Los modelos entienden la tarea y la implementan. Si hay un error sencillo, se corrige en esa misma sesión. Si hay un problema más gordo, abro una nueva sesión y paso un prompt completo igual al de arriba.
+
+También me ha ayudado abrir sesiones solo para refinar mi prompt. Si lo haces dentro del mismo proyecto con Claude Code o Codex, los modelos exploran el proyecto para definir un mejor prompt. En un post posterior explicaré más a fondo este formato preferido que tengo para refinar prompts; no tiene nada de extraordinario, simplemente me ahorro unas cuantas teclas.
 
 ## Conclusión
 
-Mi conclusion es contundente y sencilla, SDD te alenta y hace que el trabajo de progrmar con agentes se sienta como redactar un documento pero sin ninguna ventaja. 
+Mi conclusión es contundente y sencilla: SDD te alienta y hace que el trabajo de programar con agentes se sienta como redactar un documento, pero sin ninguna ventaja real.
 
-Creo que SDD se volvio muy popular por el hype de la IA, pero en realidad no es una metodología madura sin el respaldo de varios años que ayuden a garantizar que seguirla ayuda en algo.
+Creo que SDD se volvió muy popular por el hype de la IA, pero en realidad no es una metodología madura ni tiene el respaldo de años de evidencia que garanticen que seguirla ayuda en algo.
 
-Mejor mantenr los prompts consizos, bien estructurados y tener en cuenta que la IA sigue siendo hasta el momento , no determinista, agregar uan capa de markdowns no la hace determinista, aunque le duela a los aferrados  de SDD.
+Mejor mantener los prompts claros, bien estructurados y tener en cuenta que la IA sigue siendo, hasta el momento, no determinista. Agregar una capa de markdown no la vuelve determinista, aunque a los más aferrados a SDD les duela.
 
-Invito a los que leyeron esto a reflexionar sobre SDD y sobre que cosas le ven que funcionan y que no.
+Invito a los que leyeron esto a reflexionar sobre SDD y a cuestionar qué cosas le ven que funcionan y cuáles no.
 
