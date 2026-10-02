@@ -6,22 +6,6 @@ tags: ["ia", "spec-driven-development", "ingeniería de software", "opinión"]
 draft: true   # esqueleto: cambia a false cuando esté escrita
 ---
 
-<!--
-  ESQUELETO. Cada sección trae los temas a desarrollar como viñetas; reemplázalas con tu texto.
-  Los bloques de código y las tablas son ejemplos de formato: adáptalos, muévelos o bórralos.
-  Los comentarios HTML como este no se ven en la página, pero sí en el código fuente: bórralos antes de publicar.
-
-  Bloques de código (se abren con tres backticks + lenguaje):
-    bash        comandos para copiar y pegar, sin prompt
-    console     sesión de terminal: las líneas con "$ " son comandos, el resto es salida
-    powershell  lo mismo para Windows
-    diff        líneas con + / - en verde / rojo
-    text        sin colores (árboles de carpetas, logs)
-
-  Tablas: la fila de guiones define la alineación
-    |---|  izquierda   |:---:|  centro   |---:|  derecha (números)
--->
-
 ## TL;DR
 
 Usar Spec driven development o SDD, es la opcion mas popular  que puedes ver en redes, cuando explore facebook, encuentro publicidad de cursos que te dicen que no te quedes atras aprende SDD, tratando de meter miedo y FOMO para vender, pero eso es otra historia, aqui lo que me llama la atencion es como las redes se han inundado de una metodologia que a mi parecer no esta lo suficientemente probada, simplemente aparece como una opcion popular .
