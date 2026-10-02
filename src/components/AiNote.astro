@@ -1,0 +1,11 @@
+---
+// Authorship note shown at the top of every post, in the post's language.
+interface Props { lang: 'en' | 'es'; }
+const { lang } = Astro.props;
+
+const text = {
+  es: 'Este blog lo escribo yo, pero uso IA para revisar la estructura y la gramática, sobre todo en inglés. Admito que escribir no es mi fuerte, pero les aseguro que las ideas son mías. Primero investigo, luego escribo; después le pido a la IA que revise el texto, mejore la redacción sin cambiar las ideas y me dé sugerencias; luego lo vuelvo a revisar yo. Repito ese ciclo hasta que siento que todo lo que quería decir está bien estructurado y se entiende.',
+  en: "I write this blog myself, but I use AI to review its structure and grammar, especially in English. I'll admit writing isn't my strong suit, but I can assure you the ideas are my own. First I research, then I write; next I ask the AI to review the text, polish the wording without changing the ideas, and give me suggestions; then I review it again myself. I repeat that loop until I feel everything I wanted to say is well structured and easy to follow.",
+};
+---
+<aside class="ai-note">{text[lang]}</aside>
