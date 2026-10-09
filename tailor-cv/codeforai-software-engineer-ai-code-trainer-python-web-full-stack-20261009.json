@@ -1,0 +1,153 @@
+{
+  "schema": "tailor-cv/1",
+  "name": "codeforai-software-engineer-ai-code-trainer-python-web-full-stack-20261009",
+  "jd": {
+    "company": "CodeForAI",
+    "position": "Software Engineer / AI Code Trainer (Python, Web, Full Stack)",
+    "date": "2026-10-09",
+    "lang": "en",
+    "url": "https://remotive.com/remote-jobs/software-development/software-engineer-ai-code-trainer-python-web-full-stack-2091149",
+    "terms": ["code-review", "testing", "ai-assisted-dev", "full-stack"],
+    "required": [
+      {"id": "python", "quote": "Software Engineering Proficiency: Strong core fundamentals in at least one major programming language or web stack (e.g., Python, JavaScript/TypeScript, Java, C++, Go, C#, Rust, PHP)."},
+      {"id": "code-review", "quote": "Debugging & Code Review: Ability to quickly analyze third-party code, catch subtle logical errors, and evaluate efficiency."}
+    ],
+    "gaps": ["Rust", "NoSQL databases", "Security auditing of code (the tree has security only as Cerby's business domain)", "Evaluating or training AI models (the tree has daily use of AI coding agents and AI-engineer training, not grading model output)"]
+  },
+  "profile": {
+    "summary": {
+      "en": "Software developer with **{years} years of experience** across the gaming, media, and enterprise sectors, collaborating with major global companies. As an **AI enthusiast**, I work daily with AI coding agents to optimize backend development and accelerate project delivery. I am a rapid learner, highly adaptable to new technology stacks. Having previously **led teams of up to six people** and reviewed every pull request they shipped, I consistently deliver high-quality, well-tested software on time and within budget.",
+      "es": "Desarrollador de software con **{years} años de experiencia** en videojuegos, medios y empresa, con compañías globales de primer nivel. Como **entusiasta de la IA**, trabajo a diario con agentes de programación con IA para optimizar el backend y acelerar la entrega de proyectos. Aprendo rápido y me adapto a nuevos stacks tecnológicos. Habiendo **liderado equipos de hasta seis personas** y revisado cada pull request que entregaban, entrego software probado y de alta calidad, a tiempo y en presupuesto."
+    },
+    "roles": ["Senior Software Engineer", "Backend & Full-Stack", "AI-Assisted", "Tech Lead"],
+    "sources": ["wizeline-media/tech-lead/2", "wizeline/working-with-ai/1", "wizeline-global-news/unit-tests-as-part-of-done/2"]
+  },
+  "experience": [
+    {
+      "id": "wizeline",
+      "mode": "tailored",
+      "why": "Cerby is the Python + web full-stack match (Flask backend, Next.js/TypeScript frontend); Fox Corp shows code review (PR reviews for the whole squad) and debugging; Dow Jones shows test discipline (extensive unit tests per feature) and AI-assisted coding with Claude Code. Inditex (Java microservices, API first) is backend but adds nothing the JD weighs beyond the others, so it is left out. Wizeline's own AI work (coding agents daily, AI-engineer training in Python) matches the AI Code Trainer role.",
+      "bullets": [
+        {
+          "child": "wizeline-cybersecurity",
+          "en": "Led the **first version of the backend** in **Python** with **Flask** for a cybersecurity MVP, and supported the **Next.js / TypeScript** frontend; the MVP launched the initial platform.",
+          "es": "Lideré la **primera versión del backend** en **Python** con **Flask** para el MVP de una empresa de ciberseguridad, y apoyé el frontend en **Next.js / TypeScript**; con ese MVP se lanzó la plataforma inicial.",
+          "tech": ["Python", "Flask", "Next.js", "TypeScript"],
+          "sources": ["wizeline-cybersecurity", "wizeline-cybersecurity/backend-in-python-with-flask-designed-with-ddd/1", "wizeline-cybersecurity/frontend-in-support/1", "wizeline-cybersecurity/the-mvp-delivered"]
+        },
+        {
+          "child": "wizeline-media",
+          "en": "Directed a team of 5 engineers as Tech Lead, doing the **pull request reviews** for everything the squad shipped.",
+          "es": "Dirigí un equipo de 5 ingenieros como Tech Lead, a cargo de la **revisión de pull requests** de todo lo que entregaba el equipo.",
+          "tech": ["Java", "Spring Boot", "JavaScript", "AWS"],
+          "sources": ["wizeline-media", "wizeline-media/tech-lead/1", "wizeline-media/tech-lead/2"]
+        },
+        {
+          "child": "wizeline-media",
+          "en": "Debugged the problems that turned up across services by following each message through the logs in **CloudWatch**.",
+          "es": "Depuré los problemas que aparecían entre servicios siguiendo cada mensaje a través de los logs en **CloudWatch**.",
+          "sources": ["wizeline-media/observability-debugging/1"]
+        },
+        {
+          "child": "wizeline-global-news",
+          "en": "Shipped every feature with **extensive unit tests** covering all of it, and implemented my changes with **Claude Code** for the whole engagement.",
+          "es": "Entregué cada feature con **pruebas unitarias extensas** que lo cubrían todo, e implementé mis cambios con **Claude Code** durante todo el proyecto.",
+          "tech": [".NET", "PostgreSQL", "Claude Code"],
+          "sources": ["wizeline-global-news", "wizeline-global-news/unit-tests-as-part-of-done/2", "wizeline-global-news/day-to-day/2"]
+        },
+        {
+          "en": "Worked **100% with AI coding agents** for the past year (**Claude Code**, **Codex**, **OpenCode**, **GitHub Copilot**); in training as an **AI engineer**, building agents in **Python** with **LangChain** and the **Claude SDK**.",
+          "es": "Trabajo **100% con agentes de programación con IA** desde hace un año (**Claude Code**, **Codex**, **OpenCode**, **GitHub Copilot**); me estoy formando como **AI engineer**, creando agentes en **Python** con **LangChain** y el **Claude SDK**.",
+          "sources": ["wizeline/working-with-ai/1", "wizeline/constant-training-ai-at-work/3"]
+        }
+      ]
+    },
+    {
+      "id": "1-simple-idea",
+      "mode": "tailored",
+      "why": "Software design and testing: the IoC/DI/event-driven architecture and the logic layer fully covered by unit tests. The team-lead, release and art-pipeline bullets say nothing the JD asks for.",
+      "bullets": [
+        {
+          "en": "Architected and implemented Inversion of Control (IoC), Dependency Injection (DI) and an event-driven system.",
+          "es": "Diseñé e implementé Inversión de Control (IoC), Inyección de Dependencias (DI) y un sistema orientado a eventos.",
+          "sources": ["1-simple-idea/cv2"]
+        },
+        {
+          "en": "Kept the logic apart from the visuals so it was testable: the whole logic layer had **unit tests**.",
+          "es": "Separé la lógica de lo visual para hacerla testeable: toda la capa de lógica tenía **pruebas unitarias**.",
+          "sources": ["1-simple-idea/two-layers-visual-gameplay-and-logic/2"]
+        }
+      ]
+    },
+    {
+      "id": "virtually-live",
+      "mode": "tailored",
+      "why": "The backend RESTful services in Python, Django and Go, and the abstraction layer (software design), match the JD's Python / backend / API design; the VR racing and release bullets do not.",
+      "bullets": [
+        {
+          "en": "Architected the backend **RESTful services** in **Python**, **Django** and **Go**, and developed the core gameplay in **C#** for the iOS port.",
+          "es": "Diseñé los **servicios backend RESTful** en **Python**, **Django** y **Go**, y desarrollé las mecánicas principales en **C#** para el port a iOS.",
+          "sources": ["virtually-live/cv3"]
+        },
+        {
+          "en": "Engineered a core abstraction layer for game modules, encompassing VR controllers, Social APIs and database access, with JSON for configuration.",
+          "es": "Construí una capa de abstracción para los módulos del juego (controles VR, APIs sociales y acceso a datos), con JSON para la configuración.",
+          "sources": ["virtually-live/cv2"]
+        }
+      ]
+    },
+    {
+      "id": "intel",
+      "mode": "tailored",
+      "why": "Ruby is in the JD's list of stacks; APIs for testing workflows, metaprogramming and automation scripts match its scripting and testing angle. All three records are relevant.",
+      "bullets": [
+        {
+          "en": "Engineered **APIs in Ruby** for hardware validation teams, to plug validation into their testing workflows.",
+          "es": "Desarrollé **APIs en Ruby** para los equipos de validación de hardware, para integrar la validación en sus flujos de pruebas.",
+          "sources": ["intel/cv1", "intel/custom-ruby-libraries-for-validation/4"]
+        },
+        {
+          "en": "Leveraged Ruby metaprogramming to parse XML design documents and dynamically generate executable files.",
+          "es": "Usé metaprogramación en Ruby para interpretar documentos de diseño en XML y generar ejecutables de forma dinámica.",
+          "sources": ["intel/cv3"]
+        },
+        {
+          "en": "Wrote automation tools and scripts to synchronize API deployments across multiple global Intel sites.",
+          "es": "Escribí herramientas y scripts de automatización para sincronizar los despliegues de APIs en varias sedes globales de Intel.",
+          "sources": ["intel/cv2"]
+        }
+      ]
+    },
+    {
+      "id": "gameloft",
+      "mode": "tailored",
+      "why": "C++ and JavaScript are in the JD's list; the internal tool in JavaScript and PHP is web work. The titles bullet is not relevant.",
+      "bullets": [
+        {
+          "en": "Programmed 3D games and internal tools in portable **C++, JavaScript (jQuery) and Objective-C** across Android and iOS.",
+          "es": "Programé juegos 3D y herramientas internas en **C++, JavaScript (jQuery) y Objective-C** portables entre Android e iOS.",
+          "sources": ["gameloft/1"]
+        },
+        {
+          "en": "Built a **specialised tool** to configure the game's events, in **JavaScript**, **PHP** and **jQuery**.",
+          "es": "Creé una **herramienta especializada** para configurar los eventos del juego, en **JavaScript**, **PHP** y **jQuery**.",
+          "sources": ["gameloft/event-configuration-tool-for-the-oregon-trail/1"]
+        }
+      ]
+    },
+    {
+      "id": "kaxan-games",
+      "mode": "tailored",
+      "why": "Only the C# work is relevant (C# is in the JD's list); the Wii and demo-reel bullets are not.",
+      "bullets": [
+        {
+          "en": "Developed and published **over five mobile games** for iPhone and iPad in **C#** with Unity3D.",
+          "es": "Desarrollé y publiqué **más de cinco juegos móviles** para iPhone y iPad en **C#** con Unity3D.",
+          "sources": ["kaxan-games/cv1"]
+        }
+      ]
+    }
+  ],
+  "skills": {"drop": []},
+  "notes": "The JD's requirements list eligible residences (USA, UK, Canada, Australia, New Zealand, India, Pakistan, Philippines) without Mexico, while the posting header lists Mexico."
+}
